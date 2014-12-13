@@ -1,4 +1,4 @@
 junction
 ========
 
-Junction is a software to manage proposals, reviews, schedule, feedback during conferences.
+Junction is a software to manage proposals, reviews, schedule, feedback during conference.
