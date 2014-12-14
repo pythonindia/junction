@@ -55,5 +55,9 @@ target/
 
 # PyDev
 .metadata
+.settings
 .project
 .pydevproject
+
+# SQLite DB
+db.sqlite3
