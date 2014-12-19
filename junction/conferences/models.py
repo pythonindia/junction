@@ -12,6 +12,7 @@ class Conference(AuditModel):
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
     status = models.CharField(max_length=255, choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
+    deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
         return self.name

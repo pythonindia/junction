@@ -71,6 +71,7 @@ class Proposal(TimeAuditModel):
     speaker_links = models.TextField(default="")
     status = models.CharField(max_length=255, choices=PROPOSAL_STATUS_LIST, default=PROPOSAL_STATUS_DRAFT)
     review_status = models.CharField(max_length=255, choices=PROPOSAL_REVIEW_STATUS_LIST, default=PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, verbose_name="Review Status")
+    deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
         return self.title
@@ -96,6 +97,7 @@ class ProposalComment(TimeAuditModel):
     commenter = models.ForeignKey(User)
     visibility = models.CharField(max_length=255, choices=PROPOSAL_COMMENT_VISIBILITY_OPTIONS, default=PROPOSAL_COMMENT_VISIBILITY_PUBLIC)
     comment = models.TextField()
+    deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
         return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
