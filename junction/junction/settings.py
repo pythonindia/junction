@@ -27,7 +27,7 @@ THIRD_PARTY_APPS = (
 )
 
 OUR_APPS = ('conferences',
-           'proposals',
+            'proposals',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -36,12 +36,11 @@ INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
 ROOT_URLCONF = 'junction.urls'
 WSGI_APPLICATION = 'junction.wsgi.application'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'collected-static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets', 'static'),
@@ -50,3 +49,27 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
+    }
+}
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
+
+DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
+
+ALLOWED_HOSTS = [] #TODO:
+
+# Dev Settings
+
+try:
+    from junction.dev import *  # @UnusedWildImport
+except ImportError:
+    pass
