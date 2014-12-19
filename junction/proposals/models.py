@@ -6,7 +6,7 @@ from custom_utils.constants import PROPOSAL_STATUS_DRAFT, \
      PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, \
     PROPOSAL_USER_VOTE_ROLE_PUBLIC, PROPOSAL_COMMENT_VISIBILITY_PUBLIC, \
     PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
-    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST
+    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from custom_utils.models import AuditModel, TimeAuditModel
 
 
@@ -64,7 +64,7 @@ class Proposal(TimeAuditModel):
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
     description = models.TextField(default="")
-    target_audienance = models.TextField(default="")
+    target_audienance = models.CharField(max_length=255, choices=PROPOSAL_TARGET_AUDIENCES,  verbose_name="Target Audienance")
     prerequisites = models.TextField(default="")
     content_urls = models.TextField(default="")
     speaker_info = models.TextField(default="")
