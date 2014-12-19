@@ -41,3 +41,12 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'collected-static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets', 'static'),
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
