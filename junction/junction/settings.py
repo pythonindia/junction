@@ -28,6 +28,7 @@ CORE_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    "sendgrid",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -88,8 +89,16 @@ DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
 
-# Dev Settings
 
+#Email Settings - django-sendgrid
+SENDGRID_EMAIL_HOST = "smtp.sendgrid.net"
+SENDGRID_EMAIL_PORT = 587
+SENDGRID_EMAIL_USERNAME = "SENDGRID_USERNAME"
+SENDGRID_EMAIL_PASSWORD = "SENDGRID_PASSWORD"
+SENDGRID_FROM_EMAIL = "DEFAULT_FROM_EMAIL"
+
+
+# Dev Settings
 try:
     from junction.dev import *  # @UnusedWildImport
 except ImportError:
