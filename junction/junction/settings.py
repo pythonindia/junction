@@ -167,9 +167,78 @@ ALLOWED_HOSTS = []  # TODO:
 #Email Settings - django-sendgrid
 SENDGRID_EMAIL_HOST = "smtp.sendgrid.net"
 SENDGRID_EMAIL_PORT = 587
-SENDGRID_EMAIL_USERNAME = "SENDGRID_USERNAME"
-SENDGRID_EMAIL_PASSWORD = "SENDGRID_PASSWORD"
-SENDGRID_FROM_EMAIL = "DEFAULT_FROM_EMAIL"
+SENDGRID_EMAIL_USERNAME = os.environ.get('SENDGRID_USERNAME', ''),
+SENDGRID_EMAIL_PASSWORD = os.environ.get('SENDGRID_PASSWORD', ''),
+SENDGRID_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', ''),
+
+
+#setup dynamic hostname for logging
+import socket
+HOSTNAME = socket.gethostname()
+
+#ensure log files can be created if path doesn't exist
+def log_file(dir, file):
+    dir = os.path.expanduser(dir)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    return os.path.join(dir, file)
+
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'filename': log_file(LOG_DIR,'error.log'),
+        },
+        
+    },
+    'loggers': {
+       'django.request': {
+            'handlers': ['mail_admins','file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        # Uncomment following to turn on sql logging
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+        
+        'app_log': {
+            'handlers': ['console','mail_admins','file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
 
 
 # Dev Settings

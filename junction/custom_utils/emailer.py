@@ -9,9 +9,9 @@ class EmailEngine():
         
         to_list = content['to_email']
         
-        FROM_ADDRESS = content.get('from_email', default=None)
-        if FROM_ADDRESS == None:
-            FROM_ADDRESS = SENDGRID_FROM_EMAIL
+        from_address = content.get('from_email', default=None)
+        if from_address is None:
+            from_address = SENDGRID_FROM_EMAIL
         
         sg = sendgrid.SendGridClient(SENDGRID_EMAIL_USERNAME, SENDGRID_EMAIL_PASSWORD, raise_errors=True)
         message = sendgrid.Mail()
@@ -19,10 +19,10 @@ class EmailEngine():
         message.add_to(to_list)
         message.set_subject(content['subject'])
         message.set_html(content['body'])
-        message.set_from(FROM_ADDRESS)
+        message.set_from(from_address)
         
         cc_list = content.get('cc_email', default=None)
-        if cc_list != None:
+        if cc_list is not None:
             message.add_bcc(cc_list)
         
         status, msg = sg.send(message)
