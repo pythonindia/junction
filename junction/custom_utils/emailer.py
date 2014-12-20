@@ -3,10 +3,10 @@ from junction.settings import SENDGRID_FROM_EMAIL, SENDGRID_EMAIL_USERNAME,SENDG
 
 class EmailEngine():
    
-   ### SEND THE EMAIL BODY,SUBJECT,TO_ADDRESS AS list, CC EMAILS as list IN A DICTIONARY
+    '''Send the email Body,Subject,To_Address as list, CC_Emails as list IN A DICTIONARY. Optionally 
+        you can even send the from_email '''
     def send_email(self, content):    
         
-        print content
         to_list = content['to_email']
         try:
             FROM_ADDRESS = content['from_email']
@@ -19,7 +19,6 @@ class EmailEngine():
         message.add_to(to_list)
         message.set_subject(content['subject'])
         message.set_html(content['body'])
-#         message.set_text(content.body)
         message.set_from(FROM_ADDRESS)
         try:
             cc_list = content['cc_email']
@@ -30,3 +29,4 @@ class EmailEngine():
         status, msg = sg.send(message)
       
         return status
+    
