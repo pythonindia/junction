@@ -3,9 +3,9 @@ from junction.settings import SENDGRID_FROM_EMAIL, SENDGRID_EMAIL_USERNAME,SENDG
 
 class EmailEngine():
   
-    def send_email(self,to_list,body,subject=None,cc_list=None,from_address=None):    
+    def send_email(self, to_list, body, subject=None, cc_list=None, from_address=None):    
         '''It takes email body, to address and Optionally it takes cc-list, subject 
-        and from-email address. Format to send the dictionary is as follows
+        and from-email address. Format to send the to_email,cc_email and from_email is as follows
         email body  can be text or html
         to_email = ['ab@c.com'] or ['ab@c.com','dc@m.com']
         cc_email = ['ab@c.com'] or ['ab@c.com','dc@m.com']
@@ -14,7 +14,7 @@ class EmailEngine():
         '''
         
         subject = subject or ""
-        verified_from_address = from_address or SENDGRID_FROM_EMAIL[0]
+        verified_from_address = from_address or SENDGRID_FROM_EMAIL[0] #Since SENDGRID_FROM_EMAIL returns a tuple
        
         sg_handler = sendgrid.SendGridClient(SENDGRID_EMAIL_USERNAME, SENDGRID_EMAIL_PASSWORD, raise_errors=True)
         message = sendgrid.Mail()
