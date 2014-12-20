@@ -2,30 +2,38 @@ import sendgrid
 from junction.settings import SENDGRID_FROM_EMAIL, SENDGRID_EMAIL_USERNAME,SENDGRID_EMAIL_PASSWORD
 
 class EmailEngine():
-    '''Send the email Body,Subject,To_Address as list, CC_Emails as list IN A DICTIONARY. Optionally 
-        you can even send the from_email '''
   
     def send_email(self, content):    
+        '''It takes email content, subject, to address, cc-list in a dictionary. Optionally 
+        it t from-email address. Format to send the dictionary is as follows
+        content = {}
+        content['body'] = email body [text or html]
+        content['subject'] = subject
+        content['to_email'] = ['ab@c.com'] or ['ab@c.com','dc@m.com']
+        content['cc_email'] = ['ab@c.com'] or ['ab@c.com','dc@m.com']
+        content['from_email'] = "from_email@zz.com"  optional, since this would have been configured in 
+                                                     settings file
+        '''
         
         to_list = content['to_email']
-        
+        subject = content['subject']
+        body = content['body']
+        cc_list = content.get('cc_email', default=None)
         from_address = content.get('from_email', default=None)
-        if from_address is None:
-            from_address = SENDGRID_FROM_EMAIL
+        from_address = SENDGRID_FROM_EMAIL or from_address 
+            
         
-        sg = sendgrid.SendGridClient(SENDGRID_EMAIL_USERNAME, SENDGRID_EMAIL_PASSWORD, raise_errors=True)
+        sg_handler = sendgrid.SendGridClient(SENDGRID_EMAIL_USERNAME, SENDGRID_EMAIL_PASSWORD, raise_errors=True)
         message = sendgrid.Mail()
         
         message.add_to(to_list)
-        message.set_subject(content['subject'])
-        message.set_html(content['body'])
+        message.set_subject(subject)
+        message.set_html(body)
         message.set_from(from_address)
-        
-        cc_list = content.get('cc_email', default=None)
         if cc_list is not None:
             message.add_bcc(cc_list)
         
-        status, msg = sg.send(message)
+        status, msg = sg_handler.send(message)
       
         return status
     
