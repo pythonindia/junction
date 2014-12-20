@@ -12,6 +12,9 @@ urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(
         template_name='index.html',
     ), name='home'),
+    url(r'^profile/$', TemplateView.as_view(
+        template_name='profile.html',
+    ), name='profile_home'),        
     url(r'^speakers/$', TemplateView.as_view(
         template_name='speakers.html',
     ), name='speakers-static'),
