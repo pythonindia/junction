@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head_title %} Proposals | {{ block.super }} {% endblock %}
+
+{% block header %}
+<header class="header-big fill-blue center-wrapper text-center">
+    <div class="absolute-center push-2">
+        <div class="measure-block">
+            <h1 class="yellow push-1q-bottom nospace-top">Proposals</h1>
+            <h2 class="white normal push-1q-bottom">List of Proposals</h2>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="push-4-bottom push-1-top">
+        {% for proposal in proposals_list %}
+            <a href='{% url 'proposal-detail' proposal.pk %}'> {{ proposal.title }} </a>
+            <hr>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

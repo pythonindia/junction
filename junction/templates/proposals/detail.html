@@ -1,0 +1,96 @@
+<form method='get' action='{% url 'proposal-edit' proposal.id %}'>
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                Title
+            </td>
+            <td>
+                {{ proposal.title }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Description
+            </td>
+            <td>
+                {{ proposal.description }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Target Audience
+            </td>
+            <td>
+                {{ proposal.target_audience }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Prerequisites
+            </td>
+            <td>
+                {{ proposal.prerequisites }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Content URLS
+            </td>
+            <td>
+                {{ proposal.content_urls }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Speaker Info
+            </td>
+            <td>
+                {{ proposal.speaker_info }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Speaker Links
+            </td>
+            <td>
+                {{ proposal.speaker_links }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                {{ proposal.status }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Proposal Type
+            </td>
+            <td>
+                {{ proposal.proposal_type }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Proposal Section
+            </td>
+            <td>
+                {{ proposal.proposal_section }}
+            </td>
+        </tr>
+        {% if is_reviewer %}
+        <tr>
+            <td>
+                Review Status
+            </td>
+            <td>
+                {{ proposal.review_status }}
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+    <button type='submit'>Edit</button>
+</form>
