@@ -34,6 +34,8 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
 
+    'django_extensions',
+
     'bootstrap3',
 )
 
@@ -110,7 +112,7 @@ LOGGING = {
         },
         'django.db.backends': {
             'level': 'DEBUG',
-            'handlers': ['console', 'file'],
+            'handlers': ['file',],
         },
     }
 }
