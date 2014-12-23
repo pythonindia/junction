@@ -25,6 +25,7 @@ CORE_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.webdesign',
+    'django_markdown',
 )
 
 THIRD_PARTY_APPS = (

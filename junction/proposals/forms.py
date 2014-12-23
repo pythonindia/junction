@@ -1,5 +1,6 @@
 from django import forms
 
+from django_markdown.widgets import MarkdownWidget
 from custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
 from proposals.models import ConferenceProposalSection, ConferenceProposalType
 
@@ -17,12 +18,12 @@ class ProposalForm(forms.Form):
     Used for create/edit
     '''
     title = forms.CharField(min_length=10)
-    description = forms.CharField(widget=forms.Textarea)
+    description = forms.CharField(widget=MarkdownWidget())
     target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES, widget=forms.RadioSelect)
-    prerequisites = forms.CharField(widget=forms.Textarea, required=False)
-    content_urls = forms.CharField(widget=forms.Textarea, required=False)
-    speaker_info = forms.CharField(widget=forms.Textarea, required=False)
-    speaker_links = forms.CharField(widget=forms.Textarea, required=False)
+    prerequisites = forms.CharField(widget=MarkdownWidget(), required=False)
+    content_urls = forms.CharField(widget=MarkdownWidget(), required=False)
+    speaker_info = forms.CharField(widget=MarkdownWidget(), required=False)
+    speaker_links = forms.CharField(widget=MarkdownWidget(), required=False)
     status = forms.ChoiceField(choices=PROPOSAL_STATUS_LIST, widget=forms.RadioSelect)
     proposal_type = forms.ChoiceField(widget=forms.RadioSelect)
     proposal_section = forms.ChoiceField(widget=forms.RadioSelect)
