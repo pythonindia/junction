@@ -20,6 +20,8 @@
             <a href='{{ proposal.get_absolute_url }}'> {{ proposal.title }} </a>
             <hr>
         {% endfor %}
+        <br>
+        <a href='{% url 'proposal-create' %}'>New Proposal</a>
     </div>
 </section>
 {% endblock %}

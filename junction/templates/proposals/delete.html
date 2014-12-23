@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+
+{% block head_title %} Delete Proposal | {{ block.super }} {% endblock %}
+
+{% block endhead %}
+<style>
+  .required > label:after {
+    content: "*";
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+        <div class="form-container space-2-bottom">
+            <h2 class="fill-blue text-center">Delete?</h2>
+            <div class="pad-2 push-half-top push-2-bottom">
+              <hr>
+                <form method="post">{% csrf_token %}
+                    Are you sure you want to delete "{{ proposal.title }}" ?
+                    <br>
+                    <input type="submit" value="Yes" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

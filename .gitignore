@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# pagedown static files
+/junction/assets/collected-static/*
+
 # local settings
 dev.py
 
