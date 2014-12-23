@@ -1,86 +1,124 @@
-<form method='get' action='{% url 'proposal-update' proposal.id %}'>
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td>
-                Title
-            </td>
-            <td>
-                {{ proposal.title }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Description
-            </td>
-            <td>
-                {{ proposal.description }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Target Audience
-            </td>
-            <td>
-                {{ proposal.target_audience }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Prerequisites
-            </td>
-            <td>
-                {{ proposal.prerequisites }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Content URLS
-            </td>
-            <td>
-                {{ proposal.content_urls }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Speaker Info
-            </td>
-            <td>
-                {{ proposal.speaker_info }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Speaker Links
-            </td>
-            <td>
-                {{ proposal.speaker_links }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Status
-            </td>
-            <td>
-                {{ proposal.status }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Proposal Type
-            </td>
-            <td>
-                {{ proposal.proposal_type }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Proposal Section
-            </td>
-            <td>
-                {{ proposal.proposal_section }}
-            </td>
-        </tr>
-    </table>
-    <button type='submit'>Edit</button>
-</form>
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+
+{% block head_title %} Edit Proposal | {{ block.super }} {% endblock %}
+
+{% block endhead %}
+<style>
+  .required > label:after {
+    content: "*";
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+        <div class="form-container space-2-bottom">
+            <h2 class="fill-blue text-center">Proposal Details</h2>
+            <div class="pad-2 push-half-top push-2-bottom">
+              <hr>
+                <form method='get' action='{% url 'proposal-update' proposal.id %}'>
+                    <table>
+                        <tr>
+                            <td>
+                                Title
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.title }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Description
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.description }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Target Audience
+                            </td>
+                            <td class="text-center">
+                                {% if proposal.target_audience == 1 %}
+                                    Beginner
+                                {% elif proposal.target_audience == 2 %}
+                                    Intermediate
+                                {% else %}
+                                    Advanced
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Prerequisites
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.prerequisites }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Content URLS
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.content_urls }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Speaker Info
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.speaker_info }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Speaker Links
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.speaker_links }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Status
+                            </td>
+                            <td class="text-center">
+                                {% if proposal.status == 1 %}
+                                    Draft
+                                {% elif proposal.status == 2 %}
+                                    Public
+                                {% else %}
+                                    Cancelled
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Proposal Type
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.proposal_type }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Proposal Section
+                            </td>
+                            <td class="text-center">
+                                {{ proposal.proposal_section }}
+                            </td>
+                        </tr>
+                    </table>
+                    <button type='submit'>Edit</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
