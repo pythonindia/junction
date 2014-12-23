@@ -52,9 +52,9 @@ def create_proposal(request):
 def detail_proposal(request, proposal_id):
     proposal = Proposal.objects.get(id=proposal_id)  # TODO: Send 404 for incorrect ID
     if request.user == proposal.author:
-        return render(request, 'proposals/detail.html', {'proposal':proposal, 'flag':1})
+        return render(request, 'proposals/detail.html', {'proposal':proposal, 'can_delete':True})
     else:
-        return render(request, 'proposals/detail.html', {'proposal':proposal, 'flag':0})
+        return render(request, 'proposals/detail.html', {'proposal':proposal, 'can_delete':False})
 
 @require_http_methods(['GET', 'POST'])
 def update_proposal(request, proposal_id):
