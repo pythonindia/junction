@@ -7,12 +7,13 @@ from django.views.decorators.http import require_http_methods
 from conferences.models import Conference
 from proposals.forms import ProposalForm
 from proposals.models import Proposal
+from datetime import datetime
 
 
 try:
     conference = Conference.objects.get(pk=1)  # TODO: Remove it
 except:
-    pass  # Create it
+    Conference.objects.create(name="Test Conference", start_date=datetime.today(), end_date=datetime.today(), status=1)
 
 @require_http_methods(['GET'])
 def list_proposals(request):

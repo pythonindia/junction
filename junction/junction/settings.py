@@ -100,7 +100,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
-       'file': {
+        'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
@@ -109,13 +109,13 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins',],
+            'handlers': ['mail_admins', ],
             'level': 'ERROR',
             'propagate': True,
         },
         'django.db.backends': {
             'level': 'DEBUG',
-            'handlers': ['file',],
+            'handlers': ['file', ],
         },
     }
 }

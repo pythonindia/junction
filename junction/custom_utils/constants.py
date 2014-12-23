@@ -40,7 +40,7 @@ PROPOSAL_TARGET_AUDIENCE_ADVANCED = "Advanced"
 PROPOSAL_TARGET_AUDIENCES = ((1, PROPOSAL_TARGET_AUDIENCE_BEGINNER),
                              (2, PROPOSAL_TARGET_AUDIENCE_INTERMEDIATE),
                              (3, PROPOSAL_TARGET_AUDIENCE_ADVANCED),
-                            )
+                             )
 
 PROPOSAL_USER_VOTE_ROLE_PUBLIC = "Public"
 PROPOSAL_USER_VOTE_ROLE_REVIEWER = "Reviewer"
