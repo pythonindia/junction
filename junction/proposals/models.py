@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.template.defaultfilters import slugify
+from django_extensions.db.fields import AutoSlugField
 
 from conferences.models import Conference
 from custom_utils.constants import PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
@@ -62,7 +62,7 @@ class Proposal(TimeAuditModel):
     proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
-    slug = models.SlugField(default="")
+    slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
     prerequisites = models.TextField(default="")
@@ -76,10 +76,6 @@ class Proposal(TimeAuditModel):
     def __unicode__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        return super(Proposal, self).save(*args, **kwargs)
-
     def get_absolute_url(self):
         return reverse('proposal-detail', args=[self.slug])
 
@@ -88,6 +84,9 @@ class Proposal(TimeAuditModel):
 
     def get_delete_url(self):
         return reverse('proposal-detail', args=[self.slug])
+
+    class Meta:
+        unique_together = ("conference", "slug")
 
 
 class ProposalVote(TimeAuditModel):

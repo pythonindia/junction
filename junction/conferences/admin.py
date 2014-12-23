@@ -6,7 +6,7 @@ from custom_utils.admin import AuditAdmin
 
 
 class ConferenceAdmin(AuditAdmin):
-    list_display = ('name', 'start_date', 'end_date', 'status') + AuditAdmin.list_display
+    list_display = ('name', 'slug', 'start_date', 'end_date', 'status') + AuditAdmin.list_display
 
 
 class ConferenceModeratorAdmin(AuditAdmin):

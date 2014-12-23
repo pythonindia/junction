@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django_extensions.db.fields import AutoSlugField
 
 from custom_utils.constants import CONFERENCE_STATUS_LIST
 from custom_utils.models import AuditModel
@@ -8,6 +9,7 @@ from custom_utils.models import AuditModel
 class Conference(AuditModel):
     """ Conference/Event master """
     name = models.CharField(max_length=255, verbose_name="Conference Name")
+    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',))
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")

@@ -23,7 +23,7 @@ class ConferenceProposalTypeAdmin(AuditAdmin):
 
 
 class ProposalAdmin(TimeAuditAdmin):
-    list_display = ('conference', 'proposal_section', 'proposal_type', 'author', 'title', 'status', 'review_status') + TimeAuditAdmin.list_display
+    list_display = ('conference', 'proposal_section', 'proposal_type', 'author', 'title', 'slug', 'status', 'review_status') + TimeAuditAdmin.list_display
 
 
 class ProposalVoteAdmin(TimeAuditAdmin):
