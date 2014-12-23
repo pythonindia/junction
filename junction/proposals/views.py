@@ -51,7 +51,10 @@ def create_proposal(request):
 @require_http_methods(['GET'])
 def detail_proposal(request, proposal_id):
     proposal = Proposal.objects.get(id=proposal_id)  # TODO: Send 404 for incorrect ID
-    return render(request, 'proposals/detail.html', {'proposal':proposal, })
+    if request.user == proposal.author:
+        return render(request, 'proposals/detail.html', {'proposal':proposal, 'flag':1})
+    else:
+        return render(request, 'proposals/detail.html', {'proposal':proposal, 'flag':0})
 
 @require_http_methods(['GET', 'POST'])
 def update_proposal(request, proposal_id):
@@ -78,3 +81,12 @@ def update_proposal(request, proposal_id):
     proposal.proposal_section.pk=form.cleaned_data['proposal_section']
     proposal.save()
     return HttpResponseRedirect(reverse('proposals-list'))
+
+@require_http_methods(['GET', 'POST'])
+def delete_proposal(request, proposal_id):
+    proposal = Proposal.objects.get(id=proposal_id)
+    if request.method == 'GET':
+        return render(request, 'proposals/delete.html', {'proposal':proposal})
+    elif request.method == 'POST':
+        proposal.delete()
+        return HttpResponseRedirect(reverse('proposals-list'))
