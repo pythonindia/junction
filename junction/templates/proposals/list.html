@@ -17,7 +17,7 @@
 <section class="content">
     <div class="push-4-bottom push-1-top">
         {% for proposal in proposals_list %}
-            <a href='{% url 'proposal-detail' proposal.pk %}'> {{ proposal.title }} </a>
+            <a href='{{ proposal.get_absolute_url }}'> {{ proposal.title }} </a>
             <hr>
         {% endfor %}
     </div>

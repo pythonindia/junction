@@ -1,14 +1,11 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 
 from conferences.models import Conference
-from custom_utils.constants import PROPOSAL_STATUS_DRAFT, \
-     PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, \
-    PROPOSAL_USER_VOTE_ROLE_PUBLIC, PROPOSAL_COMMENT_VISIBILITY_PUBLIC, \
-    PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
-    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES, \
-    PROPOSAL_TARGET_AUDIENCE_BEGINNER
+from custom_utils.constants import PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
+    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from custom_utils.models import AuditModel, TimeAuditModel
 
 
@@ -83,17 +80,14 @@ class Proposal(TimeAuditModel):
         self.slug = slugify(self.title)
         return super(Proposal, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('proposal-detail', [self.slug])
+        return reverse('proposal-detail', args=[self.slug])
 
-    @models.permalink
     def get_update_url(self):
-        return ('proposal-update', [self.slug])
+        return reverse('proposal-update', args=[self.slug])
 
-    @models.permalink
     def get_delete_url(self):
-        return ('proposal-delete', [self.slug])
+        return reverse('proposal-detail', args=[self.slug])
 
 
 class ProposalVote(TimeAuditModel):

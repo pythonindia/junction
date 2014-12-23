@@ -43,6 +43,6 @@ class ProposalForm(forms.Form):
                                      'speaker_info':proposal.speaker_info,
                                      'speaker_links':proposal.speaker_links,
                                      'status':proposal.status,
-                                     'proposal_section' : proposal.proposal_section.pk,
-                                     'proposal_type' : proposal.proposal_type.pk,                                     })
+                                     'proposal_section':proposal.proposal_section.pk,
+                                     'proposal_type':proposal.proposal_type.pk, })
         return form
