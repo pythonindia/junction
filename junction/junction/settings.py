@@ -25,7 +25,6 @@ CORE_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.webdesign',
-    'django_markdown',
 )
 
 THIRD_PARTY_APPS = (
@@ -38,6 +37,8 @@ THIRD_PARTY_APPS = (
     'django_extensions',
 
     'bootstrap3',
+
+    'pagedown',
 )
 
 OUR_APPS = ('conferences',
