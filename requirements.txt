@@ -6,3 +6,4 @@ pyreadline==2.0
 six==1.8.0
 django-allauth==0.18.0
 django-bootstrap3==4.11.0
+django-markdown==0.8.4
