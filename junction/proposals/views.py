@@ -7,31 +7,31 @@ from django.views.decorators.http import require_http_methods
 from conferences.models import Conference
 from proposals.forms import ProposalForm
 from proposals.models import Proposal
-from datetime import datetime
 
-
-try:
-    conference = Conference.objects.get(pk=1)  # TODO: Remove it
-except:
-    Conference.objects.create(name="Test Conference", start_date=datetime.today(), end_date=datetime.today(), status=1)
 
 @require_http_methods(['GET'])
-def list_proposals(request):
-    proposals_list = Proposal.objects.all()
-    return render(request, 'proposals/list.html', {'proposals_list' : proposals_list, })
+def list_proposals(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposals_list = Proposal.objects.filter(conference=conference)
+    return render(request, 'proposals/list.html', {'proposals_list': proposals_list,
+                                                   'conference': conference})
+
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def create_proposal(request):
+def create_proposal(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
         form = ProposalForm(conference)
-        return render(request, 'proposals/create.html', {'form':form, })
+        return render(request, 'proposals/create.html', {'form': form})
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
 
     if not form.is_valid():
-        return render(request, 'proposals/create.html', {'form':form, 'errors':form.errors, })
+        return render(request, 'proposals/create.html', {'form': form,
+                                                         'conference': conference,
+                                                         'errors': form.errors})
 
     # Valid Form
     Proposal.objects.create(author=request.user,
@@ -48,28 +48,37 @@ def create_proposal(request):
                             proposal_section_id=form.cleaned_data['proposal_section']
                             )
 
-    return HttpResponseRedirect(reverse('proposals-list'))
+    return HttpResponseRedirect(reverse('proposals-list',
+                                        args=[conference.slug]))
+
 
 @require_http_methods(['GET'])
-def detail_proposal(request, slug):
-    proposal = get_object_or_404(Proposal, slug=slug)
+def detail_proposal(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
     if request.user == proposal.author:
-        return render(request, 'proposals/detail.html', {'proposal':proposal, 'can_delete':True})
-    else:
-        return render(request, 'proposals/detail.html', {'proposal':proposal, 'can_delete':False})
+        return render(request, 'proposals/detail.html', {'proposal': proposal,
+                                                         'can_delete': True})
+
+    return render(request, 'proposals/detail.html', {'proposal': proposal,
+                                                     'can_delete': False})
+
 
 @require_http_methods(['GET', 'POST'])
-def update_proposal(request, slug):
-    proposal = get_object_or_404(Proposal, slug=slug)
+def update_proposal(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
     if request.method == 'GET':
         form = ProposalForm.populate_form_for_update(proposal)
-        return render(request, 'proposals/update.html', {'form':form})
+        return render(request, 'proposals/update.html', {'form': form})
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
     if not form.is_valid():
-        return render(request, 'proposals/update.html', {'form':form, 'errors':form.errors, })
+        return render(request, 'proposals/update.html', {'form': form,
+                                                         'errors': form.errors})
 
     # Valid Form
     proposal.title = form.cleaned_data['title']
@@ -83,14 +92,18 @@ def update_proposal(request, slug):
     proposal.proposal_type_id = form.cleaned_data['proposal_type']
     proposal.proposal_section_id = form.cleaned_data['proposal_section']
     proposal.save()
-    return HttpResponseRedirect(reverse('proposals-list'))
+    return HttpResponseRedirect(reverse('proposals-list',
+                                        args=[conference.slug]))
+
 
 @require_http_methods(['GET', 'POST'])
-def delete_proposal(request, slug):
-    proposal = get_object_or_404(Proposal, slug=slug)
+def delete_proposal(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
     if request.method == 'GET':
-        return render(request, 'proposals/delete.html', {'proposal':proposal})
+        return render(request, 'proposals/delete.html', {'proposal': proposal})
     elif request.method == 'POST':
         proposal.delete()
-        return HttpResponseRedirect(reverse('proposals-list'))
+        return HttpResponseRedirect(reverse('proposals-list',
+                                            args=[conference.slug]))

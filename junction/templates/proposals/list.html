@@ -21,7 +21,7 @@
             <hr>
         {% endfor %}
         <br>
-        <a href='{% url 'proposal-create' %}'>New Proposal</a>
+        <a href='{% url 'proposal-create' conference.slug %}'>New Proposal</a>
     </div>
 </section>
 {% endblock %}

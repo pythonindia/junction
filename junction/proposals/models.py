@@ -77,13 +77,13 @@ class Proposal(TimeAuditModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('proposal-detail', args=[self.slug])
+        return reverse('proposal-detail', args=[self.conference.slug, self.slug])
 
     def get_update_url(self):
-        return reverse('proposal-update', args=[self.slug])
+        return reverse('proposal-update', args=[self.conference.slug, self.slug])
 
     def get_delete_url(self):
-        return reverse('proposal-delete', args=[self.slug])
+        return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
     class Meta:
         unique_together = ("conference", "slug")

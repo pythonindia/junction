@@ -4,9 +4,11 @@ from django.contrib import admin
 
 urlpatterns = patterns(
     '',
-    url(r'^proposals/', include('proposals.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('proposals.urls')),
+
     url(r'^accounts/', include('allauth.urls')),
     url('^markdown/', include('django_markdown.urls')),
 
