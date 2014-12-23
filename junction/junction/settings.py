@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
 
     'pagedown',
+    'django_markdown',
 )
 
 OUR_APPS = ('conferences',

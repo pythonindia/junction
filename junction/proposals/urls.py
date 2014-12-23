@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^create/$', create_proposal, name='proposal-create'),
     url(r'^update/(?P<slug>[\w-]+)/$', update_proposal, name='proposal-update'),
     url(r'^(?P<slug>[\w-]+)/$', detail_proposal, name='proposal-detail'),
-    url(r'^delete/(?P<proposal_id>\d+)/$', delete_proposal, name='proposal-delete'),
+    url(r'^delete/(?P<slug>[\w-]+)/$', delete_proposal, name='proposal-delete'),
 )

@@ -19,7 +19,7 @@
             <h2 class="fill-blue text-center">Proposal Details</h2>
             <div class="pad-2 push-half-top push-2-bottom">
               <hr>
-                <form method='get' action='{% url 'proposal-update' proposal.id %}'>
+                <form method='get' action='{{ proposal.get_update_url }}'>
                     <table>
                         <tr>
                             <td>
@@ -117,8 +117,8 @@
                     <button type='submit'>Edit</button>
                 </form>
                 <br>
-                {% if can_delete == True %}
-                    <button onclick="location.href='{% url 'proposal-delete' proposal.id %}'">Delete</button>
+                {% if can_delete %}
+                    <button onclick="location.href='{{ proposal.get_delete_url }}'">Delete</button>
                 {% endif %}
             </div>
 

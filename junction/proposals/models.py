@@ -83,7 +83,7 @@ class Proposal(TimeAuditModel):
         return reverse('proposal-update', args=[self.slug])
 
     def get_delete_url(self):
-        return reverse('proposal-detail', args=[self.slug])
+        return reverse('proposal-delete', args=[self.slug])
 
     class Meta:
         unique_together = ("conference", "slug")
