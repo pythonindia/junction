@@ -1,4 +1,4 @@
-<form method='get' action='{% url 'proposal-edit' proposal.id %}'>
+<form method='get' action='{% url 'proposal-update' proposal.id %}'>
     {% csrf_token %}
     <table>
         <tr>
@@ -81,16 +81,6 @@
                 {{ proposal.proposal_section }}
             </td>
         </tr>
-        {% if is_reviewer %}
-        <tr>
-            <td>
-                Review Status
-            </td>
-            <td>
-                {{ proposal.review_status }}
-            </td>
-        </tr>
-        {% endif %}
     </table>
     <button type='submit'>Edit</button>
 </form>

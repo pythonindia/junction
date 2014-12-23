@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from conferences.models import Conference
 from custom_utils.constants import PROPOSAL_STATUS_DRAFT, \
      PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, \
     PROPOSAL_USER_VOTE_ROLE_PUBLIC, PROPOSAL_COMMENT_VISIBILITY_PUBLIC, \
     PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
-    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES,\
+    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES, \
     PROPOSAL_TARGET_AUDIENCE_BEGINNER
 from custom_utils.models import AuditModel, TimeAuditModel
 
@@ -64,25 +65,42 @@ class Proposal(TimeAuditModel):
     proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
+    slug = models.SlugField(default="")
     description = models.TextField(default="")
-    target_audience = models.CharField(max_length=255, choices=PROPOSAL_TARGET_AUDIENCES, default=PROPOSAL_TARGET_AUDIENCE_BEGINNER, verbose_name="Target Audience")
+    target_audience = models.PositiveSmallIntegerField(choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
     prerequisites = models.TextField(default="")
     content_urls = models.TextField(default="")
     speaker_info = models.TextField(default="")
     speaker_links = models.TextField(default="")
-    status = models.CharField(max_length=255, choices=PROPOSAL_STATUS_LIST, default=PROPOSAL_STATUS_DRAFT)
-    review_status = models.CharField(max_length=255, choices=PROPOSAL_REVIEW_STATUS_LIST, default=PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, verbose_name="Review Status")
+    status = models.PositiveSmallIntegerField(choices=PROPOSAL_STATUS_LIST, default=1)
+    review_status = models.PositiveSmallIntegerField(choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super(Proposal, self).save(*args, **kwargs)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('proposal-detail', [self.slug])
+
+    @models.permalink
+    def get_update_url(self):
+        return ('proposal-update', [self.slug])
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('proposal-delete', [self.slug])
 
 
 class ProposalVote(TimeAuditModel):
     """ User vote for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(User)
-    role = models.CharField(max_length=255, choices=PROPOSAL_USER_VOTE_ROLES, default=PROPOSAL_USER_VOTE_ROLE_PUBLIC)
+    role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=1)
     up_vote = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -96,7 +114,7 @@ class ProposalComment(TimeAuditModel):
     """ User comments for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     commenter = models.ForeignKey(User)
-    visibility = models.CharField(max_length=255, choices=PROPOSAL_COMMENT_VISIBILITY_OPTIONS, default=PROPOSAL_COMMENT_VISIBILITY_PUBLIC)
+    visibility = models.PositiveSmallIntegerField(choices=PROPOSAL_COMMENT_VISIBILITY_OPTIONS, default=1)
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 

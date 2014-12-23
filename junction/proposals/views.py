@@ -48,40 +48,33 @@ def create_proposal(request):
 
     return HttpResponseRedirect(reverse('proposals-list'))
 
+@require_http_methods(['GET'])
 def detail_proposal(request, proposal_id):
     proposal = Proposal.objects.get(id=proposal_id)  # TODO: Send 404 for incorrect ID
     return render(request, 'proposals/detail.html', {'proposal':proposal, })
 
 @require_http_methods(['GET', 'POST'])
-def edit_proposal(request, proposal_id):
+def update_proposal(request, proposal_id):
     proposal = Proposal.objects.get(id=proposal_id)
     if request.method == 'GET':
-        form = ProposalForm(conference, initial={'title':proposal.title,
-                                     'description':proposal.description,
-                                     'target_audience':proposal.target_audience,
-                                     'prerequisites':proposal.prerequisites,
-                                     'content_urls':proposal.content_urls,
-                                     'speaker_info':proposal.speaker_info,
-                                     'speaker_links':proposal.speaker_links,
-                                     'status':proposal.status,
-                                     })
+        form = ProposalForm.populate_form_for_update(proposal)
 
-        return render(request, 'proposals/edit.html', {'form':form})
+        return render(request, 'proposals/update.html', {'form':form})
 
     form = ProposalForm(conference, request.POST)
 
     if not form.is_valid():
-        return render(request, 'proposals/create.html', {'form':form, 'errors':form.errors, })
+        return render(request, 'proposals/update.html', {'form':form, 'errors':form.errors, })
 
-    proposal.title=form.cleaned_data['title'],
-    proposal.description=form.cleaned_data['description'],
-    proposal.target_audience=form.cleaned_data['target_audience'],
-    proposal.prerequisites=form.cleaned_data['prerequisites'],
-    proposal.content_urls=form.cleaned_data['content_urls'],
-    proposal.speaker_info=form.cleaned_data['speaker_info'],
-    proposal.speaker_links=form.cleaned_data['speaker_links'],
-    proposal.status=form.cleaned_data['status'],
-#     proposal.proposal_type=ProposalType.objects.get(id=int(form.cleaned_data['proposal_type'])),
-#     proposal.proposal_section=ProposalSection.objects.get(id=int(form.cleaned_data['proposal_section']))
+    proposal.title=form.cleaned_data['title']
+    proposal.description=form.cleaned_data['description']
+    proposal.target_audience=form.cleaned_data['target_audience']
+    proposal.prerequisites=form.cleaned_data['prerequisites']
+    proposal.content_urls=form.cleaned_data['content_urls']
+    proposal.speaker_info=form.cleaned_data['speaker_info']
+    proposal.speaker_links=form.cleaned_data['speaker_links']
+    proposal.status=form.cleaned_data['status']
+    proposal.proposal_type.pk=form.cleaned_data['proposal_type']
+    proposal.proposal_section.pk=form.cleaned_data['proposal_section']
     proposal.save()
     return HttpResponseRedirect(reverse('proposals-list'))

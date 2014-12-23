@@ -31,3 +31,18 @@ class ProposalForm(forms.Form):
         super(ProposalForm, self).__init__(*args, **kwargs)
         self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
+
+    @classmethod
+    def populate_form_for_update(self, proposal):
+        form = ProposalForm(proposal.conference,
+                            initial={'title':proposal.title,
+                                     'description':proposal.description,
+                                     'target_audience':proposal.target_audience,
+                                     'prerequisites':proposal.prerequisites,
+                                     'content_urls':proposal.content_urls,
+                                     'speaker_info':proposal.speaker_info,
+                                     'speaker_links':proposal.speaker_links,
+                                     'status':proposal.status,
+                                     'proposal_section' : proposal.proposal_section.pk,
+                                     'proposal_type' : proposal.proposal_type.pk,                                     })
+        return form
