@@ -117,7 +117,7 @@
                     <button type='submit'>Edit</button>
                 </form>
                 <br>
-                {% if flag == 1 %}
+                {% if can_delete == True %}
                     <button onclick="location.href='{% url 'proposal-delete' proposal.id %}'">Delete</button>
                 {% endif %}
             </div>
