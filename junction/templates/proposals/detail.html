@@ -116,6 +116,10 @@
                     </table>
                     <button type='submit'>Edit</button>
                 </form>
+                <br>
+                {% if flag == 1 %}
+                    <button onclick="location.href='{% url 'proposal-delete' proposal.id %}'">Delete</button>
+                {% endif %}
             </div>
 
         </div>
