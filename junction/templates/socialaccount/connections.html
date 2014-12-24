@@ -1,0 +1,49 @@
+{% extends "socialaccount/base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title %}{% trans "Account Connections" %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+            <div class="form-container space-2-bottom">
+                <h2 class="fill-blue text-center">{% trans "Account Connections" %}</h2>
+                <div class="pad-2 push-1-top push-2-bottom">
+                    {% if form.accounts %}
+						<p>{% blocktrans %}You can sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
+						<form method="post" action="{% url 'socialaccount_connections' %}">
+							{% csrf_token %}
+							<fieldset>
+								{% if form.non_field_errors %}
+									<div id="errorMsg">{{form.non_field_errors}}</div>
+								{% endif %}
+								{% for base_account in form.accounts %}
+									{% with base_account.get_provider_account as account %}
+										<div>
+											<label for="id_account_{{base_account.id}}">
+												<input id="id_account_{{base_account.id}}" type="radio" name="account" value="{{base_account.id}}"/>
+												<span class="socialaccount_provider {{base_account.provider}} {{account.get_brand.id}}">{{account.get_brand.name}}</span>
+											</label>
+										</div>
+									{% endwith %}
+								{% endfor %}
+								<div>
+									<button type="submit" class="space-half-top">{% trans 'Remove' %}</button>
+								</div>
+							</fieldset>
+						</form>
+					{% else %}
+						<p>{% trans 'You currently have no social network accounts connected to this account.' %}</p>
+					{% endif %}
+					<p class="all-caps push-1-top">{% trans 'Add a 3rd Party Account:' %}</p>
+					<ul class="socialaccount_providers">
+						{% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+					</ul>
+					{% include "socialaccount/snippets/login_extra.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
