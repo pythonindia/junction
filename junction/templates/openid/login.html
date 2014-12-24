@@ -1,0 +1,22 @@
+{% extends "openid/base.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block head_title %}OpenID Sign In{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+            <div class="form-container space-2-bottom">
+                <h2 class="fill-blue text-center">{% trans "OpenID Sign In" %}</h2>
+                <div class="pad-2 push-1-top push-2-bottom">
+                    <form id="openid_login_form" class="openid_login" method="post" action="{% url 'openid_login' %}">
+						{% csrf_token %}
+						{{form.as_p}}
+						<button type="submit" class="space-half-top">Sign In</button>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
