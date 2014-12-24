@@ -1,14 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
 from conferences.models import Conference
 from proposals.forms import ProposalForm
 from proposals.models import Proposal
-
-
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
@@ -65,10 +63,14 @@ def detail_proposal(request, conference_slug, slug):
                                                      'can_delete': False})
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def update_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not proposal.author == request.user:
+        return HttpResponseForbidden()
 
     if request.method == 'GET':
         form = ProposalForm.populate_form_for_update(proposal)
@@ -96,10 +98,14 @@ def update_proposal(request, conference_slug, slug):
                                         args=[conference.slug]))
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def delete_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not proposal.author == request.user:
+        return HttpResponseForbidden()
 
     if request.method == 'GET':
         return render(request, 'proposals/delete.html', {'proposal': proposal})
