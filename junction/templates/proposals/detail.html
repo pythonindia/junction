@@ -123,5 +123,44 @@
 
         </div>
     </div>
+
 </div>
+
+<div id="comments">
+
+    {% if not comments %}
+        <p> No comments added so far. </p>
+    {% endif %}
+
+    {% for comment in comments %}
+        <p>
+            {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
+            <br/>
+            {{ comment.comment|markdown }}
+        </p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+          <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}"> {% csrf_token %}
+            {{ proposal_comment_form.media }}
+            {% bootstrap_field proposal_comment_form.comment %}
+
+            {% if allow_private_comment %}
+                {% bootstrap_field proposal_comment_form.private %}
+            {% endif %}
+
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Add Comment
+                </button>
+            {% endbuttons %}
+          </form>
+    {% else %}
+        <p> Login to add a new comment. </p>
+    {% endif %}
+
+</div>
+
+<br/><br/><br/>
+
 {% endblock %}

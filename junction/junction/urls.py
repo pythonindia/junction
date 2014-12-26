@@ -7,7 +7,9 @@ urlpatterns = patterns(
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('proposals.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('proposals.proposal_urls')),
+
+    url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('proposals.comment_urls')),
 
     url(r'^accounts/', include('allauth.urls')),
     url('^markdown/', include('django_markdown.urls')),

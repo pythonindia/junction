@@ -4,14 +4,16 @@ from django.db import models
 from django_extensions.db.fields import AutoSlugField
 
 from conferences.models import Conference
-from custom_utils.constants import PROPOSAL_COMMENT_VISIBILITY_OPTIONS, PROPOSAL_USER_VOTE_ROLES, \
-    PROPOSAL_STATUS_LIST, PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
+from custom_utils.constants import PROPOSAL_USER_VOTE_ROLES, PROPOSAL_STATUS_LIST, \
+    PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from custom_utils.models import AuditModel, TimeAuditModel
 
 
 class ProposalSection(AuditModel):
+
     """ List of Proposal Sections """
-    name = models.CharField(max_length=255, verbose_name="Proposal Section Name")
+    name = models.CharField(
+        max_length=255, verbose_name="Proposal Section Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
@@ -20,6 +22,7 @@ class ProposalSection(AuditModel):
 
 
 class ProposalType(AuditModel):
+
     """ List of Proposal Types """
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
     description = models.TextField(default="")
@@ -30,9 +33,11 @@ class ProposalType(AuditModel):
 
 
 class ConferenceProposalSection(AuditModel):
+
     """ List of proposals sections allowed for a specific conferences """
     conference = models.ForeignKey(Conference)
-    proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
+    proposal_section = models.ForeignKey(
+        ProposalSection, verbose_name="Proposal Section")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
     def __unicode__(self):
@@ -43,9 +48,11 @@ class ConferenceProposalSection(AuditModel):
 
 
 class ConferenceProposalType(AuditModel):
+
     """ List of proposals types allowed for a specific conferences """
     conference = models.ForeignKey(Conference)
-    proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
+    proposal_type = models.ForeignKey(
+        ProposalType, verbose_name="Proposal Type")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
     def __unicode__(self):
@@ -56,21 +63,27 @@ class ConferenceProposalType(AuditModel):
 
 
 class Proposal(TimeAuditModel):
+
     """ The proposals master """
     conference = models.ForeignKey(Conference)
-    proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
-    proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
+    proposal_section = models.ForeignKey(
+        ProposalSection, verbose_name="Proposal Section")
+    proposal_type = models.ForeignKey(
+        ProposalType, verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
     slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
-    target_audience = models.PositiveSmallIntegerField(choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
+    target_audience = models.PositiveSmallIntegerField(
+        choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
     prerequisites = models.TextField(default="")
     content_urls = models.TextField(default="")
     speaker_info = models.TextField(default="")
     speaker_links = models.TextField(default="")
-    status = models.PositiveSmallIntegerField(choices=PROPOSAL_STATUS_LIST, default=1)
-    review_status = models.PositiveSmallIntegerField(choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
+    status = models.PositiveSmallIntegerField(
+        choices=PROPOSAL_STATUS_LIST, default=1)
+    review_status = models.PositiveSmallIntegerField(
+        choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
@@ -90,10 +103,12 @@ class Proposal(TimeAuditModel):
 
 
 class ProposalVote(TimeAuditModel):
+
     """ User vote for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(User)
-    role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=1)
+    role = models.PositiveSmallIntegerField(
+        choices=PROPOSAL_USER_VOTE_ROLES, default=1)
     up_vote = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -104,10 +119,11 @@ class ProposalVote(TimeAuditModel):
 
 
 class ProposalComment(TimeAuditModel):
+
     """ User comments for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     commenter = models.ForeignKey(User)
-    visibility = models.PositiveSmallIntegerField(choices=PROPOSAL_COMMENT_VISIBILITY_OPTIONS, default=1)
+    private = models.BooleanField(default=False, verbose_name="Is Private?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
@@ -116,6 +132,7 @@ class ProposalComment(TimeAuditModel):
 
 
 class ProposalCommentVote(TimeAuditModel):
+
     """ User vote for a specific proposal's comment """
     proposal_comment = models.ForeignKey(ProposalComment)
     voter = models.ForeignKey(User)

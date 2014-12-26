@@ -61,3 +61,11 @@ class ProposalForm(forms.Form):
                                      'proposal_section': proposal.proposal_section.pk,
                                      'proposal_type': proposal.proposal_type.pk, })
         return form
+
+
+class ProposalCommentForm(forms.Form):
+    '''
+    Used to add comments
+    '''
+    comment = forms.CharField(widget=PagedownWidget(show_preview=True))
+    private = forms.BooleanField(required=False)

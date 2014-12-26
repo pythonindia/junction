@@ -4,9 +4,27 @@ from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from conferences.models import Conference
-from proposals.forms import ProposalForm
-from proposals.models import Proposal
+from conferences.models import Conference, ConferenceProposalReviewer
+from proposals.forms import ProposalForm, ProposalCommentForm
+from proposals.models import Proposal, ProposalComment
+
+
+def _is_proposal_author(user, proposal):
+    if user.is_authenticated() and proposal.author == user:
+        return True
+    return False
+
+
+def _is_proposal_reviewer(user, proposal):
+    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user, active=True):
+        return True
+    return False
+
+
+def _is_proposal_author_or_reviewer(user, proposal):
+    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(user, proposal)
+
+
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
@@ -36,14 +54,17 @@ def create_proposal(request, conference_slug):
                             conference=conference,
                             title=form.cleaned_data['title'],
                             description=form.cleaned_data['description'],
-                            target_audience=form.cleaned_data['target_audience'],
+                            target_audience=form.cleaned_data[
+                                'target_audience'],
                             prerequisites=form.cleaned_data['prerequisites'],
                             content_urls=form.cleaned_data['content_urls'],
                             speaker_info=form.cleaned_data['speaker_info'],
                             speaker_links=form.cleaned_data['speaker_links'],
                             status=form.cleaned_data['status'],
-                            proposal_type_id=form.cleaned_data['proposal_type'],
-                            proposal_section_id=form.cleaned_data['proposal_section']
+                            proposal_type_id=form.cleaned_data[
+                                'proposal_type'],
+                            proposal_section_id=form.cleaned_data[
+                                'proposal_section']
                             )
 
     return HttpResponseRedirect(reverse('proposals-list',
@@ -54,12 +75,25 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+    allow_private_comment = _is_proposal_author_or_reviewer(request.user, proposal)
+
+    comments = ProposalComment.objects.filter(proposal=proposal)
+    if not allow_private_comment:
+        comments = comments.filter(private=False)
+
+    proposal_comment_form = ProposalCommentForm()
 
     if request.user == proposal.author:
         return render(request, 'proposals/detail.html', {'proposal': proposal,
+                                                         'comments': comments,
+                                                         'proposal_comment_form': proposal_comment_form,
+                                                         'allow_private_comment': allow_private_comment,
                                                          'can_delete': True})
 
     return render(request, 'proposals/detail.html', {'proposal': proposal,
+                                                     'comments': comments,
+                                                     'proposal_comment_form': proposal_comment_form,
+                                                     'allow_private_comment': allow_private_comment,
                                                      'can_delete': False})
 
 
@@ -113,3 +147,23 @@ def delete_proposal(request, conference_slug, slug):
         proposal.delete()
         return HttpResponseRedirect(reverse('proposals-list',
                                             args=[conference.slug]))
+
+
+@login_required
+@require_http_methods(['POST'])
+def create_proposal_comment(request, conference_slug, proposal_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+
+    form = ProposalCommentForm(request.POST)
+    if form.is_valid():
+        comment = form.cleaned_data['comment']
+        private = form.cleaned_data['private']
+
+    ProposalComment.objects.create(proposal=proposal,
+                                   comment=comment,
+                                   private=private,
+                                   commenter=request.user,
+                                   )
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
