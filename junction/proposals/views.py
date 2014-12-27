@@ -160,10 +160,11 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-    ProposalComment.objects.create(proposal=proposal,
-                                   comment=comment,
-                                   private=private,
-                                   commenter=request.user,
-                                   )
+        ProposalComment.objects.create(proposal=proposal,
+                                       comment=comment,
+                                       private=private,
+                                       commenter=request.user,
+                                       )
+
     return HttpResponseRedirect(reverse('proposal-detail',
                                         args=[conference.slug, proposal.slug]))
