@@ -98,6 +98,10 @@ class Proposal(TimeAuditModel):
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
+    def get_comments_count(self):
+        """ Show only the public comment count """
+        return ProposalComment.objects.filter(proposal=self, private=False).count()
+
     class Meta:
         unique_together = ("conference", "slug")
 
