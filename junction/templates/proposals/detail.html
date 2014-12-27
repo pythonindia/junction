@@ -26,6 +26,23 @@
                             </td>
                             <td class="text-center">
                                 {{ proposal.title }}
+
+                                {% if user.is_authenticated %}
+                                      <form method="POST" action="{{ proposal.get_up_vote_url }}">
+                                            {% csrf_token %} {{ proposal_vote_form }}
+                                            <button type="submit" class="btn btn-primary"> Up Vote </button>
+                                      </form>
+                                {% endif %}
+
+                                [{{ proposal.get_votes_count }}]
+
+                                {% if user.is_authenticated %}
+                                   <form method="POST" action="{{ proposal.get_down_vote_url }}">
+                                        {% csrf_token %} {{ proposal_vote_form }}
+                                        <button type="submit" class="btn btn-primary"> Down Vote </button>
+                                  </form>
+                                {% endif %}
+
                             </td>
                         </tr>
                         <tr>
