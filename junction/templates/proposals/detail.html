@@ -28,6 +28,7 @@
                                 {{ proposal.title }}
 
                                 {% if user.is_authenticated %}
+                                    <{{ vote_value }}> <!-- (0) - not voted, (-1) - downvote, (1) - up vote  -->
                                       <form method="POST" action="{{ proposal.get_up_vote_url }}">
                                             {% csrf_token %} {{ proposal_vote_form }}
                                             <button type="submit" class="btn btn-primary"> Up Vote </button>

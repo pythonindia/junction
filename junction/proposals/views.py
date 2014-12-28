@@ -91,11 +91,21 @@ def detail_proposal(request, conference_slug, slug):
     if request.user == proposal.author:
         can_delete = True
 
+    vote_value = 0
+
+    try:
+        if request.user.is_authenticated():
+            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
+            vote_value = 1 if proposal_vote.up_vote else -1
+    except ProposalVote.DoesNotExist:
+        pass
+
     return render(request, 'proposals/detail.html', {'proposal': proposal,
                                                      'comments': comments,
                                                      'proposal_comment_form': proposal_comment_form,
                                                      'proposal_vote_form': proposal_vote_form,
                                                      'allow_private_comment': allow_private_comment,
+                                                     'vote_value': vote_value,
                                                      'can_delete': can_delete})
 
 
@@ -178,10 +188,8 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
 
-    proposal_vote, created = ProposalVote.objects.get_or_create(proposal=proposal,
+    proposal_vote, created = ProposalVote.objects.get_or_create(proposal=proposal,  # @UnusedVariable
                                                                 voter=request.user)
-
-    print type(proposal_vote), proposal_vote
 
     role = 2 if _is_proposal_reviewer(request.user, conference) else 1
 
