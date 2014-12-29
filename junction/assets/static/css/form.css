@@ -1,0 +1,27 @@
+  .form-container{
+    box-shadow:none;
+  }
+  .required > label.control-label:after {
+    content: "*:";
+  }
+  label.control-label:after{
+    content :":";
+  }
+  label.control-label{
+      width:24%;
+  }
+  .form-container input[type=text]{
+    display: inline;
+    width: 53%;
+  }
+
+  @media (max-width: 480px) {
+      label.control-label{
+      display: block;
+      width:100%;
+      }
+    .form-container input[type=text]{
+    display: block;
+    width: 100%;
+    }
+}

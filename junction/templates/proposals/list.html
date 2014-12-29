@@ -2,9 +2,18 @@
 
 {% block head_title %} Proposals | {{ block.super }} {% endblock %}
 
+{% block endhead %}
+    <style>
+    header.custom-container{
+    padding:10px;
+    }
+    </style>
+{% endblock %}
+
+
 {% block header %}
-<header class="header-big fill-blue center-wrapper text-center">
-    <div class="absolute-center push-2">
+<header class="custom-container fill-blue center-wrapper text-center">
+    <div class="absolute-center">
         <div class="measure-block">
             <h1 class="yellow push-1q-bottom nospace-top">Proposals</h1>
             <h2 class="white normal push-1q-bottom">List of Proposals</h2>
@@ -14,14 +23,23 @@
 {% endblock %}
 
 {% block content %}
-<section class="content">
+<section class="content custom-container">
     <div class="push-4-bottom push-1-top">
         {% for proposal in proposals_list %}
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-hand-o-right fa-stack-2x"></i>
+                <i class="fa fa-stack-1x">{{ proposal.get_votes_count }}</i>
+            </span>
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-comment-o fa-stack-2x"></i>
+                <i class="fa fa-stack-1x">{{ proposal.get_comments_count }}</i>
+            </span>
+
             <a href='{{ proposal.get_absolute_url }}'> {{ proposal.title }} </a>
             <hr>
         {% endfor %}
         <br>
-        <a href='{% url 'proposal-create' conference.slug %}'>New Proposal</a>
+        <a class='btn btn-primary' href='{% url 'proposal-create' conference.slug %}'>New Proposal</a>
     </div>
 </section>
 {% endblock %}

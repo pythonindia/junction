@@ -69,3 +69,10 @@ class ProposalCommentForm(forms.Form):
     '''
     comment = forms.CharField(widget=PagedownWidget(show_preview=True))
     private = forms.BooleanField(required=False)
+
+
+class ProposalVoteForm(forms.Form):
+    '''
+    Used for csrf token in voting
+    '''
+    pass

@@ -5,8 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
 from conferences.models import Conference, ConferenceProposalReviewer
-from proposals.forms import ProposalForm, ProposalCommentForm
-from proposals.models import Proposal, ProposalComment
+from custom_utils.constants import PROPOSAL_USER_VOTE_ROLE_REVIEWER,\
+    PROPOSAL_USER_VOTE_ROLE_PUBLIC
+from proposals.forms import ProposalForm, ProposalCommentForm, ProposalVoteForm
+from proposals.models import Proposal, ProposalComment, ProposalVote
 
 
 def _is_proposal_author(user, proposal):
@@ -15,14 +17,14 @@ def _is_proposal_author(user, proposal):
     return False
 
 
-def _is_proposal_reviewer(user, proposal):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user, active=True):
+def _is_proposal_reviewer(user, conference):
+    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user, conference=conference, active=True):
         return True
     return False
 
 
-def _is_proposal_author_or_reviewer(user, proposal):
-    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(user, proposal)
+def _is_proposal_author_or_reviewer(user, conference, proposal):
+    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(user, conference)
 
 
 @require_http_methods(['GET'])
@@ -75,26 +77,36 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    allow_private_comment = _is_proposal_author_or_reviewer(request.user, proposal)
+    allow_private_comment = _is_proposal_author_or_reviewer(
+        request.user, conference, proposal)
 
-    comments = ProposalComment.objects.filter(proposal=proposal)
+    comments = ProposalComment.objects.filter(proposal=proposal, deleted=False)
     if not allow_private_comment:
         comments = comments.filter(private=False)
 
     proposal_comment_form = ProposalCommentForm()
+    proposal_vote_form = ProposalVoteForm()
 
+    can_delete = False
     if request.user == proposal.author:
-        return render(request, 'proposals/detail.html', {'proposal': proposal,
-                                                         'comments': comments,
-                                                         'proposal_comment_form': proposal_comment_form,
-                                                         'allow_private_comment': allow_private_comment,
-                                                         'can_delete': True})
+        can_delete = True
+
+    vote_value = 0
+
+    try:
+        if request.user.is_authenticated():
+            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
+            vote_value = 1 if proposal_vote.up_vote else -1
+    except ProposalVote.DoesNotExist:
+        pass
 
     return render(request, 'proposals/detail.html', {'proposal': proposal,
                                                      'comments': comments,
                                                      'proposal_comment_form': proposal_comment_form,
+                                                     'proposal_vote_form': proposal_vote_form,
                                                      'allow_private_comment': allow_private_comment,
-                                                     'can_delete': False})
+                                                     'vote_value': vote_value,
+                                                     'can_delete': can_delete})
 
 
 @login_required
@@ -153,17 +165,49 @@ def delete_proposal(request, conference_slug, slug):
 @require_http_methods(['POST'])
 def create_proposal_comment(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal = get_object_or_404(
+        Proposal, slug=proposal_slug, conference=conference)
 
     form = ProposalCommentForm(request.POST)
     if form.is_valid():
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-    ProposalComment.objects.create(proposal=proposal,
-                                   comment=comment,
-                                   private=private,
-                                   commenter=request.user,
-                                   )
+        ProposalComment.objects.create(proposal=proposal,
+                                       comment=comment,
+                                       private=private,
+                                       commenter=request.user,
+                                       )
+
     return HttpResponseRedirect(reverse('proposal-detail',
                                         args=[conference.slug, proposal.slug]))
+
+
+def proposal_vote(request, conference_slug, proposal_slug, up_vote):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(
+        Proposal, slug=proposal_slug, conference=conference)
+
+    proposal_vote, created = ProposalVote.objects.get_or_create(proposal=proposal,  # @UnusedVariable
+                                                                voter=request.user)
+
+    role = 2 if _is_proposal_reviewer(request.user, conference) else 1
+
+    proposal_vote.role = role
+    proposal_vote.up_vote = up_vote
+    proposal_vote.save()
+
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_vote_up(request, conference_slug, proposal_slug):
+    return proposal_vote(request, conference_slug, proposal_slug, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_vote_down(request, conference_slug, proposal_slug):
+    return proposal_vote(request, conference_slug, proposal_slug, False)

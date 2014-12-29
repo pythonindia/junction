@@ -98,6 +98,22 @@ class Proposal(TimeAuditModel):
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
+    def get_up_vote_url(self):
+        return reverse('proposal-vote-up', args=[self.conference.slug, self.slug])
+
+    def get_down_vote_url(self):
+        return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
+
+    def get_comments_count(self):
+        """ Show only the public comment count """
+        return ProposalComment.objects.filter(proposal=self, deleted=False, private=False).count()
+
+    def get_votes_count(self):
+        """ Show only the public comment count """
+        up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
+        down_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=False).count()
+        return up_vote_count - down_vote_count
+
     class Meta:
         unique_together = ("conference", "slug")
 

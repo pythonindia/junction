@@ -26,6 +26,24 @@
                             </td>
                             <td class="text-center">
                                 {{ proposal.title }}
+
+                                {% if user.is_authenticated %}
+                                    <{{ vote_value }}> <!-- (0) - not voted, (-1) - downvote, (1) - up vote  -->
+                                      <form method="POST" action="{{ proposal.get_up_vote_url }}">
+                                            {% csrf_token %} {{ proposal_vote_form }}
+                                            <button type="submit" class="btn btn-primary"> Up Vote </button>
+                                      </form>
+                                {% endif %}
+
+                                [{{ proposal.get_votes_count }}]
+
+                                {% if user.is_authenticated %}
+                                   <form method="POST" action="{{ proposal.get_down_vote_url }}">
+                                        {% csrf_token %} {{ proposal_vote_form }}
+                                        <button type="submit" class="btn btn-primary"> Down Vote </button>
+                                  </form>
+                                {% endif %}
+
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +174,7 @@
             {% endbuttons %}
           </form>
     {% else %}
-        <p> Login to add a new comment. </p>
+        <p> <a href="{% url 'account_login' %}">Login </a> to add a new comment. </p>
     {% endif %}
 
 </div>
