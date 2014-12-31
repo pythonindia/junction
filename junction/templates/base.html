@@ -61,13 +61,36 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'sponsors-static' %}">About</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" target="_blank">What is PyCon India</a></li>
+                            <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
+                            <li><a href="" target="_blank">Staff Information </a></li>
+                        </ul>
+                    </li>
                     <li><a href="{% url 'speakers-static' %}">Speakers</a></li>
                     <li><a href="{% url 'schedule-static' %}">Schedule</a></li>
                     <li><a href="/test-conference/proposals/">Proposals</a></li>
                     <li><a href="{% url 'venue-static' %}">Venue</a></li>
-                    <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'sponsors-static' %}">Sponsors</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" target="_blank">Sponsorship Prospectus</a></li>
+                            <li><a href="" target="_blank">Apply to be a sponsor</a></li>
+                            <li><a href="" target="_blank">Why sponsor PyCon India </a></li>
+                            <li><a href="" target="_blank">Sponsor Information</a></li>
+                        </ul>
+                    </li>
                     <li><a href="{% url 'blog-archive' %}">Blog</a></li>
-                    <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
+                    <li  class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'sponsors-static' %}">Registration</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" target="_blank">Registration Information</a></li>
+                            <li><a href="" target="_blank">ChildCare</a></li>
+                        </ul>
+                    </li>
+
                     <li><a href="{% url 'faq_static' %}">FAQ</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs"><i class="glyphicon glyphicon-user"></i></span><span class="visible-xs">Account</span> <span class="caret"></span></a>
