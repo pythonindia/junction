@@ -1,6 +1,6 @@
 import os
 
-from django.conf.global_settings import *  # @UnusedWildImport
+from django.conf.global_settings import *  # noqa
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -165,6 +165,6 @@ ALLOWED_HOSTS = []  # TODO:
 # Dev Settings
 
 try:
-    from junction.dev import *  # @UnusedWildImport
+    from junction.dev import *  # noqa
 except ImportError:
     pass
