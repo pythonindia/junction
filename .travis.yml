@@ -11,7 +11,7 @@ cache:
 install:
   - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
 
-before_script:
+script:
 - flake8
 
 notifications:
