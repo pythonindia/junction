@@ -10,7 +10,6 @@ Setup
 - Create a virtualenv called `junction`
 - Install the dependencies `pip install -r requirements.txt`
 - Create the dev settings file from `dev.py.sample`
-- Run `python manage.py syncdb` and create a superuser when prompted
 - Run `python manage.py migrate` to apply pending migrations
 - Run `python manage.py runserver` to start the dev server
 
