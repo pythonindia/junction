@@ -1,6 +1,8 @@
 junction
 ========
 
+[![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction)
+
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
 Setup
