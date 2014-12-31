@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 from conferences.models import Conference, ConferenceProposalReviewer
-from custom_utils.constants import PROPOSAL_USER_VOTE_ROLE_REVIEWER,\
-    PROPOSAL_USER_VOTE_ROLE_PUBLIC
-from proposals.forms import ProposalForm, ProposalCommentForm, ProposalVoteForm
+
+from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
 from proposals.models import Proposal, ProposalComment, ProposalVote
 
 
@@ -18,7 +17,9 @@ def _is_proposal_author(user, proposal):
 
 
 def _is_proposal_reviewer(user, conference):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user, conference=conference, active=True):
+    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user,
+                                                                             conference=conference,
+                                                                             active=True):
         return True
     return False
 
@@ -95,7 +96,8 @@ def detail_proposal(request, conference_slug, slug):
 
     try:
         if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
+            proposal_vote = ProposalVote.objects.get(
+                proposal=proposal, voter=request.user)
             vote_value = 1 if proposal_vote.up_vote else -1
     except ProposalVote.DoesNotExist:
         pass
