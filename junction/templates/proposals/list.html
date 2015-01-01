@@ -1,45 +1,147 @@
 {% extends 'base.html' %}
-
+{% load static from staticfiles %}
 {% block head_title %} Proposals | {{ block.super }} {% endblock %}
 
 {% block endhead %}
-    <style>
-    header.custom-container{
-    padding:10px;
-    }
-    </style>
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
 {% endblock %}
+
 
 
 {% block header %}
-<header class="custom-container fill-blue center-wrapper text-center">
-    <div class="absolute-center">
-        <div class="measure-block">
-            <h1 class="yellow push-1q-bottom nospace-top">Proposals</h1>
-            <h2 class="white normal push-1q-bottom">List of Proposals</h2>
-        </div>
-    </div>
-</header>
+
 {% endblock %}
 
 {% block content %}
-<section class="content custom-container">
+<section class="content custom-container proposal-list">
     <div class="push-4-bottom push-1-top">
-        {% for proposal in proposals_list %}
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-hand-o-right fa-stack-2x"></i>
-                <i class="fa fa-stack-1x">{{ proposal.get_votes_count }}</i>
-            </span>
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-comment-o fa-stack-2x"></i>
-                <i class="fa fa-stack-1x">{{ proposal.get_comments_count }}</i>
-            </span>
-
-            <a href='{{ proposal.get_absolute_url }}'> {{ proposal.title }} </a>
-            <hr>
-        {% endfor %}
-        <br>
-        <a class='btn btn-primary' href='{% url 'proposal-create' conference.slug %}'>New Proposal</a>
+        <div class="row ">
+            <div class="col-xs -12 col-sm-12 padding-less">
+                <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
+                    <i class="fa fa-plus-square-o"></i> New Proposal
+                </a>
+                <div class="header-tab">
+                    <div class="header-tab-title">
+                        <h2>List of Proposals</h2>
+                        <div id="tabs">
+                            <a class="youarehere" href="#" title="">Top Rated</a>
+                            <a href="#" title="">Top Commented</a>
+                            <a href="#" title="">Top Voted</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 proposal-list-content padding-less"  >
+                <div class="statscontainer col-sm-1 hidden-xs">
+                    <div class="stats">
+                        <div class="icon-holder icon-holder-inverse">
+                            <i class="fa fa-comments"></i>
+                            <h4> 10 </h4>
+                        </div>
+                        <div class="icon-holder">
+                            <i class="fa fa-thumbs-up fa-inverse"></i>
+                            <h4> 10 </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-11 col-xs-12">
+                    <p class="col-xs-12 padding-less visible-xs">
+                        <span class="pull-left">
+                            <i class="fa fa-comments"></i>10
+                        </span>
+                        <span class="pull-right">
+                            <i class="fa fa-thumbs-up"></i>25
+                        </span>
+                    </p>
+                    <h3>Rapid development & integration of Real Time Communication in Websites</h3>
+                    <p>Recent surveys depict that hesitant online consumers get encouraged to buy products from a website if they get a chance  to communicate with a customer service ....</p>
+                    <p>
+                        <span class="pull-right">
+                            <b>By:</b> Chetan Giridhar
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 proposal-list-content padding-less"  >
+                <div class="statscontainer col-sm-1 hidden-xs">
+                    <div class="stats">
+                        <div class="icon-holder icon-holder-inverse">
+                            <i class="fa fa-comments"></i>
+                            <h4> 10 </h4>
+                        </div>
+                        <div class="icon-holder">
+                            <i class="fa fa-thumbs-up fa-inverse"></i>
+                            <h4> 10 </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-11 col-xs-12">
+                    <p class="col-xs-12 padding-less visible-xs">
+                        <span class="pull-left">
+                            <i class="fa fa-comments"></i>10
+                        </span>
+                        <span class="pull-right">
+                            <i class="fa fa-thumbs-up"></i>25
+                        </span>
+                    </p>
+                    <h3>Rapid development & integration of Real Time Communication in Websites</h3>
+                    <p>Recent surveys depict that hesitant online consumers get encouraged to buy products from a website if they get a chance....</p>
+                    <p>
+                        <span class="pull-right">
+                            <b>By:</b> Chetan Giridhar
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 padding-less text-center"  >
+                <nav>
+                    <ul class="pagination">
+                        <li class="disabled">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="#">1
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">2</a>
+                        </li>
+                        <li>
+                            <a href="#">3</a>
+                        </li>
+                        <li>
+                            <a href="#">4</a>
+                        </li>
+                        <li>
+                            <a href="#">5</a>
+                        </li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </section>
+{% endblock %}
+
+{% block script_extra %}
+<script>
+$(document).ready(function() {
+    $('#proposal_list').dataTable();
+} );
+</script>
 {% endblock %}

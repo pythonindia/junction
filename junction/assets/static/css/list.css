@@ -1,0 +1,32 @@
+    header.custom-container{
+    padding:10px;
+    }
+    .proposal-list h1 {
+    margin:0px;
+    }
+    .icon-holder{
+    display: block;
+    width: 40px;
+    height: 50px;
+    background-color: #3BABEA;
+    padding: 8px;
+    vertical-align: middle;
+    border-radius: 6px;
+    color:#ffffff;
+    }
+    .icon-holder-inverse{
+    background: transparent;
+    padding: 0px 8px 0px 8px;
+    color: #000;
+    height: 40px;
+    }
+    .icon-holder > h4 {
+    margin:0px;
+    }
+    .icon-holder > i {
+    margin-left:5px;
+    }
+    .proposal-list-content {
+        padding:15px 0px 15px 0px;
+        border-bottom:1px dotted #ccc;
+    }

@@ -9,19 +9,22 @@
   }
   label.control-label{
       width:24%;
+      padding-right:2%;
+      text-align:right;
   }
   .form-container input[type=text]{
     display: inline;
-    width: 53%;
+    width: 76%;
   }
 
   @media (max-width: 480px) {
-      label.control-label{
-      display: block;
-      width:100%;
-      }
+    label.control-label{
+        display: block;
+        width:100%;
+        text-align:left;
+    }
     .form-container input[type=text]{
-    display: block;
-    width: 100%;
+        display: block;
+        width: 100%;
     }
 }
