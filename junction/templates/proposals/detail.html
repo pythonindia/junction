@@ -154,6 +154,20 @@
         <p>
             {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
             <br/>
+            {% if user.is_authenticated %}
+                  <form method="POST" action="{{ comment.get_up_vote_url }}">
+                        {% csrf_token %} {{ proposal_comment_vote_form }}
+                        <button type="submit" class="btn btn-primary"> Up Vote </button>
+                  </form>
+            {% endif %}
+            [{{ comment.get_votes_count }}]
+            {% if user.is_authenticated %}
+               <form method="POST" action="{{ comment.get_down_vote_url }}">
+                    {% csrf_token %} {{ proposal_comment_vote_form }}
+                    <button type="submit" class="btn btn-primary"> Down Vote </button>
+              </form>
+            {% endif %}
+                                
             {{ comment.comment|markdown }}
         </p>
     {% endfor %}

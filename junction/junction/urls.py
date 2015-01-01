@@ -10,6 +10,7 @@ urlpatterns = patterns(
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('proposals.proposal_urls')),
     url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('proposals.comment_urls')),
     url(r'^(?P<conference_slug>[\w-]+)/proposal-votes/', include('proposals.vote_urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposal-comment-votes/', include('proposals.comment_vote_urls')),
 
     url(r'^accounts/', include('allauth.urls')),
     url('^markdown/', include('django_markdown.urls')),

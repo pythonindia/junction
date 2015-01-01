@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseForbidden, HttpResponseRedirect
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect,\
+    HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 from conferences.models import Conference, ConferenceProposalReviewer
 
-from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from proposals.models import Proposal, ProposalComment, ProposalVote
+from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm, ProposalCommentVoteForm
+from proposals.models import Proposal, ProposalComment, ProposalVote, ProposalCommentVote
 
 
 def _is_proposal_author(user, proposal):
@@ -87,7 +88,8 @@ def detail_proposal(request, conference_slug, slug):
 
     proposal_comment_form = ProposalCommentForm()
     proposal_vote_form = ProposalVoteForm()
-
+    proposal_comment_vote_form = ProposalCommentVoteForm()
+    
     can_delete = False
     if request.user == proposal.author:
         can_delete = True
@@ -106,6 +108,7 @@ def detail_proposal(request, conference_slug, slug):
                                                      'comments': comments,
                                                      'proposal_comment_form': proposal_comment_form,
                                                      'proposal_vote_form': proposal_vote_form,
+                                                     'proposal_comment_vote_form': proposal_comment_vote_form,
                                                      'allow_private_comment': allow_private_comment,
                                                      'vote_value': vote_value,
                                                      'can_delete': can_delete})
@@ -213,3 +216,31 @@ def proposal_vote_up(request, conference_slug, proposal_slug):
 @require_http_methods(['POST'])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
+
+
+def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, up_vote):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
+    
+    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
+                                                                               voter=request.user)
+    
+    proposal_comment_vote.up_vote = up_vote
+    proposal_comment_vote.save()
+    
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
+    
+  
+    
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_vote_up(request, conference_slug, proposal_slug, proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_vote_down(request, conference_slug, proposal_slug, proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
