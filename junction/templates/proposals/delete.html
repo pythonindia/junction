@@ -18,11 +18,11 @@
         <div class="form-container space-2-bottom">
             <h2 class="fill-blue text-center">Delete?</h2>
             <div class="pad-2 push-half-top push-2-bottom">
-              <hr>
                 <form method="post">{% csrf_token %}
                     Are you sure you want to delete "{{ proposal.title }}" ?
-                    <br>
+                    <br><br>
                     <input type="submit" value="Yes" />
+                    <a href="{{ proposal.get_absolute_url }}" class="btn btn-primary" >No</a>
                 </form>
             </div>
         </div>
