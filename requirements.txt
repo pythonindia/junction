@@ -1,4 +1,4 @@
-Django==1.7.1
+Django==1.7.2
 Markdown==2.5.2
 django-allauth==0.18.0
 django-bootstrap3==5.0.3
