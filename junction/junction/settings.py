@@ -166,5 +166,6 @@ ALLOWED_HOSTS = []  # TODO:
 
 try:
     from junction.dev import *  # noqa
+    from junction.prod import *  # noqa
 except ImportError:
     pass
