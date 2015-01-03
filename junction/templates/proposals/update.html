@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-
+{% load static from staticfiles %}
 
 {% block head_title %} Edit Proposal | {{ block.super }} {% endblock %}
 
 {% block endhead %}
-<style>
-  .required > label:after {
-    content: "*";
-  }
-</style>
+    <!-- Custom Form CSS -->
+    <link href="{% static 'css/form.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
