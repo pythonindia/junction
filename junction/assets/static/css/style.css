@@ -332,6 +332,21 @@ header-tab-title >h2{
     padding:0px;
 }
 
+/*
+    Header
+    ---------------------------------------------------------------------------
+*/
+
+.head_content {
+    text-align: center;
+    background: #2c5aa0;
+    color: #fff;
+    padding: 2em;
+}
+.head_content h1 {
+    color: #ffdd55;
+}
+
 /* Arrow after status
  .stats:after, .stats:before {
     left: 73px;

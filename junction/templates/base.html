@@ -54,7 +54,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}">
+                <a class="navbar-brand" href="{% url 'pages:homepage' %}">
                     <!-- <span class="yellow">PSSI</span><div style="font-size: 10px; text-transform:uppercase;"><span class="yellow">P</span>ython <span class="yellow">S</span>oftware <span class="yellow">S</span>ociety of <span class="yellow">I</span>ndia</div> -->
                     <!-- <img src="/static/images/pssi_logo.png" alt="PSSI"> -->
                 </a>
@@ -92,8 +92,10 @@
         <!-- /.container -->
     </nav>
 
+    <section class="head_content container-fluid">
     {% block header %}
     {% endblock %}
+    </section>
 
     <!-- Page Content -->
     <div class="container-fluid">

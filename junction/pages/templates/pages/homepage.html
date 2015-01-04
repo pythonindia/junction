@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load webdesign %}
+
+{% block head_title %}{{ block.super }}{% endblock %}
+{% block page_classes %}{{ block.super }} homepage{% endblock %}
+
+{% block header %}
+    <h1>Welcome to Junction</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+{% endblock %}
+
+{% block content %}
+    <section class="conference-list">
+    <h2>Conferences</h2>
+    {% for conference in conferences %}
+        <div class="conference-item">
+            <h3><a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a></h3>
+            <p>{{ conference.description }}</p>
+            <p class="meta">
+                <span class="start_date">{{ conference.start_date }}</span> –
+                <span class="end_date">{{ conference.end_date }}</span>
+                (<span class="status">{{ conference.get_status_display }}</span>)
+            </p>
+        </div>
+    {% endfor %}
+    </section>
+{% endblock %}
