@@ -186,7 +186,7 @@
                 </form>
             {% else %}
                 <p>
-                    <a href="{% url 'account_login' %}">
+                    <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
                     Login
                     </a>
                     to add a new comment.
