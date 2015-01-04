@@ -1,6 +1,17 @@
-from django.conf.urls import patterns, include, url
-from django.views.generic.base import TemplateView
+# -*- coding: utf-8 -*-
+'''
+Root url routering file.
+
+You should put the url config in their respective app putting only a
+refernce to them here.
+'''
+from __future__ import unicode_literals
+
+# Third Party Stuff
+from django.conf import settings
+from django.conf.urls import include, patterns, url
 from django.contrib import admin
+from django.views.generic.base import TemplateView
 
 urlpatterns = patterns(
     '',
@@ -25,3 +36,11 @@ urlpatterns = patterns(
     url(r'^$', TemplateView.as_view(template_name='static-content/index.html',), name='home'),
 
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^400/$', 'django.views.defaults.bad_request'),  # noqa
+        url(r'^403/$', 'django.views.defaults.permission_denied'),
+        url(r'^404/$', 'django.views.defaults.page_not_found'),
+        url(r'^500/$', 'django.views.defaults.server_error'),
+    )
