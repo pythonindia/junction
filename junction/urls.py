@@ -34,7 +34,7 @@ urlpatterns = patterns(
     url(r'^coc/$', TemplateView.as_view(template_name='static-content/coc.html',), name='coc-static'),
     url(r'^faq/$', TemplateView.as_view(template_name='static-content/faq.html',), name='faq-static'),
 
-    # add a last for minor performance gain
+    # add at the last for minor performance gain
     url(r'^', include('pages.urls', namespace='pages')),
 )
 
