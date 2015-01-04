@@ -121,7 +121,7 @@ LOGGING = {
 }
 
 
-ROOT_URLCONF = 'junction.urls'
+ROOT_URLCONF = 'urls'
 WSGI_APPLICATION = 'junction.wsgi.application'
 
 TIME_ZONE = 'Asia/Kolkata'
