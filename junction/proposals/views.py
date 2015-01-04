@@ -81,7 +81,7 @@ def detail_proposal(request, conference_slug, slug):
     allow_private_comment = _is_proposal_author_or_reviewer(
         request.user, conference, proposal)
 
-    comments = ProposalComment.objects.filter(proposal=proposal, deleted=False)
+    comments = ProposalComment.objects.filter(proposal=proposal, deleted=False).order_by("-created_at")
     if not allow_private_comment:
         comments = comments.filter(private=False)
 

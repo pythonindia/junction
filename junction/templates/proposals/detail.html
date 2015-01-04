@@ -80,22 +80,22 @@
                 Status :
                 </b>
                 {% if proposal.status == 1 %}
-                Draft
+                    Draft
                 {% elif proposal.status == 2 %}
-                Public
+                    Public
                 {% else %}
-                Cancelled
+                    Cancelled
                 {% endif %}
                 <br>
                 <b>
                 Target Audience :
                 </b>
                 {% if proposal.target_audience == 1 %}
-                Beginner
+                    Beginner
                 {% elif proposal.target_audience == 2 %}
-                Intermediate
+                    Intermediate
                 {% else %}
-                Advanced
+                    Advanced
                 {% endif %}
             </div>
         </div>
@@ -108,37 +108,41 @@
             <p>
                 {{ proposal.description|markdown }}
             </p>
+
             {% if proposal.prerequisites %}
-            <h4>
-                Prerequisites :
-            </h4>
-            <p>
-                {{ proposal.prerequisites|markdown }}
-            </p>
+                <h4>
+                    Prerequisites :
+                </h4>
+                <p>
+                    {{ proposal.prerequisites|markdown }}
+                </p>
             {% endif %}
+
             {% if proposal.content_urls %}
-            <h4>
-                Content URLS :
-            </h4>
-            <p>
-                {{ proposal.content_urls|markdown }}
-            </p>
+                <h4>
+                    Content URLS :
+                </h4>
+                <p>
+                    {{ proposal.content_urls|markdown }}
+                </p>
             {% endif %}
+
             {% if proposal.speaker_info %}
-            <h4>
-                Speaker Info :
-            </h4>
-            <p>
-                {{ proposal.speaker_info|markdown }}
-            </p>
+                <h4>
+                    Speaker Info :
+                </h4>
+                <p>
+                    {{ proposal.speaker_info|markdown }}
+                </p>
             {% endif %}
+
             {% if proposal.speaker_links %}
-            <h4>
-                Speaker Links :
-            </h4>
-            <p>
-                {{ proposal.speaker_links|markdown }}
-            </p>
+                <h4>
+                    Speaker Links :
+                </h4>
+                <p>
+                    {{ proposal.speaker_links|markdown }}
+                </p>
             {% endif %}
         </div>
     </div>
@@ -147,40 +151,46 @@
             <h4 class="proposal-comments">
                 Comments
             </h4>
+
             {% if not comments %}
-            <p>
-                No comments added so far.
-            </p>
-            <br/>
-            {% endif %}
-            {% for comment in comments %}
-            <p>
-                {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
+                <p>
+                    No comments added so far.
+                </p>
                 <br/>
-                {{ comment.comment|markdown }}
-            </p>
+            {% endif %}
+
+            {% for comment in comments %}
+                <p>
+                    {{ comment.comment|markdown }} <br/>
+                    Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
+                    <hr/>
+                </p>
             {% endfor %}
+
             {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
-                {% csrf_token %}
-                {{ proposal_comment_form.media }}
-                {% bootstrap_field proposal_comment_form.comment %}
-                {% if allow_private_comment %}
-                {% bootstrap_field proposal_comment_form.private %}
-                {% endif %}
-                {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                Add Comment
-                </button>
-                {% endbuttons %}
-            </form>
+                <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
+                    {% csrf_token %}
+                    {{ proposal_comment_form.media }}
+
+                    {% bootstrap_field proposal_comment_form.comment %}
+
+                    {% if allow_private_comment %}
+                        {% bootstrap_field proposal_comment_form.private %}
+                    {% endif %}
+
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">
+                            Add Comment
+                        </button>
+                    {% endbuttons %}
+                </form>
             {% else %}
-            <p>
-                <a href="{% url 'account_login' %}">
-                Login
-                </a>
-                to add a new comment.
-            </p>
+                <p>
+                    <a href="{% url 'account_login' %}">
+                    Login
+                    </a>
+                    to add a new comment.
+                </p>
             {% endif %}
         </div>
     </div>
