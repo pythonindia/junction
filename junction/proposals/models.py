@@ -19,6 +19,7 @@ class ProposalSection(AuditModel):
         max_length=255, verbose_name="Proposal Section Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
+    conferences = models.ManyToManyField(to=Conference)
 
     def __unicode__(self):
         return self.name
@@ -30,39 +31,10 @@ class ProposalType(AuditModel):
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
+    conferences = models.ManyToManyField(to=Conference)
 
     def __unicode__(self):
         return self.name
-
-
-class ConferenceProposalSection(AuditModel):
-
-    """ List of proposals sections allowed for a specific conferences """
-    conference = models.ForeignKey(Conference)
-    proposal_section = models.ForeignKey(
-        ProposalSection, verbose_name="Proposal Section")
-    active = models.BooleanField(default=True, verbose_name="Is Active?")
-
-    def __unicode__(self):
-        return "{}[{}]".format(self.proposal_section, self.conference)
-
-    class Meta:
-        unique_together = ("conference", "proposal_section")
-
-
-class ConferenceProposalType(AuditModel):
-
-    """ List of proposals types allowed for a specific conferences """
-    conference = models.ForeignKey(Conference)
-    proposal_type = models.ForeignKey(
-        ProposalType, verbose_name="Proposal Type")
-    active = models.BooleanField(default=True, verbose_name="Is Active?")
-
-    def __unicode__(self):
-        return "{}[{}]".format(self.proposal_type, self.conference)
-
-    class Meta:
-        unique_together = ("conference", "proposal_type")
 
 
 class Proposal(TimeAuditModel):
