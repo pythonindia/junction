@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 {% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %} Edit Proposal | {{ block.super }} {% endblock %}
 
 {% block endhead %}
     <!-- Custom Form CSS -->
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
+    {% breadcrumb "edit" "" %}
 {% endblock %}
 
 {% block content %}

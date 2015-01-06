@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
+{% load django_bootstrap_breadcrumbs %}
+
 {% block head_title %}403 Forbidden{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "403 Forbidden" "" %}
+{% endblock %}
 
 {% block content %}
 <h1>403 Forbidden</h1>

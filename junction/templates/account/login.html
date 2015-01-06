@@ -1,9 +1,15 @@
 {% extends "account/base.html" %}
 {% load i18n %}
 {% load account %}
+{% load django_bootstrap_breadcrumbs %}
 {% load url from future %}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Sign In" "" %}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -35,7 +41,7 @@
                         <div class="row">
                             <div class="col-xs-5">
                                 <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-                                
+
                             </div>
                             <div class="col-xs-7 text-right push-1q-top">
                                 <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>

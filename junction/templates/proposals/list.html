@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
 {% block head_title %} Proposals | {{ block.super }} {% endblock %}
 
 {% block endhead %}
@@ -7,11 +9,14 @@
     <link href="{% static 'css/list.css' %}" rel="stylesheet">
 {% endblock %}
 
-
-
-{% block header %}
-
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" conference.slug %}
 {% endblock %}
+
+
+{% block header %}{% endblock %}
 
 {% block content %}
 <section class="content custom-container proposal-list">

@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = (
 
     'pagedown',
     'django_markdown',
+    'django_bootstrap_breadcrumbs',
 )
 
 OUR_APPS = (
