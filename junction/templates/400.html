@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
+{% load django_bootstrap_breadcrumbs %}
+
 {% block page_title %}Bad Request (400){% endblock page_title %}
 {% block page_classes %}{{ block.super }} bad_request {% endblock page_classes %}
 
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Bad Request" "" %}
+{% endblock %}
 
 {% block content %}
 <h1>Bad Request (400)</h1>

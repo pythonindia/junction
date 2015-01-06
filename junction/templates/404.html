@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
+{% load django_bootstrap_breadcrumbs %}
+
 {% block head_title %}Page Not found{% endblock %}
 {% block page_classes %}{{ block.super }} page_not_found {% endblock page_classes %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Page Not Found" "" %}
+{% endblock %}
+
 
 {% block content %}
 <h1>Not Found</h1>

@@ -37,7 +37,9 @@ urlpatterns = patterns(
     url(r'^faq/$', TemplateView.as_view(template_name='static-content/faq.html',), name='faq-static'),
 
     # Proposals as conference home page. TODO: Needs to be enhanced
-    url(r'^(?P<conference_slug>[\w-]+)/', RedirectView.as_view(pattern_name="proposals-list")),
+    url(r'^(?P<conference_slug>[\w-]+)--/',
+        RedirectView.as_view(pattern_name="proposals-list"),
+        name='conference-detail'),
 
     # add at the last for minor performance gain
     url(r'^', include('pages.urls', namespace='pages')),

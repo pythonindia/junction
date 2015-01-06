@@ -1,4 +1,9 @@
 {% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb_safe "<i class='fa fa-home'></i>" "pages:homepage" %}
+{% endblock %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,6 +101,8 @@
     {% block header %}
     {% endblock %}
     </section>
+
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
 
     <!-- Page Content -->
     <div class="container-fluid">

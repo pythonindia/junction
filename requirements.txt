@@ -23,7 +23,7 @@ requests-oauthlib==0.4.2
 # Frontend Helpers
 # -------------------------------------------------
 django-bootstrap3==5.0.3
-
+django-bootstrap-breadcrumbs==0.7.0
 
 # Markdown Editor
 # -------------------------------------------------

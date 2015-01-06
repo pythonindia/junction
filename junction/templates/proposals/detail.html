@@ -2,6 +2,7 @@
 {% load bootstrap3 %}
 {% load django_markdown %}
 {% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %} Proposal Details | {{ block.super }} {% endblock %}
 {% block endhead %}
@@ -9,6 +10,12 @@
     <link href="{% static 'css/details.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
+{% endblock %}
 
 {% block content %}
 
