@@ -12,8 +12,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb conference.name "conference-detail" proposal.conference.slug %}
-    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" conference.slug %}
     {% breadcrumb "New" "" %}
 {% endblock %}
 
