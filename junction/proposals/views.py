@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseForbidden, HttpResponseRedirect,\
-    HttpResponse
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-
 from conferences.models import Conference, ConferenceProposalReviewer
 
 from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm, ProposalCommentVoteForm
@@ -231,16 +229,22 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
     
     return HttpResponseRedirect(reverse('proposal-detail',
                                         args=[conference.slug, proposal.slug]))
-    
   
     
 @login_required
 @require_http_methods(['POST'])
 def proposal_comment_vote_up(request, conference_slug, proposal_slug, proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
-
+    if request.is_ajax():
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+    else:
+        # A better Error message or Error Page should be displayed.
+        return HttpResponse('The request is not ajax')    
 
 @login_required
 @require_http_methods(['POST'])
 def proposal_comment_vote_down(request, conference_slug, proposal_slug, proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
+    if request.is_ajax():
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
+    else:
+        # A better Error message or Error Page should be displayed.
+        return HttpResponse('The request is not ajax')  

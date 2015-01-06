@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 {% load django_markdown %}
+{% load static %}
 
 {% block head_title %} Proposal Details | {{ block.super }} {% endblock %}
 
@@ -10,6 +11,30 @@
     content: "*";
   }
 </style>
+<script>
+    $(document).ready(function() {
+        $("form.ajax").submit(function(e){
+            alert('Hell-');
+            e.preventDefault();
+            var $this = $(this);
+            var url = $this.attr('action');
+            var method = $this.attr('method');
+            var data = $this.serialize();
+            jQuery.ajax({
+                type : method,
+                url : url,
+                dataType : 'json',
+                data : data,
+                success : function(data){
+                    alert("Success:" + data);
+                },
+                error : function(data){
+                    alert("Error:" + data);
+                }
+            });
+        });
+    }); 
+</script>
 {% endblock %}
 
 {% block content %}
@@ -155,14 +180,14 @@
             {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
             <br/>
             {% if user.is_authenticated %}
-                  <form method="POST" action="{{ comment.get_up_vote_url }}">
+                  <form class="ajax" method="POST" action="{{ comment.get_up_vote_url }}">
                         {% csrf_token %} {{ proposal_comment_vote_form }}
                         <button type="submit" class="btn btn-primary"> Up Vote </button>
                   </form>
             {% endif %}
             [{{ comment.get_votes_count }}]
             {% if user.is_authenticated %}
-               <form method="POST" action="{{ comment.get_down_vote_url }}">
+               <form class="ajax" method="POST" action="{{ comment.get_down_vote_url }}">
                     {% csrf_token %} {{ proposal_comment_vote_form }}
                     <button type="submit" class="btn btn-primary"> Down Vote </button>
               </form>
@@ -192,7 +217,5 @@
     {% endif %}
 
 </div>
-
-<br/><br/><br/>
 
 {% endblock %}
