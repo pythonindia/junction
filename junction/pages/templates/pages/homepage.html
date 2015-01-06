@@ -21,12 +21,12 @@
     {% for conference in conferences %}
         <div class="conference-item">
             <h3><a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a></h3>
-            <p>{{ conference.description }}</p>
             <p class="meta">
                 <span class="start_date">{{ conference.start_date }}</span> –
                 <span class="end_date">{{ conference.end_date }}</span>
                 (<span class="status">{{ conference.get_status_display }}</span>)
             </p>
+            <p>{{ conference.description }}</p>
         </div>
     {% endfor %}
     </section>
