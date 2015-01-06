@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from custom_utils.admin import AuditAdmin, TimeAuditAdmin
-from proposals.models import (
+from junction.custom_utils.admin import AuditAdmin, TimeAuditAdmin
+from junction.proposals.models import (
     Proposal,
     ProposalComment,
     ProposalCommentVote,

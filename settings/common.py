@@ -2,7 +2,12 @@ import os
 
 from django.conf.global_settings import *  # noqa
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# Standard Library
+from os.path import dirname, join
+
+# Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
+ROOT_DIR = dirname(dirname(__file__))
+APP_DIR = join(ROOT_DIR, 'junction')
 
 SITE_ID = 1
 
@@ -44,9 +49,9 @@ THIRD_PARTY_APPS = (
 )
 
 OUR_APPS = (
-    'conferences',
-    'proposals',
-    'pages',
+    'junction.conferences',
+    'junction.proposals',
+    'junction.pages',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -125,21 +130,21 @@ LOGGING = {
 }
 
 
-ROOT_URLCONF = 'urls'
-WSGI_APPLICATION = 'junction.wsgi.application'
+ROOT_URLCONF = 'junction.urls'
+WSGI_APPLICATION = 'wsgi.application'
 
 TIME_ZONE = 'Asia/Kolkata'
 USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'collected-static')
+STATIC_ROOT = os.path.join(APP_DIR, 'assets', 'collected-static')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'assets', 'static'),
+    os.path.join(APP_DIR, 'assets', 'static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(APP_DIR, 'templates'),
 )
 
 DATABASES = {
@@ -165,11 +170,3 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t
 DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
-
-# Dev Settings
-
-try:
-    from junction.dev import *  # noqa
-    from junction.prod import *  # noqa
-except ImportError:
-    pass

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from proposals.views import proposal_vote_up, proposal_vote_down
+from .views import proposal_vote_up, proposal_vote_down
 
 
 urlpatterns = patterns(

@@ -2,7 +2,7 @@
 
 # Third Party Stuff
 from django.views.generic import TemplateView
-from conferences.models import Conference
+from junction.conferences.models import Conference
 
 
 class HomePageView(TemplateView):
