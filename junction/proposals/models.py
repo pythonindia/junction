@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+
 from django_extensions.db.fields import AutoSlugField
 
-from conferences.models import Conference
-from custom_utils.constants import PROPOSAL_USER_VOTE_ROLES, PROPOSAL_STATUS_LIST, \
-    PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
-from custom_utils.models import AuditModel, TimeAuditModel
+from junction.conferences.models import Conference
+from junction.custom_utils.constants import (
+    PROPOSAL_REVIEW_STATUS_LIST,
+    PROPOSAL_STATUS_LIST,
+    PROPOSAL_TARGET_AUDIENCES,
+    PROPOSAL_USER_VOTE_ROLES
+)
+from junction.custom_utils.models import AuditModel, TimeAuditModel
 
 
 class ProposalSection(AuditModel):

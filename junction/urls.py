@@ -23,9 +23,9 @@ urlpatterns = patterns(
     url('^markdown/', include('django_markdown.urls')),
 
     # Proposals related
-    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('proposals.proposal_urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('proposals.comment_urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/proposal-votes/', include('proposals.vote_urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.proposal_urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('junction.proposals.comment_urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposal-votes/', include('junction.proposals.vote_urls')),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
@@ -42,7 +42,7 @@ urlpatterns = patterns(
         name='conference-detail'),
 
     # add at the last for minor performance gain
-    url(r'^', include('pages.urls', namespace='pages')),
+    url(r'^', include('junction.pages.urls', namespace='pages')),
 )
 
 if settings.DEBUG:

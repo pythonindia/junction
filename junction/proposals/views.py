@@ -1,13 +1,17 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from conferences.models import Conference, ConferenceProposalReviewer
+from junction.conferences.models import Conference, ConferenceProposalReviewer
 
-from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from proposals.models import Proposal, ProposalComment, ProposalVote
+from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
+from .models import Proposal, ProposalComment, ProposalVote
 
 
 def _is_proposal_author(user, proposal):
