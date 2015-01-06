@@ -27,6 +27,16 @@
     margin-left:5px;
     }
     .proposal-list-content {
-        padding:15px 0px 15px 0px;
+        padding-bottom: 10px;
+        padding-top:10px;
         border-bottom:1px dotted #ccc;
+        display:table;
+    }
+
+    .proposal-list .title-underline{
+        border-bottom:1px solid #ccc;
+    }
+    .border-less{
+        border-top:none;
+        border-bottom:none;
     }

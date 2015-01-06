@@ -177,7 +177,7 @@ a.socialaccount_provider.github:hover {
   background-color: #428bca;
 }
 .content {
-    width: 90%;
+    /* width: 90%; */
     margin: 0 auto;
 }
 @media (max-width: 768px) {
@@ -331,6 +331,10 @@ header-tab-title >h2{
 .padding-less{
     padding:0px;
 }
+.border-less{
+        border-top:none;
+        border-bottom:none;
+}
 
 /*
     Header
@@ -341,7 +345,7 @@ header-tab-title >h2{
     text-align: center;
     background: #2c5aa0;
     color: #fff;
-    padding: 2em;
+    padding: 2em 1em 2em 1em;
 }
 .head_content h1 {
     color: #ffdd55;
