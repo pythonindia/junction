@@ -11,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from .models import Proposal, ProposalComment, ProposalVote
+from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType
 
 
 def _is_proposal_author(user, proposal):
@@ -36,7 +36,12 @@ def _is_proposal_author_or_reviewer(user, conference, proposal):
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposals_list = Proposal.objects.filter(conference=conference)
+    proposal_sections = ProposalSection.objects.filter(conferences=conference)
+    proposal_types = ProposalType.objects.filter(conferences=conference)
+
     return render(request, 'proposals/list.html', {'proposals_list': proposals_list,
+                                                   'proposal_sections': proposal_sections,
+                                                   'proposal_types': proposal_types,
                                                    'conference': conference})
 
 

@@ -88,6 +88,6 @@ class ProposalCommentForm(forms.Form):
 class ProposalVoteForm(forms.Form):
 
     '''
-    Used for csrf token in voting
+    Used for CSRF token in voting
     '''
     pass
