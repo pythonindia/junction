@@ -1,0 +1,73 @@
+.proposal-details{
+    padding:10px;
+    margin-top:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+.proposal-details h1 {
+    margin:0px;
+    font-size:1.5em;
+    padding:6px;
+}
+.proposal-title{
+    padding-bottom: 10px;
+}
+.icon-holder{
+    width: 60px;
+    height: 54px;
+    border: 1px solid #3BABEA;
+    vertical-align: middle;
+    border-radius: 6px;
+}
+.icon-holder-inverse{
+    background: transparent;
+    padding: 0px 8px 0px 8px;
+    color: #000;
+    height: 40px;
+}
+.icon-holder h4 {
+    margin:5px 0px 5px 0px;
+}
+.icon-holder > i {
+    margin-left:5px;
+}
+.icon-holder-bottom{
+    background: #3BABEA;
+    height: 23px;
+    color:#ffffff;
+    cursor:pointer;
+}
+.icon-holder-bottom i {
+    padding:5px;
+}
+.porsal-title-section{
+    padding:5px;
+    color:#ffffff;
+}
+.porsal-title-section .col-sm-12{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.porsal-description h4{
+    font-weight:600;
+}
+.proposal-update {
+    padding-top:15px;
+}
+.proposal-update a{
+     font-size:1.5em;
+     color:#000;
+     padding-right:10px;
+}
+.proposal-comments{
+    padding:5px 10px 5px 10px;
+    margin-left:-10px;
+    margin-right:-10px;
+    color:#ffffff;
+    background-color: #6F6F6F;
+}
+@media (max-width: 480px) {
+    .porsal-title-section .col-sm-12{
+     height:100px;
+     }
+}

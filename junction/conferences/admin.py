@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from conferences.models import Conference, ConferenceModerator, \
-    ConferenceProposalReviewer
-from custom_utils.admin import AuditAdmin
+from junction.custom_utils.admin import AuditAdmin
+
+from . import models
 
 
 class ConferenceAdmin(AuditAdmin):
@@ -17,6 +17,6 @@ class ConferenceProposallReviewerAdmin(AuditAdmin):
     list_display = ('conference', 'reviewer', 'active') + AuditAdmin.list_display
 
 
-admin.site.register(Conference, ConferenceAdmin)
-admin.site.register(ConferenceModerator, ConferenceModeratorAdmin)
-admin.site.register(ConferenceProposalReviewer, ConferenceProposallReviewerAdmin)
+admin.site.register(models.Conference, ConferenceAdmin)
+admin.site.register(models.ConferenceModerator, ConferenceModeratorAdmin)
+admin.site.register(models.ConferenceProposalReviewer, ConferenceProposallReviewerAdmin)

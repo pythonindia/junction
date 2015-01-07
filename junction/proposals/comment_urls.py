@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from proposals.views import create_proposal_comment
+from .views import create_proposal_comment
 
 
 urlpatterns = patterns(

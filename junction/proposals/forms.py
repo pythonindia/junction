@@ -2,18 +2,18 @@ from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
-from custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
-from proposals.models import ConferenceProposalSection, ConferenceProposalType
+from junction.custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
+from junction.proposals.models import ProposalSection, ProposalType
 
 
 def _get_proposal_section_choices(conference):
-    return [(str(cps.id), cps.proposal_section.name)
-            for cps in ConferenceProposalSection.objects.filter(conference=conference)]
+    return [(str(cps.id), cps.name)
+            for cps in ProposalSection.objects.filter(conferences=conference)]
 
 
 def _get_proposal_type_choices(conference):
-    return [(str(cpt.id), cpt.proposal_type.name)
-            for cpt in ConferenceProposalType.objects.filter(conference=conference)]
+    return [(str(cpt.id), cpt.name)
+            for cpt in ProposalType.objects.filter(conferences=conference)]
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -88,7 +88,7 @@ class ProposalCommentForm(forms.Form):
 class ProposalVoteForm(forms.Form):
 
     '''
-    Used for csrf token in voting
+    Used for CSRF token in voting
     '''
     pass
 
