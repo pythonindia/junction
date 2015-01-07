@@ -1,9 +1,4 @@
 {% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
-{% block breadcrumbs %}
-    {% clear_breadcrumbs %}
-    {% breadcrumb_safe "<i class='fa fa-home'></i>" "pages:homepage" %}
-{% endblock %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +24,6 @@
     <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    {% block style_extra %} {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,7 +40,7 @@
 
 </head>
 
-<body class="{% block page_classes %} {% endblock page_classes %} ">
+<body>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -59,22 +53,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'pages:homepage' %}">
+                <a class="navbar-brand" href="{% url 'home' %}">
                     <!-- <span class="yellow">PSSI</span><div style="font-size: 10px; text-transform:uppercase;"><span class="yellow">P</span>ython <span class="yellow">S</span>oftware <span class="yellow">S</span>ociety of <span class="yellow">I</span>ndia</div> -->
-                    <!-- <img src="/static/images/pssi_logo.png" alt="PSSI"> -->
+                    <img src="/static/images/pssi_logo.png" alt="PSSI">
                 </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- <li><a href="{% url 'speakers-static' %}">Speakers</a></li> -->
-                    <!-- <li><a href="{% url 'schedule-static' %}">Schedule</a></li> -->
-                    <!-- <li><a href="/test-conference/proposals/">Proposals</a></li> -->
-                    <!-- <li><a href="{% url 'venue-static' %}">Venue</a></li> -->
-                    <!-- <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li> -->
-                    <!-- <li><a href="{% url 'blog-archive' %}">Blog</a></li> -->
-                    <!-- <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li> -->
-                    <!-- <li><a href="{% url 'faq-static' %}">FAQ</a></li> -->
+                    <li><a href="{% url 'speakers-static' %}">Speakers</a></li>
+                    <li><a href="{% url 'schedule-static' %}">Schedule</a></li>
+                    <li><a href="/test-conference/proposals/">Proposals</a></li>
+                    <li><a href="{% url 'venue-static' %}">Venue</a></li>
+                    <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
+                    <li><a href="{% url 'blog-archive' %}">Blog</a></li>
+                    <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
+                    <li><a href="{% url 'faq_static' %}">FAQ</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs"><i class="glyphicon glyphicon-user"></i></span><span class="visible-xs">Account</span> <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
@@ -97,13 +91,9 @@
         <!-- /.container -->
     </nav>
 
-    <section class="head_content">
     {% block header %}
     {% endblock %}
-    </section>
-    <div class="custom-container">
-    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
-     </div>
+
     <!-- Page Content -->
     <div class="container-fluid">
 
@@ -117,7 +107,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="col-xs-12 text-center">
-                    <p class="push-half-top">Copyright &copy; Python Software Society of India 2015</p>
+                    <p class="push-half-top">Copyright &copy; Python Software Society of India 2014</p>
                 </div>
             </div><!-- /.row -->
         </div>
@@ -126,7 +116,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    {% block script_extra %} {% endblock %}
+
     {% block footerscripts %}{% endblock %}
 
 </body>

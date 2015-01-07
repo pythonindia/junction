@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-
 from django_extensions.db.fields import AutoSlugField
 
-from junction.conferences.models import Conference
-from junction.custom_utils.constants import (
-    PROPOSAL_REVIEW_STATUS_LIST,
-    PROPOSAL_STATUS_LIST,
-    PROPOSAL_TARGET_AUDIENCES,
-    PROPOSAL_USER_VOTE_ROLES
-)
-from junction.custom_utils.models import AuditModel, TimeAuditModel
+from conferences.models import Conference
+from custom_utils.constants import PROPOSAL_USER_VOTE_ROLES, PROPOSAL_STATUS_LIST, \
+    PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
+from custom_utils.models import AuditModel, TimeAuditModel
 
 
 class ProposalSection(AuditModel):
@@ -25,7 +19,6 @@ class ProposalSection(AuditModel):
         max_length=255, verbose_name="Proposal Section Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    conferences = models.ManyToManyField(to=Conference)
 
     def __unicode__(self):
         return self.name
@@ -37,10 +30,39 @@ class ProposalType(AuditModel):
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    conferences = models.ManyToManyField(to=Conference)
 
     def __unicode__(self):
         return self.name
+
+
+class ConferenceProposalSection(AuditModel):
+
+    """ List of proposals sections allowed for a specific conferences """
+    conference = models.ForeignKey(Conference)
+    proposal_section = models.ForeignKey(
+        ProposalSection, verbose_name="Proposal Section")
+    active = models.BooleanField(default=True, verbose_name="Is Active?")
+
+    def __unicode__(self):
+        return "{}[{}]".format(self.proposal_section, self.conference)
+
+    class Meta:
+        unique_together = ("conference", "proposal_section")
+
+
+class ConferenceProposalType(AuditModel):
+
+    """ List of proposals types allowed for a specific conferences """
+    conference = models.ForeignKey(Conference)
+    proposal_type = models.ForeignKey(
+        ProposalType, verbose_name="Proposal Type")
+    active = models.BooleanField(default=True, verbose_name="Is Active?")
+
+    def __unicode__(self):
+        return "{}[{}]".format(self.proposal_type, self.conference)
+
+    class Meta:
+        unique_together = ("conference", "proposal_type")
 
 
 class Proposal(TimeAuditModel):
