@@ -31,6 +31,7 @@
         padding-top:10px;
         border-bottom:1px dotted #ccc;
         display:table;
+        width:100%;
     }
 
     .proposal-list .title-underline{
