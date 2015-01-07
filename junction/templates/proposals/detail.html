@@ -14,7 +14,6 @@
 <script>
     $(document).ready(function() {
         $("form.ajax").submit(function(e){
-            alert('Hell-');
             e.preventDefault();
             var $this = $(this);
             var url = $this.attr('action');
@@ -26,7 +25,7 @@
                 dataType : 'json',
                 data : data,
                 success : function(data){
-                    alert("Success:" + data['get_votes_count']);
+                    alert("Success:" + data['get_votes_count'] + "This data should display in the right position.");
                     // The 'data['get_votes_count']' value should be replaced with '[{{comment.get_votes_count}}]'. 
                 },
                 error : function(data){
