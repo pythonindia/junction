@@ -1,0 +1,59 @@
+{% extends "proposals/detail/base.html" %}
+{% load bootstrap3 %}
+{% load django_markdown %}
+
+
+{% block comments %}
+    <ul class="nav nav-pills">
+        <li role="presentation" class="active">
+            <a href="#comments">
+                <i class="fa fa-comments-o"> </i>
+                Comments
+            </a>
+        </li>
+        {% if allow_private_comment %}
+        <li role="presentation">
+            <a href="reviewers/">
+                <i  class="fa fa-info"> </i> Reviewers
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+
+    {% if not comments %}
+    <p>
+        No comments added so far.
+    </p>
+    <br/>
+    {% endif %}
+
+    {% for comment in comments %}
+    <div class="bg-info">
+        {{ comment.comment|markdown }} <br/>
+        Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
+        <hr/>
+    </div>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
+            {% csrf_token %}
+            {{ proposal_comment_form.media }}
+
+            {% bootstrap_field proposal_comment_form.comment %}
+
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Add Comment
+            </button>
+            {% endbuttons %}
+        </form>
+        {% else %}
+        <p>
+              <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
+                    Login
+              </a>
+              to add a new comment.
+        </p>
+    {% endif %}
+{% endblock %}

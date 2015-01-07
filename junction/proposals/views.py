@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
 
 from junction.conferences.models import Conference, ConferenceProposalReviewer
@@ -80,18 +80,12 @@ def create_proposal(request, conference_slug):
 
 
 @require_http_methods(['GET'])
-def detail_proposal(request, conference_slug, slug):
+def detail_proposal(request, conference_slug, slug, reviewers=False):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
     allow_private_comment = _is_proposal_author_or_reviewer(
         request.user, conference, proposal)
 
-    comments = ProposalComment.objects.filter(
-        proposal=proposal, deleted=False).order_by("-created_at")
-    if not allow_private_comment:
-        comments = comments.filter(private=False)
-
-    proposal_comment_form = ProposalCommentForm()
     proposal_vote_form = ProposalVoteForm()
 
     can_delete = False
@@ -110,15 +104,28 @@ def detail_proposal(request, conference_slug, slug):
 
     ctx = {
         'proposal': proposal,
-        'comments': comments,
-        'proposal_comment_form': proposal_comment_form,
-        'proposal_vote_form': proposal_vote_form,
         'allow_private_comment': allow_private_comment,
+        'proposal_vote_form': proposal_vote_form,
         'vote_value': vote_value,
         'can_delete': can_delete
     }
 
-    return render(request, 'proposals/detail.html', ctx)
+    comments = ProposalComment.objects.filter(
+        proposal=proposal, deleted=False,
+    ).order_by("-created_at")
+
+    if reviewers and allow_private_comment:
+        ctx.update({
+            'comments': comments.filter(private=True),
+            'proposal_comment_form': ProposalCommentForm(
+                initial={'private': True})
+        })
+        return render(request, 'proposals/detail/reviewers.html', ctx)
+    else:
+        ctx.update({'comments': comments.filter(private=False),
+                    'proposal_comment_form': ProposalCommentForm()})
+        return render(request, 'proposals/detail/public_comments.html', ctx)
+
 
 
 @login_required
@@ -181,7 +188,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
-
+    if not _is_proposal_author_or_reviewer(request.user, conference, proposal):
+        raise Http404()
     form = ProposalCommentForm(request.POST)
     if form.is_valid():
         comment = form.cleaned_data['comment']
@@ -192,9 +200,13 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
                                        private=private,
                                        commenter=request.user,
                                        )
-
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
+    if private:
+        return HttpResponseRedirect(
+            reverse('proposal-detail-reviewers',
+                    args=[conference.slug, proposal.slug, 'reviewers']))
+    else:
+        return HttpResponseRedirect(
+            reverse('proposal-detail', args=[conference.slug, proposal.slug]))
 
 
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):
