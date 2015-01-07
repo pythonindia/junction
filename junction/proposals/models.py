@@ -125,7 +125,7 @@ class ProposalComment(TimeAuditModel):
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
-        return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
+        return self.comment
     
     def get_up_vote_url(self):
         return reverse('proposal-comment-up-vote', args=[self.proposal.conference.slug, self.proposal.slug, self.id])

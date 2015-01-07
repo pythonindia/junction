@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 {% load django_markdown %}
+<<<<<<< HEAD
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
+=======
+{% load static %}
+>>>>>>> ProposalCommentVote
 
 {% block head_title %} Proposal Details | {{ block.super }} {% endblock %}
 {% block endhead %}
+<<<<<<< HEAD
     <!-- Custom CSS -->
     <link href="{% static 'css/details.css' %}" rel="stylesheet">
 {% endblock %}
@@ -15,6 +20,39 @@
     {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
     {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
     {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
+=======
+<style>
+  .required > label:after {
+    content: "*";
+  }
+</style>
+<script>
+    $(document).ready(function() {
+        $("form.ajax").submit(function(e){
+            alert('Hell-');
+            e.preventDefault();
+            var $this = $(this);
+            var url = $this.attr('action');
+            var method = $this.attr('method');
+            var data = $this.serialize();
+            jQuery.ajax({
+                type : method,
+                url : url,
+                dataType : 'json',
+                data : data,
+                success : function(data){
+                    alert("Success:" + data['get_votes_count']);
+                    // The 'data['get_votes_count']' value should be replaced with '[{{comment.get_votes_count}}]'. 
+                },
+                error : function(data){
+                    console.log(data);
+                    alert("Error");
+                }
+            });
+        });
+    }); 
+</script>
+>>>>>>> ProposalCommentVote
 {% endblock %}
 
 {% block content %}
@@ -140,14 +178,14 @@
             {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
             <br/>
             {% if user.is_authenticated %}
-                  <form method="POST" action="{{ comment.get_up_vote_url }}">
+                  <form class="ajax" method="POST" action="{{ comment.get_up_vote_url }}">
                         {% csrf_token %} {{ proposal_comment_vote_form }}
                         <button type="submit" class="btn btn-primary"> Up Vote </button>
                   </form>
             {% endif %}
             [{{ comment.get_votes_count }}]
             {% if user.is_authenticated %}
-               <form method="POST" action="{{ comment.get_down_vote_url }}">
+               <form class="ajax" method="POST" action="{{ comment.get_down_vote_url }}">
                     {% csrf_token %} {{ proposal_comment_vote_form }}
                     <button type="submit" class="btn btn-primary"> Down Vote </button>
               </form>
@@ -230,6 +268,7 @@
 
 {% endblock %}
 
+<<<<<<< HEAD
 {% block script_extra %}
  <script type="text/javascript">
     $('.prosal-up-vote').click(function(){
@@ -241,3 +280,6 @@
 
 </script>
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> ProposalCommentVote

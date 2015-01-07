@@ -4,14 +4,18 @@ from __future__ import unicode_literals
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseForbidden, HttpResponseRedirect,\
-    HttpResponse
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+<<<<<<< HEAD
 
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 <<<<<<< HEAD
+=======
+from conferences.models import Conference, ConferenceProposalReviewer
+import json
+>>>>>>> ProposalCommentVote
 from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm, ProposalCommentVoteForm
 from proposals.models import Proposal, ProposalComment, ProposalVote, ProposalCommentVote
 =======
@@ -260,19 +264,26 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
     
     proposal_comment_vote.up_vote = up_vote
     proposal_comment_vote.save()
-    
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
-    
+
+    response_data = {'get_votes_count':proposal_comment.get_votes_count()}
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json') 
   
     
 @login_required
 @require_http_methods(['POST'])
 def proposal_comment_vote_up(request, conference_slug, proposal_slug, proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
-
+    if request.is_ajax():
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+    else:
+        # A better Error message or Error Page should be displayed or it can be done in the front-end.
+        return HttpResponse('The request is not ajax')    
 
 @login_required
 @require_http_methods(['POST'])
 def proposal_comment_vote_down(request, conference_slug, proposal_slug, proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
+    if request.is_ajax():
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
+    else:
+        # A better Error message or Error Page should be displayed.
+        return HttpResponse('The request is not ajax')  
