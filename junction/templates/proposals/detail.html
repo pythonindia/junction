@@ -26,10 +26,12 @@
                 dataType : 'json',
                 data : data,
                 success : function(data){
-                    alert("Success:" + data);
+                    alert("Success:" + data['get_votes_count']);
+                    // The 'data['get_votes_count']' value should be replaced with '[{{comment.get_votes_count}}]'. 
                 },
                 error : function(data){
-                    alert("Error:" + data);
+                    console.log(data);
+                    alert("Error");
                 }
             });
         });
