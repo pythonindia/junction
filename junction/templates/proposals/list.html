@@ -67,6 +67,10 @@
             </div>
         </div>
 
+        {% if not proposals_list %}
+            <p> No proposals found. </p>
+        {% endif %}
+
          {% for proposal in proposals_list %}
           <div class="row">
             <div class="col-xs-12" >

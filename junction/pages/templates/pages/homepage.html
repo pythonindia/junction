@@ -12,6 +12,11 @@
 {% block content %}
     <section class="conference-list">
     <h2>Conferences</h2>
+
+    {% if not conferences %}
+        <p> No conferences found. </p>
+    {% endif %}
+
     {% for conference in conferences %}
         <div class="conference-item">
             <h3><a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a></h3>
