@@ -2,12 +2,7 @@ import os
 
 from django.conf.global_settings import *  # noqa
 
-# Standard Library
-from os.path import dirname, join
-
-# Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
-ROOT_DIR = dirname(dirname(__file__))
-APP_DIR = join(ROOT_DIR, 'junction')
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SITE_ID = 1
 
@@ -45,13 +40,12 @@ THIRD_PARTY_APPS = (
 
     'pagedown',
     'django_markdown',
-    'django_bootstrap_breadcrumbs',
 )
 
 OUR_APPS = (
-    'junction.conferences',
-    'junction.proposals',
-    'junction.pages',
+            'conferences',
+            'proposals',
+            'custom_utils',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -131,29 +125,29 @@ LOGGING = {
 
 
 ROOT_URLCONF = 'junction.urls'
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'junction.wsgi.application'
 
 TIME_ZONE = 'Asia/Kolkata'
 USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(APP_DIR, 'assets', 'collected-static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'collected-static')
 STATICFILES_DIRS = (
-    os.path.join(APP_DIR, 'assets', 'static'),
+    os.path.join(BASE_DIR, 'assets', 'static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(APP_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'junctionIndia'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
         'PORT': os.environ.get('DB_PORT', ''),
     }
 }
@@ -170,3 +164,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t
 DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
+
+# Dev Settings
+
+try:
+    from junction.dev import *  # noqa
+except ImportError:
+    pass
