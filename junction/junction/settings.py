@@ -42,8 +42,11 @@ THIRD_PARTY_APPS = (
     'django_markdown',
 )
 
-OUR_APPS = ('conferences',
-            'proposals',)
+OUR_APPS = (
+            'conferences',
+            'proposals',
+            'custom_utils',
+)
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
 

@@ -160,6 +160,17 @@ class ProposalComment(TimeAuditModel):
         down_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=False).count()
         return up_vote_count - down_vote_count
 
+    def get_up_vote_url(self):
+        return reverse('proposal-comment-up-vote', args=[self.proposal.conference.slug, self.proposal.slug, self.id])
+    
+    def get_down_vote_url(self):
+        return reverse('proposal-comment-down-vote', args=[self.proposal.conference.slug, self.proposal.slug, self.id])
+    
+    def get_votes_count(self):
+        up_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=True).count()
+        down_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=False).count()
+        return up_vote_count - down_vote_count
+
 
 class ProposalCommentVote(TimeAuditModel):
 

@@ -1,165 +1,24 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 {% load django_markdown %}
-{% load static %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %} Proposal Details | {{ block.super }} {% endblock %}
-
 {% block endhead %}
-<style>
-  .required > label:after {
-    content: "*";
-  }
-</style>
-<script>
-    $(document).ready(function() {
-        $("form.ajax").submit(function(e){
-            e.preventDefault();
-            var $this = $(this);
-            var url = $this.attr('action');
-            var method = $this.attr('method');
-            var data = $this.serialize();
-            jQuery.ajax({
-                type : method,
-                url : url,
-                dataType : 'json',
-                data : data,
-                success : function(data){
-                    alert("Success:" + data['get_votes_count'] + "This data should display in the right position.");
-                    // The 'data['get_votes_count']' value should be replaced with '[{{comment.get_votes_count}}]'. 
-                },
-                error : function(data){
-                    console.log(data);
-                    alert("Error");
-                }
-            });
-        });
-    }); 
-</script>
+    <!-- Custom CSS -->
+    <link href="{% static 'css/details.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
-        <div class="form-container space-2-bottom">
-            <h2 class="fill-blue text-center">Proposal Details</h2>
-            <div class="pad-2 push-half-top push-2-bottom">
-              <hr>
-                    <table>
-                        <tr>
-                            <td>
-                                Title
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.title }}
 
-                                {% if user.is_authenticated %}
-                                    <{{ vote_value }}> <!-- (0) - not voted, (-1) - downvote, (1) - up vote  -->
-                                      <form method="POST" action="{{ proposal.get_up_vote_url }}">
-                                            {% csrf_token %} {{ proposal_vote_form }}
-                                            <button type="submit" class="btn btn-primary"> Up Vote </button>
-                                      </form>
-                                {% endif %}
-
-                                [{{ proposal.get_votes_count }}]
-
-                                {% if user.is_authenticated %}
-                                   <form method="POST" action="{{ proposal.get_down_vote_url }}">
-                                        {% csrf_token %} {{ proposal_vote_form }}
-                                        <button type="submit" class="btn btn-primary"> Down Vote </button>
-                                  </form>
-                                {% endif %}
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Description
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.description|markdown }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Target Audience
-                            </td>
-                            <td class="text-center">
-                                {% if proposal.target_audience == 1 %}
-                                    Beginner
-                                {% elif proposal.target_audience == 2 %}
-                                    Intermediate
-                                {% else %}
-                                    Advanced
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Prerequisites
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.prerequisites|markdown }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content URLS
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.content_urls|markdown }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Speaker Info
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.speaker_info|markdown }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Speaker Links
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.speaker_links|markdown }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status
-                            </td>
-                            <td class="text-center">
-                                {% if proposal.status == 1 %}
-                                    Draft
-                                {% elif proposal.status == 2 %}
-                                    Public
-                                {% else %}
-                                    Cancelled
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Proposal Type
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.proposal_type }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Proposal Section
-                            </td>
-                            <td class="text-center">
-                                {{ proposal.proposal_section }}
-                            </td>
-                        </tr>
-                    </table>
-
-<<<<<<< HEAD:junction/templates/proposals/detail.html
-=======
 <div class="custom-container">
 <div class="proposal-details">
     <div class="row proposal-title">
@@ -195,7 +54,7 @@
             <div class="icon-holder  pull-right text-center">
                 <div>
                     <h4>
-                        {{ vote_value }}
+                        {{ proposal.get_votes_count }}
                     </h4>
                 </div>
                 <div class="icon-holder-bottom">
@@ -238,57 +97,56 @@
                 {% else %}
                     Cancelled
                 {% endif %}
->>>>>>> 70c634d0a62742f0988cb9c21681fc76803d5cad:junction/templates/proposals/detail/base.html
                 <br>
-                {% if can_delete %}
-                    <button onclick="location.href='{{ proposal.get_update_url }}'">Edit</button>
-                    <button onclick="location.href='{{ proposal.get_delete_url }}'">Delete</button>
+                <b>
+                Target Audience :
+                </b>
+                {% if proposal.target_audience == 1 %}
+                    Beginner
+                {% elif proposal.target_audience == 2 %}
+                    Intermediate
+                {% else %}
+                    Advanced
                 {% endif %}
             </div>
-
         </div>
     </div>
+    <div class="row porsal-description">
+        <div class="col-sm-12">
+            <h4>
+                Description :
+            </h4>
+            <p>
+                {{ proposal.description|markdown }}
+            </p>
 
-</div>
-
-<<<<<<< HEAD:junction/templates/proposals/detail.html
-<div id="comments">
-
-    {% if not comments %}
-        <p> No comments added so far. </p>
-    {% endif %}
-
-    {% for comment in comments %}
-        <p>
-            {{ comment.created_at }}, {{ comment.commenter }}, {{ comment.private }}
-            <br/>
-            {% if user.is_authenticated %}
-                  <form class="ajax" method="POST" action="{{ comment.get_up_vote_url }}">
-                        {% csrf_token %} {{ proposal_comment_vote_form }}
-                        <button type="submit" class="btn btn-primary"> Up Vote </button>
-                  </form>
+            {% if proposal.prerequisites %}
+                <h4>
+                    Prerequisites :
+                </h4>
+                <p>
+                    {{ proposal.prerequisites|markdown }}
+                </p>
             {% endif %}
-            [{{ comment.get_votes_count }}]
-            {% if user.is_authenticated %}
-               <form class="ajax" method="POST" action="{{ comment.get_down_vote_url }}">
-                    {% csrf_token %} {{ proposal_comment_vote_form }}
-                    <button type="submit" class="btn btn-primary"> Down Vote </button>
-              </form>
-            {% endif %}
-                                
-            {{ comment.comment|markdown }}
-        </p>
-    {% endfor %}
 
-    {% if user.is_authenticated %}
-          <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}"> {% csrf_token %}
-            {{ proposal_comment_form.media }}
-            {% bootstrap_field proposal_comment_form.comment %}
-
-            {% if allow_private_comment %}
-                {% bootstrap_field proposal_comment_form.private %}
+            {% if proposal.content_urls %}
+                <h4>
+                    Content URLS :
+                </h4>
+                <p>
+                    {{ proposal.content_urls|markdown }}
+                </p>
             {% endif %}
-=======
+
+            {% if proposal.speaker_info %}
+                <h4>
+                    Speaker Info :
+                </h4>
+                <p>
+                    {{ proposal.speaker_info|markdown }}
+                </p>
+            {% endif %}
+
             {% if proposal.speaker_links %}
                 <h4>
                     Speaker Links :
@@ -307,18 +165,19 @@
     </div>
 </div>
 
->>>>>>> 70c634d0a62742f0988cb9c21681fc76803d5cad:junction/templates/proposals/detail/base.html
 
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                    Add Comment
-                </button>
-            {% endbuttons %}
-          </form>
-    {% else %}
-        <p> <a href="{% url 'account_login' %}">Login </a> to add a new comment. </p>
-    {% endif %}
+{% endblock %}
 
-</div>
-
+{% block script_extra %}
+ <script type="text/javascript">
+    $('.prosal-up-vote').click(function(){
+        $("#prosal-up-vote").submit();
+    });
+    $('.prosal-down-vote').click(function(){
+        $("#prosal-down-vote").submit();
+    });
+</script>
+{% block comment_script_extra %}
+    
+{% endblock comment_script_extra %}
 {% endblock %}

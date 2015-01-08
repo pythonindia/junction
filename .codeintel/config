@@ -1,0 +1,7 @@
+{
+	"Python": {
+			"python": '~/.virtualenvs/your_env/bin/python',
+			"pythonExtraPaths": ['~/.virtualenvs/your_env/lib/python2.6/site-packages',
+		]
+	},
+} 

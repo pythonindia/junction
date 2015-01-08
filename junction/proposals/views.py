@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
-from conferences.models import Conference, ConferenceProposalReviewer
-import json
-from proposals.forms import ProposalCommentForm, ProposalForm, ProposalVoteForm, ProposalCommentVoteForm
-from proposals.models import Proposal, ProposalComment, ProposalVote, ProposalCommentVote
+from junction.conferences.models import Conference, ConferenceProposalReviewer
+from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
+from .models import Proposal, ProposalComment, ProposalVote, ProposalCommentVote
 
 
 def _is_proposal_author(user, proposal):
@@ -114,6 +113,7 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
             'proposal_comment_form': ProposalCommentForm(
                 initial={'private': True})
         })
+        import pdb; pdb.set_trace()
         return render(request, 'proposals/detail/reviewers.html', ctx)
     else:
         ctx.update({'comments': comments.filter(private=False),
@@ -234,32 +234,22 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
     proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
-    
     proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
-                                                                               voter=request.user)
-    
+                                        voter=request.user)
     proposal_comment_vote.up_vote = up_vote
     proposal_comment_vote.save()
-
-    response_data = {'get_votes_count':proposal_comment.get_votes_count()}
-
-    return HttpResponse(json.dumps(response_data), content_type='application/json') 
-  
     
-@login_required
-@require_http_methods(['POST'])
-def proposal_comment_vote_up(request, conference_slug, proposal_slug, proposal_comment_id):
-    if request.is_ajax():
-        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
-    else:
-        # A better Error message or Error Page should be displayed or it can be done in the front-end.
-        return HttpResponse('The request is not ajax')    
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
+
 
 @login_required
 @require_http_methods(['POST'])
-def proposal_comment_vote_down(request, conference_slug, proposal_slug, proposal_comment_id):
-    if request.is_ajax():
+def proposal_comment_up_vote(request, conference_slug, proposal_slug, proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_down_vote(request, conference_slug, proposal_slug, proposal_comment_id):
         return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
-    else:
-        # A better Error message or Error Page should be displayed.
-        return HttpResponse('The request is not ajax')  
