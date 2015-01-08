@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %}Server Error{% endblock %}
+{% block page_classes %}{{ block.super }} server_error {% endblock page_classes %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Server Error" "" %}
+{% endblock %}
+
+
+{% block content %}
+<h1>Ooops!!! 500</h1>
+
+<h3>Looks like something went wrong!</h3>
+
+<p>We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing.</p>
+{% endblock content %}

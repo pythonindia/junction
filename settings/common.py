@@ -1,8 +1,13 @@
 import os
 
-from django.conf.global_settings import *  # @UnusedWildImport
+from django.conf.global_settings import *  # noqa
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# Standard Library
+from os.path import dirname, join
+
+# Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
+ROOT_DIR = dirname(dirname(__file__))
+APP_DIR = join(ROOT_DIR, 'junction')
 
 SITE_ID = 1
 
@@ -41,10 +46,14 @@ THIRD_PARTY_APPS = (
 
     'pagedown',
     'django_markdown',
+    'django_bootstrap_breadcrumbs',
 )
 
-OUR_APPS = ('conferences',
-            'proposals',)
+OUR_APPS = (
+    'junction.conferences',
+    'junction.proposals',
+    'junction.pages',
+)
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
 
@@ -123,20 +132,20 @@ LOGGING = {
 
 
 ROOT_URLCONF = 'junction.urls'
-WSGI_APPLICATION = 'junction.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 TIME_ZONE = 'Asia/Kolkata'
 USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'collected-static')
+STATIC_ROOT = os.path.join(APP_DIR, 'assets', 'collected-static')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'assets', 'static'),
+    os.path.join(APP_DIR, 'assets', 'static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(APP_DIR, 'templates'),
 )
 
 DATABASES = {
@@ -163,86 +172,9 @@ DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
 
-
 #Email Settings - django-sendgrid
 SENDGRID_EMAIL_HOST = "smtp.sendgrid.net"
 SENDGRID_EMAIL_PORT = 587
 SENDGRID_EMAIL_USERNAME = os.environ.get('SENDGRID_USERNAME', ''),
 SENDGRID_EMAIL_PASSWORD = os.environ.get('SENDGRID_PASSWORD', ''),
 SENDGRID_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', ''),
-
-
-#setup dynamic hostname for logging
-import socket
-HOSTNAME = socket.gethostname()
-
-#ensure log files can be created if path doesn't exist
-def log_file(dir, file):
-    dir = os.path.expanduser(dir)
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-    return os.path.join(dir, file)
-
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'formatter': 'simple',
-            'filename': log_file(LOG_DIR,'error.log'),
-        },
-        
-    },
-    'loggers': {
-       'django.request': {
-            'handlers': ['mail_admins','file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        # Uncomment following to turn on sql logging
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        },
-        
-        'app_log': {
-            'handlers': ['console','mail_admins','file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    }
-}
-
-
-# Dev Settings
-try:
-    from junction.dev import *  # @UnusedWildImport
-except ImportError:
-    pass

@@ -1,14 +1,17 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.http.response import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
 
-from conferences.models import Conference, ConferenceProposalReviewer
-from custom_utils.constants import PROPOSAL_USER_VOTE_ROLE_REVIEWER,\
-    PROPOSAL_USER_VOTE_ROLE_PUBLIC
-from proposals.forms import ProposalForm, ProposalCommentForm, ProposalVoteForm
-from proposals.models import Proposal, ProposalComment, ProposalVote
+from junction.conferences.models import Conference, ConferenceProposalReviewer
+
+from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
+from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType
 
 
 def _is_proposal_author(user, proposal):
@@ -18,7 +21,9 @@ def _is_proposal_author(user, proposal):
 
 
 def _is_proposal_reviewer(user, conference):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user, conference=conference, active=True):
+    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user,
+                                                                             conference=conference,
+                                                                             active=True):
         return True
     return False
 
@@ -31,7 +36,12 @@ def _is_proposal_author_or_reviewer(user, conference, proposal):
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposals_list = Proposal.objects.filter(conference=conference)
+    proposal_sections = ProposalSection.objects.filter(conferences=conference)
+    proposal_types = ProposalType.objects.filter(conferences=conference)
+
     return render(request, 'proposals/list.html', {'proposals_list': proposals_list,
+                                                   'proposal_sections': proposal_sections,
+                                                   'proposal_types': proposal_types,
                                                    'conference': conference})
 
 
@@ -41,7 +51,8 @@ def create_proposal(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
         form = ProposalForm(conference)
-        return render(request, 'proposals/create.html', {'form': form})
+        return render(request, 'proposals/create.html', {'form': form,
+                                                         'conference': conference, })
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
@@ -74,17 +85,12 @@ def create_proposal(request, conference_slug):
 
 
 @require_http_methods(['GET'])
-def detail_proposal(request, conference_slug, slug):
+def detail_proposal(request, conference_slug, slug, reviewers=False):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
     allow_private_comment = _is_proposal_author_or_reviewer(
         request.user, conference, proposal)
 
-    comments = ProposalComment.objects.filter(proposal=proposal, deleted=False)
-    if not allow_private_comment:
-        comments = comments.filter(private=False)
-
-    proposal_comment_form = ProposalCommentForm()
     proposal_vote_form = ProposalVoteForm()
 
     can_delete = False
@@ -95,18 +101,36 @@ def detail_proposal(request, conference_slug, slug):
 
     try:
         if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
+            proposal_vote = ProposalVote.objects.get(
+                proposal=proposal, voter=request.user)
             vote_value = 1 if proposal_vote.up_vote else -1
     except ProposalVote.DoesNotExist:
         pass
 
-    return render(request, 'proposals/detail.html', {'proposal': proposal,
-                                                     'comments': comments,
-                                                     'proposal_comment_form': proposal_comment_form,
-                                                     'proposal_vote_form': proposal_vote_form,
-                                                     'allow_private_comment': allow_private_comment,
-                                                     'vote_value': vote_value,
-                                                     'can_delete': can_delete})
+    ctx = {
+        'proposal': proposal,
+        'allow_private_comment': allow_private_comment,
+        'proposal_vote_form': proposal_vote_form,
+        'vote_value': vote_value,
+        'can_delete': can_delete
+    }
+
+    comments = ProposalComment.objects.filter(
+        proposal=proposal, deleted=False,
+    ).order_by("-created_at")
+
+    if reviewers and allow_private_comment:
+        ctx.update({
+            'comments': comments.filter(private=True),
+            'proposal_comment_form': ProposalCommentForm(
+                initial={'private': True})
+        })
+        return render(request, 'proposals/detail/reviewers.html', ctx)
+    else:
+        ctx.update({'comments': comments.filter(private=False),
+                    'proposal_comment_form': ProposalCommentForm()})
+        return render(request, 'proposals/detail/public_comments.html', ctx)
+
 
 
 @login_required
@@ -120,12 +144,14 @@ def update_proposal(request, conference_slug, slug):
 
     if request.method == 'GET':
         form = ProposalForm.populate_form_for_update(proposal)
-        return render(request, 'proposals/update.html', {'form': form})
+        return render(request, 'proposals/update.html', {'form': form,
+                                                         'proposal': proposal})
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
     if not form.is_valid():
         return render(request, 'proposals/update.html', {'form': form,
+                                                         'proposal': proposal,
                                                          'errors': form.errors})
 
     # Valid Form
@@ -167,7 +193,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
-
+    if not _is_proposal_author_or_reviewer(request.user, conference, proposal):
+        raise Http404()
     form = ProposalCommentForm(request.POST)
     if form.is_valid():
         comment = form.cleaned_data['comment']
@@ -178,9 +205,13 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
                                        private=private,
                                        commenter=request.user,
                                        )
-
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
+    if private:
+        return HttpResponseRedirect(
+            reverse('proposal-detail-reviewers',
+                    args=[conference.slug, proposal.slug, 'reviewers']))
+    else:
+        return HttpResponseRedirect(
+            reverse('proposal-detail', args=[conference.slug, proposal.slug]))
 
 
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):

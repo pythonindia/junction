@@ -2,50 +2,63 @@ from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
-from custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
-from proposals.models import ConferenceProposalSection, ConferenceProposalType
+from junction.custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
+from junction.proposals.models import ProposalSection, ProposalType
 
 
 def _get_proposal_section_choices(conference):
-    return [(str(cps.id), cps.proposal_section.name)
-            for cps in ConferenceProposalSection.objects.filter(conference=conference)]
+    return [(str(cps.id), cps.name)
+            for cps in ProposalSection.objects.filter(conferences=conference)]
 
 
 def _get_proposal_type_choices(conference):
-    return [(str(cpt.id), cpt.proposal_type.name)
-            for cpt in ConferenceProposalType.objects.filter(conference=conference)]
+    return [(str(cpt.id), cpt.name)
+            for cpt in ProposalType.objects.filter(conferences=conference)]
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
+
     """
-        This overrides widget method to put radio buttons horizontally instead of vertically.
+    This overrides widget method to put radio buttons horizontally instead of vertically.
     """
+
     def render(self):
         """Outputs radios"""
         return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 
 class ProposalForm(forms.Form):
+
     '''
     Used for create/edit
     '''
     title = forms.CharField(min_length=10)
     description = forms.CharField(widget=PagedownWidget(show_preview=True))
-    target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    status = forms.ChoiceField(choices=PROPOSAL_STATUS_LIST, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    proposal_type = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    proposal_section = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    target_audience = forms.ChoiceField(
+        choices=PROPOSAL_TARGET_AUDIENCES, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    status = forms.ChoiceField(
+        choices=PROPOSAL_STATUS_LIST, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    proposal_type = forms.ChoiceField(
+        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    proposal_section = forms.ChoiceField(
+        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 
     # Additional Content
-    prerequisites = forms.CharField(widget=PagedownWidget(show_preview=True), required=False)
-    content_urls = forms.CharField(widget=PagedownWidget(show_preview=True), required=False)
-    speaker_info = forms.CharField(widget=PagedownWidget(show_preview=True), required=False)
-    speaker_links = forms.CharField(widget=PagedownWidget(show_preview=True), required=False)
+    prerequisites = forms.CharField(
+        widget=PagedownWidget(show_preview=True), required=False)
+    content_urls = forms.CharField(
+        widget=PagedownWidget(show_preview=True), required=False)
+    speaker_info = forms.CharField(
+        widget=PagedownWidget(show_preview=True), required=False)
+    speaker_links = forms.CharField(
+        widget=PagedownWidget(show_preview=True), required=False)
 
     def __init__(self, conference, *args, **kwargs):
         super(ProposalForm, self).__init__(*args, **kwargs)
-        self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
-        self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
+        self.fields['proposal_section'].choices = _get_proposal_section_choices(
+            conference)
+        self.fields['proposal_type'].choices = _get_proposal_type_choices(
+            conference)
 
     @classmethod
     def populate_form_for_update(self, proposal):
@@ -64,15 +77,17 @@ class ProposalForm(forms.Form):
 
 
 class ProposalCommentForm(forms.Form):
+
     '''
     Used to add comments
     '''
     comment = forms.CharField(widget=PagedownWidget(show_preview=True))
-    private = forms.BooleanField(required=False)
+    private = forms.BooleanField(required=False, widget=forms.HiddenInput())
 
 
 class ProposalVoteForm(forms.Form):
+
     '''
-    Used for csrf token in voting
+    Used for CSRF token in voting
     '''
     pass

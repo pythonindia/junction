@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load webdesign %}
+
+{% block head_title %}{{ block.super }}{% endblock %}
+{% block page_classes %}{{ block.super }} homepage{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block header %}
+    <h1>Welcome to Junction</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="conference-list">
+    <h2>Conferences</h2>
+
+    {% if not conferences %}
+        <p> No conferences found. </p>
+    {% endif %}
+
+    {% for conference in conferences %}
+        <div class="conference-item">
+            <h3><a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a></h3>
+            <p class="meta">
+                <span class="start_date">{{ conference.start_date }}</span> –
+                <span class="end_date">{{ conference.end_date }}</span>
+                (<span class="status">{{ conference.get_status_display }}</span>)
+            </p>
+            <p>{{ conference.description }}</p>
+        </div>
+    {% endfor %}
+    </section>
+{% endblock %}

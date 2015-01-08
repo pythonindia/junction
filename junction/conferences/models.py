@@ -1,25 +1,30 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from django.template.loader import render_to_string
 from django.template.context import RequestContext, Context
 
-from custom_utils.constants import CONFERENCE_STATUS_LIST
-from custom_utils.models import AuditModel
-from custom_utils.emailer import EmailEngine
+from junction.custom_utils.constants import CONFERENCE_STATUS_LIST
+from junction.custom_utils.models import AuditModel
+from junction.custom_utils.emailer import EmailEngine
 
 def _get_conference_moderator_emails(conference):
     return [(cm.moderator.email)
             for cm in ConferenceModerator.objects.filter(conference=conference)]
 
 class Conference(AuditModel):
+
     """ Conference/Event master """
     name = models.CharField(max_length=255, verbose_name="Conference Name")
     slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',))
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
-    status = models.PositiveSmallIntegerField(choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
+    status = models.PositiveSmallIntegerField(
+        choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
@@ -55,6 +60,7 @@ class Conference(AuditModel):
     
 
 class ConferenceModerator(AuditModel):
+
     """ List of Conference Moderators/Administrators  """
     conference = models.ForeignKey(Conference)
     moderator = models.ForeignKey(User)
@@ -85,6 +91,7 @@ class ConferenceModerator(AuditModel):
             
 
 class ConferenceProposalReviewer(AuditModel):
+
     """ List of global proposal reviewers """
     conference = models.ForeignKey(Conference)
     reviewer = models.ForeignKey(User)
@@ -114,4 +121,3 @@ class ConferenceProposalReviewer(AuditModel):
         if to_list:
             email_engine = EmailEngine()
             email_engine.send_email(to_list,html_page,subject)
-    
