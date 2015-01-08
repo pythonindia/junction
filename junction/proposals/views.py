@@ -1,17 +1,11 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
-
 from junction.conferences.models import Conference, ConferenceProposalReviewer
-
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType
+from .models import Proposal, ProposalComment, ProposalVote, ProposalCommentVote
 
 
 def _is_proposal_author(user, proposal):
@@ -36,12 +30,7 @@ def _is_proposal_author_or_reviewer(user, conference, proposal):
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposals_list = Proposal.objects.filter(conference=conference)
-    proposal_sections = ProposalSection.objects.filter(conferences=conference)
-    proposal_types = ProposalType.objects.filter(conferences=conference)
-
     return render(request, 'proposals/list.html', {'proposals_list': proposals_list,
-                                                   'proposal_sections': proposal_sections,
-                                                   'proposal_types': proposal_types,
                                                    'conference': conference})
 
 
@@ -51,8 +40,7 @@ def create_proposal(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
         form = ProposalForm(conference)
-        return render(request, 'proposals/create.html', {'form': form,
-                                                         'conference': conference, })
+        return render(request, 'proposals/create.html', {'form': form})
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
@@ -92,7 +80,7 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
         request.user, conference, proposal)
 
     proposal_vote_form = ProposalVoteForm()
-
+    
     can_delete = False
     if request.user == proposal.author:
         can_delete = True
@@ -125,6 +113,7 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
             'proposal_comment_form': ProposalCommentForm(
                 initial={'private': True})
         })
+        import pdb; pdb.set_trace()
         return render(request, 'proposals/detail/reviewers.html', ctx)
     else:
         ctx.update({'comments': comments.filter(private=False),
@@ -143,14 +132,12 @@ def update_proposal(request, conference_slug, slug):
 
     if request.method == 'GET':
         form = ProposalForm.populate_form_for_update(proposal)
-        return render(request, 'proposals/update.html', {'form': form,
-                                                         'proposal': proposal})
+        return render(request, 'proposals/update.html', {'form': form})
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
     if not form.is_valid():
         return render(request, 'proposals/update.html', {'form': form,
-                                                         'proposal': proposal,
                                                          'errors': form.errors})
 
     # Valid Form
@@ -241,3 +228,28 @@ def proposal_vote_up(request, conference_slug, proposal_slug):
 @require_http_methods(['POST'])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
+
+
+def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, up_vote):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
+    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
+                                        voter=request.user)
+    proposal_comment_vote.up_vote = up_vote
+    proposal_comment_vote.save()
+    
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_up_vote(request, conference_slug, proposal_slug, proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_down_vote(request, conference_slug, proposal_slug, proposal_comment_id):
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)

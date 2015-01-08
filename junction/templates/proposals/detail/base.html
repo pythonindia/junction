@@ -54,7 +54,7 @@
             <div class="icon-holder  pull-right text-center">
                 <div>
                     <h4>
-                        {{ vote_value }}
+                        {{ proposal.get_votes_count }}
                     </h4>
                 </div>
                 <div class="icon-holder-bottom">
@@ -176,6 +176,8 @@
     $('.prosal-down-vote').click(function(){
         $("#prosal-down-vote").submit();
     });
-
 </script>
+{% block comment_script_extra %}
+    
+{% endblock comment_script_extra %}
 {% endblock %}

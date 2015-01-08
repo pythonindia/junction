@@ -1,7 +1,9 @@
 from django.contrib import admin
 
-from junction.custom_utils.admin import AuditAdmin, TimeAuditAdmin
-from junction.proposals.models import (
+from custom_utils.admin import AuditAdmin, TimeAuditAdmin
+from proposals.models import (
+    ConferenceProposalSection,
+    ConferenceProposalType,
     Proposal,
     ProposalComment,
     ProposalCommentVote,
@@ -17,6 +19,16 @@ class ProposalSectionAdmin(AuditAdmin):
 
 class ProposalTypeAdmin(AuditAdmin):
     list_display = ('name', 'active') + AuditAdmin.list_display
+
+
+class ConferenceProposalSectionAdmin(AuditAdmin):
+    list_display = (
+        'conference', 'proposal_section', 'active') + AuditAdmin.list_display
+
+
+class ConferenceProposalTypeAdmin(AuditAdmin):
+    list_display = ('conference', 'proposal_type', 'active') + \
+        AuditAdmin.list_display
 
 
 class ProposalAdmin(TimeAuditAdmin):
@@ -41,6 +53,8 @@ class ProposalCommentVoteAdmin(TimeAuditAdmin):
 
 admin.site.register(ProposalSection, ProposalSectionAdmin)
 admin.site.register(ProposalType, ProposalTypeAdmin)
+admin.site.register(ConferenceProposalSection, ConferenceProposalSectionAdmin)
+admin.site.register(ConferenceProposalType, ConferenceProposalTypeAdmin)
 admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(ProposalVote, ProposalVoteAdmin)
 admin.site.register(ProposalComment, ProposalCommentAdmin)
