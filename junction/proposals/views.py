@@ -11,7 +11,8 @@ from django.views.decorators.http import require_http_methods
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType
+from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType, \
+    ProposalCommentVote
 
 
 def _is_proposal_author(user, proposal):
@@ -241,3 +242,28 @@ def proposal_vote_up(request, conference_slug, proposal_slug):
 @require_http_methods(['POST'])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
+
+
+def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, up_vote):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
+    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
+                                        voter=request.user)
+    proposal_comment_vote.up_vote = up_vote
+    proposal_comment_vote.save()
+    
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_up_vote(request, conference_slug, proposal_slug, proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_comment_down_vote(request, conference_slug, proposal_slug, proposal_comment_id):
+        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
