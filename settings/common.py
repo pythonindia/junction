@@ -33,6 +33,7 @@ CORE_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    "sendgrid",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -170,3 +171,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t
 DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
+
+#Email Settings - django-sendgrid
+SENDGRID_EMAIL_HOST = "smtp.sendgrid.net"
+SENDGRID_EMAIL_PORT = 587
+SENDGRID_EMAIL_USERNAME = os.environ.get('SENDGRID_USERNAME', ''),
+SENDGRID_EMAIL_PASSWORD = os.environ.get('SENDGRID_PASSWORD', ''),
+SENDGRID_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', ''),
