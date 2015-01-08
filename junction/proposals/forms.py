@@ -82,7 +82,7 @@ class ProposalCommentForm(forms.Form):
     Used to add comments
     '''
     comment = forms.CharField(widget=PagedownWidget(show_preview=True))
-    private = forms.BooleanField(required=False)
+    private = forms.BooleanField(required=False, widget=forms.HiddenInput())
 
 
 class ProposalVoteForm(forms.Form):

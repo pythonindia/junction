@@ -35,12 +35,16 @@
             {% if can_delete %}
             <div class="proposal-update">
                 <a href="{{ proposal.get_update_url }}" >
-                <i  class="fa fa-pencil-square-o">
-                </i>
+                <i class="fa fa-pencil-square-o"> </i>
                 </a>
                 <a href="{{ proposal.get_delete_url }}" >
-                <i  class="fa fa-trash-o">
-                </i>
+                <i class="fa fa-trash-o"> </i>
+                </a>
+                <a href="{{ proposal.get_absolute_url }}#comments" >
+                <i class="fa fa-comments-o"> </i>
+                </a>
+                <a href="{{ proposal.get_absolute_url }}reviewers/#comments" >
+                <i class="fa fa-info"> </i>
                 </a>
             </div>
             {% endif %}
@@ -155,50 +159,8 @@
     </div>
     <div class="row">
         <div class="col-sm-12" id="comments">
-            <h4 class="proposal-comments">
-                Comments
-            </h4>
-
-            {% if not comments %}
-                <p>
-                    No comments added so far.
-                </p>
-                <br/>
-            {% endif %}
-
-            {% for comment in comments %}
-                <p>
-                    {{ comment.comment|markdown }} <br/>
-                    Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
-                    <hr/>
-                </p>
-            {% endfor %}
-
-            {% if user.is_authenticated %}
-                <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
-                    {% csrf_token %}
-                    {{ proposal_comment_form.media }}
-
-                    {% bootstrap_field proposal_comment_form.comment %}
-
-                    {% if allow_private_comment %}
-                        {% bootstrap_field proposal_comment_form.private %}
-                    {% endif %}
-
-                    {% buttons %}
-                        <button type="submit" class="btn btn-primary">
-                            Add Comment
-                        </button>
-                    {% endbuttons %}
-                </form>
-            {% else %}
-                <p>
-                    <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
-                    Login
-                    </a>
-                    to add a new comment.
-                </p>
-            {% endif %}
+          {% block comments %}
+          {% endblock %}
         </div>
     </div>
 </div>
