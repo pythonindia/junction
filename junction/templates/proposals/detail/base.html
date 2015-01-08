@@ -158,6 +158,87 @@
                         </tr>
                     </table>
 
+<<<<<<< HEAD:junction/templates/proposals/detail.html
+=======
+<div class="custom-container">
+<div class="proposal-details">
+    <div class="row proposal-title">
+        <div class="col-sm-11">
+            <h1>
+                {{ proposal.title }}
+            </h1>
+            <span>
+            by:
+            <b>
+            {{ proposal.author.get_full_name }}
+            </b>
+            </span>
+            {% if can_delete %}
+            <div class="proposal-update">
+                <a href="{{ proposal.get_update_url }}" >
+                <i class="fa fa-pencil-square-o"> </i>
+                </a>
+                <a href="{{ proposal.get_delete_url }}" >
+                <i class="fa fa-trash-o"> </i>
+                </a>
+                <a href="{{ proposal.get_absolute_url }}#comments" >
+                <i class="fa fa-comments-o"> </i>
+                </a>
+                <a href="{{ proposal.get_absolute_url }}reviewers/#comments" >
+                <i class="fa fa-info"> </i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+        <div class="col-sm-1">
+            <div class="icon-holder  pull-right text-center">
+                <div>
+                    <h4>
+                        {{ vote_value }}
+                    </h4>
+                </div>
+                <div class="icon-holder-bottom">
+                    <i class="fa fa-thumbs-down prosal-down-vote">
+                    </i>
+                    <i class="fa fa-thumbs-up prosal-up-vote">
+                    </i>
+                </div>
+            </div>
+            <form id="prosal-up-vote" method="POST" action="{{ proposal.get_up_vote_url }}">
+                {% csrf_token %} {{ proposal_vote_form }}
+            </form>
+            <form id="prosal-down-vote" method="POST" action="{{ proposal.get_down_vote_url }}">
+                {% csrf_token %} {{ proposal_vote_form }}
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row porsal-title-section">
+        <div class="col-sm-12 fill-blue ">
+            <div class="col-xs-12 col-sm-8 padding-less ">
+                <b>
+                Section :
+                </b>
+                {{ proposal.proposal_section }}
+                <br>
+                <b>
+                Type :
+                </b>
+                {{ proposal.proposal_type }}
+            </div>
+            <div class="col-xs-12 col-sm-4 padding-less ">
+                <b>
+                Status :
+                </b>
+                {% if proposal.status == 1 %}
+                    Draft
+                {% elif proposal.status == 2 %}
+                    Public
+                {% else %}
+                    Cancelled
+                {% endif %}
+>>>>>>> 70c634d0a62742f0988cb9c21681fc76803d5cad:junction/templates/proposals/detail/base.html
                 <br>
                 {% if can_delete %}
                     <button onclick="location.href='{{ proposal.get_update_url }}'">Edit</button>
@@ -170,6 +251,7 @@
 
 </div>
 
+<<<<<<< HEAD:junction/templates/proposals/detail.html
 <div id="comments">
 
     {% if not comments %}
@@ -206,6 +288,26 @@
             {% if allow_private_comment %}
                 {% bootstrap_field proposal_comment_form.private %}
             {% endif %}
+=======
+            {% if proposal.speaker_links %}
+                <h4>
+                    Speaker Links :
+                </h4>
+                <p>
+                    {{ proposal.speaker_links|markdown }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" id="comments">
+          {% block comments %}
+          {% endblock %}
+        </div>
+    </div>
+</div>
+
+>>>>>>> 70c634d0a62742f0988cb9c21681fc76803d5cad:junction/templates/proposals/detail/base.html
 
             {% buttons %}
                 <button type="submit" class="btn btn-primary">

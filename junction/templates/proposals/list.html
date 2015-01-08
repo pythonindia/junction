@@ -25,6 +25,7 @@
 {% block content %}
 <section class="content custom-container">
     <div class="push-4-bottom push-1-top">
+<<<<<<< HEAD
         {% for proposal in proposals_list %}
             <span class="fa-stack fa-lg">
                 <i class="fa fa-hand-o-right fa-stack-2x"></i>
@@ -37,6 +38,84 @@
 
             <a href='{{ proposal.get_absolute_url }}'> {{ proposal.title }} </a>
             <hr>
+=======
+        <div class="row">
+            <div class="col-xs -12 col-sm-12 ">
+                <h2 class="title-underline">Proposal Sections</h2>
+                {% for section in proposal_sections %}
+                 <p><b>{{section.name}}</b> - {{section.description}}</p>
+                {% endfor %}
+            <hr class="border-less" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs -12 col-sm-12 ">
+                <h2 class="title-underline">Proposal Types</h2>
+                {% for types in proposal_types %}
+                 <p><b>{{types.name}}</b> - {{types.description}}</p>
+                {% endfor %}
+            <hr class="border-less" />
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-xs -12 col-sm-12 ">
+                <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
+                    <i class="fa fa-plus-square-o"></i> New Proposal
+                </a>
+                <div class="header-tab">
+                    <div class="header-tab-title">
+                        <h2>List of Proposals</h2>
+                        <div id="tabs">
+                            <a class="youarehere" href="#" title="">All</a>
+                            <!-- <a href="#" title="">Top Commented</a>
+                            <a href="#" title="">Top Voted</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if not proposals_list %}
+            <p> No proposals found. </p>
+        {% endif %}
+
+         {% for proposal in proposals_list %}
+          <div class="row">
+            <div class="col-xs-12" >
+                <div class="proposal-list-content">
+                    <div class="statscontainer col-sm-1 hidden-xs padding-less">
+                        <div class="stats">
+                            <div class="icon-holder icon-holder-inverse text-center">
+                                <i class="fa fa-comments"></i>
+                                <h4> {{ proposal.get_comments_count }}</h4>
+                            </div>
+                            <div class="icon-holder text-center">
+                                <i class="fa fa-thumbs-up fa-inverse "></i>
+                                <h4> {{ proposal.get_votes_count }} </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-11 col-xs-12 padding-less">
+                        <p class="col-xs-12  visible-xs">
+                            <span class="pull-left">
+                                <i class="fa fa-comments"></i>10
+                            </span>
+                            <span class="pull-right">
+                                <i class="fa fa-thumbs-up"></i>25
+                            </span>
+                        </p>
+                        <h3><a href='{{ proposal.get_absolute_url }}'>{{ proposal.title }}</a></h3>
+                        <p>{{ proposal.description|truncatechars:200 }}</p>
+                        <p>
+                            <span class="pull-right">
+                                <b>By:</b> {{ proposal.author }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+>>>>>>> 70c634d0a62742f0988cb9c21681fc76803d5cad
         {% endfor %}
         <br>
         <a class='btn btn-primary' href='{% url 'proposal-create' conference.slug %}'>New Proposal</a>
