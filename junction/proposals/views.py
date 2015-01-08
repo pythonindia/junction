@@ -132,7 +132,6 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
         return render(request, 'proposals/detail/public_comments.html', ctx)
 
 
-
 @login_required
 @require_http_methods(['GET', 'POST'])
 def update_proposal(request, conference_slug, slug):
