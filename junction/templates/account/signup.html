@@ -3,7 +3,7 @@
 {% load url from future %}
 {% load django_bootstrap_breadcrumbs %}
 
-{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+{% block head_title %}{% trans "Sign Up" %} · {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}

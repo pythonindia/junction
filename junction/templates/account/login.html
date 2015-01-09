@@ -4,7 +4,7 @@
 {% load django_bootstrap_breadcrumbs %}
 {% load url from future %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block head_title %}{% trans "Sign In" %} · {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}

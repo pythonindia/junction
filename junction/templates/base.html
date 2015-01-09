@@ -76,19 +76,20 @@
                     <!-- <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li> -->
                     <!-- <li><a href="{% url 'faq-static' %}">FAQ</a></li> -->
                     <li class="dropdown">
+                        {% if user.is_authenticated %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs"><i class="glyphicon glyphicon-user"></i></span><span class="visible-xs">Account</span> <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            {% if user.is_authenticated %}
+
                                 <li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
                                 {% if user.is_superuser or user.is_stuff %}
                                     <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
                                 {% endif %}
                                 <li class="divider"></li>
                                 <li><a href="{% url 'account_logout' %}">Logout</a></li>
-                            {% else %}
-                                <li><a href="{% url 'account_login' %}">Login or Register</a></li>
-                            {% endif %}
                         </ul>
+                        {% else %}
+                        <a href="{% url 'account_login' %}">Login / Register</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
