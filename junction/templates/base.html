@@ -4,19 +4,39 @@
     {% clear_breadcrumbs %}
     {% breadcrumb_safe "<i class='fa fa-home'></i>" "pages:homepage" %}
 {% endblock %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block head_title %}Junction | Python Software Society of India{% endblock head_title %}</title>
+
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block head_title %}Junction | Python Software Society of India{% endblock head_title %}</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    {# Place icon files in the root if possible (let browsers look for them where they expect them to be) #}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'apple-touch-icon-144x144-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'apple-touch-icon-114x114-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'apple-touch-icon-72x72-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-precomposed.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon-precomposed.png' %}">
+
+    {# Tile icon for Win8 (144x144 + tile color) #}
+    <meta name="msapplication-TileImage" content="{% static 'metro-icon-144x144-precomposed.png' %}"><!-- white shape -->
+    <meta name="msapplication-TileColor" content="#3673a5"><!-- python blue -->
+    <meta name="msapplication-navbutton-color" content="#3673a5">
+
+    {# Theme color on android #}
+    <meta name="theme-color" content="#3673a5">
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
