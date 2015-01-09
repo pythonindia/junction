@@ -28,9 +28,12 @@ class Conference(AuditModel):
 class ConferenceModerator(AuditModel):
 
     """ List of Conference Moderators/Administrators  """
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, related_name='moderators')
     moderator = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
+
+    class Meta:
+        unique_together = ("conference", "moderator")
 
     def __unicode__(self):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
@@ -39,12 +42,12 @@ class ConferenceModerator(AuditModel):
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
-    def __unicode__(self):
-        return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
-
     class Meta:
         unique_together = ("conference", "reviewer")
+
+    def __unicode__(self):
+        return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
