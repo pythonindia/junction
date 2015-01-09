@@ -15,11 +15,11 @@ indent_size = 4
 [*.py]
 # https://github.com/timothycrosley/isort/wiki/isort-Settings
 line_length=120
-known_first_party=amigo
+known_first_party=junction
 multi_line_output=3
 default_section=THIRDPARTY
 import_heading_stdlib=Standard Library
-import_heading_firstparty=Amigo Stuff
+import_heading_firstparty=Junction Stuff
 import_heading_thirdparty=Third Party Stuff
 
 [*.yml]
