@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = (
 )
 
 OUR_APPS = (
+    'junction.base',
     'junction.conferences',
     'junction.proposals',
     'junction.pages',

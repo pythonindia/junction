@@ -9,13 +9,13 @@ from django.db import models
 from django_extensions.db.fields import AutoSlugField
 
 from junction.conferences.models import Conference
-from junction.custom_utils.constants import (
+from junction.base.constants import (
     PROPOSAL_REVIEW_STATUS_LIST,
     PROPOSAL_STATUS_LIST,
     PROPOSAL_TARGET_AUDIENCES,
     PROPOSAL_USER_VOTE_ROLES
 )
-from junction.custom_utils.models import AuditModel, TimeAuditModel
+from junction.base.models import AuditModel, TimeAuditModel
 
 
 class ProposalSection(AuditModel):

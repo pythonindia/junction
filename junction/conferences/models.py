@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 
-from junction.custom_utils.constants import CONFERENCE_STATUS_LIST
-from junction.custom_utils.models import AuditModel
+from junction.base.constants import CONFERENCE_STATUS_LIST
+from junction.base.models import AuditModel
 
 
 class Conference(AuditModel):

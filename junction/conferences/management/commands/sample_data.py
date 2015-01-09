@@ -10,8 +10,8 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.timezone import now
+from junction.base import constants
 from junction.conferences.models import Conference
-from junction.custom_utils import constants
 from sampledatahelper.helper import SampleDataHelper
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)

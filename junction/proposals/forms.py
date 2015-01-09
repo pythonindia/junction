@@ -2,7 +2,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
-from junction.custom_utils.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
+from junction.base.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
 from junction.proposals.models import ProposalSection, ProposalType
 
 
