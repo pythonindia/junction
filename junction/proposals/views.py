@@ -249,10 +249,10 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
     proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
     proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
     proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
-                                        voter=request.user)
+                                                                               voter=request.user)
     proposal_comment_vote.up_vote = up_vote
     proposal_comment_vote.save()
-    
+
     return HttpResponseRedirect(reverse('proposal-detail',
                                         args=[conference.slug, proposal.slug]))
 
