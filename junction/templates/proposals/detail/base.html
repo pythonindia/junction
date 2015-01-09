@@ -176,9 +176,13 @@
     $('.prosal-down-vote').click(function(){
         $("#prosal-down-vote").submit();
     });
-
+    $('.prosal-comment-up-vote').click(function(){
+        var form = $(this).parent().parent().parent().find('#prosal-comment-up-vote');
+        form.submit();
+    });
+    $('.prosal-comment-down-vote').click(function(){
+        var form = $(this).parent().parent().parent().find('#prosal-comment-down-vote');
+        form.submit();
+    });
 </script>
-{% block comment_vote_script %}
-    
-{% endblock comment_vote_script %}
 {% endblock %}
