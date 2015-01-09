@@ -11,11 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block head_title %}Junction | Python Software Society of India{% endblock head_title %}</title>
-
-    <meta name="description" content="">
-    <meta name="author" content="">
-
     <meta name="HandheldFriendly" content="True">
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="cleartype" content="on">
@@ -37,6 +32,22 @@
 
     {# Theme color on android #}
     <meta name="theme-color" content="#3673a5">
+
+    <title>{% block head_title %}{{ SITE_INFO.site_name }}{% endblock head_title %}</title>
+    <meta property="og:title" content="{% block og_title %}{{ SITE_INFO.site_name }}{% endblock %}">
+
+    {# SEO and OpenGraph data - Needs to be fed dynamically according to the content of the page #}
+    <meta name="description" content="{% block page_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta name="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta name="keywords" content="{% block page-keywords %}{% endblock %}">
+    <meta property="og:tag" content="{% block og_keywords %}{% endblock %}">
+    <meta property="og:published_time" content="{% block og_publishedtime %}{% endblock %}">
+    <meta property="og:modified_time" content="{% block og_modifiedtime %}{% endblock %}">
+    <meta property="og:author" content="{% block og_author %}{% endblock %}">
+    <meta property="og:section" content="{% block og_section %}{% endblock %}"> {# A high-level section name. E.g. Technology #}
+    <meta property="og:url" content="{% block og_url %}{{ get_absolute_url }}{% endblock %}">{# permalink to the curent page #}
+    <meta property="og:image" content="{% block og_image %}{% endblock %}">{# A path to an image used on the page. Helpful for telling crawlers what image to use for a page preview. Can be an array, meaning, there can be more than one of these tags (duplicate the WHOLE tag). #}
+    <meta property="og:video" content="{% block og_video %}{% endblock %}">
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">

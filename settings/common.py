@@ -12,6 +12,19 @@ APP_DIR = join(ROOT_DIR, 'junction')
 
 SITE_ID = 1
 
+ADMINS = (
+    ('Bibhas', 'me@bibhas.in'),
+    ('Kracekumar', 'me@kracekumar.com'),
+    ('Sivabramaniam Arunachalam', 'siva@sivaa.in'),
+)
+
+# General project information
+# These are available in the template as SITE_INFO.<title>
+SITE_VARIABLES = {
+    'site_name': 'Junction',
+    'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
+}
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +74,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
+    "junction.base.context_processors.site_info",
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -164,13 +178,6 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', ''),
     }
 }
-
-ADMINS = (
-    ('Bibhas', 'me@bibhas.in'),
-    ('Kracekumar', 'me@kracekumar.com'),
-    ('Sivabramaniam Arunachalam', 'siva@sivaa.in'),
-)
-
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
 

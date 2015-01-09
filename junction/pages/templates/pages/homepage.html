@@ -2,11 +2,13 @@
 
 {% load webdesign %}
 
-{% block head_title %}{{ block.super }}{% endblock %}
+{% block head_title %}Welcome to {{ SITE_INFO.site_name }}{% endblock %}
+{% block og_title %}Welcome to {{ SITE_INFO.site_name }}{% endblock %}
+
 {% block page_classes %}{{ block.super }} homepage{% endblock %}
 {% block breadcrumbs %}{% endblock %}
 {% block header %}
-    <h1>Welcome to Junction</h1>
+    <h1>Welcome to {{ SITE_INFO.site_name }}</h1>
 {% endblock %}
 
 {% block content %}
