@@ -11,16 +11,24 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterModelOptions(
+            name='conferencemoderator',
+            options={'verbose_name': 'moderator', 'verbose_name_plural': 'moderators'},
+        ),
+        migrations.AlterModelOptions(
+            name='conferenceproposalreviewer',
+            options={'verbose_name': 'proposals reviewer', 'verbose_name_plural': 'proposals reviewers'},
+        ),
         migrations.AlterField(
             model_name='conferencemoderator',
             name='conference',
-            field=models.ForeignKey(to='conferences.Conference', related_name='moderators'),
+            field=models.ForeignKey(related_name='moderators', to='conferences.Conference'),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='conferenceproposalreviewer',
             name='conference',
-            field=models.ForeignKey(to='conferences.Conference', related_name='proposal_reviewers'),
+            field=models.ForeignKey(related_name='proposal_reviewers', to='conferences.Conference'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

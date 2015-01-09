@@ -34,6 +34,8 @@ class ConferenceModerator(AuditModel):
 
     class Meta:
         unique_together = ("conference", "moderator")
+        verbose_name = 'moderator'
+        verbose_name_plural = 'moderators'
 
     def __unicode__(self):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
@@ -47,6 +49,8 @@ class ConferenceProposalReviewer(AuditModel):
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
     class Meta:
+        verbose_name = 'proposals reviewer'
+        verbose_name_plural = 'proposals reviewers'
         unique_together = ("conference", "reviewer")
 
     def __unicode__(self):

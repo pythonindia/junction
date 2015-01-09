@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "-> Remove database"
+echo "-> Remove database:"
 rm db.sqlite3
 
-echo "-> Run migration"
+echo "-> Run migration:"
 python manage.py migrate --noinput
 
-echo "-> Generate sample data"
+echo "-> Generate sample data:"
 python manage.py sample_data

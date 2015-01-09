@@ -1,6 +1,8 @@
+from __future__ import print_function
+
 # Standard Library
-import random
 import datetime
+import random
 
 # Third Party Stuff
 from django.conf import settings
@@ -8,10 +10,9 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.timezone import now
-from sampledatahelper.helper import SampleDataHelper
-
 from junction.conferences.models import Conference
 from junction.custom_utils import constants
+from sampledatahelper.helper import SampleDataHelper
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)
@@ -28,15 +29,36 @@ class Command(BaseCommand):
         self.users = []
 
         # create superuser
+        print('  Creating Superuser')
         self.create_user(is_superuser=True, username='admin', is_active=True)
 
         # create users
+        print('  Creating sample Users')
         for x in range(NUM_USERS):
             self.users.append(self.create_user(counter=x))
 
         # create conferences
+        print('  Creating sample Conferences')
         for x in range(NUM_CONFERENCES + NUM_EMPTY_CONFERENCES):
-            self.create_conference(x)
+            conference = self.create_conference(x)
+
+            if x < NUM_CONFERENCES:
+                self.create_moderators(conference)
+                self.create_propsoal_reviewers(conference)
+
+    def create_moderators(self, conference):
+        moderators = []
+        count = random.randrange(1, len(self.users))
+        for user in random.sample(self.users, count):
+            moderators.append(conference.moderators.create(moderator=user, active=self.sd.boolean()))
+        return moderators
+
+    def create_propsoal_reviewers(self, conference):
+        proposal_reviewers = []
+        count = random.randrange(1, len(self.users))
+        for user in random.sample(self.users, count):
+            proposal_reviewers.append(conference.proposal_reviewers.create(reviewer=user, active=self.sd.boolean()))
+        return proposal_reviewers
 
     def create_conference(self, counter, start_date=None, end_date=None):
         start_date = start_date or now() + datetime.timedelta(random.randrange(-55, 55))
@@ -44,7 +66,7 @@ class Command(BaseCommand):
         conference = Conference.objects.create(name='Conference Example {0}'.format(counter),
                                                description='Conference example {0} description'.format(
                                                    counter),
-                                               status=self.sd.choice([i[0] for i in constants.CONFERENCE_STATUS_LIST]),
+                                               status=self.sd.choices_key(constants.CONFERENCE_STATUS_LIST),
                                                start_date=start_date,
                                                end_date=end_date,
                                                created_by=self.sd.choice(self.users),
