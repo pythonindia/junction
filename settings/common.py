@@ -1,6 +1,7 @@
 import os
 
 from django.conf.global_settings import *  # noqa
+from django.utils.translation import ugettext_lazy as _
 
 # Standard Library
 from os.path import dirname, join
@@ -127,11 +128,17 @@ LOGGING = {
     }
 }
 
+LANGUAGES = (
+    ("en", _("English")),
+)
+
 
 ROOT_URLCONF = 'junction.urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 TIME_ZONE = 'Asia/Kolkata'
+LANGUAGE_CODE = "en"
+USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
