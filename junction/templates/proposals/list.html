@@ -34,18 +34,22 @@
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
                 <h2 class="title-underline">Proposal Sections</h2>
+                <ol>
                 {% for section in proposal_sections %}
-                 <p><b>{{section.name}}</b> - {{section.description}}</p>
+                 <li><b>{{section.name}}</b> - {{section.description}}</li>
                 {% endfor %}
-            <hr class="border-less" />
+                </ol>
+                <hr class="border-less" />
             </div>
         </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
                 <h2 class="title-underline">Proposal Types</h2>
+                <ol>
                 {% for types in proposal_types %}
-                 <p><b>{{types.name}}</b> - {{types.description}}</p>
+                 <li><b>{{types.name}}</b> - {{types.description}}</li>
                 {% endfor %}
+                </ol>
             <hr class="border-less" />
             </div>
         </div>
