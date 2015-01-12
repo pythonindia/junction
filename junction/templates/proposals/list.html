@@ -24,13 +24,17 @@
             <span class="end_date">{{ conference.end_date }}</span>
             (<span class="status">{{ conference.get_status_display }}</span>)
         </b></p>
-        <p class="text-left">{{ conference.description }}</p>
     </div>
 {% endblock %}
 
 {% block content %}
 <section class="content custom-container proposal-list">
     <div class="push-4-bottom push-1-top">
+        <div class="row">
+            <div class="col-xs -12 col-sm-12 ">
+                <p class="text-left">{{ conference.description }}</p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
                 <h2 class="title-underline">Proposal Sections</h2>
