@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from junction.base import constants
 from junction.conferences.models import Conference
 from sampledatahelper.helper import SampleDataHelper
+from django.contrib.sites.models import Site
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)
@@ -27,6 +28,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.users = []
+
+        # Update site url
+        print('  Updating domain to localhost:8000')
+        site = Site.objects.get_current()
+        site.domain = 'localhost:8000'
+        site.name = 'Local'
+        site.save()
 
         # create superuser
         print('  Creating Superuser')
