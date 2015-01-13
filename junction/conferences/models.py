@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 
+from slugify import slugify
+
 from junction.base.constants import CONFERENCE_STATUS_LIST
 from junction.base.models import AuditModel
 
@@ -13,7 +15,7 @@ class Conference(AuditModel):
 
     """ Conference/Event master """
     name = models.CharField(max_length=255, verbose_name="Conference Name")
-    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',))
+    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',), editable=True)
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
@@ -23,6 +25,11 @@ class Conference(AuditModel):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super(Conference, self).save(*args, **kwargs)
 
 
 class ConferenceModerator(AuditModel):

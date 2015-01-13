@@ -7,6 +7,7 @@ from . import models
 
 class ConferenceAdmin(AuditAdmin):
     list_display = ('name', 'slug', 'start_date', 'end_date', 'status') + AuditAdmin.list_display
+    prepopulated_fields = {'slug': ('name',), }
 
 
 class ConferenceModeratorAdmin(AuditAdmin):
