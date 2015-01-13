@@ -20,12 +20,11 @@ from junction.base.models import AuditModel, TimeAuditModel
 
 class ProposalSection(AuditModel):
 
-    """ List of Proposal Sections """
-    name = models.CharField(
-        max_length=255, verbose_name="Proposal Section Name")
+    """ List of Proposal Sections"""
+    name = models.CharField(max_length=255, verbose_name="Proposal Section Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    conferences = models.ManyToManyField(to=Conference)
+    conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
     def __unicode__(self):
         return self.name
@@ -37,7 +36,7 @@ class ProposalType(AuditModel):
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    conferences = models.ManyToManyField(to=Conference)
+    conferences = models.ManyToManyField(to=Conference, related_name='proposal_types')
 
     def __unicode__(self):
         return self.name
