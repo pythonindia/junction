@@ -3,15 +3,15 @@ from __future__ import unicode_literals
 
 # Third Party Stuff
 from django.contrib.auth.models import User
-from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.db import models
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
-from slugify import slugify
-
 from junction.base.constants import CONFERENCE_STATUS_LIST
 from junction.base.models import AuditModel
+from slugify import slugify
+from uuid_upload_path import upload_to
 
 
 class Conference(AuditModel):
@@ -22,6 +22,7 @@ class Conference(AuditModel):
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
+    logo = models.ImageField(blank=True, null=True, upload_to=upload_to)
     status = models.PositiveSmallIntegerField(
         choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")

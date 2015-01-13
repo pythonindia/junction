@@ -15,6 +15,13 @@
     {% breadcrumb "Proposals" "proposals-list" conference.slug %}
 {% endblock %}
 
+{% block navbar_logo %}
+    {% if conference.logo %}
+    <a href="{% url "conference-detail" conference.slug %}">
+        <img src="{{ conference.logo.url }}">
+    </a>
+    {% endif %}
+{% endblock navbar_logo %}
 
 {% block header %}
     <div class="custom-container">
