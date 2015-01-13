@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
@@ -33,6 +34,9 @@ class Conference(AuditModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("conference-detail", kwargs={'conference_slug': self.slug})
 
     def clean(self):
         if self.end_date < self.start_date:
