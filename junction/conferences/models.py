@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
-
 from slugify import slugify
 
 from junction.base.constants import CONFERENCE_STATUS_LIST
@@ -23,8 +25,19 @@ class Conference(AuditModel):
         choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
+    class Meta:
+        verbose_name = _('Conference')
+        verbose_name_plural = _('Conferences')
+        ordering = ('-start_date', 'name',)
+        get_latest_by = 'start_date'
+
     def __unicode__(self):
         return self.name
+
+    def clean(self):
+        if self.end_date < self.start_date:
+            msg = _("End date should be greater than start date.")
+            raise ValidationError({'end_date': msg})
 
     def save(self, *args, **kwargs):
         if not self.slug:
