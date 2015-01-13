@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from pagedown.widgets import AdminPagedownWidget
+from django.db import models
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
 from junction.proposals.models import (
     Proposal,
@@ -22,6 +24,10 @@ class ProposalTypeAdmin(AuditAdmin):
 class ProposalAdmin(TimeAuditAdmin):
     list_display = ('conference', 'proposal_section', 'proposal_type', 'author',
                     'title', 'slug', 'status', 'review_status') + TimeAuditAdmin.list_display
+
+    formfield_overrides = {
+        models.TextField: {'widget': AdminPagedownWidget},
+    }
 
 
 class ProposalVoteAdmin(TimeAuditAdmin):
