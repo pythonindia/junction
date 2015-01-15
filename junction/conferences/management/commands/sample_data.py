@@ -5,6 +5,7 @@ import datetime
 import random
 
 # Third Party Stuff
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
@@ -40,7 +41,11 @@ class Command(BaseCommand):
 
         # create superuser
         print('  Creating Superuser')
-        self.create_user(is_superuser=True, username='admin', is_active=True)
+        super_user = self.create_user(is_superuser=True, username='admin', is_active=True)
+        EmailAddress.objects.get_or_create(user=super_user,
+                                           verified=True,
+                                           primary=True,
+                                           email=super_user.email)
 
         # create users
         print('  Creating sample Users')
