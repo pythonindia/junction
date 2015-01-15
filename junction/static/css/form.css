@@ -28,3 +28,35 @@
         width: 100%;
     }
 }
+
+
+/*
+  Proposals
+------------------------------------------------------------------------------ */
+div#id_proposal_type,
+div#id_proposal_section
+{
+  display: inline-block;
+  vertical-align: top;
+}
+
+div#id_proposal_type .radio,
+div#id_proposal_section .radio {
+  margin-top: 0;
+}
+
+/* Editor */
+
+.wmd-preview {
+  background-color: #fff !important;
+  border: 2px dashed #ccc;
+}
+@media (min-width: 800px) {
+  .wmd-panel {
+    margin-top: -35px;
+    margin-bottom: 50px;
+  }
+  .wmd-preview {
+    margin-bottom: 10px;
+  }
+}

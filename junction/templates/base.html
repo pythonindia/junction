@@ -58,6 +58,7 @@
     <link href="{% static 'css/layout.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+    <link href="{% static 'css/ui.css' %}" rel="stylesheet">
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     {% block style_extra %} {% endblock %}
@@ -133,13 +134,11 @@
         <!-- /.container -->
     </nav>
 
-    <section class="head_content">
     {% block header %}
     {% endblock %}
-    </section>
-    <div class="custom-container">
+
     {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
-     </div>
+
     <!-- Page Content -->
     <div class="container-fluid">
 

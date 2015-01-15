@@ -34,14 +34,12 @@ class ProposalForm(forms.Form):
     '''
     title = forms.CharField(min_length=10)
     description = forms.CharField(widget=PagedownWidget(show_preview=True))
-    target_audience = forms.ChoiceField(
-        choices=PROPOSAL_TARGET_AUDIENCES, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    status = forms.ChoiceField(
-        choices=PROPOSAL_STATUS_LIST, widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    proposal_type = forms.ChoiceField(
-        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    proposal_section = forms.ChoiceField(
-        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES,
+                                        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+    status = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer),
+                               choices=PROPOSAL_STATUS_LIST, )
+    proposal_type = forms.ChoiceField(widget=forms.RadioSelect())
+    proposal_section = forms.ChoiceField(widget=forms.RadioSelect())
 
     # Additional Content
     prerequisites = forms.CharField(

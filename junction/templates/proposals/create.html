@@ -22,18 +22,19 @@
 <div class="custom-container">
     <div class="row">
         <div class="col-sm-12">
+            <h2>New Proposal</h2>
+            <hr>
             <div class="form-container space-2-bottom">
-                <h2 class="fill-blue text-center">Create Proposal </h2>
-                  <form method="POST" action="."> {% csrf_token %}
-                    {% bootstrap_form form layout='vertical' %}
-                    {% buttons %}
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                    {% endbuttons %}
-                  </form>
+              <form method="POST" action="."> {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+                {% endbuttons %}
+              </form>
             </div>
 
         </div>

@@ -8,7 +8,9 @@
 {% block page_classes %}{{ block.super }} homepage{% endblock %}
 {% block breadcrumbs %}{% endblock %}
 {% block header %}
-    <h1>Welcome to {{ SITE_INFO.site_name }}</h1>
+    <div class="head_content">
+        <h1>Welcome to {{ SITE_INFO.site_name }}</h1>
+    </div>
 {% endblock %}
 
 {% block content %}
