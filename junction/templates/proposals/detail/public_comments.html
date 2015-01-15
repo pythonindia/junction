@@ -19,7 +19,7 @@
         </li>
         {% endif %}
     </ul>
-
+    <br>
     {% if not comments %}
     <p>
         No comments added so far.
@@ -28,11 +28,34 @@
     {% endif %}
 
     {% for comment in comments %}
-    <div class="bg-info">
-        {{ comment.comment|markdown }} <br/>
-        Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
-        <hr/>
-    </div>
+        {% if user.is_authenticated %}
+            <div class="col-sm-1">
+                <div class="icon-holder  pull-right text-center">
+                    <div>
+                        <h4>
+                            {{ comment.get_votes_count }}
+                        </h4>
+                    </div>
+                    <div class="icon-holder-bottom">
+                        <i class="fa fa-thumbs-down prosal-comment-down-vote">
+                        </i>
+                        <i class="fa fa-thumbs-up prosal-comment-up-vote">
+                        </i>
+                    </div>
+                </div>
+                <form id="prosal-comment-up-vote" method="POST" action="{{ comment.get_up_vote_url }}">
+                    {% csrf_token %} {{ proposal_comment_vote_form }}
+                </form>
+                <form id="prosal-comment-down-vote" method="POST" action="{{ comment.get_down_vote_url }}">
+                    {% csrf_token %} {{ proposal_comment_vote_form }}
+                </form>
+            </div>
+        {% endif %}
+        <div class="bg-info">
+            {{ comment.comment|markdown }} <br/>
+            Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
+            <hr/>
+        </div>
     {% endfor %}
 
     {% if user.is_authenticated %}
