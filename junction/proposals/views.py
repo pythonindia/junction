@@ -206,7 +206,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         proposal_comment = ProposalComment.objects.create(
             proposal=proposal, comment=comment,
             private=private, commenter=request.user)
-        send_mail_for_new_comment(proposal_comment)
+        send_mail_for_new_comment(proposal_comment,
+                                  host='http://%s' % request.META['HTTP_HOST'])
     if private:
         return HttpResponseRedirect(
             reverse('proposal-detail-reviewers',
