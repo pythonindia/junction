@@ -194,12 +194,14 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
-    if not _is_proposal_author_or_reviewer(request.user, conference, proposal):
-        raise Http404()
     form = ProposalCommentForm(request.POST)
     if form.is_valid():
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
+
+        if private and not _is_proposal_author_or_reviewer(
+                request.user, conference, proposal):
+            raise Http404()
 
         proposal_comment = ProposalComment.objects.create(
             proposal=proposal, comment=comment,
