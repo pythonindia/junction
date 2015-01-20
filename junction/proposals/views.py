@@ -13,6 +13,7 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
 from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType, \
     ProposalCommentVote
+from .services import send_mail_for_new_comment
 
 
 def _is_proposal_author(user, proposal):
@@ -200,11 +201,10 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-        ProposalComment.objects.create(proposal=proposal,
-                                       comment=comment,
-                                       private=private,
-                                       commenter=request.user,
-                                       )
+        proposal_comment = ProposalComment.objects.create(
+            proposal=proposal, comment=comment,
+            private=private, commenter=request.user)
+        send_mail_for_new_comment(proposal_comment)
     if private:
         return HttpResponseRedirect(
             reverse('proposal-detail-reviewers',
