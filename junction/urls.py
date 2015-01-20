@@ -17,7 +17,7 @@ urlpatterns = patterns(
     '',
 
     # Django Admin
-    url(r'^junction/nimda/', include(admin.site.urls)),
+    url(r'^nimda/', include(admin.site.urls)),
 
     # Third Party Stuff
     url(r'^accounts/', include('allauth.urls')),
