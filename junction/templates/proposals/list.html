@@ -113,7 +113,7 @@
                                 <i class="fa fa-thumbs-up"></i>25
                             </span>
                         </p>
-                        <h3><a href='{{ proposal.get_absolute_url }}'>{{ proposal.title }}</a></h3>
+                        <h3><a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title }}</a></h3>
                         <p>{{ proposal.description|truncatechars:200 }}</p>
                         <p>
                             <span class="pull-right">
