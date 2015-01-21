@@ -115,6 +115,8 @@
                         </p>
                         <h3><a href='{{ proposal.get_absolute_url }}'>{{ proposal.title }}</a></h3>
                         <p>{{ proposal.description|truncatechars:200 }}</p>
+                        <p>{{ proposal.proposal_type }}</p>
+                        <p>{{ proposal.proposal_section }}</p>
                         <p>
                             <span class="pull-right">
                                 <b>By:</b> {{ proposal.author }}
