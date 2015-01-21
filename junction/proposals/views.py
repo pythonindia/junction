@@ -12,8 +12,8 @@ from django.views.decorators.http import require_http_methods
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
-from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType, \
-    ProposalCommentVote
+from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
+                     ProposalType, ProposalCommentVote)
 from .services import send_mail_for_new_comment
 
 
@@ -24,15 +24,15 @@ def _is_proposal_author(user, proposal):
 
 
 def _is_proposal_reviewer(user, conference):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(reviewer=user,
-                                                                             conference=conference,
-                                                                             active=True):
+    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
+            reviewer=user, conference=conference, active=True):
         return True
     return False
 
 
 def _is_proposal_author_or_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(user, conference)
+    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(
+        user, conference)
 
 
 @require_http_methods(['GET'])
@@ -42,10 +42,11 @@ def list_proposals(request, conference_slug):
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
 
-    return render(request, 'proposals/list.html', {'proposals_list': proposals_list,
-                                                   'proposal_sections': proposal_sections,
-                                                   'proposal_types': proposal_types,
-                                                   'conference': conference})
+    return render(request, 'proposals/list.html',
+                  {'proposals_list': proposals_list,
+                   'proposal_sections': proposal_sections,
+                   'proposal_types': proposal_types,
+                   'conference': conference})
 
 
 @login_required
@@ -53,17 +54,22 @@ def list_proposals(request, conference_slug):
 def create_proposal(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
+        if conference.status != 1:
+            return render(request, 'proposals/closed.html',
+                          {'conference': conference})
         form = ProposalForm(conference)
-        return render(request, 'proposals/create.html', {'form': form,
-                                                         'conference': conference, })
+        return render(request, 'proposals/create.html',
+                      {'form': form,
+                       'conference': conference, })
 
     # POST Workflow
     form = ProposalForm(conference, request.POST)
 
     if not form.is_valid():
-        return render(request, 'proposals/create.html', {'form': form,
-                                                         'conference': conference,
-                                                         'errors': form.errors})
+        return render(request, 'proposals/create.html',
+                      {'form': form,
+                       'conference': conference,
+                       'errors': form.errors})
 
     # Valid Form
     Proposal.objects.create(author=request.user,
@@ -225,8 +231,8 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
 
-    proposal_vote, created = ProposalVote.objects.get_or_create(proposal=proposal,  # @UnusedVariable
-                                                                voter=request.user)
+    proposal_vote, created = ProposalVote.objects.get_or_create(
+        proposal=proposal, voter=request.user)  # @UnusedVariable
 
     role = 2 if _is_proposal_reviewer(request.user, conference) else 1
 
@@ -250,12 +256,15 @@ def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
 
 
-def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, up_vote):
+def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,
+                          up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
-    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal, id=comment_id)
-    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(proposal_comment=proposal_comment,
-                                                                               voter=request.user)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug,
+                                 conference=conference)
+    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal,
+                                         id=comment_id)
+    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(
+        proposal_comment=proposal_comment, voter=request.user)
     proposal_comment_vote.up_vote = up_vote
     proposal_comment_vote.save()
 
@@ -265,11 +274,15 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
 
 @login_required
 @require_http_methods(['POST'])
-def proposal_comment_up_vote(request, conference_slug, proposal_slug, proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, True)
+def proposal_comment_up_vote(request, conference_slug, proposal_slug,
+                             proposal_comment_id):
+    return proposal_comment_vote(request, conference_slug, proposal_slug,
+                                 proposal_comment_id, True)
 
 
 @login_required
 @require_http_methods(['POST'])
-def proposal_comment_down_vote(request, conference_slug, proposal_slug, proposal_comment_id):
-        return proposal_comment_vote(request, conference_slug, proposal_slug, proposal_comment_id, False)
+def proposal_comment_down_vote(request, conference_slug, proposal_slug,
+                               proposal_comment_id):
+        return proposal_comment_vote(request, conference_slug, proposal_slug,
+                                     proposal_comment_id, False)

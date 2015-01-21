@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+{% load url from future %}
+{% load i18n %}
+
+{% block head_title %} Proposals are closed | {{ block.super }} {% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" conference.slug %}
+    {% breadcrumb "New" "" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+            <div class="form-container space-2-bottom">
+                <h2 class="fill-blue text-center">{% trans "Proposals are closed" %}</h2>
+                <div class="pad-2 push-1-top push-2-bottom text-center">
+    				<p>{% trans "We are sorry, but proposals are closed." %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
