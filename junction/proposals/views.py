@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
@@ -206,8 +207,9 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         proposal_comment = ProposalComment.objects.create(
             proposal=proposal, comment=comment,
             private=private, commenter=request.user)
-        send_mail_for_new_comment(proposal_comment,
-                                  host='http://%s' % request.META['HTTP_HOST'])
+        send_mail_for_new_comment(
+            proposal_comment, host='{}://{}'.format(
+                settings.SITE_PROTOCOL, request.META['HTTP_HOST']))
     if private:
         return HttpResponseRedirect(
             reverse('proposal-detail-reviewers',
