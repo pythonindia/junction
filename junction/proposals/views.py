@@ -53,6 +53,9 @@ def list_proposals(request, conference_slug):
 def create_proposal(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
+        if conference.status != 1:
+            return render(request, 'proposals/closed.html',
+                          {'conference': conference})
         form = ProposalForm(conference)
         return render(request, 'proposals/create.html', {'form': form,
                                                          'conference': conference, })
