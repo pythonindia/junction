@@ -1,5 +1,6 @@
 @brand-primary:                        @junction-color-1;
 
+@navbar-height:                        75px;
 @navbar-default-bg:                    @junction-color-4;
 @navbar-default-color:                 @junction-color-3;
 @navbar-default-link-color:            @junction-color-3;
@@ -8,7 +9,13 @@
 @navbar-default-link-hover-bg:         @navbar-default-link-active-bg;
 @navbar-default-link-active-color:     @navbar-default-link-hover-color;
 
-// Navbar toggle
-@navbar-default-toggle-hover-bg:           #ddd;
-@navbar-default-toggle-icon-bar-bg:        #888;
-@navbar-default-toggle-border-color:       #ddd;
+@navbar-default-brand-color:           @navbar-default-link-color;
+@navbar-default-brand-hover-color:     @navbar-default-brand-color;
+
+
+.navbar-brand {
+  font-family: 'Josefin Slab', serif;
+  font-size: 2em;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
