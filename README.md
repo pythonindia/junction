@@ -28,3 +28,11 @@ Configuring Django-allauth
  - Go to `/admin/sites/site/` 
  - Change the default site's(the one with ID = 1) name and display to `localhost:8000`
  - Go to `Social Applications` in admin panel and add [Github](http://django-allauth.readthedocs.org/en/latest/providers.html#github) and [Google](http://django-allauth.readthedocs.org/en/latest/providers.html#google)'s auth details
+
+Contributing
+------------
+
+1. Report any bugs/feature request as github issue.
+2. Choose an issue and ask any doubts in the issue thread.
+3. IF you are starting to work on an issue, please leave a comment saying "I am working on it".
+4. Once you are done with feature/bug fix, send a pull request according to the [guidelines] (https://github.com/pythonindia/junction/blob/master/CONTRIBUTING.md)
