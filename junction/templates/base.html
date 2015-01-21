@@ -48,17 +48,7 @@
     <meta property="og:url" content="{% block og_url %}{{ get_absolute_url }}{% endblock %}">{# permalink to the curent page #}
     <meta property="og:image" content="{% block og_image %}{% endblock %}">{# A path to an image used on the page. Helpful for telling crawlers what image to use for a page preview. Can be an array, meaning, there can be more than one of these tags (duplicate the WHOLE tag). #}
     <meta property="og:video" content="{% block og_video %}{% endblock %}">
-
-    <!-- Bootstrap Core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{% static 'css/layout.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
-    <link href="{% static 'css/ui.css' %}" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     {% block style_extra %} {% endblock %}
