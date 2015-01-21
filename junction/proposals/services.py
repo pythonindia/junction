@@ -1,7 +1,7 @@
 from junction.emailer import send_email
 
 
-def send_mail_for_new_comment(proposal_comment, host):
+def send_mail_for_new_comment(proposal_comment, host, login_url):
     proposal = proposal_comment.proposal
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
@@ -14,7 +14,8 @@ def send_mail_for_new_comment(proposal_comment, host):
                             'proposal': proposal,
                             'comment': proposal_comment,
                             'commenter': commenter,
-                            'host': host})
+                            'host': host,
+                            'login_url': login_url})
 
 
 def comment_recipients(proposal_comment):
