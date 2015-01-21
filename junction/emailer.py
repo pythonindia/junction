@@ -10,7 +10,7 @@ def send_email(to, context, template_dir):
     """Render given templates and send email to `to`.
 
     :param to: User object to send email to..
-    :param context:
+    :param context: dict containing which needs to be passed to django template
     :param template_dir: We expect files message.txt, subject.txt,
     message.html etc in this folder.
     :returns: None
