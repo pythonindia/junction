@@ -1,0 +1,21 @@
+{
+  "name": "junction",
+  "version": "0.1.0",
+  "homepage": "https://github.com/pythonindia/junction",
+  "authors": [
+    "Mudassir <mudassir.dev@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "font-awesome": "~4.2.0"
+  }
+}
