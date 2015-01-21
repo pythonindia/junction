@@ -117,6 +117,8 @@
                         <p>{{ proposal.description|truncatechars:200 }}</p>
                         <p>
                             <span class="pull-right">
+                                <b>Proposal Type:</b> {{ proposal.proposal_type }}
+                                <b>Proposal Section:</b> {{ proposal.proposal_section }}
                                 <b>By:</b> {{ proposal.author }}
                             </span>
                         </p>
