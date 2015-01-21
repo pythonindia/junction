@@ -12,11 +12,13 @@ Setup
 
 Just execute these commands in your virtualenv(wrapper):
 
+It is advised to install all the requirements inside [virtualenv](https://virtualenv.pypa.io/en/latest/)
 ```
 pip install -r requirements-dev.txt
 cp settings/dev.py.sample settings/dev.py
 python manage.py migrate --noinput
 python manage.py sample_data
+python manage.py createsuperuser (Use this user for login)
 ```
 
 Initial auth data: admin/123123
