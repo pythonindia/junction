@@ -8,8 +8,25 @@
 {% block page_classes %}{{ block.super }} homepage{% endblock %}
 {% block breadcrumbs %}{% endblock %}
 {% block header %}
-    <div class="head_content">
-        <h1>Welcome to {{ SITE_INFO.site_name }}</h1>
+    <div class="jumbotron text-center">
+        <div class="message-wrapper">
+            <div class="message">
+                <div class="inline-block full-width color-secondary transparent-black">
+                    <h1 class="header-font text-bold">
+                        Welcome to {{ SITE_INFO.site_name }}
+                    </h1>
+                    <p>
+                        Manage proposals, reviews, schedule, feedbacks during conferences
+                    </p>
+                    <p>
+                        <a class="btn btn-primary btn-lg" href="#" role="button">
+                            <i class="fa fa-microphone fa-lg space-on-right"></i>
+                            Conferences
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
