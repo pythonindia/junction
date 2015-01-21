@@ -68,9 +68,11 @@
         </div>
         <div class="row ">
             <div class="col-xs -12 col-sm-12 ">
-                <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
-                    <i class="fa fa-plus-square-o"></i> New Proposal
-                </a>
+                {% if conference.status == 1 %}
+                    <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
+                        <i class="fa fa-plus-square-o"></i> New Proposal
+                    </a>
+                {% endif %}
                 <div class="header-tab">
                     <div class="header-tab-title">
                         <h2>List of Proposals</h2>
