@@ -6,8 +6,8 @@ module.exports = function(grunt) {
     // Task configuration.
      watch: {
       less: {
-        files: ['./less/**/*.less'],
-        tasks: ['less']
+        files: [ 'less/**/*.less' ],
+        tasks: [ 'less' ]
       }
     },
     less: {
@@ -24,6 +24,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('default', ['less', 'watch']);
 
 };
