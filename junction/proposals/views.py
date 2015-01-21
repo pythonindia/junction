@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
@@ -13,6 +14,7 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
 from .models import Proposal, ProposalComment, ProposalVote, ProposalSection, ProposalType, \
     ProposalCommentVote
+from .services import send_mail_for_new_comment
 
 
 def _is_proposal_author(user, proposal):
@@ -193,18 +195,22 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
-    if not _is_proposal_author_or_reviewer(request.user, conference, proposal):
-        raise Http404()
     form = ProposalCommentForm(request.POST)
     if form.is_valid():
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-        ProposalComment.objects.create(proposal=proposal,
-                                       comment=comment,
-                                       private=private,
-                                       commenter=request.user,
-                                       )
+        if private and not _is_proposal_author_or_reviewer(
+                request.user, conference, proposal):
+            raise Http404()
+
+        proposal_comment = ProposalComment.objects.create(
+            proposal=proposal, comment=comment,
+            private=private, commenter=request.user)
+        send_mail_for_new_comment(
+            proposal_comment, login_url=settings.LOGIN_URL,
+            host='{}://{}'.format(settings.SITE_PROTOCOL,
+                                  request.META['HTTP_HOST']))
     if private:
         return HttpResponseRedirect(
             reverse('proposal-detail-reviewers',
