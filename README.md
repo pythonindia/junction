@@ -10,9 +10,8 @@ Junction is a software to manage proposals, reviews, schedule, feedback during c
 Setup
 =====
 
-Just execute these commands in your virtualenv(wrapper):
+It is advised to install all the requirements inside [virtualenv](https://virtualenv.pypa.io/en/latest/), use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) to manage virtualenvs.
 
-It is advised to install all the requirements inside [virtualenv](https://virtualenv.pypa.io/en/latest/)
 ```
 pip install -r requirements-dev.txt
 cp settings/dev.py.sample settings/dev.py
