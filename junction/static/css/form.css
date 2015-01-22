@@ -45,6 +45,12 @@ div#id_proposal_section .radio {
   margin-top: 0;
 }
 
+.dropdown {
+  margin-left: 24%;
+  margin-top: -3%;
+  width: 28%;
+}
+
 /* Editor */
 
 .wmd-preview {
