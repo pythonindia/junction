@@ -19,6 +19,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. The pull request should include tests.
 
 3. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
+4. The pull request containing UI changes should have screen shots.
 
 
 ## Conventions
