@@ -121,7 +121,8 @@
                             <span class="pull-right">
                                 <b>Proposal Type:</b> {{ proposal.proposal_type }}
                                 <b>Proposal Section:</b> {{ proposal.proposal_section }}
-                                <b>By:</b> {{ proposal.author }}
+                                <b>By:</b> {{ proposal.author }} ({{ proposal.author.get_full_name }})
+                                <b>Date:</b> {{ proposal.created_at }}
                             </span>
                         </p>
                     </div>
