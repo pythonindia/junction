@@ -8366,9 +8366,9 @@ footer {
 .navbar-wrapper {
   margin-bottom: 80px;
 }
-.login-form input[type=text],
-.login-form input[type=email],
-.login-form input[type=password] {
+.form-container input[type=text],
+.form-container input[type=email],
+.form-container input[type=password] {
   display: block;
   width: 100%;
   height: 34px;
@@ -8386,46 +8386,46 @@ footer {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
-.login-form input[type=text]:focus,
-.login-form input[type=email]:focus,
-.login-form input[type=password]:focus {
+.form-container input[type=text]:focus,
+.form-container input[type=email]:focus,
+.form-container input[type=password]:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
-.login-form input[type=text]::-moz-placeholder,
-.login-form input[type=email]::-moz-placeholder,
-.login-form input[type=password]::-moz-placeholder {
+.form-container input[type=text]::-moz-placeholder,
+.form-container input[type=email]::-moz-placeholder,
+.form-container input[type=password]::-moz-placeholder {
   color: #999999;
   opacity: 1;
 }
-.login-form input[type=text]:-ms-input-placeholder,
-.login-form input[type=email]:-ms-input-placeholder,
-.login-form input[type=password]:-ms-input-placeholder {
+.form-container input[type=text]:-ms-input-placeholder,
+.form-container input[type=email]:-ms-input-placeholder,
+.form-container input[type=password]:-ms-input-placeholder {
   color: #999999;
 }
-.login-form input[type=text]::-webkit-input-placeholder,
-.login-form input[type=email]::-webkit-input-placeholder,
-.login-form input[type=password]::-webkit-input-placeholder {
+.form-container input[type=text]::-webkit-input-placeholder,
+.form-container input[type=email]::-webkit-input-placeholder,
+.form-container input[type=password]::-webkit-input-placeholder {
   color: #999999;
 }
-.login-form input[type=text][disabled],
-.login-form input[type=email][disabled],
-.login-form input[type=password][disabled],
-.login-form input[type=text][readonly],
-.login-form input[type=email][readonly],
-.login-form input[type=password][readonly],
-fieldset[disabled] .login-form input[type=text],
-fieldset[disabled] .login-form input[type=email],
-fieldset[disabled] .login-form input[type=password] {
+.form-container input[type=text][disabled],
+.form-container input[type=email][disabled],
+.form-container input[type=password][disabled],
+.form-container input[type=text][readonly],
+.form-container input[type=email][readonly],
+.form-container input[type=password][readonly],
+fieldset[disabled] .form-container input[type=text],
+fieldset[disabled] .form-container input[type=email],
+fieldset[disabled] .form-container input[type=password] {
   cursor: not-allowed;
   background-color: #eeeeee;
   opacity: 1;
 }
-textarea.login-form input[type=text],
-textarea.login-form input[type=email],
-textarea.login-form input[type=password] {
+textarea.form-container input[type=text],
+textarea.form-container input[type=email],
+textarea.form-container input[type=password] {
   height: auto;
 }
 .form-container {
