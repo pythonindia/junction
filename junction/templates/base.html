@@ -72,57 +72,59 @@
 <body class="{% block page_classes %} {% endblock page_classes %} ">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+    <div class="navbar-wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-                {% block navbar_logo %}
-                <a class="navbar-brand" href="{% url 'pages:homepage' %}">
-                    Junction
-                </a>
-                {% endblock navbar_logo %}
+                    {% block navbar_logo %}
+                    <a class="navbar-brand" href="{% url 'pages:homepage' %}">
+                        Junction
+                    </a>
+                    {% endblock navbar_logo %}
 
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="{% url 'speakers-static' %}">Speakers</a></li>
+                        <li><a href="{% url 'schedule-static' %}">Schedule</a></li>
+                        <li><a href="/test-conference/proposals/">Proposals</a></li>
+                        <li><a href="{% url 'venue-static' %}">Venue</a></li>
+                        <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
+                        <li><a href="{% url 'blog-archive' %}">Blog</a></li>
+                        <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
+                        <li><a href="{% url 'faq-static' %}">FAQ</a></li>
+                        <li class="dropdown">
+                            {% if user.is_authenticated %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs"><i class="glyphicon glyphicon-user"></i></span><span class="visible-xs">Account</span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
+                                    {% if user.is_superuser or user.is_stuff %}
+                                        <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
+                                    {% endif %}
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                            </ul>
+                            {% else %}
+                            <a href="{% url 'account_login' %}">Login / Register</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="{% url 'speakers-static' %}">Speakers</a></li>
-                    <li><a href="{% url 'schedule-static' %}">Schedule</a></li>
-                    <li><a href="/test-conference/proposals/">Proposals</a></li>
-                    <li><a href="{% url 'venue-static' %}">Venue</a></li>
-                    <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
-                    <li><a href="{% url 'blog-archive' %}">Blog</a></li>
-                    <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
-                    <li><a href="{% url 'faq-static' %}">FAQ</a></li>
-                    <li class="dropdown">
-                        {% if user.is_authenticated %}
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs"><i class="glyphicon glyphicon-user"></i></span><span class="visible-xs">Account</span> <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-
-                                <li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
-                                {% if user.is_superuser or user.is_stuff %}
-                                    <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
-                                {% endif %}
-                                <li class="divider"></li>
-                                <li><a href="{% url 'account_logout' %}">Logout</a></li>
-                        </ul>
-                        {% else %}
-                        <a href="{% url 'account_login' %}">Login / Register</a>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+            <!-- /.container -->
+        </nav>
+    </div>
 
     {% block header %}
     {% endblock %}

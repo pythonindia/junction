@@ -8247,6 +8247,105 @@ button.close {
   border-bottom: 1px dashed;
   padding-bottom: 10px;
 }
+.space-on-left {
+  margin-left: 5px;
+}
+.space-on-right {
+  margin-right: 5px;
+}
+.space-on-left-lg {
+  margin-left: 10px;
+}
+.btn-google {
+  color: white;
+  background-color: #4585f3;
+  border-color: #4585f3;
+}
+.btn-google:hover,
+.btn-google:focus,
+.btn-google.focus,
+.btn-google:active,
+.btn-google.active,
+.open > .dropdown-toggle.btn-google {
+  color: white;
+  background-color: #1566f0;
+  border-color: #0f60ec;
+}
+.btn-google:active,
+.btn-google.active,
+.open > .dropdown-toggle.btn-google {
+  background-image: none;
+}
+.btn-google.disabled,
+.btn-google[disabled],
+fieldset[disabled] .btn-google,
+.btn-google.disabled:hover,
+.btn-google[disabled]:hover,
+fieldset[disabled] .btn-google:hover,
+.btn-google.disabled:focus,
+.btn-google[disabled]:focus,
+fieldset[disabled] .btn-google:focus,
+.btn-google.disabled.focus,
+.btn-google[disabled].focus,
+fieldset[disabled] .btn-google.focus,
+.btn-google.disabled:active,
+.btn-google[disabled]:active,
+fieldset[disabled] .btn-google:active,
+.btn-google.disabled.active,
+.btn-google[disabled].active,
+fieldset[disabled] .btn-google.active {
+  background-color: #4585f3;
+  border-color: #4585f3;
+}
+.btn-google .badge {
+  color: #4585f3;
+  background-color: white;
+}
+.btn-github {
+  color: #454545;
+  background-color: #eeeeee;
+  border-color: #bbbbbb;
+}
+.btn-github:hover,
+.btn-github:focus,
+.btn-github.focus,
+.btn-github:active,
+.btn-github.active,
+.open > .dropdown-toggle.btn-github {
+  color: #454545;
+  background-color: #d5d5d5;
+  border-color: #9c9c9c;
+}
+.btn-github:active,
+.btn-github.active,
+.open > .dropdown-toggle.btn-github {
+  background-image: none;
+}
+.btn-github.disabled,
+.btn-github[disabled],
+fieldset[disabled] .btn-github,
+.btn-github.disabled:hover,
+.btn-github[disabled]:hover,
+fieldset[disabled] .btn-github:hover,
+.btn-github.disabled:focus,
+.btn-github[disabled]:focus,
+fieldset[disabled] .btn-github:focus,
+.btn-github.disabled.focus,
+.btn-github[disabled].focus,
+fieldset[disabled] .btn-github.focus,
+.btn-github.disabled:active,
+.btn-github[disabled]:active,
+fieldset[disabled] .btn-github:active,
+.btn-github.disabled.active,
+.btn-github[disabled].active,
+fieldset[disabled] .btn-github.active {
+  background-color: #eeeeee;
+  border-color: #bbbbbb;
+}
+.btn-github .badge {
+  color: #eeeeee;
+  background-color: #454545;
+}
 html {
   font-size: 1em;
 }
@@ -8262,6 +8361,83 @@ footer {
   padding: 20px 0;
   background-color: #fff7f8;
   border-top: 1px solid #ffdee2;
+  border-bottom: 1px solid #ffdee2;
+}
+.navbar-wrapper {
+  margin-bottom: 80px;
+}
+.login-form input[type=text],
+.login-form input[type=email],
+.login-form input[type=password] {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.login-form input[type=text]:focus,
+.login-form input[type=email]:focus,
+.login-form input[type=password]:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.login-form input[type=text]::-moz-placeholder,
+.login-form input[type=email]::-moz-placeholder,
+.login-form input[type=password]::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.login-form input[type=text]:-ms-input-placeholder,
+.login-form input[type=email]:-ms-input-placeholder,
+.login-form input[type=password]:-ms-input-placeholder {
+  color: #999999;
+}
+.login-form input[type=text]::-webkit-input-placeholder,
+.login-form input[type=email]::-webkit-input-placeholder,
+.login-form input[type=password]::-webkit-input-placeholder {
+  color: #999999;
+}
+.login-form input[type=text][disabled],
+.login-form input[type=email][disabled],
+.login-form input[type=password][disabled],
+.login-form input[type=text][readonly],
+.login-form input[type=email][readonly],
+.login-form input[type=password][readonly],
+fieldset[disabled] .login-form input[type=text],
+fieldset[disabled] .login-form input[type=email],
+fieldset[disabled] .login-form input[type=password] {
+  cursor: not-allowed;
+  background-color: #eeeeee;
+  opacity: 1;
+}
+textarea.login-form input[type=text],
+textarea.login-form input[type=email],
+textarea.login-form input[type=password] {
+  height: auto;
+}
+.form-container {
+  padding: 20px;
+  border: 1px solid #5bc0de;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px #b0e1ef;
+}
+.form-container.has-error {
+  border-color: #d9534f;
+  box-shadow: 0 0 10px #eba5a3;
 }
 .wmd-preview {
   background-color: #fff !important;
@@ -8280,6 +8456,7 @@ footer {
   height: 100%;
   background: url("http://www.arthurweill.fr/img/unsplash/images_1280/tumblr_mnh1jdFvHR1st5lhmo1_1280.jpg");
   padding-bottom: 0;
+  margin-top: -80px;
 }
 .message-wrapper {
   display: table;
