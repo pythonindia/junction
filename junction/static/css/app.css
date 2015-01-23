@@ -8216,6 +8216,9 @@ button.close {
 .align-bottom {
   vertical-align: bottom;
 }
+.align-middle {
+  vertical-align: middle;
+}
 .inline-block {
   display: inline-block !important;
 }
@@ -8237,6 +8240,13 @@ button.close {
 .space-on-right {
   margin-right: 5px;
 }
+.clear-margin {
+  margin: 0 !important;
+}
+.heading {
+  border-bottom: 1px dashed;
+  padding-bottom: 10px;
+}
 html {
   font-size: 1em;
 }
@@ -8247,6 +8257,11 @@ body {
 html,
 body {
   height: 100%;
+}
+footer {
+  padding: 20px 0;
+  background-color: #fff7f8;
+  border-top: 1px solid #ffdee2;
 }
 .wmd-preview {
   background-color: #fff !important;
@@ -8274,4 +8289,51 @@ body {
 .message {
   vertical-align: bottom;
   display: table-cell;
+}
+.status {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  margin-left: 5px;
+}
+a.status:hover,
+a.status:focus {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.status:empty {
+  display: none;
+}
+.btn .status {
+  position: relative;
+  top: -1px;
+}
+.status-2 {
+  background-color: #777777;
+}
+.status-2[href]:hover,
+.status-2[href]:focus {
+  background-color: #5e5e5e;
+}
+.status-3 {
+  background-color: #5cb85c;
+}
+.status-3[href]:hover,
+.status-3[href]:focus {
+  background-color: #449d44;
+}
+.status-4 {
+  background-color: #5bc0de;
+}
+.status-4[href]:hover,
+.status-4[href]:focus {
+  background-color: #31b0d5;
 }

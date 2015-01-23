@@ -131,18 +131,21 @@
 
     <!-- Page Content -->
     <div class="container-fluid">
-
-        {% block content %}
-        {% endblock %}
+        <div class="row-fluid clearfix">
+            <div class="col-md-10 col-md-offset-1">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
 
     </div>
 
     <!-- Footer -->
-    <footer class="fill-white">
+    <footer>
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="col-xs-12 text-center">
-                    <p class="push-half-top">Copyright &copy; Python Software Society of India 2015</p>
+                    <p class="push-half-top clear-margin">Copyright &copy; Python Software Society of India 2015</p>
                 </div>
             </div><!-- /.row -->
         </div>
