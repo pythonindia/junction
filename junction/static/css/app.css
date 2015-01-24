@@ -4729,11 +4729,11 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
-  background-color: #777777;
+  background-color: #919191;
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-  background-color: #5e5e5e;
+  background-color: #777777;
 }
 .label-primary {
   background-color: #f85441;
@@ -8237,24 +8237,33 @@ button.close {
 .text-bold {
   font-weight: bold;
 }
-.space-on-right {
-  margin-right: 5px;
-}
 .clear-margin {
   margin: 0 !important;
+}
+.clear-margin-top {
+  margin-top: 0 !important;
 }
 .heading {
   border-bottom: 1px dashed;
   padding-bottom: 10px;
 }
+.space-on-top {
+  margin-top: 5px;
+}
 .space-on-left {
   margin-left: 5px;
+}
+.space-on-left-lg {
+  margin-left: 10px;
 }
 .space-on-right {
   margin-right: 5px;
 }
-.space-on-left-lg {
-  margin-left: 10px;
+.space-on-bottom {
+  margin-bottom: 5px;
+}
+.space-on-bottom-xl {
+  margin-bottom: 20px;
 }
 .btn-google {
   color: white;
@@ -8494,11 +8503,11 @@ a.status:focus {
   top: -1px;
 }
 .status-2 {
-  background-color: #777777;
+  background-color: #919191;
 }
 .status-2[href]:hover,
 .status-2[href]:focus {
-  background-color: #5e5e5e;
+  background-color: #777777;
 }
 .status-3 {
   background-color: #5cb85c;
@@ -8513,4 +8522,27 @@ a.status:focus {
 .status-4[href]:hover,
 .status-4[href]:focus {
   background-color: #31b0d5;
+}
+.proposal-list {
+  margin-bottom: 40px;
+}
+.proposal-stats {
+  padding: 0;
+}
+.proposal-stats .panel {
+  margin-bottom: 0;
+}
+.proposal-stats .fa,
+.proposal-stats .stats {
+  vertical-align: middle;
+}
+.proposal-stats .stats {
+  font-size: 1.5em;
+}
+.proposal-stats hr {
+  margin: 5px 0;
+}
+.proposal-stats .panel-body {
+  padding: 5px;
+  text-align: center;
 }
