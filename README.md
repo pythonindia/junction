@@ -29,6 +29,18 @@ Configuring Django-allauth
  - Change the default site's(the one with ID = 1) name and display to `localhost:8000`
  - Go to `Social Applications` in admin panel and add [Github](http://django-allauth.readthedocs.org/en/latest/providers.html#github) and [Google](http://django-allauth.readthedocs.org/en/latest/providers.html#google)'s auth details
 
+Making Frontend Changes
+---------------------------
+Make sure you have nodejs, npm, bower & grunt installed
+
+```
+$ cd junction/static
+$ npm install
+$ bower install
+$ grunt // This starts a watcher to watch for file changes
+```
+
+
 Contributing
 ------------
 

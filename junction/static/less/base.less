@@ -1,0 +1,44 @@
+html {
+    font-size: 1em;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
+}
+
+html, body {
+  height: 100%;
+}
+
+footer {
+  @bg-color: @junction-color-3;
+
+  padding: 20px 0;
+  background-color: @bg-color;
+  border-top: 1px solid darken(@bg-color, 5%);
+  border-bottom: 1px solid darken(@bg-color, 5%);
+}
+
+.navbar-wrapper {
+  margin-bottom: @navbar-height + 5px;
+}
+
+.form-container {
+  input[type=text], input[type=email], input[type=password] {
+    .form-control();
+  }
+}
+
+.form-container {
+  padding: 20px;
+  border: 1px solid @brand-info;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px lighten(@brand-info, 20%);
+
+  &.has-error {
+    border-color: @brand-danger;
+    box-shadow: 0 0 10px lighten(@brand-danger, 20%);
+  }
+}
