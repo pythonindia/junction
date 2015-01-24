@@ -122,7 +122,7 @@
                                 <b>Proposal Type:</b> {{ proposal.proposal_type }}
                                 <b>Proposal Section:</b> {{ proposal.proposal_section }}
                                 <b>By:</b> {{ proposal.author.username }} ({{ proposal.author.get_full_name }})
-                                <b>Date:</b> {{ proposal.created_at }}
+                                <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
                             </span>
                         </p>
                     </div>

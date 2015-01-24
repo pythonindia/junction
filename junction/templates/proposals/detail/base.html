@@ -28,7 +28,7 @@
             </h1>
             <span>
                 by: <b>{{ proposal.author.username }} ({{ proposal.author.get_full_name }})</b>
-                date: <b>{{ proposal.created_at }}</b>
+                date: <b>{{ proposal.created_at|date:"d M, Y" }}</b>
             </span>
             {% if can_delete %}
             <div class="proposal-update">
