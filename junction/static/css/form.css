@@ -30,20 +30,13 @@
 }
 
 
-/*
-  Proposals
------------------------------------------------------------------------------- */
-div#id_proposal_type,
-div#id_proposal_section
-{
-  display: inline-block;
-  vertical-align: top;
+/* Proposals */
+
+.dropdown {
+    display: inline;
+    width: auto;
 }
 
-div#id_proposal_type .radio,
-div#id_proposal_section .radio {
-  margin-top: 0;
-}
 
 /* Editor */
 
