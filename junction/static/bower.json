@@ -2,9 +2,7 @@
   "name": "junction",
   "version": "0.1.0",
   "homepage": "https://github.com/pythonindia/junction",
-  "authors": [
-    "Mudassir <mudassir.dev@gmail.com>"
-  ],
+  "authors": [],
   "license": "MIT",
   "private": true,
   "ignore": [
