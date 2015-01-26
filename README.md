@@ -31,7 +31,7 @@ Configuring Django-allauth
 
 Making Frontend Changes
 ---------------------------
-Make sure you have nodejs, npm, bower & grunt installed
+Make sure you have nodejs, npm, bower, grunt-cli & grunt installed
 
 ```
 $ cd junction/static
