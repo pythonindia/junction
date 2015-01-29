@@ -115,7 +115,7 @@
                                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
                             </ul>
                             {% else %}
-                            <a href="{% url 'account_login' %}">Login / Register</a>
+                            <a href="{% url 'account_login' %}?next={{request.path}}">Login / Register</a>
                             {% endif %}
                         </li>
                     </ul>
