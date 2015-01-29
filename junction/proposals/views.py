@@ -85,7 +85,7 @@ def create_proposal(request, conference_slug):
         status=form.cleaned_data['status'],
         proposal_type_id=form.cleaned_data['proposal_type'],
         proposal_section_id=form.cleaned_data['proposal_section'])
-    host='{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
+    host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
     send_mail_for_new_proposal(p.conference, p.title, p.author, p.speaker_info,
                                p.get_absolute_url(), p.proposal_section_id, host)
     return HttpResponseRedirect(reverse('proposals-list',
