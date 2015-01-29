@@ -14,7 +14,7 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
 from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
                      ProposalType, ProposalCommentVote)
-from .services import send_mail_for_new_comment
+from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
 def _is_proposal_author(user, proposal):
@@ -72,23 +72,22 @@ def create_proposal(request, conference_slug):
                        'errors': form.errors})
 
     # Valid Form
-    Proposal.objects.create(author=request.user,
-                            conference=conference,
-                            title=form.cleaned_data['title'],
-                            description=form.cleaned_data['description'],
-                            target_audience=form.cleaned_data[
-                                'target_audience'],
-                            prerequisites=form.cleaned_data['prerequisites'],
-                            content_urls=form.cleaned_data['content_urls'],
-                            speaker_info=form.cleaned_data['speaker_info'],
-                            speaker_links=form.cleaned_data['speaker_links'],
-                            status=form.cleaned_data['status'],
-                            proposal_type_id=form.cleaned_data[
-                                'proposal_type'],
-                            proposal_section_id=form.cleaned_data[
-                                'proposal_section']
-                            )
-
+    p = Proposal.objects.create(
+        author=request.user,
+        conference=conference,
+        title=form.cleaned_data['title'],
+        description=form.cleaned_data['description'],
+        target_audience=form.cleaned_data['target_audience'],
+        prerequisites=form.cleaned_data['prerequisites'],
+        content_urls=form.cleaned_data['content_urls'],
+        speaker_info=form.cleaned_data['speaker_info'],
+        speaker_links=form.cleaned_data['speaker_links'],
+        status=form.cleaned_data['status'],
+        proposal_type_id=form.cleaned_data['proposal_type'],
+        proposal_section_id=form.cleaned_data['proposal_section'])
+    host='{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
+    send_mail_for_new_proposal(p.conference, p.title, p.author, p.speaker_info,
+                               p.get_absolute_url(), p.proposal_section_id, host)
     return HttpResponseRedirect(reverse('proposals-list',
                                         args=[conference.slug]))
 

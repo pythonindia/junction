@@ -1,4 +1,6 @@
 from junction.emailer import send_email
+from junction.conferences.models import ConferenceProposalReviewer
+from .models import ProposalType
 
 
 def send_mail_for_new_comment(proposal_comment, host, login_url):
@@ -9,7 +11,7 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
         if to == proposal_comment.commenter:
             continue
         send_email(to=to,
-                   template_dir='proposals/email',
+                   template_dir='proposals/email/comment',
                    context={'to': to,
                             'proposal': proposal,
                             'comment': proposal_comment,
@@ -30,3 +32,23 @@ def comment_recipients(proposal_comment):
             .all().select_related('commenter')}
     recipients.add(proposal.author)
     return recipients
+
+
+def send_mail_for_new_proposal(conference, title, author, speaker_info,
+                               url, proposal_section_id, host):
+    proposal_section = ProposalType.objects.get(pk=proposal_section_id)
+    send_to = [c.reviewer for c in
+               ConferenceProposalReviewer.objects.filter(conference=conference)]
+    for to in send_to:
+        if to == author:
+            continue
+        send_email(to=to,
+                   template_dir='proposals/email/proposal',
+                   context={'to': to,
+                            'title': title,
+                            'author': author,
+                            'speaker_info': speaker_info,
+                            'conference': conference,
+                            'proposal_section': proposal_section,
+                            'url': url,
+                            'host': host, })
