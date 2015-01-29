@@ -24,15 +24,20 @@
 {% endblock navbar_logo %}
 
 {% block header %}
-    <div class="head_content">
-    <div class="custom-container">
-        <h1>{{ conference.name }}</h1>
-        <p class="meta"> <b>
-            <span class="start_date">{{ conference.start_date }}</span> –
-            <span class="end_date">{{ conference.end_date }}</span>
-            (<span class="status">{{ conference.get_status_display }}</span>)
-        </b></p>
-    </div>
+    <div class="clearfix">
+        <div class="col-md-12">
+            <h1>{{ conference.name }}</h1>
+            <p class="meta">
+                <b class="text-muted">
+                    <span class="start_date">{{ conference.start_date }}</span> –
+                    <span class="end_date">{{ conference.end_date }}</span>
+                </b>
+
+                <span class="status status-{{conference.status}}">
+                    {{ conference.get_status_display }}
+                </span>
+            </p>
+        </div>
     </div>
 {% endblock %}
 
@@ -68,9 +73,11 @@
         </div>
         <div class="row ">
             <div class="col-xs -12 col-sm-12 ">
-                <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
-                    <i class="fa fa-plus-square-o"></i> New Proposal
-                </a>
+                {% if conference.status == 1 %}
+                    <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
+                        <i class="fa fa-plus-square-o"></i> New Proposal
+                    </a>
+                {% endif %}
                 <div class="header-tab">
                     <div class="header-tab-title">
                         <h2>List of Proposals</h2>
@@ -92,19 +99,23 @@
           <div class="row">
             <div class="col-xs-12" >
                 <div class="proposal-list-content">
-                    <div class="statscontainer col-sm-1 hidden-xs padding-less">
-                        <div class="stats">
-                            <div class="icon-holder icon-holder-inverse text-center">
-                                <i class="fa fa-comments"></i>
-                                <h4> {{ proposal.get_comments_count }}</h4>
-                            </div>
-                            <div class="icon-holder text-center">
-                                <i class="fa fa-thumbs-up fa-inverse "></i>
-                                <h4> {{ proposal.get_votes_count }} </h4>
+                    <div class="col-sm-1 hidden-xs proposal-stats">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
+                                <small class="text-muted">
+                                    Votes
+                                </small>
                             </div>
                         </div>
+                        <div class="text-center space-on-top">
+                            <i class="fa fa-comments-o"></i>
+                            <span class="align-middle">
+                                {{ proposal.get_comments_count }}
+                            </span>
+                        </div>
                     </div>
-                    <div class="col-sm-11 col-xs-12 padding-less">
+                    <div class="col-sm-11 col-xs-12">
                         <p class="col-xs-12  visible-xs">
                             <span class="pull-left">
                                 <i class="fa fa-comments"></i>10
@@ -113,15 +124,26 @@
                                 <i class="fa fa-thumbs-up"></i>25
                             </span>
                         </p>
-                        <h3><a href='{{ proposal.get_absolute_url }}'>{{ proposal.title }}</a></h3>
+                        <h3 class="clear-margin-top">
+                            <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title }}</a>
+                        </h3>
                         <p>{{ proposal.description|truncatechars:200 }}</p>
-                        <p>{{ proposal.proposal_type }}</p>
-                        <p>{{ proposal.proposal_section }}</p>
-                        <p>
-                            <span class="pull-right">
-                                <b>By:</b> {{ proposal.author }}
-                            </span>
-                        </p>
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <span class="label label-default inline-block">
+                                    {{ proposal.proposal_type }}
+                                </span>
+                                <span class="label label-default inline-block">
+                                    {{ proposal.proposal_section }}
+                                </span>
+                            </div>
+
+                            <small class="pull-right">
+                                by <b>{{ proposal.author.username }}
+                                      {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %}</b> |&nbsp;
+                                <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>

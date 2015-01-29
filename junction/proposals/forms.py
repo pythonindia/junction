@@ -38,8 +38,10 @@ class ProposalForm(forms.Form):
                                         widget=forms.RadioSelect(renderer=HorizRadioRenderer))
     status = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer),
                                choices=PROPOSAL_STATUS_LIST, )
-    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class':'dropdown'}))
-    proposal_section = forms.ChoiceField(widget=forms.Select(attrs={'class':'dropdown'}))
+    proposal_type = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'dropdown'}))
+    proposal_section = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'dropdown'}))
 
     # Additional Content
     prerequisites = forms.CharField(

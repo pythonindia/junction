@@ -1,0 +1,10 @@
+#!/home/gggg/passionwork/junction/venv/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'pytest==2.6.4','console_scripts','py.test'
+__requires__ = 'pytest==2.6.4'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('pytest==2.6.4', 'console_scripts', 'py.test')()
+    )

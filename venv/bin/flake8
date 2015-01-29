@@ -1,0 +1,10 @@
+#!/home/gggg/passionwork/junction/venv/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'flake8==2.2.5','console_scripts','flake8'
+__requires__ = 'flake8==2.2.5'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('flake8==2.2.5', 'console_scripts', 'flake8')()
+    )
