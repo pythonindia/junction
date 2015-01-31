@@ -139,7 +139,8 @@
                             </div>
 
                             <small class="pull-right">
-                                by <b>{{ proposal.author.username }} ({{ proposal.author.get_full_name }})</b> |&nbsp;
+                                by <b>{{ proposal.author.username }}
+                                      {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %}</b> |&nbsp;
                                 <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
                             </small>
                         </div>

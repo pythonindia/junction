@@ -25,13 +25,13 @@ Initial auth data: admin/123123
 Configuring Django-allauth
 ---------------------------
 
- - Go to `/admin/sites/site/` 
+ - Go to `http://localhost:8000/nimda/sites/site/` 
  - Change the default site's(the one with ID = 1) name and display to `localhost:8000`
  - Go to `Social Applications` in admin panel and add [Github](http://django-allauth.readthedocs.org/en/latest/providers.html#github) and [Google](http://django-allauth.readthedocs.org/en/latest/providers.html#google)'s auth details
 
 Making Frontend Changes
 ---------------------------
-Make sure you have nodejs, npm, bower & grunt installed
+Make sure you have nodejs, npm, bower, grunt-cli & grunt installed
 
 ```
 $ cd junction/static
