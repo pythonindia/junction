@@ -8556,11 +8556,14 @@ a.status:focus {
 .status-2[href]:focus {
   background-color: #777777;
 }
-.status-3 {
+.status-3,
+.status-1 {
   background-color: #5cb85c;
 }
 .status-3[href]:hover,
-.status-3[href]:focus {
+.status-1[href]:hover,
+.status-3[href]:focus,
+.status-1[href]:focus {
   background-color: #449d44;
 }
 .status-4 {
