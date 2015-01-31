@@ -4,79 +4,105 @@
 
 
 {% block comments %}
-    <ul class="nav nav-pills">
-        <li role="presentation" class="active">
-            <a href="#comments">
-                <i class="fa fa-comments-o"> </i>
-                Comments
-            </a>
-        </li>
-        {% if allow_private_comment %}
-        <li role="presentation">
-            <a href="reviewers/">
-                <i  class="fa fa-info"> </i> Reviewers
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-    <br>
-    {% if not comments %}
-    <p>
-        No comments added so far.
-    </p>
-    <br/>
-    {% endif %}
+    <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active" role="presentation">
+                <a href="#js-comments" role="tab" data-toggle="tab">
+                    <i class="fa fa-comments-o"></i>
+                    Comments
+                </a>
+            </li>
 
-    {% for comment in comments %}
-        {% if user.is_authenticated %}
-            <div class="col-sm-1">
-                <div class="icon-holder  pull-right text-center">
-                    <div>
-                        <h4>
-                            {{ comment.get_votes_count }}
-                        </h4>
+            <li role="presentation">
+                <a href="#js-reviewers" role="tab" data-toggle="tab">
+                    <i class="fa fa-thumbs-up"></i>
+                    Reviewers
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content padded">
+            <div class="tab-pane active" id="js-comments" role="tabpanel">
+                {% if not comments %}
+                    <p class="text-muted lead">
+                        No comments added so far.
+                    </p>
+                {% endif %}
+
+                {% for comment in comments %}
+                    <div class="panel panel-default comment-panel">
+                        <div class="panel-body">
+                            <div class="comment-vote-panel text-center">
+                                <div class="text-center">
+                                    <div>
+                                        <a href="#" class="js-proposal-comment-upvote text-muted">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-muted clear-margin">
+                                            {{ comment.get_votes_count }}
+                                        </h5>
+                                    </div>
+                                   <div>
+                                        <a href="#" class="js-proposal-comment-downvote text-muted">
+                                            <i class="fa fa-chevron-down"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <form id="js-proposal-comment-upvote" method="POST" action="{{ comment.get_up_vote_url }}">
+                                    {% csrf_token %} {{ proposal_comment_vote_form }}
+                                </form>
+                                <form id="js-proposal-comment-downvote" method="POST" action="{{ comment.get_down_vote_url }}">
+                                    {% csrf_token %} {{ proposal_comment_vote_form }}
+                                </form>
+                            </div>
+
+                            <div class="comment-description">
+                                {{ comment.comment|markdown }}
+
+                                <hr class="hr-mini">
+
+                                <div class="text-muted">
+                                    <small>
+                                        by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="icon-holder-bottom">
-                        <i class="fa fa-thumbs-down prosal-comment-down-vote">
-                        </i>
-                        <i class="fa fa-thumbs-up prosal-comment-up-vote">
-                        </i>
-                    </div>
+                {% endfor %}
+
+                <div class="add-comment-wrapper">
+                    {% if user.is_authenticated %}
+                        <a href="#" class="js-add-comment">add a comment</a>
+
+                        <form method="POST" class="new-comment js-new-comment-form" style="display:none;" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
+                            {% csrf_token %}
+                            {{ proposal_comment_form.media }}
+
+                            {% bootstrap_field proposal_comment_form.comment %}
+
+                            {% buttons %}
+                                <button type="submit" class="btn btn-primary">
+                                    Add Comment
+                                </button>
+                            {% endbuttons %}
+                        </form>
+                    {% else %}
+                        <p>
+                              <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
+                                    Login
+                              </a>
+                              to add a new comment.
+                        </p>
+                    {% endif %}
                 </div>
-                <form id="prosal-comment-up-vote" method="POST" action="{{ comment.get_up_vote_url }}">
-                    {% csrf_token %} {{ proposal_comment_vote_form }}
-                </form>
-                <form id="prosal-comment-down-vote" method="POST" action="{{ comment.get_down_vote_url }}">
-                    {% csrf_token %} {{ proposal_comment_vote_form }}
-                </form>
             </div>
-        {% endif %}
-        <div class="bg-info">
-            {{ comment.comment|markdown }} <br/>
-            Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
-            <hr/>
+
+            <div class="tab-pane" id="js-reviewers" role="tabpanel">
+            </div>
         </div>
-    {% endfor %}
-
-    {% if user.is_authenticated %}
-        <form method="POST" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
-            {% csrf_token %}
-            {{ proposal_comment_form.media }}
-
-            {% bootstrap_field proposal_comment_form.comment %}
-
-            {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                Add Comment
-            </button>
-            {% endbuttons %}
-        </form>
-        {% else %}
-        <p>
-              <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
-                    Login
-              </a>
-              to add a new comment.
-        </p>
-    {% endif %}
+    </div>
 {% endblock %}
