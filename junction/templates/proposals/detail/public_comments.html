@@ -13,12 +13,14 @@
                 </a>
             </li>
 
+            {% if allow_private_comment %}
             <li role="presentation">
                 <a href="#js-reviewers" role="tab" data-toggle="tab">
                     <i class="fa fa-thumbs-up"></i>
                     Reviewers
                 </a>
             </li>
+            {% endif %}
         </ul>
 
         <div class="tab-content padded">
@@ -101,8 +103,10 @@
                 </div>
             </div>
 
+            {% if allow_private_comment %}
             <div class="tab-pane" id="js-reviewers" role="tabpanel">
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
