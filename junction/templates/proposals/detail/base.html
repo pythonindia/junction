@@ -56,7 +56,6 @@
     <hr class="hr-mini">
 
     <div class="row porsal-description">
-        {% if user.is_authenticated %}
         <div class="col-sm-1">
             <div class="text-center">
                 <a href="#" class="js-proposal-upvote text-muted">
@@ -82,7 +81,6 @@
                 {% csrf_token %} {{ proposal_vote_form }}
             </form>
         </div>
-        {% endif %}
 
         <div class="col-sm-8">
             <h4>
