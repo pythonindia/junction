@@ -1075,12 +1075,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #f85441;
+  color: #2066c5;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #e41f08;
+  color: #154483;
   text-decoration: underline;
 }
 a:focus {
@@ -3272,7 +3272,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #ffffff;
 }
 .btn-link {
-  color: #f85441;
+  color: #2066c5;
   font-weight: normal;
   border-radius: 0;
 }
@@ -3293,7 +3293,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #e41f08;
+  color: #154483;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -3866,7 +3866,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a:hover,
 .nav .open > a:focus {
   background-color: #eeeeee;
-  border-color: #f85441;
+  border-color: #2066c5;
 }
 .nav .nav-divider {
   height: 1px;
@@ -4588,7 +4588,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #f85441;
+  color: #2066c5;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   margin-left: -1px;
@@ -4608,7 +4608,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > span:hover,
 .pagination > li > a:focus,
 .pagination > li > span:focus {
-  color: #e41f08;
+  color: #154483;
   background-color: #eeeeee;
   border-color: #dddddd;
 }
@@ -4803,7 +4803,7 @@ a.badge:focus {
 }
 .list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
-  color: #f85441;
+  color: #2066c5;
   background-color: #ffffff;
 }
 .list-group-item > .badge {
@@ -4874,7 +4874,7 @@ a.badge:focus {
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #f85441;
+  border-color: #2066c5;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -8262,6 +8262,9 @@ button.close {
 .space-on-bottom {
   margin-bottom: 5px;
 }
+.space-on-bottom-lg {
+  margin-bottom: 10px;
+}
 .space-on-bottom-xl {
   margin-bottom: 20px;
 }
@@ -8354,6 +8357,15 @@ fieldset[disabled] .btn-github.active {
 .btn-github .badge {
   color: #eeeeee;
   background-color: #454545;
+}
+.hr-mini {
+  margin: 10px 0;
+}
+.table-borderless td {
+  border: none !important;
+}
+.padded {
+  padding: 10px;
 }
 html {
   font-size: 1em;
@@ -8451,18 +8463,25 @@ textarea.form-container input[type=password] {
   border-color: #d9534f;
   box-shadow: 0 0 10px #eba5a3;
 }
-.wmd-preview {
-  background-color: #fff !important;
-  border: 2px dashed #ccc;
+.wmd-panel {
+  margin: inherit !important;
+  width: inherit !important;
+  min-width: inherit !important;
 }
-@media (min-width: 800px) {
-  .wmd-panel {
-    margin-top: -35px;
-    margin-bottom: 50px;
-  }
-  .wmd-preview {
-    margin-bottom: 10px;
-  }
+.wmd-panel textarea {
+  background-color: inherit;
+}
+.wmd-preview {
+  margin: inherit;
+  width: inherit;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px !important;
+  border: 1px dashed #ccc !important;
+  background-color: inherit !important;
+}
+.wmd-preview:empty {
+  display: none;
 }
 .homepage .jumbotron {
   height: 100%;
@@ -8573,4 +8592,52 @@ a.status:focus {
 .proposal-stats .panel-body {
   padding: 5px;
   text-align: center;
+}
+.proposal-title {
+  margin-bottom: 0;
+}
+.proposal-meta {
+  padding: 0;
+}
+.proposal-meta table td {
+  padding: 3px;
+}
+.comments-and-reviews-panel {
+  margin-bottom: 20px;
+}
+.comments-and-reviews-panel .tab-content {
+  border: 1px solid #ddd;
+  border-top: 0;
+}
+.comment-vote-panel {
+  padding-right: 15px;
+  width: 30px;
+}
+.comment-vote-panel,
+.comment-description {
+  display: table-cell;
+  vertical-align: top;
+}
+.comment-panel {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin-bottom: 0;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0;
+}
+.comment-panel .panel-body {
+  display: table;
+  width: 100%;
+}
+.comment-panel:first-child {
+  border-top: 0;
+}
+.add-comment-wrapper {
+  border-top: 1px solid #efefef;
+  padding-top: 10px;
+}
+.new-comment label {
+  display: none;
 }

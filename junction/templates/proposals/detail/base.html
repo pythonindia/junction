@@ -6,8 +6,6 @@
 
 {% block head_title %} Proposal Details | {{ block.super }} {% endblock %}
 {% block endhead %}
-    <!-- Custom CSS -->
-    <link href="{% static 'css/details.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -21,96 +19,72 @@
 
 <div class="custom-container">
 <div class="proposal-details">
-    <div class="row proposal-title">
-        <div class="col-sm-11">
-            <h1>
+    <div class="row">
+        <div class="col-sm-12 proposal-header">
+            <h1 class="proposal-title">
                 {{ proposal.title }}
             </h1>
-            <span>
-                by: <b>{{ proposal.author.username }} {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %} </b>
-                date: <b>{{ proposal.created_at|date:"d M, Y" }}</b>
-            </span>
+            <p class="text-muted">
+                <small>
+                    by: <b>{{ proposal.author.username }} {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %} </b>
+                    date: <b>{{ proposal.created_at|date:"d M, Y" }}</b>
+                </small>
+            </p>
+
             {% if can_delete %}
-            <div class="proposal-update">
-                <a href="{{ proposal.get_update_url }}" >
-                <i class="fa fa-pencil-square-o"> </i>
-                </a>
-                <a href="{{ proposal.get_delete_url }}" >
-                <i class="fa fa-trash-o"> </i>
-                </a>
-                <a href="{{ proposal.get_absolute_url }}#comments" >
-                <i class="fa fa-comments-o"> </i>
-                </a>
-                <a href="{{ proposal.get_absolute_url }}reviewers/#comments" >
-                <i class="fa fa-info"> </i>
-                </a>
-            </div>
+                <div class="btn-group" role="group">
+                    <a href="{{ proposal.get_update_url }}" class="btn btn-default">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </a>
+
+                    <a href="{{ proposal.get_delete_url }}" class="btn btn-default" type="button">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+
+                    <a href="{{ proposal.get_absolute_url }}#comments" class="btn btn-default" type="button">
+                        <i class="fa fa-comments-o"></i>
+                    </a>
+
+                    <a href="{{ proposal.get_absolute_url }}reviewers/#comments" class="btn btn-default" type="button">
+                        <i class="fa fa-info"></i>
+                    </a>
+                </div>
             {% endif %}
         </div>
+    </div>
+
+    <hr class="hr-mini">
+
+    <div class="row porsal-description">
         {% if user.is_authenticated %}
         <div class="col-sm-1">
-            <div class="icon-holder  pull-right text-center">
-                <div>
-                    <h4>
-                        {{ vote_value }}
+            <div class="text-center">
+                <a href="#" class="js-proposal-upvote text-muted">
+                    <h4 class="clear-margin">
+                        <i class="fa fa-chevron-up fa-2x"></i>
                     </h4>
-                </div>
-                <div class="icon-holder-bottom">
-                    <i class="fa fa-thumbs-down prosal-down-vote">
-                    </i>
-                    <i class="fa fa-thumbs-up prosal-up-vote">
-                    </i>
-                </div>
+                </a>
+
+                <h1 class="clear-margin text-muted">
+                    {{ vote_value }}
+                </h1>
+
+                <a href="#" class="js-proposal-downvote text-muted">
+                    <h4 class="clear-margin">
+                        <i class="fa fa-chevron-down fa-2x"></i>
+                    </h4>
+                </a>
             </div>
-            <form id="prosal-up-vote" method="POST" action="{{ proposal.get_up_vote_url }}">
+            <form id="js-proposal-upvote" method="POST" action="{{ proposal.get_up_vote_url }}">
                 {% csrf_token %} {{ proposal_vote_form }}
             </form>
-            <form id="prosal-down-vote" method="POST" action="{{ proposal.get_down_vote_url }}">
+            <form id="js-proposal-downvote" method="POST" action="{{ proposal.get_down_vote_url }}">
                 {% csrf_token %} {{ proposal_vote_form }}
             </form>
         </div>
         {% endif %}
-    </div>
-    <div class="row porsal-title-section">
-        <div class="col-sm-12 fill-blue ">
-            <div class="col-xs-12 col-sm-8 padding-less ">
-                <b>
-                Section :
-                </b>
-                {{ proposal.proposal_section }}
-                <br>
-                <b>
-                Type :
-                </b>
-                {{ proposal.proposal_type }}
-            </div>
-            <div class="col-xs-12 col-sm-4 padding-less ">
-                <b>
-                Status :
-                </b>
-                {% if proposal.status == 1 %}
-                    Draft
-                {% elif proposal.status == 2 %}
-                    Public
-                {% else %}
-                    Cancelled
-                {% endif %}
-                <br>
-                <b>
-                Target Audience :
-                </b>
-                {% if proposal.target_audience == 1 %}
-                    Beginner
-                {% elif proposal.target_audience == 2 %}
-                    Intermediate
-                {% else %}
-                    Advanced
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div class="row porsal-description">
-        <div class="col-sm-12">
+
+        <div class="col-sm-8">
             <h4>
                 Description :
             </h4>
@@ -154,33 +128,86 @@
                 </p>
             {% endif %}
         </div>
+
+        <div class="col-sm-3 proposal-meta">
+            <table class="table table-borderless">
+                <tr>
+                    <td class="text-muted text-right"><small>Section:</small></td>
+                    <td>{{ proposal.proposal_section }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted text-right"><small>Type:</small></td>
+                    <td>{{ proposal.proposal_type }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted text-right"><small>Status:</small></td>
+                    <td>
+                        {% if proposal.status == 1 %}
+                            Draft
+                        {% elif proposal.status == 2 %}
+                            Public
+                        {% else %}
+                            Cancelled
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-muted text-right"><small>Target Audience:</small></td>
+                    <td>
+                        {% if proposal.target_audience == 1 %}
+                            Beginner
+                        {% elif proposal.target_audience == 2 %}
+                            Intermediate
+                        {% else %}
+                            Advanced
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
+
+    <hr>
+
     <div class="row">
-        <div class="col-sm-12" id="comments">
+        <div class="col-sm-12">
           {% block comments %}
           {% endblock %}
         </div>
     </div>
 </div>
 
-
 {% endblock %}
 
 {% block script_extra %}
  <script type="text/javascript">
-    $('.prosal-up-vote').click(function(){
-        $("#prosal-up-vote").submit();
+    $('.js-proposal-upvote').click(function(){
+        $("#js-proposal-upvote").submit();
     });
-    $('.prosal-down-vote').click(function(){
-        $("#prosal-down-vote").submit();
+    $('.js-proposal-downvote').click(function(){
+        $("#js-proposal-downvote").submit();
     });
-    $('.prosal-comment-up-vote').click(function(){
-        var form = $(this).parent().parent().parent().find('#prosal-comment-up-vote');
+    $('.js-proposal-comment-upvote').click(function(){
+        var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');
         form.submit();
     });
-    $('.prosal-comment-down-vote').click(function(){
-        var form = $(this).parent().parent().parent().find('#prosal-comment-down-vote');
+    $('.js-proposal-comment-downvote').click(function(){
+        var form = $(this).parent().parent().parent().find('#js-proposal-comment-downvote');
         form.submit();
     });
+
+    $('.js-add-comment').click(function(e) {
+        e.preventDefault();
+
+        var $form = $('.js-new-comment-form');
+
+        $form.slideDown(function() {
+            $( e.currentTarget ).hide();
+            $("html, body").animate({ scrollTop: $(document).height() }, 500, function() {
+                    $form.find( 'textarea' ).focus();
+                }
+            );
+        });
+    })
 </script>
 {% endblock %}

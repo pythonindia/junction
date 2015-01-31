@@ -1,14 +1,23 @@
-.wmd-preview {
-  background-color: #fff !important;
-  border: 2px dashed #ccc;
+.wmd-panel {
+  margin: inherit !important;
+  width: inherit !important;
+  min-width: inherit !important;
+
+  textarea {
+    background-color: inherit;
+  }
 }
 
-@media (min-width: 800px) {
-  .wmd-panel {
-    margin-top: -35px;
-    margin-bottom: 50px;
-  }
-  .wmd-preview {
-    margin-bottom: 10px;
+.wmd-preview {
+  margin: inherit;
+  width: inherit;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px !important;
+  border: 1px dashed #ccc !important;
+  background-color: inherit !important;
+
+  &:empty {
+    display: none;
   }
 }
