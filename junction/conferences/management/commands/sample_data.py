@@ -137,7 +137,12 @@ class Command(BaseCommand):
             "is_staff": kwargs.get('is_staff', kwargs.get('is_superuser', self.sd.boolean())),
         }
         user = get_user_model().objects.create(**params)
-        user.set_password('123123')
+        password = '123123'
+
+        user.set_password(password)
         user.save()
+
+        print("User created with username: {username} and password: {password}".format(
+            username=params.get('username'), password=password))
 
         return user
