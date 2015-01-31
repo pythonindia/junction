@@ -58,17 +58,17 @@
     <div class="row porsal-description">
         <div class="col-sm-1">
             <div class="text-center">
-                <a href="#" class="js-proposal-upvote text-muted">
+                <a href="#" class="js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
                     <h4 class="clear-margin">
                         <i class="fa fa-chevron-up fa-2x"></i>
                     </h4>
                 </a>
 
                 <h1 class="clear-margin text-muted">
-                    {{ vote_value }}
+                    {{ proposal.get_votes_count }}
                 </h1>
 
-                <a href="#" class="js-proposal-downvote text-muted">
+                <a href="#" class="js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
                     <h4 class="clear-margin">
                         <i class="fa fa-chevron-down fa-2x"></i>
                     </h4>
