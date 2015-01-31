@@ -20,55 +20,50 @@
     <a href="{% url "conference-detail" conference.slug %}">
         <img src="{{ conference.logo.url }}">
     </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
     {% endif %}
 {% endblock navbar_logo %}
-
-{% block header %}
-    <div class="clearfix">
-        <div class="col-md-12">
-            <h1>{{ conference.name }}</h1>
-            <p class="meta">
-                <b class="text-muted">
-                    <span class="start_date">{{ conference.start_date }}</span> –
-                    <span class="end_date">{{ conference.end_date }}</span>
-                </b>
-
-                <span class="status status-{{conference.status}}">
-                    {{ conference.get_status_display }}
-                </span>
-            </p>
-        </div>
-    </div>
-{% endblock %}
 
 {% block content %}
 <section class="content custom-container proposal-list">
     <div class="push-4-bottom push-1-top">
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
+                <p class="meta">
+                    <b class="text-muted">
+                        <span class="start_date">{{ conference.start_date }}</span> –
+                        <span class="end_date">{{ conference.end_date }}</span>
+                    </b>
+
+                    <span class="status status-{{conference.status}}">
+                        {{ conference.get_status_display }}
+                    </span>
+                </p>
+                <hr>
                 <p class="text-left">{{ conference.description }}</p>
             </div>
         </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
-                <h2 class="title-underline">Proposal Sections</h2>
+                <h2>Proposal Sections</h2>
                 <ol>
                 {% for section in proposal_sections %}
                  <li><b>{{section.name}}</b> - {{section.description}}</li>
                 {% endfor %}
                 </ol>
-                <hr class="border-less" />
+                <hr>
             </div>
         </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
-                <h2 class="title-underline">Proposal Types</h2>
+                <h2>Proposal Types</h2>
                 <ol>
                 {% for types in proposal_types %}
                  <li><b>{{types.name}}</b> - {{types.description}}</li>
                 {% endfor %}
                 </ol>
-            <hr class="border-less" />
+            <hr>
             </div>
         </div>
         <div class="row ">

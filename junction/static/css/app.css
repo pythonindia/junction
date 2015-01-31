@@ -8372,8 +8372,11 @@ footer {
   border-top: 1px solid #ffdee2;
   border-bottom: 1px solid #ffdee2;
 }
-.navbar-wrapper {
-  margin-bottom: 80px;
+.navbar-default {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 .form-container input[type=text],
 .form-container input[type=email],
@@ -8467,6 +8470,30 @@ textarea.form-container input[type=password] {
   margin-top: -80px;
   background-size: cover;
   background-position: top center;
+}
+.homepage nav.navbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  top: 0;
+  border-width: 0 0 1px;
+}
+.homepage nav.navbar .navbar-collapse {
+  max-height: 340px;
+}
+@media (max-device-width: 480px) and (orientation: landscape) {
+  .homepage nav.navbar .navbar-collapse {
+    max-height: 200px;
+  }
+}
+@media (min-width: 768px) {
+  .homepage nav.navbar {
+    border-radius: 0;
+  }
+}
+.homepage .navbar-wrapper {
+  margin-bottom: 80px;
 }
 .message-wrapper {
   display: table;
