@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Third Party Stuff
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
 
+from junction.base.constants import PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
@@ -38,12 +38,19 @@ def _is_proposal_author_or_reviewer(user, conference, proposal):
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposals_list = Proposal.objects.filter(conference=conference)
+    public_proposals_list = Proposal.objects.filter(conference=conference,
+                                                    status=PROPOSAL_STATUS_PUBLIC)
+    user_proposals_list = []
+    if request.user.is_authenticated():  # Display the proposals by this user
+        user_proposals_list = Proposal.objects.filter(conference=conference,
+                                                      author=request.user)
+
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
 
     return render(request, 'proposals/list.html',
-                  {'proposals_list': proposals_list,
+                  {'public_proposals_list': public_proposals_list,
+                   'user_proposals_list': user_proposals_list,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'conference': conference})
@@ -102,10 +109,6 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
 
     proposal_vote_form = ProposalVoteForm()
 
-    can_delete = False
-    if request.user == proposal.author:
-        can_delete = True
-
     vote_value = 0
 
     try:
@@ -121,7 +124,8 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
         'allow_private_comment': allow_private_comment,
         'proposal_vote_form': proposal_vote_form,
         'vote_value': vote_value,
-        'can_delete': can_delete
+        'can_delete': request.user == proposal.author,
+        'is_author': request.user == proposal.author,
     }
 
     comments = ProposalComment.objects.filter(

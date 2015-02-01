@@ -26,8 +26,14 @@
             </h1>
             <p class="text-muted">
                 <small>
-                    by: <b>{{ proposal.author.username }} {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %} </b>
-                    date: <b>{{ proposal.created_at|date:"d M, Y" }}</b>
+                    Author: <b>
+                          {% if proposal.author.get_full_name %}
+                              {{ proposal.author.get_full_name }} (~{{ proposal.author.username }})
+                          {% else %}
+                              {{ proposal.author.username }}
+                          {% endif %}
+                          </b> |&nbsp;
+                    <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
                 </small>
             </p>
 
@@ -137,18 +143,12 @@
                     <td class="text-muted text-right"><small>Type:</small></td>
                     <td>{{ proposal.proposal_type }}</td>
                 </tr>
-                <tr>
-                    <td class="text-muted text-right"><small>Status:</small></td>
-                    <td>
-                        {% if proposal.status == 1 %}
-                            Draft
-                        {% elif proposal.status == 2 %}
-                            Public
-                        {% else %}
-                            Cancelled
-                        {% endif %}
-                    </td>
-                </tr>
+                {% if is_author %}
+                    <tr>
+                        <td class="text-muted text-right"><small>Status:</small></td>
+                        <td> {{ proposal.status_text }} </td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <td class="text-muted text-right"><small>Target Audience:</small></td>
                     <td>
