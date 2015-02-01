@@ -10,14 +10,14 @@
             <div class="form-container space-2-bottom">
                 <h2 class="fill-blue text-center">{% trans "Sign Out" %}</h2>
                 <div class="pad-2 push-1-top push-2-bottom text-center">
-    				<p>{% trans 'Are you sure you want to sign out?' %}</p>
-					<form method="post" action="{% url 'account_logout' %}">
-						{% csrf_token %}
-						{% if redirect_field_value %}
-							<input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
-						{% endif %}
-						<button type="submit" class="space-half-top">{% trans 'Sign Out' %}</button>
-					</form>
+                    <p>{% trans 'Are you sure you want to sign out?' %}</p>
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">{% trans 'Sign Out' %}</button>
+                    </form>
                 </div>
             </div>
         </div>

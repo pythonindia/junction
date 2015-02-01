@@ -8463,6 +8463,11 @@ textarea.form-container input[type=password] {
   border-color: #d9534f;
   box-shadow: 0 0 10px #eba5a3;
 }
+.form-container ul.errorlist {
+  padding-left: 18px;
+  padding-top: 10px;
+  color: #d9534f;
+}
 .wmd-panel {
   margin: inherit !important;
   width: inherit !important;
