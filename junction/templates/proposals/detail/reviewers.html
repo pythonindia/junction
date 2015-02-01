@@ -27,7 +27,14 @@
     {% for comment in comments %}
     <div class="bg-info">
         {{ comment.comment|markdown }} <br/>
-        Commented by: <b>{{ comment.commenter }} </b> at {{ comment.created_at }}
+          Author: <b>
+          {% if comment.commenter.get_full_name %}
+              {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+          {% else %}
+              {{ comment.commenter.username }}
+          {% endif %}
+          </b> |&nbsp;
+        <b>Date:</b> {{ comment.created_at|date:"d M, Y" }}
         <hr/>
     </div>
     {% endfor %}
