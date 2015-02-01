@@ -104,8 +104,7 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug, reviewers=False):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    allow_private_comment = _is_proposal_author_or_reviewer(
-        request.user, conference, proposal)
+    allow_private_comment = _is_proposal_author_or_reviewer(request.user, conference, proposal)
 
     proposal_vote_form = ProposalVoteForm()
 
@@ -113,8 +112,7 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
 
     try:
         if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(
-                proposal=proposal, voter=request.user)
+            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
             vote_value = 1 if proposal_vote.up_vote else -1
     except ProposalVote.DoesNotExist:
         pass
@@ -130,7 +128,7 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
 
     comments = ProposalComment.objects.filter(
         proposal=proposal, deleted=False,
-    ).order_by("-created_at")
+    )
 
     if reviewers and allow_private_comment:
         ctx.update({
@@ -232,8 +230,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
 
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(
-        Proposal, slug=proposal_slug, conference=conference)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
 
     proposal_vote, created = ProposalVote.objects.get_or_create(
         proposal=proposal, voter=request.user)  # @UnusedVariable

@@ -21,5 +21,4 @@ urlpatterns = patterns(
     url(r'^(?P<slug>[\w-]+)/(?P<reviewers>reviewers)/$', detail_proposal,
         name='proposal-detail-reviewers'),
     url(r'^delete/(?P<slug>[\w-]+)/$', delete_proposal, name='proposal-delete'),
-
 )
