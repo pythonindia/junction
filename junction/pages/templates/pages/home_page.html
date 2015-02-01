@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load django_markdown %}
 {% load webdesign %}
 {% load static from staticfiles %}
 
@@ -56,7 +57,7 @@
                         {{ conference.get_status_display }}
                     </span>
                 </p>
-                <p>{{ conference.description }}</p>
+                <p>{{ conference.description|markdown }}</p>
             </div>
         {% endfor %}
     </section>

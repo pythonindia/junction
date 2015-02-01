@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+
+{% load django_markdown %}
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
 
@@ -41,7 +43,7 @@
                     </span>
                 </p>
                 <hr>
-                <p class="text-left">{{ conference.description }}</p>
+                <p class="text-left">{{ conference.description|markdown }}</p>
             </div>
         </div>
         <div class="row">
