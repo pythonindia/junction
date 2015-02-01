@@ -103,10 +103,10 @@
                     <div class="col-sm-11 col-xs-12">
                         <p class="col-xs-12  visible-xs">
                             <span class="pull-left">
-                                <i class="fa fa-comments"></i>10
+                                <i class="fa fa-comments"></i>{{ proposal.get_comments_count }}
                             </span>
                             <span class="pull-right">
-                                <i class="fa fa-thumbs-up"></i>25
+                                <i class="fa fa-thumbs-up"></i>{{ proposal.get_votes_count }}
                             </span>
                         </p>
                         <h3 class="clear-margin-top">
@@ -118,12 +118,13 @@
                                 <span class="label label-default inline-block">
                                     {{ proposal.status_text }}
                                 </span>
-                                <span class="label label-default inline-block">
-                                    {{ proposal.proposal_type }}
-                                </span>
-                                <span class="label label-default inline-block">
-                                    {{ proposal.proposal_section }}
-                                </span>
+                                <a class='tag tag__proposal_type label label-default inline-block'
+                                    href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
+                                </a>
+
+                                <a class='tag tag__proposal_section label label-default inline-block'
+                                    href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
+                                </a>
                             </div>
 
                             <small class="pull-right">
@@ -154,6 +155,7 @@
                 <div class="header-tab">
                     <div class="header-tab-title">
                         <h2>List of Proposals</h2>
+                        {% if is_filtered %} <a href="./"> <i class="fa fa-close"></i> View All</a>{% endif %}
                         <!-- <div id="tabs">
                             <a class="youarehere" href="#" title="">All</a>
                              <a href="#" title="">Top Commented</a>
@@ -191,10 +193,10 @@
                     <div class="col-sm-11 col-xs-12">
                         <p class="col-xs-12  visible-xs">
                             <span class="pull-left">
-                                <i class="fa fa-comments"></i>10
+                                <i class="fa fa-comments"></i>{{ proposal.get_votes_count }}
                             </span>
                             <span class="pull-right">
-                                <i class="fa fa-thumbs-up"></i>25
+                                <i class="fa fa-thumbs-up"></i>{{ proposal.get_comments_count }}
                             </span>
                         </p>
                         <h3 class="clear-margin-top">
@@ -203,12 +205,14 @@
                         <p>{{ proposal.description|truncatechars:200 }}</p>
                         <div class="clearfix">
                             <div class="pull-left">
-                                <span class="label label-default inline-block">
-                                    {{ proposal.proposal_type }}
-                                </span>
-                                <span class="label label-default inline-block">
-                                    {{ proposal.proposal_section }}
-                                </span>
+                                <a class='tag tag__proposal_type label label-default inline-block'
+                                    href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
+                                </a>
+
+                                <a class='tag tag__proposal_section label label-default inline-block'
+                                    href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
+                                </a>
+
                             </div>
 
                             <small class="pull-right">

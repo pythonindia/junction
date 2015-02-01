@@ -38,12 +38,27 @@ def _is_proposal_author_or_reviewer(user, conference, proposal):
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    public_proposals_list = Proposal.objects.filter(conference=conference,
-                                                    status=PROPOSAL_STATUS_PUBLIC)
+
+    proposals_qs = Proposal.objects.filter(conference=conference)
+
     user_proposals_list = []
     if request.user.is_authenticated():  # Display the proposals by this user
-        user_proposals_list = Proposal.objects.filter(conference=conference,
-                                                      author=request.user)
+        user_proposals_list = proposals_qs.filter(author=request.user)
+
+    # Filtering
+    proposal_section_filter = request.GET.getlist('proposal_section')
+    proposal_type_filter = request.GET.getlist('proposal_type')
+    is_filtered = False
+
+    if proposal_section_filter:
+        proposals_qs = proposals_qs.filter(proposal_section__id__in=proposal_section_filter)
+        is_filtered = True
+
+    if proposal_type_filter:
+        proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
+        is_filtered = True
+
+    public_proposals_list = proposals_qs.filter(status=PROPOSAL_STATUS_PUBLIC)
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
@@ -53,6 +68,7 @@ def list_proposals(request, conference_slug):
                    'user_proposals_list': user_proposals_list,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
+                   'is_filtered': is_filtered,
                    'conference': conference})
 
 

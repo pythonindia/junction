@@ -8213,6 +8213,9 @@ button.close {
   letter-spacing: 2px;
   font-weight: bold;
 }
+a.tag {
+  color: #fff;
+}
 .align-bottom {
   vertical-align: bottom;
 }
