@@ -26,14 +26,14 @@
             </h1>
             <p class="text-muted">
                 <small>
-                    Author: <b>
+                    <i class="fa fa-user"></i> <b>
                           {% if proposal.author.get_full_name %}
                               {{ proposal.author.get_full_name }} (~{{ proposal.author.username }})
                           {% else %}
                               {{ proposal.author.username }}
                           {% endif %}
                           </b> |&nbsp;
-                    <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
+                    <i class="fa fa-calendar"></i> <b> {{ proposal.created_at|date:"d M, Y" }} </b>
                 </small>
             </p>
 
@@ -61,7 +61,7 @@
 
     <hr class="hr-mini">
 
-    <div class="row porsal-description">
+    <div class="row proposal-description">
         <div class="col-sm-1">
             <div class="text-center">
                 <a href="#" class="js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">

@@ -1,7 +1,7 @@
 {% extends "proposals/detail/base.html" %}
 {% load bootstrap3 %}
 {% load django_markdown %}
-
+{% load humanize %}
 
 {% block comments %}
     <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
@@ -61,20 +61,16 @@
                                 </form>
                             </div>
 
-                            <div class="comment-description">
-                                {{ comment.comment|markdown }}
-
-                                <hr class="hr-mini">
-
-                                <div class="text-muted">
-                                    Author: <b>
+                            <div class="comment-description" id="comment-{{comment.id}}">
+                                <b>
                                           {% if comment.commenter.get_full_name %}
                                               {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
                                           {% else %}
                                               {{ comment.commenter.username }}
                                           {% endif %}
-                                          </b> |&nbsp;
-                                    <b>Date:</b> {{ comment.created_at|date:"d M, Y" }}
+                                          </b> {{ comment.comment|markdown }}
+                                <div class="text-muted">
+                                    <a href="#comment-{{comment.id}}"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>
                                 </div>
                             </div>
                         </div>
