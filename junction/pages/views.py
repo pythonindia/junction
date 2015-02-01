@@ -6,7 +6,7 @@ from junction.conferences.models import Conference
 
 
 class HomePageView(TemplateView):
-    template_name = "pages/homepage.html"
+    template_name = "pages/home_page.html"
 
     def get_conferences(self):
         qs = Conference.objects.all()
