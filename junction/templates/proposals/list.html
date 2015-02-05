@@ -4,7 +4,10 @@
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
 
-{% block head_title %} Proposals | {{ conference.name }} | {{ block.super }} {% endblock %}
+{% block head_title %} {{ conference.name }} proposals {% endblock %}
+{% block og_title %} {{ conference.name }} proposals {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
 
 {% block endhead %}
     <!-- Custom CSS -->
