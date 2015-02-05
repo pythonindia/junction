@@ -38,7 +38,7 @@
 
     {# SEO and OpenGraph data - Needs to be fed dynamically according to the content of the page #}
     <meta name="description" content="{% block page_description %}{{ SITE_INFO.site_description }}{% endblock %}">
-    <meta name="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
     <meta name="keywords" content="{% block page-keywords %}{% endblock %}">
     <meta property="og:tag" content="{% block og_keywords %}{% endblock %}">
     <meta property="og:published_time" content="{% block og_publishedtime %}{% endblock %}">
