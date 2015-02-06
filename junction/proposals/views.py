@@ -72,7 +72,7 @@ def create_proposal(request, conference_slug):
                        'errors': form.errors})
 
     # Valid Form
-    p = Proposal.objects.create(
+    proposal = Proposal.objects.create(
         author=request.user,
         conference=conference,
         title=form.cleaned_data['title'],
@@ -86,8 +86,7 @@ def create_proposal(request, conference_slug):
         proposal_type_id=form.cleaned_data['proposal_type'],
         proposal_section_id=form.cleaned_data['proposal_section'])
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
-    send_mail_for_new_proposal(p.conference, p.title, p.author, p.speaker_info,
-                               p.get_absolute_url(), p.proposal_section_id, host)
+    send_mail_for_new_proposal(proposal, host)
     return HttpResponseRedirect(reverse('proposals-list',
                                         args=[conference.slug]))
 

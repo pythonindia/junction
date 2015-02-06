@@ -1,9 +1,9 @@
-There is a new proposal for {{conference}}.
+There is a new proposal for {{proposal.conference}}.
 
-Title: {{title}}
-Link: {{host}}{{url}}
+Title: {{proposal.title}}
+Link: {{host}}{{proposal_url}}
 Section: {{proposal_section}}
-Author: *{{author}}*
-"{{speaker_info}}"
+Author: *{{proposal.author}}*
+"{{proposal.speaker_info}}"
 -------------------------------------------------------------------------------
 PS: Please, don't reply to the email. PS: Please, don't reply to the email.  You can login ({{host}}{{login_url}}) to review the proposal.
