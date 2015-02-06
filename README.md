@@ -22,6 +22,29 @@ python manage.py createsuperuser (Use this user for login)
 
 Initial auth data: admin/123123
 
+If docker and fig are not installed already:
+--------------------------------------------
+Refer to (http://docs.docker.com/installation/) for detailed installation instructions.
+
+```
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+sudo pip install fig
+```
+
+Create aliases for docker and fig to avoid running them with sudo everytime.
+Append the following lines to your ~/.bashrc or ~/.zshrc
+
+```
+alias docker='sudo docker'
+alias fig='sudo fig'
+```
+
+Finally, run 
+```
+fig up
+```
+
+
 Configuring Django-allauth
 ---------------------------
 

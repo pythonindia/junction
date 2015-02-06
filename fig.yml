@@ -1,0 +1,30 @@
+redis:
+  image: redis:2.8.17
+  volumes:
+    - /var/docker/junction/redis/:/data/
+  ports:
+    - "6380:6379"
+  privileged: true
+
+web:
+  build: .
+  command: python manage.py runserver 0.0.0.0:8000
+  volumes:
+   - .:/srv/
+  links:
+   - redis:redis
+  ports:
+   - "8000:8000"
+  privileged: true
+
+celery:
+  image: junction_web
+  command: celery worker -A junction -l info
+  volumes:
+   - .:/srv/
+  links:
+   - redis:redis
+   - web:web
+  environment:
+   - C_FORCE_ROOT=true
+

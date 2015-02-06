@@ -19,3 +19,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS += ('django_extensions',)
+
+#settings for celery
+BROKER_URL = 'redis://redis:6379/1'
+CELERY_ACCEPT_CONTENT = ['json']
