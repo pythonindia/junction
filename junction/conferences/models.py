@@ -83,16 +83,6 @@ class EmailNotificationSetting(AuditModel):
                                   self.proposal_type)
 
 
-class ConferenceProposalReviewerManager(models.Manager):
-    """ Custom manager class for ConferenceProposalReviewer """
-
-    def create(self, conference, reviewer, active):
-        cpr = self.create(conference, reviewer, active)
-        [cpr.notifications.add(e) for e in
-         EmailNotificationSetting.objects.filter(conference=conference)]
-        return cpr
-
-
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
@@ -102,7 +92,12 @@ class ConferenceProposalReviewer(AuditModel):
     notifications = models.ManyToManyField(EmailNotificationSetting, blank=True,
                                            null=True)
 
-    objects = ConferenceProposalReviewerManager()
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            super(ConferenceProposalReviewer, self).save(*args, **kwargs)
+            [self.notifications.add(e) for e in
+             EmailNotificationSetting.objects.filter(conference=self.conference)]
+        super(ConferenceProposalReviewer, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'proposals reviewer'
