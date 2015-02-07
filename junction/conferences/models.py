@@ -83,14 +83,14 @@ class EmailNotificationSetting(AuditModel):
                                   self.proposal_type)
 
 
-# class ConferenceProposalReviewerManager(models.Manager):
-#     """ Custom manager class for ConferenceProposalReviewer """
+class ConferenceProposalReviewerManager(models.Manager):
+    """ Custom manager class for ConferenceProposalReviewer """
 
-#     def create(self, conference, reviewer, active):
-#         cpr = self.create(conference, reviewer, active)
-#         [cpr.notifications.add(e) for e in
-#          EmailNotificationSetting.objects.filter(conference=conference)]
-#         return cpr
+    def create(self, conference, reviewer, active):
+        cpr = self.create(conference, reviewer, active)
+        [cpr.notifications.add(e) for e in
+         EmailNotificationSetting.objects.filter(conference=conference)]
+        return cpr
 
 
 class ConferenceProposalReviewer(AuditModel):
@@ -102,19 +102,12 @@ class ConferenceProposalReviewer(AuditModel):
     notifications = models.ManyToManyField(EmailNotificationSetting, blank=True,
                                            null=True)
 
-    # objects = ConferenceProposalReviewerManager()
+    objects = ConferenceProposalReviewerManager()
 
     class Meta:
         verbose_name = 'proposals reviewer'
         verbose_name_plural = 'proposals reviewers'
         unique_together = ("conference", "reviewer")
-
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         super(ConferenceProposalReviewer, self).save(*args, **kwargs)
-    #         [self.notifications.add(e) for e in
-    #          EmailNotificationSetting.objects.filter()]
-    #     super(ConferenceProposalReviewer, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
