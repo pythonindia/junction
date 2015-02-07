@@ -8216,6 +8216,9 @@ button.close {
 a.tag {
   color: #fff;
 }
+input#id_remember {
+  margin-left: 0;
+}
 .align-bottom {
   vertical-align: bottom;
 }
