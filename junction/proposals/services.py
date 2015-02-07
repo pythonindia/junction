@@ -40,7 +40,9 @@ def send_mail_for_new_proposal(proposal, host):
 
     proposal_section = ProposalType.objects.get(
         pk=proposal.proposal_section_id)
-    send_to = [c.reviewer for c in proposal.conference.proposal_reviewers.all()]
+    send_to = [r.reviewer for r in proposal.conference.proposal_reviewers.all()
+               if r.notifications.filter(proposal_type=proposal.proposal_type,
+                                         proposal_section=proposal.proposal_section).exists()]
     proposal_url = proposal.get_absolute_url()
     login_url = settings.LOGIN_URL
     for to in send_to:
