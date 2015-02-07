@@ -8,6 +8,9 @@
 {% block og_title %}{{ proposal.title }} | {{ proposal.conference.name }} {% endblock %}
 {% block og_description %} {{ proposal.description|markdown|safe|striptags}} {% endblock %}
 {% block page_description %} {{ proposal.description|markdown|safe|striptags}} {% endblock %}
+
+{% block page_classes %} {{ block.super}} proposal proposal-detail {% endblock page_classes %}
+
 {% block endhead %}
 {% endblock %}
 
@@ -75,9 +78,9 @@
     <hr class="hr-mini">
 
     <div class="row proposal-description">
-        <div class="col-sm-1">
+        <div class="col-sm-1 section--voting">
             <div class="text-center">
-                <a href="#" class="js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
+                <a href="#" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
                     <h4 class="clear-margin">
                         <i class="fa fa-chevron-up fa-2x"></i>
                     </h4>
@@ -87,7 +90,7 @@
                     {{ proposal.get_votes_count }}
                 </h1>
 
-                <a href="#" class="js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
+                <a href="#" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
                     <h4 class="clear-margin">
                         <i class="fa fa-chevron-down fa-2x"></i>
                     </h4>
