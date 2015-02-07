@@ -8219,8 +8219,12 @@ a.tag {
 input#id_remember {
   margin-left: 0;
 }
+.btn-vote {
+  display: inline-block;
+}
 .btn-vote.active {
   color: #f85441;
+  cursor: default;
 }
 .align-bottom {
   vertical-align: bottom;

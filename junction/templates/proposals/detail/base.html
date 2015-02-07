@@ -195,10 +195,10 @@
 
 {% block script_extra %}
  <script type="text/javascript">
-    $('.js-proposal-upvote').click(function(){
+    $('.js-proposal-upvote').not(".active").click(function(){
         $("#js-proposal-upvote").submit();
     });
-    $('.js-proposal-downvote').click(function(){
+    $('.js-proposal-downvote').not(".active").click(function(){
         $("#js-proposal-downvote").submit();
     });
     $('.js-proposal-comment-upvote').click(function(){
