@@ -80,28 +80,18 @@
     <div class="row proposal-description">
         <div class="col-sm-1 section--voting">
             <div class="text-center">
-                <a href="#" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
-                    <h4 class="clear-margin">
-                        <i class="fa fa-chevron-up fa-2x"></i>
-                    </h4>
+                <a href="#" data-url="{{ proposal.get_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
+                    <i class="fa fa-chevron-up fa-2x"></i>
                 </a>
 
-                <h1 class="clear-margin text-muted">
+                <h1 class="clear-margin text-muted proposal-vote-count">
                     {{ proposal.get_votes_count }}
                 </h1>
 
-                <a href="#" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
-                    <h4 class="clear-margin">
-                        <i class="fa fa-chevron-down fa-2x"></i>
-                    </h4>
+                <a href="#" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
+                    <i class="fa fa-chevron-down fa-2x"></i>
                 </a>
             </div>
-            <form id="js-proposal-upvote" method="POST" action="{{ proposal.get_up_vote_url }}">
-                {% csrf_token %} {{ proposal_vote_form }}
-            </form>
-            <form id="js-proposal-downvote" method="POST" action="{{ proposal.get_down_vote_url }}">
-                {% csrf_token %} {{ proposal_vote_form }}
-            </form>
         </div>
 
         <div class="col-sm-8">
@@ -194,12 +184,20 @@
 {% endblock %}
 
 {% block script_extra %}
- <script type="text/javascript">
-    $('.js-proposal-upvote').not(".active").click(function(){
-        $("#js-proposal-upvote").submit();
-    });
-    $('.js-proposal-downvote').not(".active").click(function(){
-        $("#js-proposal-downvote").submit();
+ <script>
+    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+        e.preventDefault();
+        var _that = $(this);
+        if (_that.hasClass('active')){
+            return
+        }
+        var url = _that.attr('data-url');
+        $('.proposal-vote-count').html("...");
+        $.post(url, {}, function(result){
+            $('.btn-vote').removeClass('active');
+            $(_that).addClass('active');
+            $('.proposal-vote-count').html(result);
+        });
     });
     $('.js-proposal-comment-upvote').click(function(){
         var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');

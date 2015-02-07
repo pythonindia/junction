@@ -4,14 +4,14 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseForbidden, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, Http404
 from django.views.decorators.http import require_http_methods
 
 from junction.base.constants import PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
-from .forms import ProposalCommentForm, ProposalForm, ProposalVoteForm
+from .forms import ProposalCommentForm, ProposalForm
 from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
                      ProposalType, ProposalCommentVote)
 from .services import send_mail_for_new_comment
@@ -122,8 +122,6 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
     allow_private_comment = _is_proposal_author_or_reviewer(request.user, conference, proposal)
 
-    proposal_vote_form = ProposalVoteForm()
-
     vote_value = 0
 
     try:
@@ -136,7 +134,6 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
     ctx = {
         'proposal': proposal,
         'allow_private_comment': allow_private_comment,
-        'proposal_vote_form': proposal_vote_form,
         'vote_value': vote_value,
         'can_delete': request.user == proposal.author,
         'is_author': request.user == proposal.author,
@@ -244,6 +241,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
             reverse('proposal-detail', args=[conference.slug, proposal.slug]))
 
 
+@login_required
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
@@ -257,8 +255,7 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     proposal_vote.up_vote = up_vote
     proposal_vote.save()
 
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
+    return HttpResponse(proposal.get_votes_count())
 
 
 @login_required
