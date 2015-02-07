@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from junction.base.constants import CONFERENCE_STATUS_LIST
 from junction.base.models import AuditModel
+
 from slugify import slugify
 from uuid_upload_path import upload_to
 
@@ -66,17 +67,54 @@ class ConferenceModerator(AuditModel):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
 
 
+class EmailNotificationSetting(AuditModel):
+
+    """ List of email notifications for proposal reviewers """
+    conference = models.ForeignKey(Conference, related_name='email_notification')
+    proposal_section = models.ForeignKey('proposals.ProposalSection')
+    proposal_type = models.ForeignKey('proposals.ProposalType')
+
+    class Meta:
+        verbose_name = 'email notification'
+        verbose_name_plural = 'email notifications'
+
+    def __unicode__(self):
+        return "{}[{}:{}]".format(self.conference, self.proposal_section,
+                                  self.proposal_type)
+
+
+# class ConferenceProposalReviewerManager(models.Manager):
+#     """ Custom manager class for ConferenceProposalReviewer """
+
+#     def create(self, conference, reviewer, active):
+#         cpr = self.create(conference, reviewer, active)
+#         [cpr.notifications.add(e) for e in
+#          EmailNotificationSetting.objects.filter(conference=conference)]
+#         return cpr
+
+
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
     conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
+    notifications = models.ManyToManyField(EmailNotificationSetting, blank=True,
+                                           null=True)
+
+    # objects = ConferenceProposalReviewerManager()
 
     class Meta:
         verbose_name = 'proposals reviewer'
         verbose_name_plural = 'proposals reviewers'
         unique_together = ("conference", "reviewer")
+
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         super(ConferenceProposalReviewer, self).save(*args, **kwargs)
+    #         [self.notifications.add(e) for e in
+    #          EmailNotificationSetting.objects.filter()]
+    #     super(ConferenceProposalReviewer, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
