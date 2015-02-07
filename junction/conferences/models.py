@@ -67,37 +67,12 @@ class ConferenceModerator(AuditModel):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
 
 
-class EmailNotificationSetting(AuditModel):
-
-    """ List of email notifications for proposal reviewers """
-    conference = models.ForeignKey(Conference, related_name='email_notification')
-    proposal_section = models.ForeignKey('proposals.ProposalSection')
-    proposal_type = models.ForeignKey('proposals.ProposalType')
-
-    class Meta:
-        verbose_name = 'email notification'
-        verbose_name_plural = 'email notifications'
-
-    def __unicode__(self):
-        return "{}[{}:{}]".format(self.conference, self.proposal_section,
-                                  self.proposal_type)
-
-
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
     conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    notifications = models.ManyToManyField(EmailNotificationSetting, blank=True,
-                                           null=True)
-
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            super(ConferenceProposalReviewer, self).save(*args, **kwargs)
-            [self.notifications.add(e) for e in
-             EmailNotificationSetting.objects.filter(conference=self.conference)]
-        super(ConferenceProposalReviewer, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'proposals reviewer'
@@ -106,3 +81,22 @@ class ConferenceProposalReviewer(AuditModel):
 
     def __unicode__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+
+
+class EmailReviewerNotificationSetting(AuditModel):
+
+    """ List of email notifications for proposal reviewers """
+    conference_reviewer = models.ForeignKey(ConferenceProposalReviewer)
+    proposal_section = models.ForeignKey('proposals.ProposalSection')
+    proposal_type = models.ForeignKey('proposals.ProposalType')
+    action = models.CharField(max_length=15)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'email reviewer notification'
+        verbose_name_plural = 'email reviewer notifications'
+
+    def __unicode__(self):
+        return "{}[{}:{}]".format(self.conference_reviewer,
+                                  self.proposal_section,
+                                  self.proposal_type)

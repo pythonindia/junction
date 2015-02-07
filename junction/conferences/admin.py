@@ -18,11 +18,11 @@ class ConferenceProposallReviewerAdmin(AuditAdmin):
     list_display = ('conference', 'reviewer', 'active') + AuditAdmin.list_display
 
 
-class EmailNotificationSetting(AuditAdmin):
-    list_display = ('conference', 'proposal_type', 'proposal_section') + AuditAdmin.list_display
+class EmailReviewerNotificationSetting(AuditAdmin):
+    list_display = ('conference_reviewer', 'proposal_type', 'proposal_section') + AuditAdmin.list_display
 
 
 admin.site.register(models.Conference, ConferenceAdmin)
 admin.site.register(models.ConferenceModerator, ConferenceModeratorAdmin)
 admin.site.register(models.ConferenceProposalReviewer, ConferenceProposallReviewerAdmin)
-admin.site.register(models.EmailNotificationSetting, EmailNotificationSetting)
+admin.site.register(models.EmailReviewerNotificationSetting, EmailReviewerNotificationSetting)
