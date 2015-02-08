@@ -2,7 +2,7 @@
 
 from django.conf import settings
 
-from junction.emailer import send_email
+from junction.base.emailer import send_email
 from junction.conferences.models import EmailReviewerNotificationSetting
 
 from .models import ProposalType, ProposalSection
