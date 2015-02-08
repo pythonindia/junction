@@ -4,7 +4,7 @@
 
 ---
 
-**Version**: 0.1.0
+**Version**: 0.2.0-dev
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
