@@ -1,4 +1,6 @@
-from junction.emailer import send_email
+# -*- coding: utf-8 -*-
+
+from junction.base.emailer import send_email
 
 
 def send_mail_for_new_comment(proposal_comment, host, login_url):
