@@ -2,7 +2,14 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block head_title %}{% trans "Account" %}{% endblock %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Account" ""%}
+{% endblock %}
+
+{% block head_title %}{% trans "Account" %} · {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="row">

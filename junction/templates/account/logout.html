@@ -2,7 +2,14 @@
 {% load url from future %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Sign out" ""%}
+{% endblock %}
+
+{% block head_title %}{% trans "Sign out" %} · {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="row">
