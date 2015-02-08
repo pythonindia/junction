@@ -1,8 +1,9 @@
 from django.conf import settings
 
 from junction.emailer import send_email
+from junction.conferences.models import EmailReviewerNotificationSetting
 
-from .models import ProposalType
+from .models import ProposalType, ProposalSection
 
 
 def send_mail_for_new_comment(proposal_comment, host, login_url):
@@ -37,12 +38,15 @@ def comment_recipients(proposal_comment):
 
 
 def send_mail_for_new_proposal(proposal, host):
-
-    proposal_section = ProposalType.objects.get(
+    proposal_section = ProposalSection.objects.get(
         pk=proposal.proposal_section_id)
-    send_to = [r.reviewer for r in proposal.conference.proposal_reviewers.all()
-               if r.notifications.filter(proposal_type=proposal.proposal_type,
-                                         proposal_section=proposal.proposal_section).exists()]
+    proposal_type = ProposalType.objects.get(
+        pk=proposal.proposal_type_id)
+    send_to = [e.conference_reviewer.reviewer for e in
+               EmailReviewerNotificationSetting.objects.filter(
+                   proposal_section=proposal_section,
+                   proposal_type=proposal_type,
+                   status=True)]
     proposal_url = proposal.get_absolute_url()
     login_url = settings.LOGIN_URL
     for to in send_to:

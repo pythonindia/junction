@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import signals
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from junction.base.constants import CONFERENCE_STATUS_LIST
@@ -100,3 +101,22 @@ class EmailReviewerNotificationSetting(AuditModel):
         return "{}[{}:{}]".format(self.conference_reviewer,
                                   self.proposal_section,
                                   self.proposal_type)
+
+
+def create_default_settings(sender, instance, created, **kwargs):
+    from junction.proposals.models import ProposalSection, ProposalType
+    proposal_sections = ProposalSection.objects.filter(
+        conferences=instance.conference)
+    proposal_types = ProposalType.objects.filter(
+        conferences=instance.conference)
+    for proposal_type in proposal_types:
+        for proposal_section in proposal_sections:
+            EmailReviewerNotificationSetting.objects.create(
+                conference_reviewer=instance,
+                proposal_section=proposal_section,
+                proposal_type=proposal_type,
+                action='new proposal')
+
+
+signals.post_save.connect(create_default_settings,
+                          sender=ConferenceProposalReviewer)
