@@ -1,0 +1,15 @@
+# see: https://github.com/tomchristie/mkdocs/blob/master/mkdocs.yml
+site_name: Junction
+site_description: Junction is a software to manage proposals, reviews, schedule, feedback during conference.
+theme: 'mkdocs'
+theme_center_lead: false
+repo_url: https://github.com/pythonindia/junction
+
+pages:
+- ['index.md', 'Home']
+- ['release_notes.md', 'Release Notes']
+
+copyright: Copyright &copy; 2015, <a href="http://pssi.org.in" title="Python Software Society of India">PSSI</a>.
+
+# directory to output HTML build
+site_dir: _docs_html

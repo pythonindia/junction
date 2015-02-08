@@ -2,7 +2,10 @@ junction
 ========
 
 [![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
+<!-- fix to mkdocs display these badges correctly -->
+<style>
+div.col-md-9 img {display: inline-block; padding: 0; border: none; border-radius: 0; margin: 0;}
+</style>
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
