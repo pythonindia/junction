@@ -4,17 +4,17 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Junction is a software to manage proposals, reviews, schedule, feedback during conference.">
         
         
-        <link rel="shortcut icon" href="./img/favicon.ico">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
 
-        <title></title>
+        <title>Release Notes - Junction</title>
 
-        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="./css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Junction</a>
+            <a class="navbar-brand" href="..">Junction</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -53,8 +53,8 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li >
-                        <a href="release_notes/">Release Notes</a>
+                    <li class="active">
+                        <a href=".">Release Notes</a>
                     </li>
                 
                 
@@ -66,8 +66,8 @@
             <ul class="nav navbar-nav navbar-right">
                 
                 
-                <li class="disabled">
-                    <a rel="next" >
+                <li >
+                    <a rel="next" href="..">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -95,15 +95,42 @@
 
         <div class="container">
             
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#020-dev">0.2.0-dev</a></li>
+        
+    
+        <li class="main "><a href="#010">0.1.0</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
-    </div>
+<h1 id="020-dev">0.2.0-dev</h1>
+<h1 id="010"><a href="https://github.com/pythonindia/junction/issues?q=milestone%3A%22release+0.1.0+-+initial+release%22+is%3Aclosed">0.1.0</a></h1>
+<ul>
+<li>initial release with core functionality working</li>
+</ul>
+<script src="https://padolsey.github.io/findAndReplaceDOMText/src/findAndReplaceDOMText.js"></script>
 
+<script>
+    var repo = 'pythonindia/junction';
+    findAndReplaceDOMText(document.querySelector('[role="main"]'), {
+      find: /#(\d+)/g,
+      replace: function(portion, match){
+        var el = document.createElement("a");
+        el.setAttribute('href', 'http://github.com/'+ repo +'/issues/'+ match[1]);
+        el.setAttribute('target', '_blank');
+        el.innerHTML = portion.text;
+        return el;
+        }
+    });
+</script>
 
+</div>
+            
         </div>
 
         <footer class="col-md-12">
@@ -117,9 +144,9 @@
         
 
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/prettify-1.0.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
-        <script src="./js/base.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
     </body>
 </html>
