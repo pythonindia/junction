@@ -1,8 +1,15 @@
 {% extends "account/base.html" %}
 {% load i18n %}
 {% load account %}
+{% load django_bootstrap_breadcrumbs %}
 
-{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Confirm E-mail Address" ""%}
+{% endblock %}
+
+{% block head_title %}{% trans "Confirm E-mail Address" %} · {{ block.super }}{% endblock %}
+
 
 {% block content %}
     <div class="row">
@@ -11,13 +18,9 @@
                 <h2 class="fill-blue text-center">{% trans "Confirm E-mail Address" %}</h2>
                 <div class="pad-2 push-1-top push-line-bottom">
                     {% user_display email_address.user as user_display %}
-					<p>{% blocktrans with email_address.email as email %}You have confirmed that <a href="mailto:{{email}}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+                    <p>{% blocktrans with email_address.email as email %}You have confirmed that <a href="mailto:{{email}}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
-
-
-
-

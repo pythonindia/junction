@@ -38,7 +38,7 @@
 
     {# SEO and OpenGraph data - Needs to be fed dynamically according to the content of the page #}
     <meta name="description" content="{% block page_description %}{{ SITE_INFO.site_description }}{% endblock %}">
-    <meta name="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
     <meta name="keywords" content="{% block page-keywords %}{% endblock %}">
     <meta property="og:tag" content="{% block og_keywords %}{% endblock %}">
     <meta property="og:published_time" content="{% block og_publishedtime %}{% endblock %}">
@@ -73,7 +73,7 @@
 
     <!-- Navigation -->
     <div class="navbar-wrapper">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -115,7 +115,7 @@
                                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
                             </ul>
                             {% else %}
-                            <a href="{% url 'account_login' %}">Login / Register</a>
+                            <a href="{% url 'account_login' %}?next={{request.path}}">Login / Register</a>
                             {% endif %}
                         </li>
                     </ul>
@@ -156,8 +156,21 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     {% block script_extra %} {% endblock %}
     {% block footerscripts %}{% endblock %}
+
+    {# -- Google Analytics -- #}
+    {% if SITE_INFO.google_analytics_id %}
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','{{ SITE_INFO.google_analytics_id }}','auto');ga('send','pageview');
+    </script>
+    {% endif %}
 
 </body>
 

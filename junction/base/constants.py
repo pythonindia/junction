@@ -11,13 +11,13 @@ CONFERENCE_STATUS_LIST = ((1, CONFERENCE_STATUS_ACCEPTING_CFP),
                           )
 
 # Proposal Application Choice Fields
-PROPOSAL_STATUS_DRAFT = "Draft"
-PROPOSAL_STATUS_PUBLIC = "Public"
-PROPOSAL_STATUS_CANCELLED = "Cancelled"
+PROPOSAL_STATUS_DRAFT = 1
+PROPOSAL_STATUS_PUBLIC = 2
+PROPOSAL_STATUS_CANCELLED = 3
 
-PROPOSAL_STATUS_LIST = ((1, PROPOSAL_STATUS_DRAFT),
-                        (2, PROPOSAL_STATUS_PUBLIC),
-                        (3, PROPOSAL_STATUS_CANCELLED),
+PROPOSAL_STATUS_LIST = ((PROPOSAL_STATUS_DRAFT, "Draft"),
+                        (PROPOSAL_STATUS_PUBLIC, "Public"),
+                        (PROPOSAL_STATUS_CANCELLED, "Cancelled"),
                         )
 
 PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED = "Yet to be reviewed"

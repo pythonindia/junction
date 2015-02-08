@@ -19,7 +19,8 @@ from sampledatahelper.helper import SampleDataHelper
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)
-NUM_EMPTY_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_EMPTY_CONFERENCES", 2)
+NUM_EMPTY_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_EMPTY_CONFERENCES",
+                                2)
 NUM_PROPOSAL_SECTIONS = getattr(settings, "NUM_PROPOSAL_SECTIONS", 5)
 NUM_PROPOSAL_TYPES = getattr(settings, "NUM_PROPOSAL_TYPES", 8)
 
@@ -41,7 +42,8 @@ class Command(BaseCommand):
 
         # create superuser
         print('  Creating Superuser')
-        super_user = self.create_user(is_superuser=True, username='admin', is_active=True)
+        super_user = self.create_user(is_superuser=True, username='admin',
+                                      is_active=True)
         EmailAddress.objects.get_or_create(user=super_user,
                                            verified=True,
                                            primary=True,
@@ -67,14 +69,12 @@ class Command(BaseCommand):
                 self.create_moderators(conference)
                 self.create_propsoal_reviewers(conference)
 
-                # attach proposal sections
-                count = self.sd.int(1, len(self.proposal_sections))
-                for section in random.sample(self.proposal_sections, count):
+                # attach all proposal sections
+                for section in self.proposal_sections:
                     conference.proposal_sections.add(section)
 
-                # attach proposal types
-                count = self.sd.int(1, len(self.proposal_types))
-                for proposal_type in random.sample(self.proposal_types, count):
+                # attach all proposal types
+                for proposal_type in self.proposal_types:
                     conference.proposal_types.add(proposal_type)
 
     def create_proposal_sections(self):
@@ -83,7 +83,7 @@ class Command(BaseCommand):
             sections.append(ProposalSection.objects.create(**{
                 'name': "Proposal Section %d" % count,
                 'description': "Proposal Section %d description" % count,
-                'active': self.sd.boolean()
+                'active': True
             }))
         return sections
 
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             types.append(ProposalType.objects.create(**{
                 'name': "Proposal Type %d" % count,
                 'description': "Proposal Section %d description" % count,
-                'active': self.sd.boolean()
+                'active': True
             }))
         return types
 
@@ -101,27 +101,41 @@ class Command(BaseCommand):
         moderators = []
         count = self.sd.int(1, len(self.users))
         for user in random.sample(self.users, count):
-            moderators.append(conference.moderators.create(moderator=user, active=self.sd.boolean()))
+            moderators.append(conference.moderators.create(
+                moderator=user, active=self.sd.boolean()))
         return moderators
 
     def create_propsoal_reviewers(self, conference):
         proposal_reviewers = []
         count = self.sd.int(1, len(self.users))
         for user in random.sample(self.users, count):
-            proposal_reviewers.append(conference.proposal_reviewers.create(reviewer=user, active=self.sd.boolean()))
+            proposal_reviewers.append(conference.proposal_reviewers.create(
+                reviewer=user, active=self.sd.boolean()))
         return proposal_reviewers
 
     def create_conference(self, counter, start_date=None, end_date=None):
-        start_date = start_date or now() + datetime.timedelta(random.randrange(-55, 55))
-        end_date = end_date or start_date + datetime.timedelta(random.randrange(1, 4))
-        conference = Conference.objects.create(name='%s Conference' % self.sd.words(1, 2).title(),
-                                               description=self.sd.paragraph(),
-                                               status=self.sd.choices_key(constants.CONFERENCE_STATUS_LIST),
-                                               start_date=start_date,
-                                               end_date=end_date,
-                                               created_by=self.sd.choice(self.users),
-                                               modified_by=self.sd.choice(self.users),
-                                               )
+        if counter == 0:
+            min_days_from_creation = 30
+
+            start_date = now() + datetime.timedelta(
+                days=min_days_from_creation)
+            # 2 day conference
+            end_date = now() + datetime.timedelta(
+                days=min_days_from_creation + 2)
+        else:
+            start_date = start_date or now() + datetime.timedelta(
+                random.randrange(-55, 55))
+            end_date = end_date or start_date + datetime.timedelta(
+                random.randrange(1, 4))
+
+        conference = Conference.objects.create(
+            name='%s Conference' % self.sd.words(1, 2).title(),
+            description=self.sd.paragraph(),
+            status=self.sd.choices_key(constants.CONFERENCE_STATUS_LIST),
+            start_date=start_date,
+            end_date=end_date,
+            created_by=self.sd.choice(self.users),
+            modified_by=self.sd.choice(self.users))
 
         return conference
 
@@ -137,7 +151,12 @@ class Command(BaseCommand):
             "is_staff": kwargs.get('is_staff', kwargs.get('is_superuser', self.sd.boolean())),
         }
         user = get_user_model().objects.create(**params)
-        user.set_password('123123')
+        password = '123123'
+
+        user.set_password(password)
         user.save()
+
+        print("User created with username: {username} and password: {password}".format(
+            username=params.get('username'), password=password))
 
         return user

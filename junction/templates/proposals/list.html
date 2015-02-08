@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+
+{% load django_markdown %}
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
 
-{% block head_title %} Proposals | {{ block.super }} {% endblock %}
+{% block head_title %} {{ conference.name }} proposals {% endblock %}
+{% block og_title %} {{ conference.name }} proposals {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
 
 {% block endhead %}
     <!-- Custom CSS -->
@@ -20,82 +25,65 @@
     <a href="{% url "conference-detail" conference.slug %}">
         <img src="{{ conference.logo.url }}">
     </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
     {% endif %}
 {% endblock navbar_logo %}
-
-{% block header %}
-    <div class="clearfix">
-        <div class="col-md-12">
-            <h1>{{ conference.name }}</h1>
-            <p class="meta">
-                <b class="text-muted">
-                    <span class="start_date">{{ conference.start_date }}</span> –
-                    <span class="end_date">{{ conference.end_date }}</span>
-                </b>
-
-                <span class="status status-{{conference.status}}">
-                    {{ conference.get_status_display }}
-                </span>
-            </p>
-        </div>
-    </div>
-{% endblock %}
 
 {% block content %}
 <section class="content custom-container proposal-list">
     <div class="push-4-bottom push-1-top">
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
-                <p class="text-left">{{ conference.description }}</p>
+                <p class="meta">
+                    <b class="text-muted">
+                        <span class="start_date">{{ conference.start_date }}</span> –
+                        <span class="end_date">{{ conference.end_date }}</span>
+                    </b>
+
+                    <span class="status status-{{conference.status}}">
+                        {{ conference.get_status_display }}
+                    </span>
+                </p>
+                <hr>
+                <p class="text-left">{{ conference.description|markdown }}</p>
             </div>
         </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
-                <h2 class="title-underline">Proposal Sections</h2>
+                <h2>Proposal Sections</h2>
                 <ol>
                 {% for section in proposal_sections %}
                  <li><b>{{section.name}}</b> - {{section.description}}</li>
                 {% endfor %}
                 </ol>
-                <hr class="border-less" />
+                <hr>
             </div>
         </div>
         <div class="row">
             <div class="col-xs -12 col-sm-12 ">
-                <h2 class="title-underline">Proposal Types</h2>
+                <h2>Proposal Types</h2>
                 <ol>
                 {% for types in proposal_types %}
                  <li><b>{{types.name}}</b> - {{types.description}}</li>
                 {% endfor %}
                 </ol>
-            <hr class="border-less" />
+            <hr>
             </div>
         </div>
-        <div class="row ">
-            <div class="col-xs -12 col-sm-12 ">
-                {% if conference.status == 1 %}
-                    <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
-                        <i class="fa fa-plus-square-o"></i> New Proposal
-                    </a>
-                {% endif %}
-                <div class="header-tab">
-                    <div class="header-tab-title">
-                        <h2>List of Proposals</h2>
-                        <div id="tabs">
-                            <a class="youarehere" href="#" title="">All</a>
-                            <!-- <a href="#" title="">Top Commented</a>
-                            <a href="#" title="">Top Voted</a> -->
+        {% if user_proposals_list %}
+            <div class="row ">
+                <div class="col-xs -12 col-sm-12 ">
+                    <div class="header-tab">
+                        <div class="header-tab-title">
+                            <h2>My Proposals</h2>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        {% if not proposals_list %}
-            <p> No proposals found. </p>
         {% endif %}
 
-         {% for proposal in proposals_list %}
+        {% for proposal in user_proposals_list %}
           <div class="row">
             <div class="col-xs-12" >
                 <div class="proposal-list-content">
@@ -118,10 +106,10 @@
                     <div class="col-sm-11 col-xs-12">
                         <p class="col-xs-12  visible-xs">
                             <span class="pull-left">
-                                <i class="fa fa-comments"></i>10
+                                <i class="fa fa-comments"></i>{{ proposal.get_comments_count }}
                             </span>
                             <span class="pull-right">
-                                <i class="fa fa-thumbs-up"></i>25
+                                <i class="fa fa-thumbs-up"></i>{{ proposal.get_votes_count }}
                             </span>
                         </p>
                         <h3 class="clear-margin-top">
@@ -131,17 +119,114 @@
                         <div class="clearfix">
                             <div class="pull-left">
                                 <span class="label label-default inline-block">
-                                    {{ proposal.proposal_type }}
+                                    {{ proposal.status_text }}
                                 </span>
-                                <span class="label label-default inline-block">
-                                    {{ proposal.proposal_section }}
-                                </span>
+                                <a class='tag tag__proposal_type label label-default inline-block'
+                                    href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
+                                </a>
+
+                                <a class='tag tag__proposal_section label label-default inline-block'
+                                    href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
+                                </a>
                             </div>
 
                             <small class="pull-right">
-                                by <b>{{ proposal.author.username }}
-                                      {% if proposal.author.get_full_name %} ({{ proposal.author.get_full_name }}) {% endif %}</b> |&nbsp;
-                                <b>Date:</b> {{ proposal.created_at|date:"d M, Y" }}
+                                <i class="fa fa-user"></i> <b>
+                                      {% if proposal.author.get_full_name %}
+                                          {{ proposal.author.get_full_name }} (~{{ proposal.author.username }})
+                                      {% else %}
+                                          {{ proposal.author.username }}
+                                      {% endif %}
+                                      </b> |&nbsp;
+                                <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+
+        <div class="row ">
+            <div class="col-xs -12 col-sm-12 ">
+                {% if conference.status == 1 %}
+                    <a class='btn btn-primary pull-right' href="{% url 'proposal-create' conference.slug %}">
+                        <i class="fa fa-plus-square-o"></i> New Proposal
+                    </a>
+                {% endif %}
+                <div class="header-tab">
+                    <div class="header-tab-title">
+                        <h2>List of Proposals</h2>
+                        {% if is_filtered %} <a href="./"> <i class="fa fa-close"></i> View All</a>{% endif %}
+                        <!-- <div id="tabs">
+                            <a class="youarehere" href="#" title="">All</a>
+                             <a href="#" title="">Top Commented</a>
+                            <a href="#" title="">Top Voted</a>
+                        </div>  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if not public_proposals_list %}
+            <p> No proposals found. </p>
+        {% endif %}
+
+         {% for proposal in public_proposals_list %}
+          <div class="row">
+            <div class="col-xs-12" >
+                <div class="proposal-list-content">
+                    <div class="col-sm-1 hidden-xs proposal-stats">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
+                                <small class="text-muted">
+                                    Votes
+                                </small>
+                            </div>
+                        </div>
+                        <div class="text-center space-on-top">
+                            <i class="fa fa-comments-o"></i>
+                            <span class="align-middle">
+                                {{ proposal.get_comments_count }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-11 col-xs-12">
+                        <p class="col-xs-12  visible-xs">
+                            <span class="pull-left">
+                                <i class="fa fa-comments"></i>{{ proposal.get_votes_count }}
+                            </span>
+                            <span class="pull-right">
+                                <i class="fa fa-thumbs-up"></i>{{ proposal.get_comments_count }}
+                            </span>
+                        </p>
+                        <h3 class="clear-margin-top">
+                            <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title }}</a>
+                        </h3>
+                        <p>{{ proposal.description|truncatechars:200 }}</p>
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <a class='tag tag__proposal_type label label-default inline-block'
+                                    href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
+                                </a>
+
+                                <a class='tag tag__proposal_section label label-default inline-block'
+                                    href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
+                                </a>
+
+                            </div>
+
+                            <small class="pull-right">
+                                <i class="fa fa-user"></i> <b>
+                                      {% if proposal.author.get_full_name %}
+                                          {{ proposal.author.get_full_name }} (~{{ proposal.author.username }})
+                                      {% else %}
+                                          {{ proposal.author.username }}
+                                      {% endif %}
+                                      </b> |&nbsp;
+                                <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
                             </small>
                         </div>
                     </div>

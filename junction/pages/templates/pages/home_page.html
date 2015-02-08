@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load django_markdown %}
 {% load webdesign %}
 {% load static from staticfiles %}
 
@@ -20,7 +21,7 @@
                         Manage proposals, reviews, schedule, feedbacks during conferences
                     </p>
                     <p>
-                        <a class="btn btn-primary btn-lg" href="/#conference-list" role="button">
+                        <a class="btn btn-primary btn-lg btn-conference-list" href="#conference-list" role="button">
                             <i class="fa fa-microphone fa-lg space-on-right"></i>
                             Conferences
                         </a>
@@ -32,7 +33,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conference-list" id="#conference-list">
+    <section class="conference-list" id="conference-list">
         <h2 class="heading">
             <i class="fa fa-microphone space-on-right"></i>
             Conferences
@@ -56,8 +57,18 @@
                         {{ conference.get_status_display }}
                     </span>
                 </p>
-                <p>{{ conference.description }}</p>
+                <p>{{ conference.description|markdown }}</p>
             </div>
         {% endfor %}
     </section>
+    <script>
+    $(function() {
+        $('.btn-conference-list').click(function(e){
+            e.preventDefault();
+            var targetOffset = $('#conference-list').offset().top - $('.navbar-header').outerHeight()*1.7;
+            $('html,body').animate({scrollTop: targetOffset}, 500);
+            return false;
+        });
+    });
+    </script>
 {% endblock %}

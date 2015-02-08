@@ -77,3 +77,4 @@ debug.log
 # Node modules & bower components
 junction/static/node_modules/
 junction/static/bower_components/
+_docs_html/

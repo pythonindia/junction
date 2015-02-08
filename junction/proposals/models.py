@@ -46,10 +46,8 @@ class Proposal(TimeAuditModel):
 
     """ The proposals master """
     conference = models.ForeignKey(Conference)
-    proposal_section = models.ForeignKey(
-        ProposalSection, verbose_name="Proposal Section")
-    proposal_type = models.ForeignKey(
-        ProposalType, verbose_name="Proposal Type")
+    proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
+    proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
     slug = AutoSlugField(max_length=255, populate_from=('title',))
@@ -93,6 +91,12 @@ class Proposal(TimeAuditModel):
         up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
         down_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=False).count()
         return up_vote_count - down_vote_count
+
+    def status_text(self):
+        """ Text representation of status values """
+        for value, text in PROPOSAL_STATUS_LIST:
+            if self.status == value:
+                return text
 
     class Meta:
         unique_together = ("conference", "slug")

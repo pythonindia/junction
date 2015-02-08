@@ -2,7 +2,14 @@
 {% load url from future %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Sign Up Closed" %}{% endblock %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Sign Up Closed" ""%}
+{% endblock %}
+
+{% block head_title %}{% trans "Sign Up Closed" %} · {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -10,7 +17,7 @@
             <div class="form-container space-2-bottom">
                 <h2 class="fill-blue text-center">{% trans "Sign Up Closed" %}</h2>
                 <div class="pad-2 push-1-top push-2-bottom text-center">
-    				<p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
+                    <p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
                 </div>
             </div>
         </div>

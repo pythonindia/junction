@@ -22,9 +22,12 @@
 <div class="custom-container">
     <div class="row">
         <div class="col-sm-12">
-            <h2>New Proposal</h2>
+          <h2>New Proposal</h2>
+          <p> This form supports <a href="http://daringfireball.net/projects/markdown/" target="_blank">
+                markdown</a> for formatting.</p>
             <hr>
             <div class="form-container space-2-bottom">
+
               <form method="POST" action="."> {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}

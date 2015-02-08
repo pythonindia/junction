@@ -20,10 +20,12 @@ footer {
   border-bottom: 1px solid darken(@bg-color, 5%);
 }
 
-.navbar-wrapper {
-  margin-bottom: @navbar-height + 5px;
+.navbar-default {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
-
 .form-container {
   input[type=text], input[type=email], input[type=password] {
     .form-control();
@@ -40,5 +42,10 @@ footer {
   &.has-error {
     border-color: @brand-danger;
     box-shadow: 0 0 10px lighten(@brand-danger, 20%);
+  }
+  ul.errorlist {
+    padding-left: 18px;
+    padding-top: 10px;
+    color: #d9534f;
   }
 }

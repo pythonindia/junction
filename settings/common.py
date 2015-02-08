@@ -23,6 +23,7 @@ ADMINS = (
 SITE_VARIABLES = {
     'site_name': 'Junction',
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
+    'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None)
 }
 
 MIDDLEWARE_CLASSES = (
@@ -39,6 +40,7 @@ CORE_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
