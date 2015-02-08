@@ -100,15 +100,11 @@
     
         <li class="main active"><a href="#junction">Junction</a></li>
         
-    
-        <li class="main "><a href="#setup">Setup</a></li>
+            <li><a href="#setup">Setup</a></li>
         
-            <li><a href="#configuring-django-allauth">Configuring Django-allauth</a></li>
+            <li><a href="#contributing">Contributing</a></li>
         
-            <li><a href="#making-frontend-changes">Making Frontend Changes</a></li>
-        
-    
-        <li class="main "><a href="#contributing">Contributing</a></li>
+            <li><a href="#license">License</a></li>
         
     
     </ul>
@@ -121,7 +117,7 @@
 <hr />
 <p><strong>Version</strong>: 0.2.0-dev</p>
 <p>Junction is a software to manage proposals, reviews, schedule, feedback during conference.</p>
-<h1 id="setup">Setup</h1>
+<h2 id="setup">Setup</h2>
 <p>It is advised to install all the requirements inside <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>, use <a href="https://virtualenvwrapper.readthedocs.org/en/latest/">virtualenvwrapper</a> to manage virtualenvs.</p>
 <pre><code>pip install -r requirements-dev.txt
 cp settings/dev.py.sample settings/dev.py
@@ -130,13 +126,13 @@ python manage.py sample_data
 </code></pre>
 
 <p>Initial auth data: admin/123123</p>
-<h2 id="configuring-django-allauth">Configuring Django-allauth</h2>
+<h3 id="configuring-django-allauth">Configuring Django-allauth</h3>
 <ul>
 <li>Go to <code>http://localhost:8000/nimda/sites/site/</code> </li>
 <li>Change the default site's(the one with ID = 1) name and display to <code>localhost:8000</code></li>
 <li>Go to <code>Social Applications</code> in admin panel and add <a href="http://django-allauth.readthedocs.org/en/latest/providers.html#github">Github</a> and <a href="http://django-allauth.readthedocs.org/en/latest/providers.html#google">Google</a>'s auth details</li>
 </ul>
-<h2 id="making-frontend-changes">Making Frontend Changes</h2>
+<h3 id="making-frontend-changes">Making Frontend Changes</h3>
 <p>Make sure you have nodejs, npm, bower, grunt-cli &amp; grunt installed</p>
 <pre><code>$ cd junction/static
 $ npm install
@@ -144,13 +140,31 @@ $ bower install
 $ grunt // This starts a watcher to watch for file changes
 </code></pre>
 
-<h1 id="contributing">Contributing</h1>
+<h2 id="contributing">Contributing</h2>
 <ol>
 <li>Choose an <a href="https://github.com/pythonindia/junction/issues/">issue</a> and ask any doubts in the issue thread.</li>
 <li>Report any bugs/feature request as github <a href="https://github.com/pythonindia/junction/issues/new">new issue</a>, if it's already not present.</li>
 <li>If you are starting to work on an issue, please leave a comment saying "I am working on it".</li>
 <li>Once you are done with feature/bug fix, send a pull request according to the <a href="https://github.com/pythonindia/junction/blob/master/CONTRIBUTING.md">guidelines</a>. </li>
 </ol>
+<h2 id="license">License</h2>
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2014-15 Python Software Society of India</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 </div>
             
         </div>
