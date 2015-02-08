@@ -1,12 +1,9 @@
 # Release Notes
 
-## [0.2.0]
-
-- ...
 
 ## [0.1.0]
 
-[Under Development]
+**Date:** 8 February 2015
 
 - initial release with core functionality working
 
