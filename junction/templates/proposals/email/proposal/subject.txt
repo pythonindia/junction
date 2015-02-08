@@ -1,1 +1,1 @@
-New Proposal for "{{conference}}"
+New Proposal for "{{proposal.conference}}"

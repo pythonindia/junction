@@ -58,6 +58,7 @@ def send_mail_for_new_proposal(proposal, host):
                    template_dir='proposals/email/proposal',
                    context={'to': to,
                             'proposal': proposal,
+                            'proposal_type': proposal_type,
                             'proposal_section': proposal_section,
                             'host': host,
                             'proposal_url': proposal_url,
