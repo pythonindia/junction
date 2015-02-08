@@ -32,8 +32,10 @@ class ProposalForm(forms.Form):
     '''
     Used for create/edit
     '''
-    title = forms.CharField(min_length=10)
-    description = forms.CharField(widget=PagedownWidget(show_preview=True))
+    title = forms.CharField(min_length=10, help_text="Title of the proposal, no buzz words!")
+    description = forms.CharField(widget=PagedownWidget(show_preview=True),
+                                  help_text=("Describe your proposal in clear and simple sentence."
+                                  " Keep it short and simple."))
     target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES,
                                         widget=forms.RadioSelect(renderer=HorizRadioRenderer))
     status = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer),
@@ -45,13 +47,17 @@ class ProposalForm(forms.Form):
 
     # Additional Content
     prerequisites = forms.CharField(
-        widget=PagedownWidget(show_preview=True), required=False)
+        widget=PagedownWidget(show_preview=True), required=False,
+        help_text="What should the participants know before attending your session?")
     content_urls = forms.CharField(
-        widget=PagedownWidget(show_preview=True), required=False)
+        widget=PagedownWidget(show_preview=True), required=False,
+        help_text="Links to your session like GitHub repo, Blog, Slideshare etc ...")
     speaker_info = forms.CharField(
-        widget=PagedownWidget(show_preview=True), required=False)
+        widget=PagedownWidget(show_preview=True), required=False,
+        help_text="Say something about yourself, work etc...")
     speaker_links = forms.CharField(
-        widget=PagedownWidget(show_preview=True), required=False)
+        widget=PagedownWidget(show_preview=True), required=False,
+        help_text="Links to your previous work like Blog, Open Source Contributions etc ...")
 
     def __init__(self, conference, *args, **kwargs):
         super(ProposalForm, self).__init__(*args, **kwargs)
