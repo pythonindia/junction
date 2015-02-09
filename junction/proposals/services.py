@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# Junction Stuff
 from junction.base.emailer import send_email
 
 

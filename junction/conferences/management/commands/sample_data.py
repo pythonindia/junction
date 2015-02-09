@@ -12,10 +12,12 @@ from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.timezone import now
+from sampledatahelper.helper import SampleDataHelper
+
+# Junction Stuff
 from junction.base import constants
 from junction.conferences.models import Conference
 from junction.proposals.models import ProposalSection, ProposalType
-from sampledatahelper.helper import SampleDataHelper
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)

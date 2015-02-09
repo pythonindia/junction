@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.conf.urls import patterns, url
 
-from .views import (
-    create_proposal,
-    delete_proposal,
-    detail_proposal,
-    list_proposals,
-    update_proposal
-)
+from .views import create_proposal, delete_proposal, detail_proposal, list_proposals, update_proposal
 
 urlpatterns = patterns(
     '',

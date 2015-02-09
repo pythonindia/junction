@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, Http404
+from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
+# Junction Stuff
 from junction.base.constants import PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm
-from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
-                     ProposalType, ProposalCommentVote)
+from .models import Proposal, ProposalComment, ProposalCommentVote, ProposalSection, ProposalType, ProposalVote
 from .services import send_mail_for_new_comment
 
 

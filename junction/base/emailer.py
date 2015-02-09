@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+# Standard Library
 from os import path
 
+# Third Party Stuff
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string

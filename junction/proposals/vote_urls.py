@@ -1,7 +1,7 @@
+# Third Party Stuff
 from django.conf.urls import patterns, url
 
-from .views import proposal_vote_up, proposal_vote_down
-
+from .views import proposal_vote_down, proposal_vote_up
 
 urlpatterns = patterns(
     '',
