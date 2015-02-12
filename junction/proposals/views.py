@@ -118,7 +118,7 @@ def create_proposal(request, conference_slug):
 
 
 @require_http_methods(['GET'])
-def detail_proposal(request, conference_slug, slug, reviewers=False):
+def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
     allow_private_comment = _is_proposal_author_or_reviewer(request.user, conference, proposal)
@@ -144,17 +144,15 @@ def detail_proposal(request, conference_slug, slug, reviewers=False):
         proposal=proposal, deleted=False,
     )
 
-    if reviewers and allow_private_comment:
+    if allow_private_comment:
         ctx.update({
-            'comments': comments.filter(private=True),
-            'proposal_comment_form': ProposalCommentForm(
+            'reviewers_comments': comments.filter(private=True),
+            'reviewers_proposal_comment_form': ProposalCommentForm(
                 initial={'private': True})
         })
-        return render(request, 'proposals/detail/reviewers.html', ctx)
-    else:
-        ctx.update({'comments': comments.filter(private=False),
-                    'proposal_comment_form': ProposalCommentForm()})
-        return render(request, 'proposals/detail/public_comments.html', ctx)
+    ctx.update({'comments': comments.filter(private=False),
+                'proposal_comment_form': ProposalCommentForm()})
+    return render(request, 'proposals/detail/base.html', ctx)
 
 
 @login_required
@@ -233,13 +231,13 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
             proposal_comment, login_url=settings.LOGIN_URL,
             host='{}://{}'.format(settings.SITE_PROTOCOL,
                                   request.META['HTTP_HOST']))
-    if private:
-        return HttpResponseRedirect(
-            reverse('proposal-detail-reviewers',
-                    args=[conference.slug, proposal.slug, 'reviewers']))
-    else:
-        return HttpResponseRedirect(
-            reverse('proposal-detail', args=[conference.slug, proposal.slug]))
+
+    redirect_url = reverse('proposal-detail',
+                           args=[conference.slug, proposal.slug])
+
+    redirect_url += "#js-reviewers" if private else "#js-comments"
+
+    return HttpResponseRedirect(redirect_url)
 
 
 @login_required
