@@ -31,13 +31,14 @@ def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
     if proposal_comment.private:
         conference = proposal.conference
-        recipients = set(conference.proposal_reviewers.all())
+        proposal_reviewers = set(conference.proposal_reviewers.all())
+        recipients = [proposal_reviewer.reviewer for proposal_reviewer in proposal_reviewers]
     else:
         recipients = {
             comment.commenter
             for comment in proposal.proposalcomment_set
             .all().select_related('commenter')}
-    recipients.add(proposal.author)
+    recipients.append(proposal.author)
     return recipients
 
 
