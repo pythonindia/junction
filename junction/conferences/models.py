@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import signals
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
@@ -82,3 +83,41 @@ class ConferenceProposalReviewer(AuditModel):
 
     def __unicode__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+
+
+class EmailReviewerNotificationSetting(AuditModel):
+
+    """ List of email notifications for proposal reviewers """
+    conference_reviewer = models.ForeignKey(ConferenceProposalReviewer)
+    proposal_section = models.ForeignKey('proposals.ProposalSection')
+    proposal_type = models.ForeignKey('proposals.ProposalType')
+    action = models.CharField(max_length=15)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'email reviewer notification'
+        verbose_name_plural = 'email reviewer notifications'
+
+    def __unicode__(self):
+        return "{}[{}:{}]".format(self.conference_reviewer,
+                                  self.proposal_section,
+                                  self.proposal_type)
+
+
+def create_default_settings(sender, instance, created, **kwargs):
+    from junction.proposals.models import ProposalSection, ProposalType
+    proposal_sections = ProposalSection.objects.filter(
+        conferences=instance.conference)
+    proposal_types = ProposalType.objects.filter(
+        conferences=instance.conference)
+    for proposal_type in proposal_types:
+        for proposal_section in proposal_sections:
+            EmailReviewerNotificationSetting.objects.create(
+                conference_reviewer=instance,
+                proposal_section=proposal_section,
+                proposal_type=proposal_type,
+                action='new proposal')
+
+
+signals.post_save.connect(create_default_settings,
+                          sender=ConferenceProposalReviewer)

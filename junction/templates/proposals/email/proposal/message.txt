@@ -1,0 +1,10 @@
+There is a new proposal for {{proposal.conference}}.
+
+Title: {{proposal.title}}
+Link: {{host}}{{proposal_url}}
+Type: {{proposal_type}}
+Section: {{proposal_section}}
+Author: *{{proposal.author}}*
+"{{proposal.speaker_info}}"
+-------------------------------------------------------------------------------
+PS: Please, don't reply to the email. PS: Please, don't reply to the email.  You can login ({{host}}{{login_url}}) to review the proposal.
