@@ -175,8 +175,38 @@
 
     <div class="row">
         <div class="col-sm-12">
-          {% block comments %}
-          {% endblock %}
+          <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+              <ul class="nav nav-tabs" role="tablist">
+                  <li class="active" role="presentation">
+                      <a href="#js-comments" role="tab" data-toggle="tab">
+                          <i class="fa fa-comments-o"></i>
+                          Comments
+                      </a>
+                  </li>
+
+                  {% if allow_private_comment %}
+                  <li role="presentation">
+                      <a href="#js-reviewers" role="tab" data-toggle="tab">
+                          <i class="fa fa-thumbs-up"></i>
+                          Reviewers
+                      </a>
+                  </li>
+                  {% endif %}
+              </ul>
+
+              <div class="tab-content padded">
+                  <div class="tab-pane active" id="js-comments" role="tabpanel">
+                      {% include "proposals/detail/comments.html"%}
+                  </div>
+                  {% if allow_private_comment %}
+                  <div class="tab-pane" id="js-reviewers" role="tabpanel">
+                      {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                          {% include "proposals/detail/comments.html" %}
+                      {% endwith %}
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
         </div>
     </div>
 </div>
