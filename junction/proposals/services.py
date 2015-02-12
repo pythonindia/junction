@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from django.conf import settings
 
+# Junction Stuff
 from junction.base.emailer import send_email
 from junction.conferences.models import EmailReviewerNotificationSetting
 

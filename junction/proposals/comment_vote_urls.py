@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.conf.urls import patterns, url
-from .views import proposal_comment_up_vote, proposal_comment_down_vote
 
+from .views import proposal_comment_down_vote, proposal_comment_up_vote
 
 urlpatterns = patterns(
     '',

@@ -1,7 +1,9 @@
+# Third Party Stuff
 from django.contrib import admin
-
-from pagedown.widgets import AdminPagedownWidget
 from django.db import models
+from pagedown.widgets import AdminPagedownWidget
+
+# Junction Stuff
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
 from junction.proposals.models import (
     Proposal,

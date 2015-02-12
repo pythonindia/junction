@@ -9,11 +9,12 @@ from django.db import models
 from django.db.models import signals
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
-from junction.base.constants import CONFERENCE_STATUS_LIST
-from junction.base.models import AuditModel
-
 from slugify import slugify
 from uuid_upload_path import upload_to
+
+# Junction Stuff
+from junction.base.constants import CONFERENCE_STATUS_LIST
+from junction.base.models import AuditModel
 
 
 class Conference(AuditModel):

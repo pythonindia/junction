@@ -2,6 +2,8 @@
 
 # Third Party Stuff
 from django.views.generic import TemplateView
+
+# Junction Stuff
 from junction.conferences.models import Conference
 
 

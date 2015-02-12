@@ -5,10 +5,9 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-
 from django_extensions.db.fields import AutoSlugField
 
-from junction.conferences.models import Conference
+# Junction Stuff
 from junction.base.constants import (
     PROPOSAL_REVIEW_STATUS_LIST,
     PROPOSAL_STATUS_LIST,
@@ -16,6 +15,7 @@ from junction.base.constants import (
     PROPOSAL_USER_VOTE_ROLES
 )
 from junction.base.models import AuditModel, TimeAuditModel
+from junction.conferences.models import Conference
 
 
 class ProposalSection(AuditModel):

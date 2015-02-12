@@ -1,8 +1,10 @@
+# Third Party Stuff
 from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
-from junction.base.constants import PROPOSAL_TARGET_AUDIENCES, PROPOSAL_STATUS_LIST
+# Junction Stuff
+from junction.base.constants import PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from junction.proposals.models import ProposalSection, ProposalType
 
 

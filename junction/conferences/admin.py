@@ -1,5 +1,7 @@
+# Third Party Stuff
 from django.contrib import admin
 
+# Junction Stuff
 from junction.base.admin import AuditAdmin
 
 from . import models
