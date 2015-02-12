@@ -25,7 +25,7 @@ def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
     if proposal_comment.private:
         conference = proposal.conference
-        recipients = set(conference.reviewer_set.all())
+        recipients = set(conference.proposal_reviewers.all())
     else:
         recipients = {
             comment.commenter
