@@ -10,6 +10,7 @@ if "test" in sys.argv:
     sys.exit(0)
 
 from .common import *  # noqa
+from .celery import *  # noqa
 
 try:
     from .dev import *  # noqa
