@@ -215,6 +215,7 @@
 
 {% block script_extra %}
  <script>
+    {% if user.is_authenticated %}
     $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
         e.preventDefault();
         var _that = $(this);
@@ -229,6 +230,13 @@
             $('.proposal-vote-count').html(result);
         });
     });
+    {% else %}
+    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+        e.preventDefault();
+        window.location = "{% url 'account_login' %}?next={{request.path}}";
+        return false;
+    });
+    {% endif %}
     $('.js-proposal-comment-upvote').click(function(){
         var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');
         form.submit();
