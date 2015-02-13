@@ -191,3 +191,5 @@ DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 ALLOWED_HOSTS = []  # TODO:
 
 SITE_PROTOCOL = 'http'
+
+MARKDOWN_EXTENSIONS = ['linkify']

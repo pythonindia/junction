@@ -38,4 +38,5 @@ django-bootstrap-breadcrumbs==0.7.0
 # -------------------------------------------------
 django-markdown==0.8.4
 django-pagedown==0.1.0
+mdx-linkify==0.6
 Markdown==2.5.2
