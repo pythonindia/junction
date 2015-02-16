@@ -8593,8 +8593,9 @@ a.status:focus {
 .status-4[href]:focus {
   background-color: #31b0d5;
 }
-.proposal-list {
-  margin-bottom: 40px;
+.page-proposals .proposal--title {
+  font-size: 20px;
+  margin-top: 0;
 }
 .proposal-stats {
   padding: 0;
