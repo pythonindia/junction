@@ -5,9 +5,8 @@ from django.conf import settings
 
 # Junction Stuff
 from junction.base.emailer import send_email
-from junction.conferences.models import EmailReviewerNotificationSetting
 
-from .models import ProposalType, ProposalSection
+from .models import ProposalSection, ProposalSectionReviewer
 
 
 def send_mail_for_new_comment(proposal_comment, host, login_url):
@@ -30,9 +29,10 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
 def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
     if proposal_comment.private:
-        conference = proposal.conference
-        proposal_reviewers = set(conference.proposal_reviewers.all())
-        recipients = {proposal_reviewer.reviewer for proposal_reviewer in proposal_reviewers}
+        proposal_reviewers = set(ProposalSectionReviewer.objects.filter(
+            proposal_section=proposal.proposal_section))
+        recipients = {proposal_reviewer.conference_reviewer.reviewer
+                      for proposal_reviewer in proposal_reviewers}
     else:
         recipients = {
             comment.commenter
@@ -45,13 +45,10 @@ def comment_recipients(proposal_comment):
 def send_mail_for_new_proposal(proposal, host):
     proposal_section = ProposalSection.objects.get(
         pk=proposal.proposal_section_id)
-    proposal_type = ProposalType.objects.get(
-        pk=proposal.proposal_type_id)
-    send_to = [e.conference_reviewer.reviewer for e in
-               EmailReviewerNotificationSetting.objects.filter(
+    send_to = [p.conference_reviewer.reviewer for p in
+               ProposalSectionReviewer.objects.filter(
                    proposal_section=proposal_section,
-                   proposal_type=proposal_type,
-                   status=True)]
+                   active=True)]
     proposal_url = proposal.get_absolute_url()
     login_url = settings.LOGIN_URL
     for to in send_to:
@@ -61,7 +58,6 @@ def send_mail_for_new_proposal(proposal, host):
                    template_dir='proposals/email/proposal',
                    context={'to': to,
                             'proposal': proposal,
-                            'proposal_type': proposal_type,
                             'proposal_section': proposal_section,
                             'host': host,
                             'proposal_url': proposal_url,
