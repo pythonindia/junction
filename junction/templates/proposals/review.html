@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} Review Proposal | {{ block.super }} {% endblock %}
+
+{% block endhead %}
+    <!-- Custom Form CSS -->
+    <link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
+    {% breadcrumb "review" "" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <h2 class="fill-blue text-center">Reviewers Comments </h2>
+    <div class="col-sm-12">
+        <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active" role="presentation">
+                    {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                        {% include "proposals/detail/comments.html" %}
+                    {% endwith %}
+                </li>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
+        <div class="form-container space-2-bottom">
+            <h2 class="fill-blue text-center">Review Proposal </h2>
+            <div class="pad-2 push-half-top push-2-bottom">
+              <hr>
+              <form method="POST" action="."> {% csrf_token %}
+                {% bootstrap_form proposal_review_form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                {% endbuttons %}
+              </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,9 +12,9 @@ from junction.base.constants import PROPOSAL_STATUS_PUBLIC,\
     PROPOSAL_REVIEW_STATUS_SELECTED
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
-from .forms import ProposalCommentForm, ProposalForm
+from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
 from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
-                     ProposalType, ProposalCommentVote)
+                     ProposalType, ProposalCommentVote, ProposalSectionReviewer)
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
@@ -50,6 +50,14 @@ def list_proposals(request, conference_slug):
 
     selected_proposals_list = proposals_qs.filter(review_status=PROPOSAL_REVIEW_STATUS_SELECTED)
 
+    proposals_to_review = []
+    if _is_proposal_reviewer(request.user, conference):
+        proposal_reviewer_sections = [p.proposal_section for p in
+                                      ProposalSectionReviewer.objects.filter(
+                                          conference_reviewer__reviewer=request.user)]
+        proposals_to_review = [p for p in proposals_qs
+                               if p.proposal_section in proposal_reviewer_sections]
+
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
     proposal_type_filter = request.GET.getlist('proposal_type')
@@ -72,6 +80,7 @@ def list_proposals(request, conference_slug):
                   {'public_proposals_list': public_proposals_list,
                    'user_proposals_list': user_proposals_list,
                    'selected_proposals_list': selected_proposals_list,
+                   'proposals_to_review': proposals_to_review,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
@@ -190,6 +199,48 @@ def update_proposal(request, conference_slug, slug):
     proposal.status = form.cleaned_data['status']
     proposal.proposal_type_id = form.cleaned_data['proposal_type']
     proposal.proposal_section_id = form.cleaned_data['proposal_section']
+    proposal.save()
+    return HttpResponseRedirect(reverse('proposals-list',
+                                        args=[conference.slug]))
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def review_proposal(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not _is_proposal_reviewer(request.user, conference):
+        return HttpResponseForbidden()
+
+    if request.method == 'GET':
+
+        comments = ProposalComment.objects.filter(
+            proposal=proposal, deleted=False,
+        )
+
+        proposal_review_form = ProposalReviewForm(
+            initial={'review_status': proposal.review_status})
+
+        ctx = {
+            'proposal': proposal,
+            'proposal_review_form': proposal_review_form,
+            'reviewers_comments': comments.filter(private=True),
+            'reviewers_proposal_comment_form': ProposalCommentForm(
+                initial={'private': True}),
+        }
+
+        return render(request, 'proposals/review.html', ctx)
+
+    # POST Workflow
+    form = ProposalReviewForm(request.POST)
+    if not form.is_valid():
+        return render(request, 'proposals/review.html', {'form': form,
+                                                         'proposal': proposal,
+                                                         'errors': form.errors})
+
+    # Valid Form
+    proposal.review_status = form.cleaned_data['review_status']
     proposal.save()
     return HttpResponseRedirect(reverse('proposals-list',
                                         args=[conference.slug]))

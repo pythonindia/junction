@@ -85,6 +85,9 @@ class Proposal(TimeAuditModel):
     def get_update_url(self):
         return reverse('proposal-update', args=[self.conference.slug, self.slug])
 
+    def get_review_url(self):
+        return reverse('proposal-review', args=[self.conference.slug, self.slug])
+
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
