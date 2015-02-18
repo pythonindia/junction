@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -9,8 +8,8 @@ from django.http.response import HttpResponse, HttpResponseForbidden, HttpRespon
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-# Junction Stuff
-from junction.base.constants import PROPOSAL_STATUS_PUBLIC
+from junction.base.constants import PROPOSAL_STATUS_PUBLIC,\
+    PROPOSAL_REVIEW_STATUS_SELECTED
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm
@@ -19,6 +18,8 @@ from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
+# Third Party Stuff
+# Junction Stuff
 def _is_proposal_author(user, proposal):
     if user.is_authenticated() and proposal.author == user:
         return True
@@ -47,6 +48,8 @@ def list_proposals(request, conference_slug):
     if request.user.is_authenticated():  # Display the proposals by this user
         user_proposals_list = proposals_qs.filter(author=request.user)
 
+    selected_proposals_list = proposals_qs.filter(review_status=PROPOSAL_REVIEW_STATUS_SELECTED)
+
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
     proposal_type_filter = request.GET.getlist('proposal_type')
@@ -68,6 +71,7 @@ def list_proposals(request, conference_slug):
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
                    'user_proposals_list': user_proposals_list,
+                   'selected_proposals_list': selected_proposals_list,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
