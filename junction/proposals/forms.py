@@ -36,7 +36,7 @@ class ProposalForm(forms.Form):
     '''
     title = forms.CharField(min_length=10, help_text="Title of the proposal, no buzz words!")
     description = forms.CharField(widget=PagedownWidget(show_preview=True),
-                                  help_text=("Describe your proposal in clear and simple sentence."
+                                  help_text=("Describe your proposal with clear objective in simple sentence."
                                   " Keep it short and simple."))
     target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES,
                                         widget=forms.RadioSelect(renderer=HorizRadioRenderer))
