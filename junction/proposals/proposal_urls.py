@@ -11,7 +11,7 @@ urlpatterns = patterns(
 
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
-    url(r'^(?P<slug>[\w-]+)/update$',
+    url(r'^(?P<slug>[\w-]+)/update/$',
         views.update_proposal, name='proposal-update'),
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)/delete/$',
