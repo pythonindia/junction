@@ -8572,6 +8572,12 @@ a.status:focus {
   position: relative;
   top: -1px;
 }
+.status.label-proposal-type {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #2066c5;
+  color: #333;
+}
 .status-2 {
   background-color: #919191;
 }
@@ -8667,4 +8673,19 @@ a.status:focus {
 }
 .new-comment label {
   display: none;
+}
+.label.label-proposal-type,
+.tag.label-proposal-type {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #2066c5;
+  color: #333;
+}
+.tag.label-proposal-type {
+  -webkit-transition: background-color 0.3s ease;
+  -o-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+.tag.label-proposal-type:hover {
+  background-color: #2066c5;
 }

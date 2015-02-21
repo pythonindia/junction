@@ -115,19 +115,19 @@
                                         <i class="fa fa-thumbs-up"></i>{{ proposal.get_votes_count }}
                                     </span>
                                 </p>
-                                <h3 class="proposal--title">
+                                <h3 class="proposal--title clearfix">
                                     <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title|capfirst }}</a>
                                 </h3>
                                 <div class="clearfix">
                                     <div class="pull-left">
-                                        <span class="label label-default inline-block">
+                                        <span class="label label-proposal-type inline-block">
                                             {{ proposal.status_text }}
                                         </span>
-                                        <a class='tag tag__proposal_type label label-default inline-block'
+                                        <a class='tag tag__proposal_type label label-proposal-type inline-block'
                                            href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
                                         </a>
 
-                                        <a class='tag tag__proposal_section label label-default inline-block'
+                                        <a class='tag tag__proposal_section label label-proposal-type inline-block'
                                            href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
                                         </a>
                                     </div>
@@ -198,14 +198,14 @@
                         </h3>
                         <div class="clearfix">
                             <div class="pull-left">
-                                <span class="label label-default inline-block">
+                                <span class="label label-proposal-type inline-block">
                                     {{ proposal.status_text }}
                                 </span>
-                                <a class='tag tag__proposal_type label label-default inline-block'
+                                <a class='tag tag__proposal_type label label-proposal-type inline-block'
                                     href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
                                 </a>
 
-                                <a class='tag tag__proposal_section label label-default inline-block'
+                                <a class='tag tag__proposal_section label label-proposal-type inline-block'
                                     href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
                                 </a>
                             </div>
@@ -274,14 +274,14 @@
                                 </h3>
                                 <div class="clearfix">
                                     <div class="pull-left">
-                                        <span class="label label-default inline-block">
+                                        <span class="label label-proposal-type inline-block">
                                             {{ proposal.status_text }}
                                         </span>
-                                        <a class='tag tag__proposal_type label label-default inline-block'
+                                        <a class='tag tag__proposal_type label label-proposal-type inline-block'
                                            href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
                                         </a>
 
-                                        <a class='tag tag__proposal_section label label-default inline-block'
+                                        <a class='tag tag__proposal_section label label-proposal-type inline-block'
                                            href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
                                         </a>
                                     </div>
@@ -364,11 +364,11 @@
                         </h3>
                         <div class="clearfix">
                             <div class="pull-left">
-                                <a class='tag tag__proposal_type label label-default inline-block'
+                                <a class='tag tag__proposal_type label label-proposal-type inline-block'
                                     href="?proposal_type={{proposal.proposal_type.id}}">{{ proposal.proposal_type }}
                                 </a>
 
-                                <a class='tag tag__proposal_section label label-default inline-block'
+                                <a class='tag tag__proposal_section label label-proposal-type inline-block'
                                     href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
                                 </a>
 
