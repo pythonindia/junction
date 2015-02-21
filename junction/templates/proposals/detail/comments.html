@@ -70,6 +70,7 @@
         <button type="submit" class="btn btn-primary">
             Add Comment
         </button>
+        <button type="button" class="btn btn-default js-hide-comment-form">Cancel</button>
         {% endbuttons %}
     </form>
     {% else %}
@@ -81,3 +82,63 @@
     </p>
     {% endif %}
 </div>
+
+
+{% block script_extra %}
+ <script>
+    {% if user.is_authenticated %}
+    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+        e.preventDefault();
+        var _that = $(this);
+        if (_that.hasClass('active')){
+            return
+        }
+        var url = _that.attr('data-url');
+        $('.proposal-vote-count').html("...");
+        $.post(url, {}, function(result){
+            $('.btn-vote').removeClass('active');
+            $(_that).addClass('active');
+            $('.proposal-vote-count').html(result);
+        });
+    });
+    {% else %}
+    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+        e.preventDefault();
+        window.location = "{% url 'account_login' %}?next={{request.path}}";
+        return false;
+    });
+    {% endif %}
+    $('.js-proposal-comment-upvote').click(function(){
+        var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');
+        form.submit();
+    });
+    $('.js-proposal-comment-downvote').click(function(){
+        var form = $(this).parent().parent().parent().find('#js-proposal-comment-downvote');
+        form.submit();
+    });
+
+    $( 'body' ).on( 'click', '.js-add-comment', function(e) {
+        e.preventDefault();
+
+        var $form = $('.js-new-comment-form');
+
+        $form.slideDown(function() {
+            $( e.currentTarget ).hide();
+            $("html, body").animate({ scrollTop: $(document).height() }, 500, function() {
+                    $form.find( 'textarea' ).focus();
+                }
+            );
+        });
+    });
+    $( 'body' ).on( 'click', '.js-hide-comment-form', function(e) {
+        e.preventDefault();
+
+        var $el = $( e.currentTarget ),
+            $form = $el.parents( '.js-new-comment-form' );
+
+        $form.slideUp(function() {
+            $( '.js-add-comment' ).show();
+        });
+    });
+</script>
+{% endblock %}
