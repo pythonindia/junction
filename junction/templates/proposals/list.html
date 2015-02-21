@@ -142,8 +142,15 @@
                                         </b> |&nbsp;
                                         <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
                                     </small>
+
                                 </div>
-                                <a href="{{ proposal.get_review_url }}">Review</a>
+
+                                <hr class="hr-mini">
+
+                                <a href="{{ proposal.get_review_url }}"
+                                   class="space-on-top inline-block">
+                                    Review this proposal
+                                </a>
                             </div>
                         </div>
                     </div>
