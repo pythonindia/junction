@@ -38,16 +38,17 @@
         </div>
 
         <div class="comment-description" id="comment-{{comment.id}}">
+            <span>{{ comment.comment|markdown }}</span>
             <b>
                 {% if comment.commenter.get_full_name %}
                 {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
                 {% else %}
                 {{ comment.commenter.username }}
                 {% endif %}
-            </b> {{ comment.comment|markdown }}
-            <div class="text-muted">
-                <a href="#comment-{{comment.id}}"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>
-            </div>
+            </b>
+            <small class="text-muted">
+                <a href="#comment-{{comment.id}}" class="link-disguise"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>
+            </small>
         </div>
     </div>
 </div>

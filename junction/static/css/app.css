@@ -8382,6 +8382,9 @@ fieldset[disabled] .btn-github.active {
 .padded {
   padding: 10px;
 }
+.link-disguise {
+  color: inherit !important;
+}
 html {
   font-size: 1em;
 }
