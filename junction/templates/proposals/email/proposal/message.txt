@@ -2,7 +2,6 @@ There is a new proposal for {{proposal.conference}}.
 
 Title: {{proposal.title}}
 Link: {{host}}{{proposal_url}}
-Type: {{proposal_type}}
 Section: {{proposal_section}}
 Author: *{{proposal.author}}*
 "{{proposal.speaker_info}}"

@@ -10,6 +10,7 @@ from junction.proposals.models import (
     ProposalComment,
     ProposalCommentVote,
     ProposalSection,
+    ProposalSectionReviewer,
     ProposalType,
     ProposalVote
 )
@@ -17,6 +18,10 @@ from junction.proposals.models import (
 
 class ProposalSectionAdmin(AuditAdmin):
     list_display = ('name', 'active') + AuditAdmin.list_display
+
+
+class ProposalSectionReviewerAdmin(AuditAdmin):
+    list_display = ('conference_reviewer', 'proposal_section') + AuditAdmin.list_display
 
 
 class ProposalTypeAdmin(AuditAdmin):
@@ -53,3 +58,4 @@ admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(ProposalVote, ProposalVoteAdmin)
 admin.site.register(ProposalComment, ProposalCommentAdmin)
 admin.site.register(ProposalCommentVote, ProposalCommentVoteAdmin)
+admin.site.register(ProposalSectionReviewer, ProposalSectionReviewerAdmin)

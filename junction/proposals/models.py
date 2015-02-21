@@ -30,6 +30,18 @@ class ProposalSection(AuditModel):
         return self.name
 
 
+class ProposalSectionReviewer(AuditModel):
+
+    """ List of Proposal Section Reviewers"""
+    conference_reviewer = models.ForeignKey('conferences.ConferenceProposalReviewer',
+                                            verbose_name="Conference Proposal Reviewers")
+    proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
+    active = models.BooleanField(default=True, verbose_name="Is Active?")
+
+    def __unicode__(self):
+        return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
+
+
 class ProposalType(AuditModel):
 
     """ List of Proposal Types """
@@ -72,6 +84,9 @@ class Proposal(TimeAuditModel):
 
     def get_update_url(self):
         return reverse('proposal-update', args=[self.conference.slug, self.slug])
+
+    def get_review_url(self):
+        return reverse('proposal-review', args=[self.conference.slug, self.slug])
 
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])

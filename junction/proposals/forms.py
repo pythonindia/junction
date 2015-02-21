@@ -6,6 +6,7 @@ from pagedown.widgets import PagedownWidget
 # Junction Stuff
 from junction.base.constants import PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from junction.proposals.models import ProposalSection, ProposalType
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST
 
 
 def _get_proposal_section_choices(conference):
@@ -91,3 +92,11 @@ class ProposalCommentForm(forms.Form):
     '''
     comment = forms.CharField(widget=PagedownWidget(show_preview=True))
     private = forms.BooleanField(required=False, widget=forms.HiddenInput())
+
+
+class ProposalReviewForm(forms.Form):
+
+    """
+    Used to review the proposal.
+    """
+    review_status = forms.ChoiceField(choices=PROPOSAL_REVIEW_STATUS_LIST)
