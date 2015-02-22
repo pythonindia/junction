@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+from django.db.models import Q
 
 from junction.base.constants import PROPOSAL_STATUS_PUBLIC,\
     PROPOSAL_REVIEW_STATUS_SELECTED
@@ -71,7 +72,7 @@ def list_proposals(request, conference_slug):
         proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
         is_filtered = True
 
-    public_proposals_list = proposals_qs.filter(status=PROPOSAL_STATUS_PUBLIC)
+    public_proposals_list = proposals_qs.filter(~Q(review_status=PROPOSAL_REVIEW_STATUS_SELECTED))
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)

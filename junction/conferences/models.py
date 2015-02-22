@@ -38,6 +38,9 @@ class Conference(AuditModel):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def get_absolute_url(self):
         return reverse("conference-detail", kwargs={'conference_slug': self.slug})
 
@@ -67,6 +70,9 @@ class ConferenceModerator(AuditModel):
     def __unicode__(self):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
 
+    def __str__(self):
+        return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
+
 
 class ConferenceProposalReviewer(AuditModel):
 
@@ -81,4 +87,7 @@ class ConferenceProposalReviewer(AuditModel):
         unique_together = ("conference", "reviewer")
 
     def __unicode__(self):
+        return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+
+    def __str__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)

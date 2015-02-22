@@ -29,6 +29,9 @@ class ProposalSection(AuditModel):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
 
 class ProposalSectionReviewer(AuditModel):
 
@@ -41,6 +44,9 @@ class ProposalSectionReviewer(AuditModel):
     def __unicode__(self):
         return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
 
+    def __str__(self):
+        return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
+
 
 class ProposalType(AuditModel):
 
@@ -51,6 +57,9 @@ class ProposalType(AuditModel):
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_types')
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
 
@@ -77,6 +86,9 @@ class Proposal(TimeAuditModel):
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
+        return self.title
+
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -129,6 +141,9 @@ class ProposalVote(TimeAuditModel):
     def __unicode__(self):
         return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal)
 
+    def __str__(self):
+        return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal)
+
     class Meta:
         unique_together = ("proposal", "voter")
 
@@ -143,6 +158,9 @@ class ProposalComment(TimeAuditModel):
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __unicode__(self):
+        return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
+
+    def __str__(self):
         return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
 
     def get_up_vote_url(self):
@@ -165,6 +183,9 @@ class ProposalCommentVote(TimeAuditModel):
     up_vote = models.BooleanField(default=True)
 
     def __unicode__(self):
+        return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal_comment)
+
+    def __str__(self):
         return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal_comment)
 
     class Meta:
