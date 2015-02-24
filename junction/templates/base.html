@@ -86,7 +86,7 @@
 
                     {% block navbar_logo %}
                     <a class="navbar-brand" href="{% url 'pages:homepage' %}">
-                        Junction
+                        {{ SITE_INFO.site_name }}
                     </a>
                     {% endblock navbar_logo %}
 
