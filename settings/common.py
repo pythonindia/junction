@@ -18,12 +18,17 @@ ADMINS = (
     ('Sivabramaniam Arunachalam', 'siva@sivaa.in'),
 )
 
+# Absolute Url of frontend hosted site. Used to render the urls in templattes,
+# static and media files appropriately. e.g 'https://in.pycon.org/junction'
+SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
+
 # General project information
 # These are available in the template as SITE_INFO.<title>
 SITE_VARIABLES = {
     'site_name': 'Junction',
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
-    'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None)
+    'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
+    'site_url': SITE_URL,
 }
 
 MIDDLEWARE_CLASSES = (
