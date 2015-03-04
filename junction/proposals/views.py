@@ -72,8 +72,8 @@ def list_proposals(request, conference_slug):
         is_filtered = True
 
     if request.user.is_authenticated():
-        public_proposals_list = proposals_qs.filter(~Q(review_status=PROPOSAL_REVIEW_STATUS_SELECTED) |
-                                                    ~Q(author=request.user))
+        public_proposals_list = proposals_qs.filter(
+            ~Q(review_status=PROPOSAL_REVIEW_STATUS_SELECTED) | ~Q(author=request.user))
     else:
         public_proposals_list = proposals_qs.filter(~Q(review_status=PROPOSAL_REVIEW_STATUS_SELECTED))
 
