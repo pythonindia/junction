@@ -2,6 +2,7 @@
 
 # Third Party Stuff
 from django.conf import settings
+from TwitterAPI import TwitterAPI
 
 # Junction Stuff
 from junction.base.emailer import send_email
@@ -62,3 +63,17 @@ def send_mail_for_new_proposal(proposal, host):
                             'host': host,
                             'proposal_url': proposal_url,
                             'login_url': login_url})
+
+
+def post_tweet_for_new_proposal(proposal_name, proposal_url):
+    """
+    Post a tweet from junction twitter handler when a proposal is created.
+    """
+    twitter_api = TwitterAPI(settings.CONSUMER_KEY,
+                             settings.CONSUMER_SECRET,
+                             settings.ACCESS_TOKEN_KEY,
+                             settings.ACCESS_TOKEN_SECRET)
+    tweet_text = "There is a new proposal for {0} {1}".format(proposal_name,
+                                                              proposal_url)
+    response = twitter_api.request('statuses/update', {'status': tweet_text})
+    return response

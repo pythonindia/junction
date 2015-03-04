@@ -198,3 +198,10 @@ ALLOWED_HOSTS = []  # TODO:
 SITE_PROTOCOL = 'http'
 
 MARKDOWN_EXTENSIONS = ['linkify']
+
+
+# twitter settings
+CONSUMER_KEY = os.environ.get('CONSUMER_KEY', '')
+CONSUMER_SECRET = os.environ.get('CONSUMER_SECRET', '')
+ACCESS_TOKEN_KEY = os.environ.get('ACCESS_TOKEN_KEY', '')
+ACCESS_TOKEN_SECRET = os.environ.get('ACCESS_TOKEN_SECRET', '')
