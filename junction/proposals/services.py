@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 # Third Party Stuff
 from django.conf import settings
 from TwitterAPI import TwitterAPI
@@ -8,6 +10,9 @@ from TwitterAPI import TwitterAPI
 from junction.base.emailer import send_email
 
 from .models import ProposalSection, ProposalSectionReviewer
+
+
+logger = logging.getLogger(__name__)
 
 
 def send_mail_for_new_comment(proposal_comment, host, login_url):
@@ -69,11 +74,19 @@ def post_tweet_for_new_proposal(proposal_name, proposal_url):
     """
     Post a tweet from junction twitter handler when a proposal is created.
     """
-    twitter_api = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                             settings.TWITTER_CONSUMER_SECRET,
-                             settings.TWITTER_ACCESS_TOKEN_KEY,
-                             settings.TWITTER_ACCESS_TOKEN_SECRET)
-    tweet_text = "There is a new proposal for {0} {1}".format(proposal_name,
-                                                              proposal_url)
-    response = twitter_api.request('statuses/update', {'status': tweet_text})
-    return response
+    try:
+        twitter_api = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
+                                 settings.TWITTER_CONSUMER_SECRET,
+                                 settings.TWITTER_ACCESS_TOKEN_KEY,
+                                 settings.TWITTER_ACCESS_TOKEN_SECRET)
+        tweet_text = "There is a new proposal for {0}".format(proposal_name)
+
+        # twitter uses 26 chars for links, so text is limited to 114 chars.
+        if len(tweet_text) > 114:
+            tweet_text = "{0}...".format(tweet_text[:110])
+        tweet = "{0} {1}".format(tweet_text, proposal_url)
+        response = twitter_api.request('statuses/update', {'status': tweet})
+        return response
+    except:
+        logger.error('Unable to post tweet for {0} {1}'.
+                     format(proposal_name, proposal_url))
