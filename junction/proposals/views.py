@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.db.models import Q
 
 from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED
 from junction.conferences.models import Conference, ConferenceProposalReviewer
