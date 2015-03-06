@@ -25,7 +25,7 @@ SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
 # General project information
 # These are available in the template as SITE_INFO.<title>
 SITE_VARIABLES = {
-    'site_name': 'Junction',
+    'site_name': os.environ.get('SITE_NAME', 'Junction'),
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
@@ -97,6 +97,9 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES['site_name'])
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
+EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
+
 LOGIN_REDIRECT_URL = '/'
 
 # E-Mail Settings
@@ -198,3 +201,10 @@ ALLOWED_HOSTS = []  # TODO:
 SITE_PROTOCOL = 'http'
 
 MARKDOWN_EXTENSIONS = ['linkify']
+
+
+# twitter settings
+TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', None)
+TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', None)
+TWITTER_ACCESS_TOKEN_KEY = os.environ.get('TWITTER_ACCESS_TOKEN_KEY', None)
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None)
