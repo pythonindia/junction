@@ -134,7 +134,6 @@ def create_proposal(request, conference_slug):
     send_mail_for_new_proposal(proposal, host)
 
     # Tweet only for public proposals
-    import ipdb;ipdb.set_trace()
     if int(proposal.status) == PROPOSAL_STATUS_PUBLIC:
         abs_url = proposal.get_absolute_url()
         proposal_url = request.build_absolute_uri("/").rstrip("/") + abs_url
