@@ -79,7 +79,7 @@ def post_tweet_for_new_proposal(proposal_name, proposal_url):
                                  settings.TWITTER_CONSUMER_SECRET,
                                  settings.TWITTER_ACCESS_TOKEN_KEY,
                                  settings.TWITTER_ACCESS_TOKEN_SECRET)
-        tweet_text = "There is a new proposal for {0}".format(proposal_name)
+        tweet_text = "New proposal: {0}".format(proposal_name)
 
         # twitter uses 26 chars for links, so text is limited to 114 chars.
         if len(tweet_text) > 114:
