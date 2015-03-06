@@ -22,21 +22,40 @@
 
 <div class="row">
     <div class="col-sm-6">
-        <div class="form-container space-2-bottom">
+        <div class="space-2-bottom">
             <h4 class="fill-blue text-center">Review Proposal </h4>
             <hr class="hr-mini">
-            <form method="POST" action=".">
+            <form method="POST" action="." class="review-form form-horizontal">
                 {% csrf_token %}
-                {% bootstrap_form proposal_review_form %}
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">
-                    Submit
-                    </button>
-                {% endbuttons %}
+
+                <div class="form-group clearfix">
+                  {% for field in proposal_review_form %}
+                    {% if field.errors %}
+                      {{field.errors}}
+                    {% endif %}
+
+                    <label for="" class="control-label col-sm-4">
+                        {{field.label}}
+                    </label>
+
+                    <div class="col-sm-8">
+                        {{field}}
+                    </div>
+                  {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button type="submit" class="btn btn-primary">
+                          Submit
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
-    <div class="col-sm-6">
+
+    <div class="col-sm-6 left-bordered">
         <h4 class="text-center">Reviewers Comments </h4>
         <hr class="hr-mini">
         <div class="col-sm-12">

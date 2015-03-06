@@ -8,8 +8,6 @@
     content :":";
   }
   label.control-label{
-      width:24%;
-      padding-right:2%;
       text-align:right;
   }
   .form-container input[type=text]{
