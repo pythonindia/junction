@@ -4,11 +4,14 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.http.response import (HttpResponse,
+                                  HttpResponseForbidden,
+                                  HttpResponseRedirect)
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED
+from junction.base.constants import (PROPOSAL_REVIEW_STATUS_SELECTED,
+                                     PROPOSAL_STATUS_PUBLIC)
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
@@ -71,11 +74,13 @@ def list_proposals(request, conference_slug):
         proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
         is_filtered = True
 
+    # Display proposals which are public & exclude logged in user proposals
     if request.user.is_authenticated():
-        public_proposals_list = proposals_qs.exclude(author=request.user)
+        proposals_qs = proposals_qs.exclude(author=request.user.id)
 
     public_proposals_list = proposals_qs.exclude(
-        review_status=PROPOSAL_REVIEW_STATUS_SELECTED).order_by('-created_at')
+        review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
+            status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
@@ -129,7 +134,12 @@ def create_proposal(request, conference_slug):
         proposal_section_id=form.cleaned_data['proposal_section'])
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
     send_mail_for_new_proposal(proposal, host)
-    post_tweet_for_new_proposal(proposal.title, proposal.get_absolute_url())
+
+    # Tweet only for public proposals
+    if int(proposal.status) == PROPOSAL_STATUS_PUBLIC:
+        abs_url = proposal.get_absolute_url()
+        proposal_url = request.build_absolute_uri("/").rstrip("/") + abs_url
+        post_tweet_for_new_proposal(proposal.title, proposal_url=proposal_url)
     return HttpResponseRedirect(reverse('proposals-list',
                                         args=[conference.slug]))
 

@@ -21,35 +21,52 @@
 {% block content %}
 
 <div class="row">
-    <h2 class="fill-blue text-center">Reviewers Comments </h2>
-    <div class="col-sm-12">
-        <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="active" role="presentation">
-                    {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
-                        {% include "proposals/detail/comments.html" %}
-                    {% endwith %}
-                </li>
+    <div class="col-sm-6">
+        <div class="space-2-bottom">
+            <h4 class="fill-blue text-center">Review Proposal </h4>
+            <hr class="hr-mini">
+            <form method="POST" action="." class="review-form form-horizontal">
+                {% csrf_token %}
+
+                <div class="form-group clearfix">
+                  {% for field in proposal_review_form %}
+                    {% if field.errors %}
+                      {{field.errors}}
+                    {% endif %}
+
+                    <label for="" class="control-label col-sm-4">
+                        {{field.label}}
+                    </label>
+
+                    <div class="col-sm-8">
+                        {{field}}
+                    </div>
+                  {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button type="submit" class="btn btn-primary">
+                          Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
-        <div class="form-container space-2-bottom">
-            <h2 class="fill-blue text-center">Review Proposal </h2>
-            <div class="pad-2 push-half-top push-2-bottom">
-              <hr>
-              <form method="POST" action="."> {% csrf_token %}
-                {% bootstrap_form proposal_review_form %}
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">
-                        Submit
-                    </button>
-                {% endbuttons %}
-              </form>
+    <div class="col-sm-6 left-bordered">
+        <h4 class="text-center">Reviewers Comments </h4>
+        <hr class="hr-mini">
+        <div class="col-sm-12">
+            <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active" role="presentation">
+                        {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                            {% include "proposals/detail/comments.html" %}
+                        {% endwith %}
+                    </li>
             </div>
-
         </div>
     </div>
 </div>
