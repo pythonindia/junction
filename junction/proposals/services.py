@@ -85,8 +85,7 @@ def post_tweet_for_new_proposal(proposal_name, proposal_url):
         twitter_api = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                                  settings.TWITTER_CONSUMER_SECRET,
                                  settings.TWITTER_ACCESS_TOKEN_KEY,
-                                 settings.TWITTER_ACCESS_TOKEN_SECRET,
-                                 auth_type='oAuth2')
+                                 settings.TWITTER_ACCESS_TOKEN_SECRET)
         response = twitter_api.request('statuses/update', {'status': tweet})
         return response
     except Exception as e:
