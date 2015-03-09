@@ -63,11 +63,11 @@
                         <i class="fa fa-trash-o"></i>
                     </a>
 
-                    <a href="{{ proposal.get_absolute_url }}#comments" class="btn btn-default" type="button">
+                    <a href="#public-comments" class="btn btn-default" type="button">
                         <i class="fa fa-comments-o"></i>
                     </a>
 
-                    <a href="{{ proposal.get_absolute_url }}reviewers/#comments" class="btn btn-default" type="button">
+                    <a href="#reviewers-comments" class="btn btn-default" type="button">
                         <i class="fa fa-info"></i>
                     </a>
                 </div>
@@ -177,7 +177,7 @@
         <div class="col-sm-12">
           <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
               <ul class="nav nav-tabs" role="tablist">
-                  <li class="active" role="presentation">
+                  <li class="active" role="presentation" id="public-comments">
                       <a href="#js-comments" role="tab" data-toggle="tab">
                           <i class="fa fa-comments-o"></i>
                           Comments
@@ -185,7 +185,7 @@
                   </li>
 
                   {% if allow_private_comment %}
-                  <li role="presentation">
+                  <li role="presentation" id="reviewers-comments">
                       <a href="#js-reviewers" role="tab" data-toggle="tab">
                           <i class="fa fa-thumbs-up"></i>
                           Reviewers
@@ -211,4 +211,21 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block script_extra %}
+<script>
+$(document).ready(function() {
+
+  $('a[href=#public-comments]').click(function(){
+    $('a[href=#js-comments]').parent().addClass('active').siblings().removeClass("active");
+  });
+
+  $('a[href=#reviewers-comments]').click(function(){
+    console.log('r ');
+    $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
+  });
+
+});
+</script>
 {% endblock %}
