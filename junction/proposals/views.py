@@ -9,7 +9,6 @@ from django.http.response import (HttpResponse,
                                   HttpResponseRedirect)
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.db.models import Q
 
 from junction.base.constants import (PROPOSAL_REVIEW_STATUS_SELECTED,
                                      PROPOSAL_STATUS_PUBLIC)
@@ -75,10 +74,13 @@ def list_proposals(request, conference_slug):
         proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
         is_filtered = True
 
-    # Display proposals which are public
-    public_proposals_list = proposals_qs.filter(
-        ~Q(review_status=PROPOSAL_REVIEW_STATUS_SELECTED),
-        status=PROPOSAL_STATUS_PUBLIC)
+    # Display proposals which are public & exclude logged in user proposals
+    if request.user.is_authenticated():
+        proposals_qs = proposals_qs.exclude(author=request.user.id)
+
+    public_proposals_list = proposals_qs.exclude(
+        review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
+            status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
