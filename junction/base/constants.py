@@ -15,8 +15,8 @@ PROPOSAL_STATUS_DRAFT = 1
 PROPOSAL_STATUS_PUBLIC = 2
 PROPOSAL_STATUS_CANCELLED = 3
 
-PROPOSAL_STATUS_LIST = ((PROPOSAL_STATUS_DRAFT, "Draft"),
-                        (PROPOSAL_STATUS_PUBLIC, "Public"),
+PROPOSAL_STATUS_LIST = ((PROPOSAL_STATUS_PUBLIC, "Public"),
+                        (PROPOSAL_STATUS_DRAFT, "Draft"),
                         (PROPOSAL_STATUS_CANCELLED, "Cancelled"),
                         )
 
