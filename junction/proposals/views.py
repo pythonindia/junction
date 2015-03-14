@@ -17,8 +17,7 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
 from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
                      ProposalType, ProposalCommentVote, ProposalSectionReviewer)
-from .services import (send_mail_for_new_comment, send_mail_for_new_proposal,
-                       post_tweet_for_new_proposal)
+from .services import (send_mail_for_new_comment, send_mail_for_new_proposal)
 
 
 # Third Party Stuff
@@ -135,11 +134,6 @@ def create_proposal(request, conference_slug):
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
     send_mail_for_new_proposal(proposal, host)
 
-    # Tweet only for public proposals
-    if int(proposal.status) == PROPOSAL_STATUS_PUBLIC:
-        abs_url = proposal.get_absolute_url()
-        proposal_url = request.build_absolute_uri("/").rstrip("/") + abs_url
-        post_tweet_for_new_proposal(proposal.title, proposal_url=proposal_url)
     return HttpResponseRedirect(reverse('proposals-list',
                                         args=[conference.slug]))
 
