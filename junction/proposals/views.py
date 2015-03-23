@@ -154,6 +154,7 @@ def detail_proposal(request, conference_slug, slug):
         pass
 
     ctx = {
+        'login_url': settings.LOGIN_URL,
         'proposal': proposal,
         'allow_private_comment': allow_private_comment,
         'vote_value': vote_value,
