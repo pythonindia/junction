@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
 
+# Standard Library
 import logging
 
 # Third Party Stuff
@@ -9,7 +11,6 @@ from django.conf import settings
 from junction.base.emailer import send_email
 
 from .models import ProposalSection, ProposalSectionReviewer
-
 
 logger = logging.getLogger(__name__)
 

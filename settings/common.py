@@ -1,10 +1,13 @@
-import os
-
-from django.conf.global_settings import *  # noqa
-from django.utils.translation import ugettext_lazy as _
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
 
 # Standard Library
+import os
 from os.path import dirname, join
+
+# Third Party Stuff
+from django.conf.global_settings import *  # noqa
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))

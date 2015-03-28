@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 # Third Party Stuff
 from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from junction.proposals.models import ProposalSection, ProposalType
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST
 
 
 def _get_proposal_section_choices(conference):

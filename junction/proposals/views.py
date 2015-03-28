@@ -1,27 +1,31 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import (HttpResponse,
-                                  HttpResponseForbidden,
-                                  HttpResponseRedirect)
+from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from junction.base.constants import (PROPOSAL_REVIEW_STATUS_SELECTED,
-                                     PROPOSAL_STATUS_PUBLIC)
+# Junction Stuff
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
-from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
-                     ProposalType, ProposalCommentVote, ProposalSectionReviewer)
-from .services import (send_mail_for_new_comment, send_mail_for_new_proposal)
+from .models import (
+    Proposal,
+    ProposalComment,
+    ProposalCommentVote,
+    ProposalSection,
+    ProposalSectionReviewer,
+    ProposalType,
+    ProposalVote
+)
+from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
-# Third Party Stuff
-# Junction Stuff
 def _is_proposal_author(user, proposal):
     if user.is_authenticated() and proposal.author == user:
         return True
