@@ -8739,3 +8739,9 @@ fieldset[disabled] .review-form select {
 textarea.review-form select {
   height: auto;
 }
+.charfield {
+  margin-left: 10px;
+}
+.dropdown {
+  margin-left: 10px;
+}
