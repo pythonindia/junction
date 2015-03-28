@@ -1,4 +1,4 @@
-Django==1.7.5
+Django==1.7.7
 celery==3.1.17
 
 # Persistent Store
@@ -9,7 +9,7 @@ redis==2.10.3
 
 # Extensions
 # -------------------------------------------------
-django-extensions==1.5.0
+django-extensions==1.5.2
 ipython==3.0.0
 pyreadline==2.0
 six==1.9.0
@@ -26,7 +26,7 @@ Pillow==2.7.0
 django-allauth==0.19.1
 oauthlib==0.7.2
 python-openid==2.2.5
-requests==2.5.1
+requests==2.6.0
 requests-oauthlib==0.4.2
 
 # Frontend Helpers
@@ -39,4 +39,4 @@ django-bootstrap-breadcrumbs==0.7.0
 django-markdown==0.8.4
 django-pagedown==0.1.0
 mdx-linkify==0.6
-Markdown==2.5.2
+Markdown==2.6.1
