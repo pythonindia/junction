@@ -45,6 +45,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 CORE_APPS = (
+    'flat',  # https://github.com/elky/django-flat-theme
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

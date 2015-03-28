@@ -33,6 +33,7 @@ requests-oauthlib==0.4.2
 # -------------------------------------------------
 django-bootstrap3==5.1.1
 django-bootstrap-breadcrumbs==0.7.0
+django-flat-theme==0.9.2  # django admin theme
 
 # Markdown Editor
 # -------------------------------------------------
