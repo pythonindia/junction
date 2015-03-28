@@ -96,7 +96,9 @@
 
         <div class="col-sm-8">
             <h4>
-                Description :
+                <b>
+		    Description :
+		</b>
             </h4>
             <p>
                 {{ proposal.description|markdown }}
@@ -104,7 +106,9 @@
 
             {% if proposal.prerequisites %}
                 <h4>
-                    Prerequisites :
+		    <b>
+                        Prerequisites :
+		    </b>
                 </h4>
                 <p>
                     {{ proposal.prerequisites|markdown }}
@@ -113,7 +117,9 @@
 
             {% if proposal.content_urls %}
                 <h4>
-                    Content URLS :
+		    <b>
+                        Content URLS :
+		    </b>
                 </h4>
                 <p>
                     {{ proposal.content_urls|markdown }}
@@ -122,7 +128,9 @@
 
             {% if proposal.speaker_info %}
                 <h4>
-                    Speaker Info :
+		    <b>
+                        Speaker Info :
+		    </b> 
                 </h4>
                 <p>
                     {{ proposal.speaker_info|markdown }}
@@ -131,7 +139,9 @@
 
             {% if proposal.speaker_links %}
                 <h4>
-                    Speaker Links :
+		    <b>
+                        Speaker Links :
+		    </b>
                 </h4>
                 <p>
                     {{ proposal.speaker_links|markdown }}
