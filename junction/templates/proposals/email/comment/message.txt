@@ -1,4 +1,4 @@
-There is a new comment on {{host}}{{proposal.get_absolute_url}} by *{{comment.commenter}}*:
+There is a new comment on {{host}}{{proposal.get_absolute_url}} by one of the reviewer:
 
 "{{comment.comment}}"
 -------------------------------------------------------------------------------
