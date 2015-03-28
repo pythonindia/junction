@@ -37,13 +37,21 @@
             </form>
         </div>
 
-        <div class="comment-description" id="comment-{{comment.id}}">
+         <div class="comment-description" id="comment-{{comment.id}}">
             <span>{{ comment.comment|markdown }}</span>
             <b>
-                {% if comment.commenter.get_full_name %}
-                {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+                {% if comment.private %}
+                    {% ifequal proposal.author.id comment.commenter.id %}
+                        Submitter
+                    {% else %}
+                        Reviewer
+                    {% endifequal %}
                 {% else %}
-                {{ comment.commenter.username }}
+                    {% if comment.commenter.get_full_name %}
+                        {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+                    {% else %}
+                        {{ comment.commenter.username }}
+                    {% endif %}
                 {% endif %}
             </b>
             <small class="text-muted">
