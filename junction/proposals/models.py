@@ -174,6 +174,13 @@ class ProposalComment(TimeAuditModel):
         down_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=False).count()
         return up_vote_count - down_vote_count
 
+    def get_comment_upvotes(self):
+        up_votes = ProposalCommentVote.objects.filter(proposal_comment = self, up_vote = True)
+        return up_votes
+
+    def get_comment_downvotes(self):
+        up_votes = ProposalCommentVote.objects.filter(proposal_comment = self, up_vote = False)
+        return up_votes
 
 class ProposalCommentVote(TimeAuditModel):
 

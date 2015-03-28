@@ -13,7 +13,7 @@
         <div class="comment-vote-panel text-center">
             <div class="text-center">
                 <div>
-                    <a href="#" class="js-proposal-comment-upvote text-muted">
+                    <a href="#" class="js-proposal-comment-upvote text-muted {% for upvote in comment.get_comment_upvotes %}{% if upvote.voter == request.user %}active{% endif %}{% endfor %}">
                         <i class="fa fa-chevron-up"></i>
                     </a>
                 </div>
@@ -23,7 +23,7 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="js-proposal-comment-downvote text-muted">
+                    <a href="#" class="js-proposal-comment-downvote text-muted {% for downvote in comment.get_comment_downvotes %}{% if downvote.voter == request.user %}active{% endif %}{% endfor %}">
                         <i class="fa fa-chevron-down"></i>
                     </a>
                 </div>
