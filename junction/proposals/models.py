@@ -182,6 +182,7 @@ class ProposalComment(TimeAuditModel):
         up_votes = ProposalCommentVote.objects.filter(proposal_comment = self, up_vote = False)
         return up_votes
 
+
 class ProposalCommentVote(TimeAuditModel):
 
     """ User vote for a specific proposal's comment """
