@@ -1,5 +1,13 @@
 # Release Notes
 
+## [0.3.0-dev][0.3.0]
+
+__Date:__ unreleased
+
+__Fixes__
+- fix the tag filtering for all the proposal sections inside proposal list (#170)
+
+
 ## [0.2.0][0.2.0]
 
 __Date:__ 29th March 2015
@@ -28,6 +36,7 @@ __Date:__ 8th February 2015
 
 - initial release with core functionality working
 
+[0.3.0]: https://github.com/pythonindia/junction/compare/0.2.0...master
 [0.2.0]: https://github.com/pythonindia/junction/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/pythonindia/junction/issues?q=milestone%3A%22release+0.1.0+-+initial+release%22
 
