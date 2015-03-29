@@ -20,22 +20,24 @@
 
 {% block content %}
 {{ form.media }}
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0 push-3">
-        <div class="form-container space-2-bottom">
-            <h2 class="fill-blue text-center">Edit Proposal </h2>
-            <div class="pad-2 push-half-top push-2-bottom">
-              <hr>
-              <form method="POST" action="." class="edit-proposal-form"> {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">
-                        Submit
-                    </button>
-                {% endbuttons %}
-              </form>
-            </div>
-
+<div class="custom-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Proposal </h2>
+            <p> This form supports <a href="http://daringfireball.net/projects/markdown/" target="_blank"> markdown</a> for formatting.</p>
+            <hr>
+            <div class="form-container space-2-bottom">
+                <form method="POST" action="." class="edit-proposal-form"> {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                    {% endbuttons %}
+                  </form>
+                </div>
         </div>
     </div>
 </div>
