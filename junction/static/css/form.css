@@ -16,11 +16,6 @@
     width: 76%;
   }
 
-  .edit-proposal-form label.control-label {
-    width:24%;
-    padding-right:2%;
-  }
-
   @media (max-width: 480px) {
     label.control-label{
         display: block;
