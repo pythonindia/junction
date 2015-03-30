@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 def send_mail_for_new_comment(proposal_comment, host, login_url):
     proposal = proposal_comment.proposal
     send_to = comment_recipients(proposal_comment)
+    commenter = proposal_comment.commenter
     for to in send_to:
         if to == proposal_comment.commenter:
             continue
@@ -26,6 +27,7 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
                    context={'to': to,
                             'proposal': proposal,
                             'comment': proposal_comment,
+                            'commenter': commenter,
                             'host': host,
                             'login_url': login_url})
 

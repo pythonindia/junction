@@ -8,9 +8,6 @@
 {% endif %}
 
 {% for comment in comments %}
-{% if forloop.first %}
-   <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
-{% endif %}
 <div class="panel panel-default comment-panel">
     <div class="panel-body">
         <div class="comment-vote-panel text-center">
@@ -43,11 +40,19 @@
         <div class="comment-description" id="comment-{{comment.id}}">
             <span>{{ comment.comment|markdown }}</span>
             <b>
-                {% if comment.commenter == proposal.author %}
-                Comment by proposer.
-                {% else %}
-                Comment by reviewer.
-                {% endif %}
+              {% if comment.private %}
+                  {% if comment.commenter == proposal.author %}
+                  Comment by proposer.
+                  {% else %}
+                  Comment by reviewer.
+                  {% endif %}
+              {% else %}
+                  {% if comment.commenter.get_full_name %}
+                  {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+                  {% else %}
+                  {{ comment.commenter.username }}
+                  {% endif %}
+              {% endif %}
             </b>
             <small class="text-muted">
                 <a href="#comment-{{comment.id}}" class="link-disguise"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>

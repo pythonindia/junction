@@ -201,6 +201,7 @@
                   </div>
                   {% if allow_private_comment %}
                   <div class="tab-pane" id="js-reviewers" role="tabpanel">
+                      <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
                       {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
                           {% include "proposals/detail/comments.html" %}
                       {% endwith %}
