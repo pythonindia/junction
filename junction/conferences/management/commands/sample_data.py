@@ -17,14 +17,16 @@ from sampledatahelper.helper import SampleDataHelper
 # Junction Stuff
 from junction.base import constants
 from junction.conferences.models import Conference
-from junction.proposals.models import ProposalSection, ProposalType
+from junction.proposals.models import (ProposalSection, ProposalType,
+                                       Proposal, ProposalComment)
 
 NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)
-NUM_EMPTY_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_EMPTY_CONFERENCES",
-                                2)
+NUM_EMPTY_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_EMPTY_CONFERENCES", 2)
 NUM_PROPOSAL_SECTIONS = getattr(settings, "NUM_PROPOSAL_SECTIONS", 5)
 NUM_PROPOSAL_TYPES = getattr(settings, "NUM_PROPOSAL_TYPES", 8)
+NUM_PROPOSALS = getattr(settings, "NUM_PROPOSAL", 10)
+NUM_COMMENTS = getattr(settings, "NUM_COMMENTS", 10)
 
 
 class Command(BaseCommand):
@@ -34,6 +36,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.users = []
+        self.conferences = []
+        self.proposals = []
 
         # Update site url
         print('  Updating domain to localhost:8000')
@@ -66,6 +70,7 @@ class Command(BaseCommand):
         print('  Creating sample Conferences')
         for x in range(NUM_CONFERENCES + NUM_EMPTY_CONFERENCES):
             conference = self.create_conference(x)
+            self.conferences.append(conference)
 
             if x < NUM_CONFERENCES:
                 self.create_moderators(conference)
@@ -78,6 +83,16 @@ class Command(BaseCommand):
                 # attach all proposal types
                 for proposal_type in self.proposal_types:
                     conference.proposal_types.add(proposal_type)
+
+        # create proposals
+        print('  Creating sample proposals')
+        for x in range(NUM_PROPOSALS):
+            self.proposals.append(self.create_proposal())
+
+        # create comments
+        print('  Creating sample proposal comments')
+        for x in range(NUM_COMMENTS):
+            self.create_proposal_comment()
 
     def create_proposal_sections(self):
         sections = []
@@ -162,3 +177,22 @@ class Command(BaseCommand):
             username=params.get('username'), password=password))
 
         return user
+
+    def create_proposal(self):
+        proposal = Proposal.objects.create(
+            conference=self.sd.choice(self.conferences),
+            proposal_section=self.sd.choice(self.proposal_sections),
+            proposal_type=self.sd.choice(self.proposal_types),
+            author=self.sd.choice(self.users),
+            title='%s Proposal' % self.sd.words(1, 2).title(),
+            status=self.sd.choices_key(constants.PROPOSAL_STATUS_LIST),
+            description=self.sd.paragraph())
+
+        return proposal
+
+    def create_proposal_comment(self):
+        comment = ProposalComment.objects.create(
+            proposal=self.sd.choice(self.proposals),
+            commenter=self.sd.choice(self.users))
+
+        return comment
