@@ -206,7 +206,7 @@ class Command(BaseCommand):
             description=self.sd.paragraph(),
             status=status,
             deleted=self.sd.boolean())
-        
+
         return proposal
 
     def create_proposal_comment(self, users):
