@@ -20,13 +20,16 @@ from junction.conferences.models import Conference
 from junction.proposals.models import (ProposalSection, ProposalType,
                                        Proposal, ProposalComment)
 
-NUM_USERS = getattr(settings, "SAMPLE_DATA_NUM_USERS", 10)
-NUM_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_CONFERENCES", 4)
-NUM_EMPTY_CONFERENCES = getattr(settings, "SAMPLE_DATA_NUM_EMPTY_CONFERENCES", 2)
+NUM_USERS = getattr(settings, "NUM_USERS", 10)
+NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
+NUM_EMPTY_CONFERENCES = getattr(settings, "NUM_EMPTY_CONFERENCES", 2)
 NUM_PROPOSAL_SECTIONS = getattr(settings, "NUM_PROPOSAL_SECTIONS", 5)
 NUM_PROPOSAL_TYPES = getattr(settings, "NUM_PROPOSAL_TYPES", 8)
-NUM_PROPOSALS = getattr(settings, "NUM_PROPOSAL", 10)
-NUM_COMMENTS = getattr(settings, "NUM_COMMENTS", 10)
+NUM_PUBLIC_PROPOSALS = getattr(settings, "NUM_PUBLIC_PROPOSALS", 7)
+NUM_DRAFT_PROPOSALS = getattr(settings, "NUM_DRAFT_PROPOSALS", 7)
+NUM_CANCELLED_PROPOSALS = getattr(settings, "NUM_CANCELLED_PROPOSALS", 7)
+NUM_PUBLIC_COMMENTS = getattr(settings, "NUM_PUBLIC_COMMENTS", 10)
+NUM_REVIEWER_COMMENTS = getattr(settings, "NUM_REVIEWER_COMMENTS", 10)
 
 
 class Command(BaseCommand):
@@ -38,6 +41,7 @@ class Command(BaseCommand):
         self.users = []
         self.conferences = []
         self.proposals = []
+        self.proposal_reviewers = []
 
         # Update site url
         print('  Updating domain to localhost:8000')
@@ -74,7 +78,7 @@ class Command(BaseCommand):
 
             if x < NUM_CONFERENCES:
                 self.create_moderators(conference)
-                self.create_propsoal_reviewers(conference)
+                self.proposal_reviewers = self.create_propsoal_reviewers(conference)
 
                 # attach all proposal sections
                 for section in self.proposal_sections:
@@ -86,13 +90,23 @@ class Command(BaseCommand):
 
         # create proposals
         print('  Creating sample proposals')
-        for x in range(NUM_PROPOSALS):
-            self.proposals.append(self.create_proposal())
+        for x in range(NUM_PUBLIC_PROPOSALS):
+            self.proposals.append(self.create_proposal(proposal_type="Public"))
+
+        for x in range(NUM_DRAFT_PROPOSALS):
+            self.proposals.append(self.create_proposal(proposal_type="Draft"))
+
+        for x in range(NUM_CANCELLED_PROPOSALS):
+            self.proposals.append(self.create_proposal(proposal_type="Cancelled"))
 
         # create comments
         print('  Creating sample proposal comments')
-        for x in range(NUM_COMMENTS):
-            self.create_proposal_comment()
+        for x in range(NUM_PUBLIC_COMMENTS):
+            self.create_proposal_comment(users=self.users)
+
+        reviewers = [i.reviewer for i in self.proposal_reviewers]
+        for x in range(NUM_REVIEWER_COMMENTS):
+            self.create_proposal_comment(users=reviewers)
 
     def create_proposal_sections(self):
         sections = []
@@ -178,21 +192,30 @@ class Command(BaseCommand):
 
         return user
 
-    def create_proposal(self):
+    def create_proposal(self, proposal_type):
+
+        status = next((i[0] for i in constants.PROPOSAL_STATUS_LIST if
+                       i[1] == proposal_type))
+
         proposal = Proposal.objects.create(
             conference=self.sd.choice(self.conferences),
             proposal_section=self.sd.choice(self.proposal_sections),
             proposal_type=self.sd.choice(self.proposal_types),
             author=self.sd.choice(self.users),
             title='%s Proposal' % self.sd.words(1, 2).title(),
-            status=self.sd.choices_key(constants.PROPOSAL_STATUS_LIST),
-            description=self.sd.paragraph())
-
+            description=self.sd.paragraph(),
+            status=status,
+            deleted=self.sd.boolean())
+        
         return proposal
 
-    def create_proposal_comment(self):
+    def create_proposal_comment(self, users):
+
+        commenter = self.sd.choice(users)
+
         comment = ProposalComment.objects.create(
             proposal=self.sd.choice(self.proposals),
-            commenter=self.sd.choice(self.users))
+            private=self.sd.boolean(),
+            commenter=commenter)
 
         return comment
