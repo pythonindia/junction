@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 # Third Party Stuff
 from django import forms
 from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
 from junction.proposals.models import ProposalSection, ProposalType
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST
 
 
 def _get_proposal_section_choices(conference):
@@ -35,14 +37,20 @@ class ProposalForm(forms.Form):
     '''
     Used for create/edit
     '''
-    title = forms.CharField(min_length=10, help_text="Title of the proposal, no buzz words!")
+    title = forms.CharField(min_length=10,
+                            help_text="Title of the proposal, no buzz words!",
+                            widget=forms.TextInput(attrs={'class': 'charfield'}))
     description = forms.CharField(widget=PagedownWidget(show_preview=True),
                                   help_text=("Describe your proposal with clear objective in simple sentence."
                                   " Keep it short and simple."))
-    target_audience = forms.ChoiceField(choices=PROPOSAL_TARGET_AUDIENCES,
-                                        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
-    status = forms.ChoiceField(widget=forms.RadioSelect(renderer=HorizRadioRenderer),
-                               choices=PROPOSAL_STATUS_LIST, )
+    target_audience = forms.ChoiceField(
+        choices=PROPOSAL_TARGET_AUDIENCES,
+        widget=forms.Select(attrs={'class': 'dropdown'}))
+    status = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'dropdown'}),
+        choices=PROPOSAL_STATUS_LIST,
+        help_text=("If you choose DRAFT people can't the see the session in the list."
+                   " Make the proposal PUBLIC when you're done with editing the session."))
     proposal_type = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}))
     proposal_section = forms.ChoiceField(

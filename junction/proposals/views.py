@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 
 # Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http.response import (HttpResponse,
-                                  HttpResponseForbidden,
-                                  HttpResponseRedirect)
+from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 # Junction Stuff
-from junction.base.constants import (PROPOSAL_REVIEW_STATUS_SELECTED,
-                                     PROPOSAL_STATUS_PUBLIC)
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
-from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
-                     ProposalType, ProposalCommentVote, ProposalSectionReviewer)
-from .services import (send_mail_for_new_comment, send_mail_for_new_proposal)
+from .models import (
+    Proposal,
+    ProposalComment,
+    ProposalCommentVote,
+    ProposalSection,
+    ProposalSectionReviewer,
+    ProposalType,
+    ProposalVote
+)
+from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
 def _is_proposal_author(user, proposal):
@@ -54,8 +58,6 @@ def list_proposals(request, conference_slug):
     if request.user.is_authenticated():  # Display the proposals by this user
         user_proposals_list = proposals_qs.filter(author=request.user)
 
-    selected_proposals_list = proposals_qs.filter(review_status=PROPOSAL_REVIEW_STATUS_SELECTED)
-
     proposals_to_review = []
     if _is_proposal_reviewer(request.user, conference):
         proposal_reviewer_sections = [p.proposal_section for p in
@@ -70,20 +72,25 @@ def list_proposals(request, conference_slug):
     is_filtered = False
 
     if proposal_section_filter:
-        proposals_qs = proposals_qs.filter(proposal_section__id__in=proposal_section_filter)
+        proposals_qs = proposals_qs.filter(
+            proposal_section__id__in=proposal_section_filter)
         is_filtered = True
 
     if proposal_type_filter:
-        proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
+        proposals_qs = proposals_qs.filter(
+            proposal_type__id__in=proposal_type_filter)
         is_filtered = True
+
+    # make sure it's after the tag filtering is applied
+    selected_proposals_list = proposals_qs.filter(
+        review_status=PROPOSAL_REVIEW_STATUS_SELECTED)
 
     # Display proposals which are public & exclude logged in user proposals
     if request.user.is_authenticated():
         proposals_qs = proposals_qs.exclude(author=request.user.id)
 
-    public_proposals_list = proposals_qs.exclude(
-        review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
-            status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
+    public_proposals_list = proposals_qs.exclude(review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
+        status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
@@ -152,12 +159,14 @@ def detail_proposal(request, conference_slug, slug):
 
     try:
         if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
+            proposal_vote = ProposalVote.objects.get(
+                proposal=proposal, voter=request.user)
             vote_value = 1 if proposal_vote.up_vote else -1
     except ProposalVote.DoesNotExist:
         pass
 
     ctx = {
+        'login_url': settings.LOGIN_URL,
         'proposal': proposal,
         'allow_private_comment': allow_private_comment,
         'vote_value': vote_value,
@@ -310,7 +319,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
 @login_required
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal = get_object_or_404(
+        Proposal, slug=proposal_slug, conference=conference)
 
     proposal_vote, created = ProposalVote.objects.get_or_create(
         proposal=proposal, voter=request.user)  # @UnusedVariable
@@ -364,5 +374,5 @@ def proposal_comment_up_vote(request, conference_slug, proposal_slug,
 @require_http_methods(['POST'])
 def proposal_comment_down_vote(request, conference_slug, proposal_slug,
                                proposal_comment_id):
-        return proposal_comment_vote(request, conference_slug, proposal_slug,
-                                     proposal_comment_id, False)
+    return proposal_comment_vote(request, conference_slug, proposal_slug,
+                                 proposal_comment_id, False)

@@ -9,17 +9,17 @@ python manage.py migrate --noinput
 echo "-> Generate sample data:"
 python manage.py sample_data
 
-echo "-> Some frontend changes"
+echo "-> Build frontend assets:"
 
-echo "-> Node install:"
+echo "--> Node install:"
 cd junction/static/
 npm install
 
-echo "-> Bower install:"
+echo "-_> Bower install:"
 bower install
 
-echo "-> Grunt:"
+echo "--> Run Grunt:"
 grunt less
 
 cd -
-echo "You can keep running grunt for compiling less files, by running grunt inside static directory"
+echo "You can keep running grunt for compiling less files, by running 'grunt' inside 'junction/static' directory"

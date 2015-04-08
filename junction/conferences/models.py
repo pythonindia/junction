@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.contrib.auth.models import User
@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
 from uuid_upload_path import upload_to
@@ -16,6 +17,7 @@ from junction.base.constants import CONFERENCE_STATUS_LIST
 from junction.base.models import AuditModel
 
 
+@python_2_unicode_compatible
 class Conference(AuditModel):
 
     """ Conference/Event master """
@@ -35,9 +37,6 @@ class Conference(AuditModel):
         ordering = ('-start_date', 'name',)
         get_latest_by = 'start_date'
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name
 
@@ -55,6 +54,7 @@ class Conference(AuditModel):
         return super(Conference, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class ConferenceModerator(AuditModel):
 
     """ List of Conference Moderators/Administrators  """
@@ -67,13 +67,11 @@ class ConferenceModerator(AuditModel):
         verbose_name = 'moderator'
         verbose_name_plural = 'moderators'
 
-    def __unicode__(self):
-        return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
-
     def __str__(self):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
 
 
+@python_2_unicode_compatible
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
@@ -85,9 +83,6 @@ class ConferenceProposalReviewer(AuditModel):
         verbose_name = 'proposals reviewer'
         verbose_name_plural = 'proposals reviewers'
         unique_together = ("conference", "reviewer")
-
-    def __unicode__(self):
-        return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
 
     def __str__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)

@@ -4,9 +4,11 @@ import os
 
 # Third Party Stuff
 import django
-# import pytest
 
 from .fixtures import *  # noqa
+
+# import pytest
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 

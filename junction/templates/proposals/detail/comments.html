@@ -40,11 +40,19 @@
         <div class="comment-description" id="comment-{{comment.id}}">
             <span>{{ comment.comment|markdown }}</span>
             <b>
-                {% if comment.commenter.get_full_name %}
-                {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
-                {% else %}
-                {{ comment.commenter.username }}
-                {% endif %}
+              {% if comment.private %}
+                  {% if comment.commenter == proposal.author %}
+                  Comment by proposer.
+                  {% else %}
+                  Comment by reviewer.
+                  {% endif %}
+              {% else %}
+                  {% if comment.commenter.get_full_name %}
+                  {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+                  {% else %}
+                  {{ comment.commenter.username }}
+                  {% endif %}
+              {% endif %}
             </b>
             <small class="text-muted">
                 <a href="#comment-{{comment.id}}" class="link-disguise"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>
@@ -75,7 +83,7 @@
     </form>
     {% else %}
     <p>
-        <a href="/accounts/login/?next={{ proposal.get_absolute_url }}">
+        <a href="{{login_url}}?next={{ proposal.get_absolute_url }}">
             Login
         </a>
         to add a new comment.

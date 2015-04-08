@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 
 # Junction Stuff
@@ -18,6 +19,7 @@ from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference
 
 
+@python_2_unicode_compatible
 class ProposalSection(AuditModel):
 
     """ List of Proposal Sections"""
@@ -26,13 +28,11 @@ class ProposalSection(AuditModel):
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class ProposalSectionReviewer(AuditModel):
 
     """ List of Proposal Section Reviewers"""
@@ -41,13 +41,11 @@ class ProposalSectionReviewer(AuditModel):
     proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
-    def __unicode__(self):
-        return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
-
     def __str__(self):
         return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
 
 
+@python_2_unicode_compatible
 class ProposalType(AuditModel):
 
     """ List of Proposal Types """
@@ -56,13 +54,11 @@ class ProposalType(AuditModel):
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_types')
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class Proposal(TimeAuditModel):
 
     """ The proposals master """
@@ -84,9 +80,6 @@ class Proposal(TimeAuditModel):
     review_status = models.PositiveSmallIntegerField(
         choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
-
-    def __unicode__(self):
-        return self.title
 
     def __str__(self):
         return self.title
@@ -129,6 +122,7 @@ class Proposal(TimeAuditModel):
         unique_together = ("conference", "slug")
 
 
+@python_2_unicode_compatible
 class ProposalVote(TimeAuditModel):
 
     """ User vote for a specific proposal """
@@ -138,9 +132,6 @@ class ProposalVote(TimeAuditModel):
         choices=PROPOSAL_USER_VOTE_ROLES, default=1)
     up_vote = models.BooleanField(default=True)
 
-    def __unicode__(self):
-        return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal)
-
     def __str__(self):
         return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal)
 
@@ -148,6 +139,7 @@ class ProposalVote(TimeAuditModel):
         unique_together = ("proposal", "voter")
 
 
+@python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 
     """ User comments for a specific proposal """
@@ -157,11 +149,10 @@ class ProposalComment(TimeAuditModel):
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
-    def __unicode__(self):
-        return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
-
     def __str__(self):
-        return "[{}] {}".format(self.commenter.get_full_name(), self.proposal)
+        return "[{} by {}] {}".format(self.comment,
+                                      self.commenter.get_full_name(),
+                                      self.proposal)
 
     def get_up_vote_url(self):
         return reverse('proposal-comment-up-vote', args=[self.proposal.conference.slug, self.proposal.slug, self.id])
@@ -175,15 +166,13 @@ class ProposalComment(TimeAuditModel):
         return up_vote_count - down_vote_count
 
 
+@python_2_unicode_compatible
 class ProposalCommentVote(TimeAuditModel):
 
     """ User vote for a specific proposal's comment """
     proposal_comment = models.ForeignKey(ProposalComment)
     voter = models.ForeignKey(User)
     up_vote = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal_comment)
 
     def __str__(self):
         return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal_comment)

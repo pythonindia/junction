@@ -1,6 +1,10 @@
 There is a new comment on "<a href="{{host}}{{proposal.get_absolute_url}}">
     {{proposal.title}}
+{% if comment.private %}
+</a>" by <b>one of the reviewer.</b>:
+{% else %}
 </a>" by <b>{{comment.commenter}}</b>:
+{% endif  %}
 <br/>
 <br/>
 <i>"{{comment.comment}}"</i>

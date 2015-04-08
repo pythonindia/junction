@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 # Conference Application Choice Fields
 CONFERENCE_STATUS_ACCEPTING_CFP = "Accepting Call for Proposals"
 CONFERENCE_STATUS_CLOSED_CFP = "Closed for Proposals"
