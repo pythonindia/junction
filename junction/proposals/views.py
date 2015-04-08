@@ -27,11 +27,11 @@ from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
 def _is_proposal_author(user, proposal):
-    return proposal.author == user
+    return user.is_authenticated() and proposal.author == user
 
 
 def _is_proposal_reviewer(user, conference):
-    return ConferenceProposalReviewer.objects.filter(
+    return user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
         reviewer=user, conference=conference, active=True).exists()
 
 
