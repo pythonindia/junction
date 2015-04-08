@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -10,6 +11,7 @@ from django.http.response import (HttpResponse,
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
+# Junction Stuff
 from junction.base.constants import (PROPOSAL_REVIEW_STATUS_SELECTED,
                                      PROPOSAL_STATUS_PUBLIC)
 from junction.conferences.models import Conference, ConferenceProposalReviewer
@@ -20,31 +22,21 @@ from .models import (Proposal, ProposalComment, ProposalVote, ProposalSection,
 from .services import (send_mail_for_new_comment, send_mail_for_new_proposal)
 
 
-# Third Party Stuff
-# Junction Stuff
 def _is_proposal_author(user, proposal):
-    if user.is_authenticated() and proposal.author == user:
-        return True
-    return False
+    return proposal.author == user
 
 
 def _is_proposal_reviewer(user, conference):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
-            reviewer=user, conference=conference, active=True):
-        return True
-    return False
+    return ConferenceProposalReviewer.objects.filter(
+        reviewer=user, conference=conference, active=True).exists()
 
 
 def _is_proposal_section_reviewer(user, conference, proposal):
     return ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=user,
         conference_reviewer__conference=conference,
-        proposal_section=proposal.proposal_section).exists()
-
-
-def _is_proposal_author_or_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(
-        user, conference)
+        proposal_section=proposal.proposal_section,
+        active=True).exists()
 
 
 def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
@@ -295,7 +287,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-        if private and not _is_proposal_author_or_reviewer(
+        if private and not _is_proposal_author_or_proposal_section_reviewer(
                 request.user, conference, proposal):
             raise Http404()
 
