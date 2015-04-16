@@ -132,14 +132,13 @@
     {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
 
     <!-- Page Content -->
-    <div class="container-fluid">
+    <div class="container-fluid" role="main">
         <div class="row-fluid clearfix">
             <div class="col-md-10 col-md-offset-1">
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
-
     </div>
 
     <!-- Footer -->
@@ -147,7 +146,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="col-xs-12 text-center">
-                    <p class="push-half-top clear-margin">{{ SITE_INFO.footer }}</p>
+                    <p class="push-half-top clear-margin">{{ SITE_INFO.footer|safe }}</p>
                 </div>
             </div><!-- /.row -->
         </div>
