@@ -8638,6 +8638,10 @@ a.status:focus {
 .proposal-meta table td {
   padding: 3px;
 }
+.proposal-writeup .heading {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
 .comments-and-reviews-panel {
   margin-bottom: 20px;
 }
