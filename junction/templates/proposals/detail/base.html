@@ -94,52 +94,41 @@
             </div>
         </div>
 
-        <div class="col-sm-8">
-            <h4>
-                Description :
-            </h4>
-            <p>
-                {{ proposal.description|markdown }}
-            </p>
+        <section class="col-sm-8 proposal-writeup">
+          <div class="proposal-writeup--section">
+            <p>{{ proposal.description|markdown }}</p>
+          </div>
 
-            {% if proposal.prerequisites %}
-                <h4>
-                    Prerequisites :
-                </h4>
-                <p>
-                    {{ proposal.prerequisites|markdown }}
-                </p>
-            {% endif %}
+          {% if proposal.prerequisites %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'>Prerequisites:</h4>
+            <p>{{ proposal.prerequisites|markdown }}</p>
+          </div>
+          {% endif %}
 
-            {% if proposal.content_urls %}
-                <h4>
-                    Content URLs :
-                </h4>
-                <p>
-                    {{ proposal.content_urls|markdown }}
-                </p>
-            {% endif %}
+          {% if proposal.content_urls %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'>Content URLs:</h4>
+            <p>{{ proposal.content_urls|markdown }}</p>
+          </div>
+          {% endif %}
 
-            {% if proposal.speaker_info %}
-                <h4>
-                    Speaker Info :
-                </h4>
-                <p>
-                    {{ proposal.speaker_info|markdown }}
-                </p>
-            {% endif %}
+          {% if proposal.speaker_info %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'>Speaker Info:</h4>
+            <p>{{ proposal.speaker_info|markdown }}</p>
+          </div>
+          {% endif %}
 
-            {% if proposal.speaker_links %}
-                <h4>
-                    Speaker Links :
-                </h4>
-                <p>
-                    {{ proposal.speaker_links|markdown }}
-                </p>
-            {% endif %}
-        </div>
+          {% if proposal.speaker_links %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'>Speaker Links:</h4>
+            <p>{{ proposal.speaker_links|markdown }}</p>
+          </div>
+          {% endif %}
+        </section>
 
-        <div class="col-sm-3 proposal-meta">
+        <section class="col-sm-3 proposal-meta">
             <table class="table table-borderless">
                 <tr>
                     <td class="text-muted text-right"><small>Section:</small></td>
@@ -169,7 +158,7 @@
                 </tr>
             </table>
             {% include "social_shares.html" %}
-        </div>
+        </section>
     </div>
 
     <hr>
