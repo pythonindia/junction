@@ -27,21 +27,25 @@ from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
 
 def _is_proposal_author(user, proposal):
-    if user.is_authenticated() and proposal.author == user:
-        return True
-    return False
+    return user.is_authenticated() and proposal.author == user
 
 
 def _is_proposal_reviewer(user, conference):
-    if user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
-            reviewer=user, conference=conference, active=True):
-        return True
-    return False
+    return user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
+        reviewer=user, conference=conference, active=True).exists()
 
 
-def _is_proposal_author_or_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) or _is_proposal_reviewer(
-        user, conference)
+def _is_proposal_section_reviewer(user, conference, proposal):
+    return ProposalSectionReviewer.objects.filter(
+        conference_reviewer__reviewer=user,
+        conference_reviewer__conference=conference,
+        proposal_section=proposal.proposal_section,
+        active=True).exists()
+
+
+def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
+    return _is_proposal_author(user, proposal) and \
+        _is_proposal_section_reviewer(user, conference, proposal)
 
 
 @require_http_methods(['GET'])
@@ -149,8 +153,7 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    allow_private_comment = _is_proposal_author_or_reviewer(
-        request.user, conference, proposal)
+    allow_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
 
     vote_value = 0
 
@@ -293,7 +296,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
 
-        if private and not _is_proposal_author_or_reviewer(
+        if private and not _is_proposal_author_or_proposal_section_reviewer(
                 request.user, conference, proposal):
             raise Http404()
 
