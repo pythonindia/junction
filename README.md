@@ -77,3 +77,11 @@ Contributing
 [issue-list]: https://github.com/pythonindia/junction/issues/
 [new-issue]: https://github.com/pythonindia/junction/issues/new
 [guidelines]: https://github.com/pythonindia/junction/blob/master/CONTRIBUTING.md
+
+
+License
+-------
+
+This software is licensed under The MIT License(MIT). See the [LICENSE][LICENSE] file in the top distribution directory for the full license text.
+
+[LICENSE]: https://github.com/pythonindia/junction/blob/master/LICENSE
