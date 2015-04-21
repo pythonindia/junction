@@ -44,7 +44,7 @@ def _is_proposal_section_reviewer(user, conference, proposal):
 
 
 def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) and \
+    return _is_proposal_author(user, proposal) or \
         _is_proposal_section_reviewer(user, conference, proposal)
 
 

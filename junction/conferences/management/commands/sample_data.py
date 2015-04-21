@@ -217,6 +217,7 @@ class Command(BaseCommand):
         comment = ProposalComment.objects.create(
             proposal=self.sd.choice(self.proposals),
             private=self.sd.boolean(),
+            comment='Comment',
             commenter=commenter)
 
         return comment
