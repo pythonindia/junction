@@ -73,6 +73,8 @@
             <hr>
             </div>
         </div>
+
+        <div class="row">
         {% if is_filtered %}
             <a class='btn btn-info pull-left' href="./"> <i class="fa fa-list"></i> View all proposals <i class="fa fa-close"></i></a>
         {% endif %}
@@ -81,6 +83,7 @@
                 <i class="fa fa-plus-square-o"></i> New Proposal
             </a>
         {% endif %}
+        </div>
 
         {% if proposals_to_review %}
         {% include 'proposals/partials/proposal-list--items.html' with proposals=proposals_to_review title="Proposals To Be Reviewed" display_status=False %}
