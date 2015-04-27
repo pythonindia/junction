@@ -36,7 +36,7 @@ def _is_proposal_reviewer(user, conference):
 
 
 def _is_proposal_section_reviewer(user, conference, proposal):
-    return ProposalSectionReviewer.objects.filter(
+    return user.is_authenticated() and ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=user,
         conference_reviewer__conference=conference,
         proposal_section=proposal.proposal_section,
@@ -170,8 +170,8 @@ def detail_proposal(request, conference_slug, slug):
         'proposal': proposal,
         'allow_private_comment': allow_private_comment,
         'vote_value': vote_value,
-        'can_delete': request.user == proposal.author,
         'is_author': request.user == proposal.author,
+        'is_reviewer': _is_proposal_section_reviewer(request.user, conference, proposal)
     }
 
     comments = ProposalComment.objects.filter(
@@ -232,7 +232,7 @@ def review_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not _is_proposal_reviewer(request.user, conference):
+    if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
 
     if request.method == 'GET':
