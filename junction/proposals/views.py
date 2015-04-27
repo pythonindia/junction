@@ -232,7 +232,7 @@ def review_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not _is_proposal_reviewer(request.user, conference):
+    if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
 
     if request.method == 'GET':
