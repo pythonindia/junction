@@ -53,7 +53,7 @@
                 </small>
             </p>
 
-            {% if can_delete %}
+            {% if is_author %}
                 <div class="btn-group" role="group">
                     <a href="{{ proposal.get_update_url }}" class="btn btn-default">
                         <i class="fa fa-pencil-square-o"></i>
@@ -71,6 +71,10 @@
                         <i class="fa fa-info"></i>
                     </a>
                 </div>
+            {% endif %}
+
+            {% if is_reviewer %}
+              <a class="tag label label-proposal-type" href="{{ proposal.get_review_url }}">Review proposal</a>
             {% endif %}
         </div>
     </div>
