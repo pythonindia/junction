@@ -36,7 +36,7 @@ def _is_proposal_reviewer(user, conference):
 
 
 def _is_proposal_section_reviewer(user, conference, proposal):
-    return ProposalSectionReviewer.objects.filter(
+    return user.is_authenticated() and ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=user,
         conference_reviewer__conference=conference,
         proposal_section=proposal.proposal_section,
