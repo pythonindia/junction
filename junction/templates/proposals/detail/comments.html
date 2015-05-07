@@ -63,7 +63,9 @@
 {% endfor %}
 
 <div class="add-comment-wrapper">
-    {% if user.is_authenticated %}
+
+  {% if write_private_comment or not review_comments and user.is_authenticated  %}
+
     <a href="#" class="js-add-comment">add a comment</a>
 
     <form method="POST" class="new-comment js-new-comment-form" style="display:none;" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
@@ -81,6 +83,8 @@
         <button type="button" class="btn btn-default js-hide-comment-form">Cancel</button>
         {% endbuttons %}
     </form>
+    {% elif read_private_comment %}
+    <!-- pass -->
     {% else %}
     <p>
         <a href="{{login_url}}?next={{ proposal.get_absolute_url }}">

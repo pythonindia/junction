@@ -43,6 +43,11 @@ def _is_proposal_section_reviewer(user, conference, proposal):
         active=True).exists()
 
 
+def _is_proposal_author_or_proposal_reviewer(user, conference, proposal):
+    return _is_proposal_author(user, proposal) or \
+        _is_proposal_reviewer(user, conference)
+
+
 def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
     return _is_proposal_author(user, proposal) or \
         _is_proposal_section_reviewer(user, conference, proposal)
@@ -153,7 +158,8 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    allow_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
+    read_private_comment = _is_proposal_author_or_proposal_reviewer(request.user, conference, proposal)
+    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
 
     vote_value = 0
 
@@ -168,7 +174,8 @@ def detail_proposal(request, conference_slug, slug):
     ctx = {
         'login_url': settings.LOGIN_URL,
         'proposal': proposal,
-        'allow_private_comment': allow_private_comment,
+        'read_private_comment': read_private_comment,
+        'write_private_comment': write_private_comment,
         'vote_value': vote_value,
         'is_author': request.user == proposal.author,
         'is_reviewer': _is_proposal_section_reviewer(request.user, conference, proposal)
@@ -178,14 +185,14 @@ def detail_proposal(request, conference_slug, slug):
         proposal=proposal, deleted=False,
     )
 
-    if allow_private_comment:
-        ctx.update({
-            'reviewers_comments': comments.filter(private=True),
-            'reviewers_proposal_comment_form': ProposalCommentForm(
-                initial={'private': True})
-        })
+    if read_private_comment:
+        ctx['reviewers_comments'] = comments.filter(private=True)
+    if write_private_comment:
+        ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(initial={'private': True})
+
     ctx.update({'comments': comments.filter(private=False),
                 'proposal_comment_form': ProposalCommentForm()})
+
     return render(request, 'proposals/detail/base.html', ctx)
 
 
