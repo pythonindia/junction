@@ -178,7 +178,7 @@
                       </a>
                   </li>
 
-                  {% if allow_private_comment %}
+                  {% if read_private_comment %}
                   <li role="presentation" id="reviewers-comments">
                       <a href="#js-reviewers" role="tab" data-toggle="tab">
                           <i class="fa fa-thumbs-up"></i>
@@ -192,10 +192,10 @@
                   <div class="tab-pane active" id="js-comments" role="tabpanel">
                       {% include "proposals/detail/comments.html"%}
                   </div>
-                  {% if allow_private_comment %}
+                  {% if read_private_comment %}
                   <div class="tab-pane" id="js-reviewers" role="tabpanel">
                       <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
-                      {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                      {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form review_comments='1' %}
                           {% include "proposals/detail/comments.html" %}
                       {% endwith %}
                   </div>
