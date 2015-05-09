@@ -10,6 +10,7 @@ Mudassir Ali (gh:mudassir0909)
 Vignesh Sarma K (gh: vigneshsarma)
 Anand Reddy Pandikunta (gh:ChillarAnand)
 Anuvrat Parashar (gh:bhanuvrat/ @bhanuvrat)
+Arjoonn Sharma (gh:theSage21)
 
 * Possesses commit rights
 
