@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url,include
 
 from . import views
 
