@@ -100,33 +100,34 @@
 
         <section class="col-sm-8 proposal-writeup">
           <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Description:</b></h4>
             <p>{{ proposal.description|markdown }}</p>
           </div>
 
           {% if proposal.prerequisites %}
           <div class="proposal-writeup--section">
-            <h4 class='heading'>Prerequisites:</h4>
+            <h4 class='heading'><b>Prerequisites:</b></h4>
             <p>{{ proposal.prerequisites|markdown }}</p>
           </div>
           {% endif %}
 
           {% if proposal.content_urls %}
           <div class="proposal-writeup--section">
-            <h4 class='heading'>Content URLs:</h4>
+            <h4 class='heading'><b>Content URLs:</b></h4>
             <p>{{ proposal.content_urls|markdown }}</p>
           </div>
           {% endif %}
 
           {% if proposal.speaker_info %}
           <div class="proposal-writeup--section">
-            <h4 class='heading'>Speaker Info:</h4>
+            <h4 class='heading'><b>Speaker Info:</b></h4>
             <p>{{ proposal.speaker_info|markdown }}</p>
           </div>
           {% endif %}
 
           {% if proposal.speaker_links %}
           <div class="proposal-writeup--section">
-            <h4 class='heading'>Speaker Links:</h4>
+            <h4 class='heading'><b>Speaker Links:</b></h4>
             <p>{{ proposal.speaker_links|markdown }}</p>
           </div>
           {% endif %}
