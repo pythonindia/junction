@@ -69,7 +69,8 @@ def list_proposals(request, conference_slug):
                                       ProposalSectionReviewer.objects.filter(
                                           conference_reviewer__reviewer=request.user)]
         proposals_to_review = [p for p in proposals_qs
-                               if p.proposal_section in proposal_reviewer_sections]
+                               if p.proposal_section in proposal_reviewer_sections and
+                               p.status == PROPOSAL_STATUS_PUBLIC]
 
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
