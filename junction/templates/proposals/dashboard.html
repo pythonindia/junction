@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} {{ conference.name }} proposals dashbaord {% endblock %}
+{% block og_title %} {{ conference.name }} proposals dashboard {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Dashboard" "proposals-dashoboard" conference.slug %}
+{% endblock %}
+
+
+{% block navbar_logo %}
+    {% if conference.logo %}
+    <a href="{% url "conference-detail" conference.slug %}">
+        <img src="{{ conference.logo.url }}">
+    </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block page_classes %}{{ block.super}} page-proposals{% endblock page_classes %}
+
+{% block content %}
+<section class="content custom-container proposal-list">
+    <div class="push-4-bottom push-1-top">
+        <div class="row">
+            <div class="col-xs -12 col-sm-12 ">
+                <p class="meta">
+                    <b class="text-muted">
+                        <span class="start_date">{{ conference.start_date }}</span> –
+                        <span class="end_date">{{ conference.end_date }}</span>
+                    </b>
+                    {% if is_proposal_reviewer %}
+                        <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">
+                            Reviewer Dashboard
+                        </a>
+                    {% endif %}
+                    <span class="status status-{{conference.status}}">
+                        {{ conference.get_status_display }}
+                    </span>
+                </p>
+                <hr>
+                <p class="text-left">{{ conference.description|markdown }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Proposals Dashboard</div>
+                    <div class="panel-body">
+                        <table border=1>
+                            <tr>
+                                <th></th>
+                                <th>Total</th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>{{total}}</td>
+                                <td>{{reviewed}}</td>
+                                <td>{{unreviewed}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Type based proposal </div>
+                    <div class="panel-body">
+                     <table border=1>
+                            <tr>
+                                <th>Type Name</th>
+                                <th>Total</th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
+                            </tr>
+                            {% for group,count in group_by_type.items %}
+                            <tr>
+                                <td>{{count.3}}</td>
+                                <td><a href="{% url 'conference-detail' conference.slug%}?proposal_type={{group}}"> {{count.0}}</a></td>
+                                <td>{{count.1}}</td>
+                                <td>{{count.2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> Your Sections based proposal</div>
+                    <div class="panel-body">
+                        <table border=1>
+                            <tr>
+                                <th>Type Name</th>
+                                <th>Total</th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
+                            </tr>
+                            {% for group,count in group_by_reviewer_section.items %}
+                            <tr>
+                                <td>{{count.3}}</td>
+                                <td><a href="{% url 'conference-detail' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
+                                <td>{{count.1}}</td>
+                                <td>{{count.2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> Section based proposal</div>
+                    <div class="panel-body">
+                        <table border=1>
+                            <tr>
+                                <th>Section Name</th>
+                                <th>Total</th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
+                            </tr>
+                             {% for group, count in group_by_section.items %}
+                            <tr>
+                                <td>{{count.3}}</td>
+                                <td><a href="{% url 'conference-detail' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
+                                <td>{{count.1}}</td>
+                                <td>{{count.2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

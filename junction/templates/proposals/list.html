@@ -42,6 +42,11 @@
                         <span class="start_date">{{ conference.start_date }}</span> –
                         <span class="end_date">{{ conference.end_date }}</span>
                     </b>
+                     {% if is_proposal_reviewer %}
+                    <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">
+                    Reviewer Dashboard
+                    </a>
+                    {% endif %}
 
                     <span class="status status-{{conference.status}}">
                         {{ conference.get_status_display }}
