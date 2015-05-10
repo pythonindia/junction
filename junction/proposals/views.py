@@ -427,22 +427,22 @@ def dashboard(request, conference_slug):
     # Hande case if reviewer is added to section twice'
 
     for section in sections:
-            proposal_qs = proposals_qs.filter(
-                                    proposal_section=section.proposal_section)
-            # due to space and number issue for key used this
-            key_id = '%s' % section.proposal_section.id
-            by_reviewer.setdefault(
-                key_id,
-                [proposal_qs.count(), 0, 0, section.proposal_section.name])
-            for proposal in proposal_qs:
-                private_comment_count = ProposalComment.objects.filter(
+        proposal_qs = proposals_qs.filter(
+                                proposal_section=section.proposal_section)
+        # due to space and number issue for key used this
+        key_id = '%s' % section.proposal_section.id
+        by_reviewer.setdefault(
+            key_id,
+            [proposal_qs.count(), 0, 0, section.proposal_section.name])
+        for proposal in proposal_qs:
+            private_comment_count = ProposalComment.objects.filter(
                                                         proposal=proposal,
                                                         deleted=False,
                                                         private=True).count()
-                if private_comment_count:
-                    by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
-                else:
-                    by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
+            if private_comment_count:
+                by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
+            else:
+                by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
 
     ctx = {
             'conference':  conference,
