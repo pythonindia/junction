@@ -2,11 +2,12 @@
 from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
-from django.conf.urls import patterns, url,include
+from django.conf.urls import patterns, url, include
 
 from . import views
 
-comment_urls=patterns('',
+comment_urls = patterns(
+    '',
     url(r'^(?P<proposal_slug>[\w-]+)/create/$',
         views.create_proposal_comment, name='proposal-comment-create'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/up-vote/$',
@@ -17,7 +18,7 @@ comment_urls=patterns('',
 
 urlpatterns = patterns(
     '',
-    #proposal urls
+    # proposal urls
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
     url(r'^(?P<slug>[\w-]+)/update/$',
@@ -27,8 +28,8 @@ urlpatterns = patterns(
         views.delete_proposal, name='proposal-delete'),
     url(r'^(?P<slug>[\w-]+)/review/$',
         views.review_proposal, name='proposal-review'),
-    #comment urls
-    url(r'^comment/',include(comment_urls)),
+    # comment urls
+    url(r'^comment/', include(comment_urls)),
     # Voting
     url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$',
         views.proposal_vote_up, name='proposal-vote-up'),
