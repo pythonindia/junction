@@ -386,8 +386,13 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
                                  proposal_comment_id, False)
 
 
+@login_required
+@require_http_methods(['GET'])
 def dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
+
+    if not _is_proposal_reviewer(request.user, conference):
+        return HttpResponseForbidden()
 
     proposals_qs = Proposal.objects.filter(
         conference=conference,
