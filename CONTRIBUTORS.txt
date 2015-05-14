@@ -11,6 +11,7 @@ Vignesh Sarma K (gh: vigneshsarma)
 Anand Reddy Pandikunta (gh:ChillarAnand)
 Anuvrat Parashar (gh:bhanuvrat/ @bhanuvrat)
 Aayush Kasurde
+Arjoonn Sharma (gh:theSage21)
 
 * Possesses commit rights
 
