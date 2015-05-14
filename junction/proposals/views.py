@@ -385,6 +385,7 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
     return proposal_comment_vote(request, conference_slug, proposal_slug,
                                  proposal_comment_id, False)
 
+@login_required
 def dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
