@@ -44,15 +44,12 @@ class Command(BaseCommand):
         self.proposals = []
         self.proposal_reviewers = []
 
-        # Update site url
-        print('  Updating domain to localhost:8000')
+        print('  Updating domain to localhost:8000')  # Update site url
         site = Site.objects.get_current()
-        site.domain = 'localhost:8000'
-        site.name = 'Local'
+        site.domain, site.name = 'localhost:8000', 'Local'
         site.save()
 
-        # create superuser
-        print('  Creating Superuser')
+        print('  Creating Superuser')  # create superuser
         super_user = self.create_user(is_superuser=True, username='admin',
                                       is_active=True)
         EmailAddress.objects.get_or_create(user=super_user,
@@ -60,8 +57,7 @@ class Command(BaseCommand):
                                            primary=True,
                                            email=super_user.email)
 
-        # create users
-        print('  Creating sample Users')
+        print('  Creating sample Users')  # create users
         for x in range(NUM_USERS):
             self.users.append(self.create_user(counter=x))
 
