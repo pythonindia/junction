@@ -46,6 +46,14 @@
                         <a class='tag tag__proposal_section label label-proposal-type inline-block'
                             href="?proposal_section={{proposal.proposal_section.id}}">{{ proposal.proposal_section }}
                         </a>
+                        <a class='tag tag__proposal_section label label-proposal-type inline-block'
+                            href="?proposal_status={{proposal.review_status}}">
+                            {% if proposal.review_status == 1 %}
+                                Reviewed
+                            {% else %}
+                                To be Reviewed
+                            {% endif %}
+                        </a>
                     </div>
 
                     <small class="pull-right">
