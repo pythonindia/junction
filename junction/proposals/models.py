@@ -71,10 +71,10 @@ class Proposal(TimeAuditModel):
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
         choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
-    prerequisites = models.TextField(default="")
-    content_urls = models.TextField(default="")
-    speaker_info = models.TextField(default="")
-    speaker_links = models.TextField(default="")
+    prerequisites = models.TextField(blank=True, default="")
+    content_urls = models.TextField(blank=True, default="")
+    speaker_info = models.TextField(blank=True, default="")
+    speaker_links = models.TextField(blank=True, default="")
     status = models.PositiveSmallIntegerField(
         choices=PROPOSAL_STATUS_LIST, default=1)
     review_status = models.PositiveSmallIntegerField(
