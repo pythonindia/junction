@@ -2,6 +2,7 @@ junction
 ========
 
 [![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Coverage Status](https://coveralls.io/repos/pythonindia/junction/badge.svg)](https://coveralls.io/r/pythonindia/junction)
 
 **Version**: 0.2.0-dev
 
@@ -63,6 +64,14 @@ $ cd junction/static
 $ npm install
 $ bower install
 $ grunt // This starts a watcher to watch for file changes
+```
+
+Add Converalls token:
+--------------------------------------------
+Refer to (https://github.com/z4r/python-coveralls) for detailed installation instructions.
+
+```
+COVERALLS_REPO_TOKEN=<repotoken> coveralls
 ```
 
 
