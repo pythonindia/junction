@@ -57,6 +57,15 @@
                               {% endif %}
                               </b> |&nbsp;
                         <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
+                        {% if content_status %}
+                            |&nbsp;<b>
+                            {% if proposal.content_urls %}
+                                       Content uploaded                       
+                            {% else %}
+                                       No content                       
+                            {% endif %}
+                            </b>
+                        {% endif %}
                     </small>
                 </div>
             </div>
