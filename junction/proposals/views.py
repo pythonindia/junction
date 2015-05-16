@@ -21,6 +21,7 @@ from .models import (
     ProposalSection,
     ProposalSectionReviewer,
     ProposalType,
+    ProposalStatus,
     ProposalVote
 )
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
@@ -75,6 +76,7 @@ def list_proposals(request, conference_slug):
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
     proposal_type_filter = request.GET.getlist('proposal_type')
+    proposal_status_filter = request.GET.getlist('proposal_status')
     is_filtered = False
 
     if proposal_section_filter:
@@ -85,6 +87,11 @@ def list_proposals(request, conference_slug):
     if proposal_type_filter:
         proposals_qs = proposals_qs.filter(
             proposal_type__id__in=proposal_type_filter)
+        is_filtered = True
+
+    if proposal_status_filter:
+        proposals_qs = proposals_qs.filter(
+            review_status__in=proposal_status_filter)
         is_filtered = True
 
     # make sure it's after the tag filtering is applied
@@ -100,6 +107,7 @@ def list_proposals(request, conference_slug):
 
     proposal_sections = ProposalSection.objects.filter(conferences=conference)
     proposal_types = ProposalType.objects.filter(conferences=conference)
+    proposal_status = ProposalStatus.objects.filter(conferences=conference)
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,

@@ -57,6 +57,18 @@ class ProposalType(AuditModel):
     def __str__(self):
         return self.name
 
+@python_2_unicode_compatible
+class ProposalStatus(AuditModel):
+
+    """ List of Proposal Types """
+    name = models.CharField(max_length=255, verbose_name="Proposal Status Name")
+    description = models.TextField(default="")
+    active = models.BooleanField(default=True, verbose_name="Is Active?")
+    conferences = models.ManyToManyField(to=Conference, related_name='proposal_status')
+
+    def __str__(self):
+        return self.name
+
 
 @python_2_unicode_compatible
 class Proposal(TimeAuditModel):
