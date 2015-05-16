@@ -7,6 +7,7 @@ Root url routering file.
 You should put the url config in their respective app putting only a
 reference to them here.
 '''
+from __future__ import unicode_literals
 
 # Third Party Stuff
 from django.conf import settings
@@ -26,9 +27,7 @@ urlpatterns = patterns(
     url('^markdown/', include('django_markdown.urls')),
 
     # Proposals related
-    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.proposal_urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('junction.proposals.comment_urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/dashboard/', 'junction.proposals.views.dashboard', name='proposal-dashboard'),
+    url(r'^(?P<conference_slug>[\w-]+)/proposal/', include('junction.proposals.urls')),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
@@ -40,7 +39,7 @@ urlpatterns = patterns(
     url(r'^faq/$', TemplateView.as_view(template_name='static-content/faq.html',), name='faq-static'),
 
     # Proposals as conference home page. TODO: Needs to be enhanced
-    url(r'^(?P<conference_slug>[\w-]+)/',
+    url(r'^(?P<conference_slug>[\w-]+)--/',
         RedirectView.as_view(pattern_name="proposals-list"),
         name='conference-detail'),
 

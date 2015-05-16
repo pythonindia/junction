@@ -446,7 +446,6 @@ def dashboard(request, conference_slug):
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
-
     ctx = {
         'conference':  conference,
         'total': proposals_qs.count(),
