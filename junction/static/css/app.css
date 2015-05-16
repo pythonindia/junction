@@ -8404,9 +8404,10 @@ footer {
   background-color: #fff7f8;
   border-top: 1px solid #ffdee2;
   border-bottom: 1px solid #ffdee2;
-  bottom: 0px;
-  position: absolute;
+  position: relative;
+  bottom: 0;
   width: 100%;
+  top: 100%;
 }
 .navbar-default {
   border-top: none;
