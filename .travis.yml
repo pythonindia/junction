@@ -11,11 +11,15 @@ cache:
 
 install:
   - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
+  - pip install coveralls
 
 script:
 - flake8
 - coverage run --source=junction --omit='*tests*,*commands*,*migrations*,*admin*,*wsgi*' -m py.test -v --tb=native
 - coverage report
+
+after_success:
+  coveralls
 
 notifications:
   email:

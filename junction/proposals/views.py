@@ -449,19 +449,19 @@ def dashboard(request, conference_slug):
                 proposal=proposal,
                 deleted=False,
                 private=True).count()
+            private_comment_count = ProposalComment.objects.filter(proposal=proposal,
+                                                                   deleted=False, private=True).count()
             if private_comment_count:
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
 
-    ctx = {
-        'conference': conference,
-        'total': proposals_qs.count(),
-        'reviewed': reviewed_count,
-        'unreviewed': unreviewed_count,
-        'group_by_type': by_type,
-        'group_by_section': by_section,
-        'group_by_reviewer_section': by_reviewer
-        }
+    ctx = {'conference': conference,
+           'total': proposals_qs.count(),
+           'reviewed': reviewed_count,
+           'unreviewed': unreviewed_count,
+           'group_by_type': by_type,
+           'group_by_section': by_section,
+           'group_by_reviewer_section': by_reviewer}
 
     return render(request, 'proposals/dashboard.html', ctx)
