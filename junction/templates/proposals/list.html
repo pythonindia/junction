@@ -91,7 +91,7 @@
         </div>
 
         {% if proposals_to_review %}
-        {% include 'proposals/partials/proposal-list--items.html' with proposals=proposals_to_review title="Proposals To Be Reviewed" display_status=False %}
+        {% include 'proposals/partials/proposal-list--items.html' with proposals=proposals_to_review title="Proposals To Be Reviewed" display_status=False content_status=True %}
         {% endif %}
 
         {% if selected_proposals_list %}
