@@ -110,7 +110,6 @@ class Proposal(TimeAuditModel):
         """ Show only the public comment count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count()
 
-
     def get_votes_count(self):
         """ Show only the public comment count """
         up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
