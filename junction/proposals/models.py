@@ -57,6 +57,7 @@ class ProposalType(AuditModel):
     def __str__(self):
         return self.name
 
+
 @python_2_unicode_compatible
 class ProposalStatus(AuditModel):
 
@@ -121,7 +122,6 @@ class Proposal(TimeAuditModel):
     def get_reviews_comments_count(self):
         """ Show only the public comment count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count()
-
 
     def get_votes_count(self):
         """ Show only the public comment count """
