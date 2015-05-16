@@ -65,14 +65,6 @@ $ bower install
 $ grunt // This starts a watcher to watch for file changes
 ```
 
-Add Converalls token:
---------------------------------------------
-Refer to (https://github.com/z4r/python-coveralls) for detailed installation instructions.
-
-```
-COVERALLS_REPO_TOKEN=<repotoken> coveralls
-```
-
 
 Contributing
 ------------
