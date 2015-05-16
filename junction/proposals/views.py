@@ -391,7 +391,7 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
 def dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not _is_proposal_reviewer(request.user, conference):
+    if not request.user.is_superuser:
         return HttpResponseForbidden()
 
     proposals_qs = Proposal.objects.filter(
