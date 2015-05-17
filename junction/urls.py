@@ -27,7 +27,7 @@ urlpatterns = patterns(
     url('^markdown/', include('django_markdown.urls')),
 
     # Proposals related
-    url(r'^(?P<conference_slug>[\w-]+)/proposal/', include('junction.proposals.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
