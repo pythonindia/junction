@@ -387,8 +387,12 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
 
 
 @login_required
+@require_http_methods(['GET'])
 def dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
+
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
 
     proposals_qs = Proposal.objects.filter(
         conference=conference,
@@ -436,19 +440,20 @@ def dashboard(request, conference_slug):
             key_id,
             [proposal_qs.count(), 0, 0, section.proposal_section.name])
         for proposal in proposal_qs:
-            private_comment_count = ProposalComment.objects.filter(proposal=proposal,
-                                                                   deleted=False, private=True).count()
+            private_comment_count = ProposalComment.objects.filter(
+                proposal=proposal, deleted=False, private=True).count()
             if private_comment_count:
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
-
-    ctx = {'conference': conference,
-           'total': proposals_qs.count(),
-           'reviewed': reviewed_count,
-           'unreviewed': unreviewed_count,
-           'group_by_type': by_type,
-           'group_by_section': by_section,
-           'group_by_reviewer_section': by_reviewer}
+    ctx = {
+        'conference':  conference,
+        'total': proposals_qs.count(),
+        'reviewed': reviewed_count,
+        'unreviewed': unreviewed_count,
+        'group_by_type': by_type,
+        'group_by_section': by_section,
+        'group_by_reviewer_section': by_reviewer
+    }
 
     return render(request, 'proposals/dashboard.html', ctx)
