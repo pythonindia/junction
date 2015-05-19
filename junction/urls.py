@@ -7,8 +7,6 @@ Root url routering file.
 You should put the url config in their respective app putting only a
 reference to them here.
 '''
-from __future__ import unicode_literals
-
 # Third Party Stuff
 from django.conf import settings
 from django.conf.urls import include, patterns, url
@@ -28,6 +26,7 @@ urlpatterns = patterns(
 
     # Proposals related
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/', 'junction.proposals.views.dashboard', name='proposal-dashboard'),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
