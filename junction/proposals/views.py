@@ -450,21 +450,24 @@ def dashboard(request, conference_slug):
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
-
+    audience_dict = {
+                        1: 'Beginner',
+                        2:  'Intermediate',
+                        3:  'Advanced'}
     for proposal in proposals_qs:
-        audience = PROPOSAL_TARGET_AUDIENCES[proposal.target_audience]
-        by_audience.setdefault(audience[0], [0, 0, 0, audience[1]])
+        audience = audience_dict[proposal.target_audience]
+        by_audience.setdefault(audience, [0, 0, 0, audience])
         private_comment_count = \
             ProposalComment.objects.filter(
                 proposal=proposal,
                 deleted=False,
                 private=True).count()
         if private_comment_count:
-            by_audience[audience[0]][1] = by_audience[audience[0]][1] + 1
-            by_audience[audience[0]][0] = by_audience[audience[0]][0] + 1
+            by_audience[audience][1] = by_audience[audience][1] + 1
+            by_audience[audience][0] = by_audience[audience][0] + 1
         else:
-            by_audience[audience[0]][2] = by_audience[audience[0]][2] + 1
-            by_audience[audience[0]][0] = by_audience[audience[0]][0] + 1
+            by_audience[audience][2] = by_audience[audience][2] + 1
+            by_audience[audience][0] = by_audience[audience][0] + 1
 
     ctx = {
         'conference':  conference,
