@@ -178,12 +178,20 @@
                           Comments
                       </a>
                   </li>
-
                   {% if read_private_comment %}
                   <li role="presentation" id="reviewers-comments">
                       <a href="#js-reviewers" role="tab" data-toggle="tab">
                           <i class="fa fa-thumbs-up"></i>
                           Reviewers
+                      </a>
+                  </li>
+                  {% endif %}
+
+                  {% if is_reviewer %}
+                  <li role="presentation" id="reviewers-only-comments">
+                      <a href="#js-only-reviewers" role="tab" data-toggle="tab">
+                          <i class="fa fa-thumbs-up"></i>
+                          Reviewers Only
                       </a>
                   </li>
                   {% endif %}
@@ -197,6 +205,14 @@
                   <div class="tab-pane" id="js-reviewers" role="tabpanel">
                       <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
                       {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form review_comments='1' %}
+                          {% include "proposals/detail/comments.html" %}
+                      {% endwith %}
+                  </div>
+                  {% endif %}
+                  {% if is_reviewer %}
+                  <div class="tab-pane" id="js-only-reviewers" role="tabpanel">
+                      <span class="alert-info">This tab is for reviewers only.</span>
+                      {% with comments=reviewers_only_comments proposal_comment_form=reviewers_only_proposal_comment_form review_comments='1' %}
                           {% include "proposals/detail/comments.html" %}
                       {% endwith %}
                   </div>
@@ -219,6 +235,9 @@ $(document).ready(function() {
 
   $('a[href=#reviewers-comments]').click(function(){
     $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
+  });
+  $('a[href=#reviewers-only-comments]').click(function(){
+    $('a[href=#js-only-reviewers]').parent().addClass('active').siblings().removeClass("active");
   });
 
 });
