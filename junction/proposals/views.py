@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
+from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.conf import settings
@@ -10,10 +10,7 @@ from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 # Junction Stuff
-from junction.base.constants import (
-    PROPOSAL_REVIEW_STATUS_SELECTED,
-    PROPOSAL_STATUS_PUBLIC,
-    PROPOSAL_TARGET_AUDIENCES)
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
@@ -450,10 +447,13 @@ def dashboard(request, conference_slug):
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
+
     audience_dict = {
-                        1: 'Beginner',
-                        2:  'Intermediate',
-                        3:  'Advanced'}
+        1: 'Beginner',
+        2:  'Intermediate',
+        3:  'Advanced'
+    }
+
     for proposal in proposals_qs:
         audience = audience_dict[proposal.target_audience]
         by_audience.setdefault(audience, [0, 0, 0, audience])

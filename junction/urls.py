@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-'''
-Root url routering file.
-
-You should put the url config in their respective app putting only a
-reference to them here.
-'''
 # Third Party Stuff
 from django.conf import settings
 from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
+
+'''
+Root url routering file.
+
+You should put the url config in their respective app putting only a
+reference to them here.
+'''
 
 urlpatterns = patterns(
     '',

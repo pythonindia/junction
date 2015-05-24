@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 # Standard Library
 import datetime
@@ -18,8 +18,7 @@ from sampledatahelper.helper import SampleDataHelper
 # Junction Stuff
 from junction.base import constants
 from junction.conferences.models import Conference
-from junction.proposals.models import (ProposalSection, ProposalType,
-                                       Proposal, ProposalComment)
+from junction.proposals.models import Proposal, ProposalComment, ProposalSection, ProposalType
 
 NUM_USERS = getattr(settings, "NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
