@@ -21,7 +21,8 @@ from .models import (
     ProposalSection,
     ProposalSectionReviewer,
     ProposalType,
-    ProposalVote
+    ProposalVote,
+    ProposalSectionReviewerVote
 )
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
@@ -243,6 +244,16 @@ def review_proposal(request, conference_slug, slug):
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
 
+    vote_value = 0
+
+    try:
+        if request.user.is_authenticated():
+            proposal_vote = ProposalVote.objects.get(
+                proposal=proposal, voter=request.user)
+            vote_value = 1 if proposal_vote.up_vote else -1
+    except ProposalVote.DoesNotExist:
+        pass
+
     if request.method == 'GET':
 
         comments = ProposalComment.objects.filter(
@@ -256,8 +267,8 @@ def review_proposal(request, conference_slug, slug):
             'proposal': proposal,
             'proposal_review_form': proposal_review_form,
             'reviewers_comments': comments.filter(private=True),
-            'reviewers_proposal_comment_form': ProposalCommentForm(
-                initial={'private': True}),
+            'reviewers_proposal_comment_form': ProposalCommentForm(initial={'private': True}),
+            'vote_value': vote_value,
         }
 
         return render(request, 'proposals/review.html', ctx)
@@ -352,6 +363,33 @@ def proposal_vote_up(request, conference_slug, proposal_slug):
 @require_http_methods(['POST'])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
+
+
+@login_required
+def proposal_section_reviewer_vote(request, conference_slug, proposal_slug, up_vote):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+
+    proposal_vote, created = ProposalSectionReviewerVote.objects.get_or_create(
+        proposal=proposal, voter=request.user)  # @UnusedVariable
+
+    proposal_vote.role = 2
+    proposal_vote.up_vote = up_vote
+    proposal_vote.save()
+
+    return HttpResponse(proposal.get_section_reviewer_votes_count())
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_section_reviewer_up_vote(request, conference_slug, proposal_slug):
+    return proposal_section_reviewer_vote(request, conference_slug, proposal_slug, True)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_section_reviewer_down_vote(request, conference_slug, proposal_slug):
+    return proposal_section_reviewer_vote(request, conference_slug, proposal_slug, False)
 
 
 def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,

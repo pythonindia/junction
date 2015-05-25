@@ -23,8 +23,23 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="space-2-bottom">
-            <h4 class="fill-blue text-center">Review Proposal </h4>
-            <hr class="hr-mini">
+            <div class="row">
+                <h4 class="fill-blue text-center">Review Proposal</h4>
+                <hr class="hr-mini">
+                <div class="col-sm-1 section--voting">
+                    <div class="text-center">
+                        <a href="#" data-url="{{ proposal.get_section_reviewer_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                        <h3 class="clear-margin text-muted text-center proposal-vote-count">
+                          {{proposal.get_section_reviewer_votes_count}}
+                        </h3>
+                        <a href="#" data-url="{{ proposal.get_section_reviewer_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
             <form method="POST" action="." class="review-form form-horizontal">
                 {% csrf_token %}
 
@@ -54,6 +69,7 @@
             </form>
         </div>
     </div>
+    </div>
 
     <div class="col-sm-6 left-bordered">
         <h4 class="text-center">Reviewers Comments </h4>
@@ -71,3 +87,23 @@
     </div>
 </div>
 {% endblock %}
+
+
+{% block script_extra %}
+ <script>
+    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+        e.preventDefault();
+        var _that = $(this);
+        if (_that.hasClass('active')){
+            return
+        }
+        var url = _that.attr('data-url');
+        $('.proposal-vote-count').html("...");
+        $.post(url, {}, function(result){
+            $('.btn-vote').removeClass('active');
+            $(_that).addClass('active');
+            $('.proposal-vote-count').html(result);
+        });
+    });
+ </script>
+{% endblock script_extra %}
