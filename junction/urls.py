@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-'''
-Root url routering file.
-
-You should put the url config in their respective app putting only a
-reference to them here.
-'''
-from __future__ import unicode_literals
-
 # Third Party Stuff
 from django.conf import settings
 from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
+
+'''
+Root url routering file.
+
+You should put the url config in their respective app putting only a
+reference to them here.
+'''
 
 urlpatterns = patterns(
     '',
@@ -28,6 +27,7 @@ urlpatterns = patterns(
 
     # Proposals related
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/', 'junction.proposals.views.dashboard', name='proposal-dashboard'),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),

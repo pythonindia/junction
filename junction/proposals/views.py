@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
+from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.conf import settings
@@ -401,6 +401,7 @@ def dashboard(request, conference_slug):
     by_type = {}
     by_section = {}
     by_reviewer = {}
+    by_audience = {}
     reviewed_count = 0
     unreviewed_count = 0
     for proposal in proposals_qs:
@@ -446,6 +447,28 @@ def dashboard(request, conference_slug):
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
+
+    audience_dict = {
+        1: 'Beginner',
+        2:  'Intermediate',
+        3:  'Advanced'
+    }
+
+    for proposal in proposals_qs:
+        audience = audience_dict[proposal.target_audience]
+        by_audience.setdefault(audience, [0, 0, 0, audience])
+        private_comment_count = \
+            ProposalComment.objects.filter(
+                proposal=proposal,
+                deleted=False,
+                private=True).count()
+        if private_comment_count:
+            by_audience[audience][1] = by_audience[audience][1] + 1
+            by_audience[audience][0] = by_audience[audience][0] + 1
+        else:
+            by_audience[audience][2] = by_audience[audience][2] + 1
+            by_audience[audience][0] = by_audience[audience][0] + 1
+
     ctx = {
         'conference':  conference,
         'total': proposals_qs.count(),
@@ -453,7 +476,8 @@ def dashboard(request, conference_slug):
         'unreviewed': unreviewed_count,
         'group_by_type': by_type,
         'group_by_section': by_section,
-        'group_by_reviewer_section': by_reviewer
+        'group_by_reviewer_section': by_reviewer,
+        'by_target_audience': by_audience
     }
 
     return render(request, 'proposals/dashboard.html', ctx)

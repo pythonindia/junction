@@ -154,6 +154,31 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> By Audience level</div>
+                    <div class="panel-body">
+                        <table border=1>
+                            <tr>
+                                <th>Type Name</th>
+                                <th>Total</th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
+                            </tr>
+                            {% for group,count in by_target_audience.items %}
+                            <tr>
+                                <td>{{count.3}}</td>
+                                <td>{{count.0}}<//td>
+                                <td>{{count.1}}</td>
+                                <td>{{count.2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
