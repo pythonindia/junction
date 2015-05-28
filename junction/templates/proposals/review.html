@@ -5,6 +5,15 @@
 
 {% block head_title %} Review Proposal | {{ block.super }} {% endblock %}
 
+{% block style_extra %}
+    <style>
+     li {
+         list-style: none;
+         display: inline;
+     }
+    </style>
+{% endblock %}
+
 {% block endhead %}
     <!-- Custom Form CSS -->
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
@@ -19,91 +28,98 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="space-2-bottom">
+                <div class="row">
+                    <h4 class="fill-blue text-center">Proposal Voting</h4>
+                    <hr class="hr-mini">
+                    <form method="POST" action="." class="vote-form form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group clearfix">
+                            {% for field in proposal_vote_form %}
+                                {% if field.errors %}
+                                    {{field.errors}}
+                                {% endif %}
+                                <div class="col-sm-offset-1">
+                                    {{field}}
+                                </div>
+                            {% endfor %}
+                        </div>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="space-2-bottom">
-            <div class="row">
-                <h4 class="fill-blue text-center">Review Proposal</h4>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary" name="review-form">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
                 <hr class="hr-mini">
-                <div class="col-sm-1 section--voting">
-                    <div class="text-center">
-                        <a href="#" data-url="{{ proposal.get_section_reviewer_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
+                <div class="row">
+                    <h4 class="fill-blue text-center">Review Proposal</h4>
+                    <hr class="hr-mini">
+                    <form method="POST" action="." class="review-form form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group clearfix">
+                            {% for field in proposal_review_form %}
+                                {% if field.errors %}
+                                    {{field.errors}}
+                                {% endif %}
+                                <div>
+                                    {{field}}
+                                </div>
+                            {% endfor %}
+                        </div>
 
-                        <h3 class="clear-margin text-muted text-center proposal-vote-count">
-                          {{proposal.get_section_reviewer_votes_count}}
-                        </h3>
-                        <a href="#" data-url="{{ proposal.get_section_reviewer_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
-                            <i class="fa fa-chevron-down"></i>
-                        </a>
-                    </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary" name="review-form">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr class="hr-mini">
                 </div>
-            <form method="POST" action="." class="review-form form-horizontal">
-                {% csrf_token %}
-
-                <div class="form-group clearfix">
-                  {% for field in proposal_review_form %}
-                    {% if field.errors %}
-                      {{field.errors}}
-                    {% endif %}
-
-                    <label for="" class="control-label col-sm-4">
-                        {{field.label}}
-                    </label>
-
-                    <div class="col-sm-8">
-                        {{field}}
-                    </div>
-                  {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <button type="submit" class="btn btn-primary">
-                          Submit
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    </div>
 
-    <div class="col-sm-6 left-bordered">
-        <h4 class="text-center">Reviewers Comments </h4>
-        <hr class="hr-mini">
-        <div class="col-sm-12">
-            <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active" role="presentation">
-                        {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
-                            {% include "proposals/detail/comments.html" %}
-                        {% endwith %}
-                    </li>
+        <div class="col-sm-6 left-bordered">
+            <h4 class="text-center">Reviewers Comments </h4>
+            <hr class="hr-mini">
+            <div class="col-sm-12">
+                <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active" role="presentation">
+                            {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                                {% include "proposals/detail/comments.html" %}
+                            {% endwith %}
+                        </li>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 
 {% block script_extra %}
- <script>
-    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
-        e.preventDefault();
-        var _that = $(this);
-        if (_that.hasClass('active')){
-            return
-        }
-        var url = _that.attr('data-url');
-        $('.proposal-vote-count').html("...");
-        $.post(url, {}, function(result){
-            $('.btn-vote').removeClass('active');
-            $(_that).addClass('active');
-            $('.proposal-vote-count').html(result);
-        });
-    });
- </script>
+    <script>
+     $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+         e.preventDefault();
+         var _that = $(this);
+         if (_that.hasClass('active')){
+             return
+         }
+         var url = _that.attr('data-url');
+         $('.proposal-vote-count').html("...");
+         $.post(url, {}, function(result){
+             $('.btn-vote').removeClass('active');
+             $(_that).addClass('active');
+             $('.proposal-vote-count').html(result);
+         });
+     });
+    </script>
 {% endblock script_extra %}

@@ -51,3 +51,14 @@ PROPOSAL_USER_VOTE_ROLE_REVIEWER = "Reviewer"
 PROPOSAL_USER_VOTE_ROLES = ((1, PROPOSAL_USER_VOTE_ROLE_PUBLIC),
                             (2, PROPOSAL_USER_VOTE_ROLE_REVIEWER),
                             )
+
+PROPOSAL_REVIEW_VOTE_MUST_HAVE = "Must have"
+PROPOSAL_REVIEW_VOTE_GOOD = "Good"
+PROPOSAL_REVIEW_VOTE_NOT_BAD = "Not Bad"
+PROPOSAL_REVIEW_VOTE_NOT_ALLOWED = "Shouldn't be allowed"
+
+PROPOSAL_REVIEW_VOTES_LIST = ((2, PROPOSAL_REVIEW_VOTE_MUST_HAVE),
+                              (1, PROPOSAL_REVIEW_VOTE_GOOD),
+                              (0, PROPOSAL_REVIEW_VOTE_NOT_BAD),
+                              (-1, PROPOSAL_REVIEW_VOTE_NOT_ALLOWED),
+                              )

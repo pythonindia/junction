@@ -102,12 +102,6 @@ class Proposal(TimeAuditModel):
     def get_down_vote_url(self):
         return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
 
-    def get_section_reviewer_up_vote_url(self):
-        return reverse('proposal_reviewer_up_vote', args=[self.conference.slug, self.slug])
-
-    def get_section_reviewer_down_vote_url(self):
-        return reverse('proposal_reviewer_down_vote', args=[self.conference.slug, self.slug])
-
     def get_comments_count(self):
         """ Show only the public comment count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=False).count()
@@ -120,12 +114,6 @@ class Proposal(TimeAuditModel):
         """ Show only the public comment count """
         up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
         down_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=False).count()
-        return up_vote_count - down_vote_count
-
-    def get_section_reviewer_votes_count(self):
-        """ Show only the public comment count """
-        up_vote_count = ProposalSectionReviewerVote.objects.filter(proposal=self, up_vote=True).count()
-        down_vote_count = ProposalSectionReviewerVote.objects.filter(proposal=self, up_vote=False).count()
         return up_vote_count - down_vote_count
 
     def status_text(self):
@@ -162,10 +150,10 @@ class ProposalSectionReviewerVote(TimeAuditModel):
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(ProposalSectionReviewer)
     role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=2)
-    up_vote = models.BooleanField(default=True)
+    vote_value = models.SmallIntegerField(default=True)
 
     def __str__(self):
-        return "[{}] {}".format("1" if self.up_vote else "-1", self.proposal)
+        return "[{}] {}".format(self.vote_value, self.proposal)
 
     class Meta:
         unique_together = ("proposal", "voter")

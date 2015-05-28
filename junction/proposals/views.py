@@ -13,7 +13,12 @@ from django.views.decorators.http import require_http_methods
 from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
-from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
+from .forms import (
+    ProposalCommentForm,
+    ProposalForm,
+    ProposalReviewForm,
+    ProposalReviewerVoteForm,
+)
 from .models import (
     Proposal,
     ProposalComment,
@@ -244,28 +249,25 @@ def review_proposal(request, conference_slug, slug):
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
 
-    vote_value = 0
+    vote_value = None
 
     try:
-        if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(
-                proposal=proposal, voter=request.user)
-            vote_value = 1 if proposal_vote.up_vote else -1
-    except ProposalVote.DoesNotExist:
+        vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=request.user)
+        vote_value = vote.vote_value
+    except ProposalSectionReviewerVote.DoesNotExist:
         pass
 
     if request.method == 'GET':
 
-        comments = ProposalComment.objects.filter(
-            proposal=proposal, deleted=False,
-        )
+        comments = ProposalComment.objects.filter(proposal=proposal, deleted=False,)
 
-        proposal_review_form = ProposalReviewForm(
-            initial={'review_status': proposal.review_status})
+        proposal_review_form = ProposalReviewForm(initial={'review_status': proposal.review_status})
+        proposal_vote_form = ProposalReviewerVoteForm(initial={'vote_value': vote_value})
 
         ctx = {
             'proposal': proposal,
             'proposal_review_form': proposal_review_form,
+            'proposal_vote_form': proposal_vote_form,
             'reviewers_comments': comments.filter(private=True),
             'reviewers_proposal_comment_form': ProposalCommentForm(initial={'private': True}),
             'vote_value': vote_value,
@@ -274,17 +276,27 @@ def review_proposal(request, conference_slug, slug):
         return render(request, 'proposals/review.html', ctx)
 
     # POST Workflow
-    form = ProposalReviewForm(request.POST)
-    if not form.is_valid():
-        return render(request, 'proposals/review.html', {'form': form,
-                                                         'proposal': proposal,
-                                                         'errors': form.errors})
+    if 'vote-form' in request.POST:
+        vote_form = ProposalReviewerVoteForm(request.POST)
+        if not vote_form.is_valid():
+            return render(request, 'proposals/review.html', {'vote_form': vote_form,
+                                                             'proposal': proposal,
+                                                             'vote_form_errors': vote_form.errors})
+        else:
+            vote.vote_value = vote_form.cleaned_data['vote_value']
+            vote.save()
 
-    # Valid Form
-    proposal.review_status = form.cleaned_data['review_status']
-    proposal.save()
-    return HttpResponseRedirect(reverse('proposals-list',
-                                        args=[conference.slug]))
+    if 'review-form' in request.POST:
+        review_form = ProposalReviewForm(request.POST)
+        if not review_form.is_valid():
+            return render(request, 'proposals/review.html', {'review_form': review_form,
+                                                             'proposal': proposal,
+                                                             'review_form_errors': review_form.errors})
+        else:
+            proposal.review_status = review_form.cleaned_data['review_status']
+            proposal.save()
+
+    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
 
 
 @login_required
@@ -366,6 +378,7 @@ def proposal_vote_down(request, conference_slug, proposal_slug):
 
 
 @login_required
+@require_http_methods(['POST'])
 def proposal_section_reviewer_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
@@ -378,18 +391,6 @@ def proposal_section_reviewer_vote(request, conference_slug, proposal_slug, up_v
     proposal_vote.save()
 
     return HttpResponse(proposal.get_section_reviewer_votes_count())
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_section_reviewer_up_vote(request, conference_slug, proposal_slug):
-    return proposal_section_reviewer_vote(request, conference_slug, proposal_slug, True)
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_section_reviewer_down_vote(request, conference_slug, proposal_slug):
-    return proposal_section_reviewer_vote(request, conference_slug, proposal_slug, False)
 
 
 def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,

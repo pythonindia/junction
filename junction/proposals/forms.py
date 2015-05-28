@@ -7,7 +7,12 @@ from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
+from junction.base.constants import (
+    PROPOSAL_REVIEW_STATUS_LIST,
+    PROPOSAL_STATUS_LIST,
+    PROPOSAL_TARGET_AUDIENCES,
+    PROPOSAL_REVIEW_VOTES_LIST
+)
 from junction.proposals.models import ProposalSection, ProposalType
 
 
@@ -107,4 +112,18 @@ class ProposalReviewForm(forms.Form):
     """
     Used to review the proposal.
     """
-    review_status = forms.ChoiceField(choices=PROPOSAL_REVIEW_STATUS_LIST)
+    review_status = forms.ChoiceField(
+        choices=PROPOSAL_REVIEW_STATUS_LIST,
+        widget=forms.RadioSelect()
+    )
+
+
+class ProposalReviewerVoteForm(forms.Form):
+
+    """
+    Used by ProposalSectionReviewers to vote on proposals.
+    """
+    vote_value = forms.ChoiceField(
+        choices=PROPOSAL_REVIEW_VOTES_LIST,
+        widget=forms.RadioSelect()
+    )

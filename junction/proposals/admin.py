@@ -47,7 +47,7 @@ class ProposalVoteAdmin(TimeAuditAdmin):
 
 
 class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
-    list_display = ('proposal', 'voter', 'role', 'up_vote') + \
+    list_display = ('proposal', 'voter', 'role', 'vote_value') + \
         TimeAuditAdmin.list_display
 
 
