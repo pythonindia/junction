@@ -250,6 +250,44 @@ def review_proposal(request, conference_slug, slug):
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
 
+    if request.method == 'GET':
+
+        comments = ProposalComment.objects.filter(proposal=proposal, deleted=False,)
+
+        proposal_review_form = ProposalReviewForm(initial={'review_status': proposal.review_status})
+
+        ctx = {
+            'proposal': proposal,
+            'proposal_review_form': proposal_review_form,
+            'reviewers_comments': comments.filter(private=True),
+            'reviewers_proposal_comment_form': ProposalCommentForm(initial={'private': True}),
+        }
+
+        return render(request, 'proposals/review.html', ctx)
+
+    # POST Workflow
+    form = ProposalReviewForm(request.POST)
+    if not form.is_valid():
+        return render(request, 'proposals/review.html', {'form': form,
+                                                         'proposal': proposal,
+                                                         'form_errors': form.errors})
+
+    # Valid Form
+    proposal.review_status = form.cleaned_data['review_status']
+    proposal.save()
+
+    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def proposal_reviewer_vote(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not _is_proposal_section_reviewer(request.user, conference, proposal):
+        return HttpResponseForbidden()
+
     vote_value = None
 
     try:
@@ -266,53 +304,37 @@ def review_proposal(request, conference_slug, slug):
 
     if request.method == 'GET':
 
-        comments = ProposalComment.objects.filter(proposal=proposal, deleted=False,)
-
-        proposal_review_form = ProposalReviewForm(initial={'review_status': proposal.review_status})
         proposal_vote_form = ProposalReviewerVoteForm(initial={'vote_value': vote_value})
 
         ctx = {
             'proposal': proposal,
-            'proposal_review_form': proposal_review_form,
             'proposal_vote_form': proposal_vote_form,
-            'reviewers_comments': comments.filter(private=True),
-            'reviewers_proposal_comment_form': ProposalCommentForm(initial={'private': True}),
             'vote_value': vote_value,
         }
 
-        return render(request, 'proposals/review.html', ctx)
+        return render(request, 'proposals/vote.html', ctx)
 
     # POST Workflow
-    if 'vote-form' in request.POST:
-        vote_form = ProposalReviewerVoteForm(request.POST)
-        if not vote_form.is_valid():
-            return render(request, 'proposals/review.html', {'vote_form': vote_form,
-                                                             'proposal': proposal,
-                                                             'vote_form_errors': vote_form.errors})
-        else:
-            vote_value = vote_form.cleaned_data['vote_value']
-            if not vote:
-                vote = ProposalSectionReviewerVote.objects.create(
-                    proposal=proposal,
-                    voter=ProposalSectionReviewer.objects.get(
-                        conference_reviewer__reviewer=request.user,
-                        conference_reviewer__conference=conference,
-                        proposal_section=proposal.proposal_section),
-                    vote_value=ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value),
-                )
-            else:
-                vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
-                vote.save()
+    form = ProposalReviewerVoteForm(request.POST)
+    if not form.is_valid():
+        return render(request, 'proposals/vote.html', {'form': form,
+                                                       'proposal': proposal,
+                                                       'form_errors': form.errors})
 
-    if 'review-form' in request.POST:
-        review_form = ProposalReviewForm(request.POST)
-        if not review_form.is_valid():
-            return render(request, 'proposals/review.html', {'review_form': review_form,
-                                                             'proposal': proposal,
-                                                             'review_form_errors': review_form.errors})
-        else:
-            proposal.review_status = review_form.cleaned_data['review_status']
-            proposal.save()
+    # Valid Form
+    vote_value = form.cleaned_data['vote_value']
+    if not vote:
+        vote = ProposalSectionReviewerVote.objects.create(
+            proposal=proposal,
+            voter=ProposalSectionReviewer.objects.get(
+                conference_reviewer__reviewer=request.user,
+                conference_reviewer__conference=conference,
+                proposal_section=proposal.proposal_section),
+            vote_value=ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value),
+        )
+    else:
+        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
+        vote.save()
 
     return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
 
