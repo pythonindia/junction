@@ -143,6 +143,31 @@ class ProposalVote(TimeAuditModel):
         unique_together = ("proposal", "voter")
 
 
+class ProposalCommentQuerySet(models.QuerySet):
+    def get_public_comments(self):
+        return self.filter(private=False, reviewer=False)
+
+    def get_reviewers_comments(self):
+        return self.filter(private=True)
+
+    def get_reviewers_only_comments(self):
+        return self.filter(reviewer=True)
+
+
+class ProposalCommentManager(models.Manager):
+    def get_queryset(self):
+        return ProposalCommentQuerySet(self.model, using=self._db)
+
+    def get_public_comments(self):
+        return self.get_queryset().get_public_comments()
+
+    def get_reviewers_comments(self):
+        return self.get_queryset().get_reviewers_comments()
+
+    def get_reviewers_only_comments(self):
+        return self.get_queryset().get_reviewers_only_comments()
+
+
 @python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 
@@ -153,6 +178,8 @@ class ProposalComment(TimeAuditModel):
     reviewer = models.BooleanField(default=False, verbose_name="Is Reviewer?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
+
+    objects = ProposalCommentManager()
 
     def __str__(self):
         return "[{} by {}] {}".format(self.comment,

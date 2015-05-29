@@ -190,15 +190,15 @@ def detail_proposal(request, conference_slug, slug):
     )
 
     if read_private_comment:
-        ctx['reviewers_comments'] = comments.filter(private=True)
+        ctx['reviewers_comments'] = comments.get_reviewers_comments()
     if write_private_comment:
         ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(
             initial={'private': True})
     if is_reviewer:
         ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(
             initial={'reviewer': True})
-        ctx['reviewers_only_comments'] = comments.filter(reviewer=True)
-    ctx.update({'comments': comments.filter(private=False, reviewer=False),
+        ctx['reviewers_only_comments'] = comments.get_reviewers_only_comments()
+    ctx.update({'comments': comments.get_public_comments(),
                 'proposal_comment_form': ProposalCommentForm()})
 
     return render(request, 'proposals/detail/base.html', ctx)
