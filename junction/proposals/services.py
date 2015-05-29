@@ -35,16 +35,21 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
 def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
     if proposal_comment.private:
-        proposal_reviewers = set(ProposalSectionReviewer.objects.filter(
-            proposal_section=proposal.proposal_section))
-        recipients = {proposal_reviewer.conference_reviewer.reviewer
-                      for proposal_reviewer in proposal_reviewers}
+        recipients = _get_proposal_section_reviewers(
+            proposal=proposal)
     else:
         recipients = {
             comment.commenter
             for comment in proposal.proposalcomment_set
             .all().select_related('commenter')}
-    recipients.add(proposal.author)
+    if proposal_comment.reviewer:
+        # Don't add proposer to reviwer only comments
+        section_reviewers = _get_proposal_section_reviewers(
+            proposal=proposal)
+        recipients.union(section_reviewers)
+    else:
+        recipients.add(proposal.author)
+
     return recipients
 
 
@@ -68,3 +73,11 @@ def send_mail_for_new_proposal(proposal, host):
                             'host': host,
                             'proposal_url': proposal_url,
                             'login_url': login_url})
+
+
+def _get_proposal_section_reviewers(proposal):
+    proposal_reviewers = set(ProposalSectionReviewer.objects.filter(
+        proposal_section=proposal.proposal_section))
+    recipients = {proposal_reviewer.conference_reviewer.reviewer
+                  for proposal_reviewer in proposal_reviewers}
+    return recipients
