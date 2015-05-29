@@ -10,10 +10,13 @@ from pagedown.widgets import PagedownWidget
 from junction.base.constants import (
     PROPOSAL_REVIEW_STATUS_LIST,
     PROPOSAL_STATUS_LIST,
-    PROPOSAL_TARGET_AUDIENCES,
-    PROPOSAL_REVIEW_VOTES_LIST
+    PROPOSAL_TARGET_AUDIENCES
 )
-from junction.proposals.models import ProposalSection, ProposalType
+from junction.proposals.models import (
+    ProposalSection,
+    ProposalType,
+    ProposalSectionReviewerVoteValue
+)
 
 
 def _get_proposal_section_choices(conference):
@@ -124,6 +127,7 @@ class ProposalReviewerVoteForm(forms.Form):
     Used by ProposalSectionReviewers to vote on proposals.
     """
     vote_value = forms.ChoiceField(
-        choices=PROPOSAL_REVIEW_VOTES_LIST,
+        choices=((i.vote_value, i.description)
+                 for i in ProposalSectionReviewerVoteValue.objects.all()),
         widget=forms.RadioSelect()
     )
