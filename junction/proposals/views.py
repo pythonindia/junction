@@ -200,7 +200,7 @@ def detail_proposal(request, conference_slug, slug):
     if is_reviewer:
         ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(initial={'reviewer': True})
         ctx['reviewers_only_comments'] = comments.filter(reviewer=True)
-    ctx.update({'comments': comments.filter(private=False,reviewer=False),
+    ctx.update({'comments': comments.filter(private=False, reviewer=False),
                 'proposal_comment_form': ProposalCommentForm()})
 
     return render(request, 'proposals/detail/base.html', ctx)
@@ -265,7 +265,7 @@ def review_proposal(request, conference_slug, slug):
             'reviewers_only_comments': comments.filter(review=True),
             'reviewers_proposal_comment_form': ProposalCommentForm(
                 initial={'private': True}),
-            'reviewers_only_proposal_comment_form':ProposalCommentForm(
+            'reviewers_only_proposal_comment_form': ProposalCommentForm(
                 initial={'review': True}),
         }
 

@@ -61,6 +61,7 @@ class ProposalCommentAdmin(TimeAuditAdmin):
         'proposal', 'commenter', 'private', 'comment') + TimeAuditAdmin.list_display
     list_filter = ['private', 'reviewer']
 
+
 class ProposalCommentVoteAdmin(TimeAuditAdmin):
     list_display = ('proposal_comment', 'voter', 'up_vote') + \
         TimeAuditAdmin.list_display
