@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Persistent Store
+# -------------------------------------------------
+psycopg2==2.6
