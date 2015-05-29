@@ -168,7 +168,7 @@ def detail_proposal(request, conference_slug, slug):
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
     read_private_comment = _is_proposal_author_or_proposal_reviewer(request.user, conference, proposal)
     write_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
-
+    is_reviewer = _is_proposal_reviewer(request.user, conference)
     vote_value = 0
 
     try:
@@ -197,8 +197,10 @@ def detail_proposal(request, conference_slug, slug):
         ctx['reviewers_comments'] = comments.filter(private=True)
     if write_private_comment:
         ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(initial={'private': True})
-
-    ctx.update({'comments': comments.filter(private=False),
+    if is_reviewer:
+        ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(initial={'reviewer': True})
+        ctx['reviewers_only_comments'] = comments.filter(reviewer=True)
+    ctx.update({'comments': comments.filter(private=False,reviewer=False),
                 'proposal_comment_form': ProposalCommentForm()})
 
     return render(request, 'proposals/detail/base.html', ctx)
@@ -260,7 +262,11 @@ def review_proposal(request, conference_slug, slug):
             'proposal': proposal,
             'proposal_review_form': proposal_review_form,
             'reviewers_comments': comments.filter(private=True),
-            'reviewers_proposal_comment_form': ProposalCommentForm(initial={'private': True}),
+            'reviewers_only_comments': comments.filter(review=True),
+            'reviewers_proposal_comment_form': ProposalCommentForm(
+                initial={'private': True}),
+            'reviewers_only_proposal_comment_form':ProposalCommentForm(
+                initial={'review': True}),
         }
 
         return render(request, 'proposals/review.html', ctx)
@@ -366,6 +372,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     if form.is_valid():
         comment = form.cleaned_data['comment']
         private = form.cleaned_data['private']
+        reviewer = form.cleaned_data['reviewer']
 
         if private and not _is_proposal_author_or_proposal_section_reviewer(
                 request.user, conference, proposal):
@@ -373,7 +380,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
 
         proposal_comment = ProposalComment.objects.create(
             proposal=proposal, comment=comment,
-            private=private, commenter=request.user)
+            private=private, reviewer=reviewer, commenter=request.user)
         send_mail_for_new_comment(
             proposal_comment, login_url=settings.LOGIN_URL,
             host='{}://{}'.format(settings.SITE_PROTOCOL,
@@ -382,7 +389,12 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
     redirect_url = reverse('proposal-detail',
                            args=[conference.slug, proposal.slug])
 
-    redirect_url += "#js-reviewers" if private else "#js-comments"
+    if private:
+        redirect_url += "#js-reviewers"
+    elif reviewer:
+        redirect_url += "#js-only-reviewers"
+    else:
+        redirect_url += "#js-comments"
 
     return HttpResponseRedirect(redirect_url)
 
