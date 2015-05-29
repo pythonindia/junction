@@ -94,7 +94,7 @@
                             {% for group,count in group_by_type.items %}
                             <tr>
                                 <td>{{count.3}}</td>
-                                <td><a href="{% url 'conference-detail' conference.slug%}?proposal_type={{group}}"> {{count.0}}</a></td>
+                                <td><a href="{% url 'proposals-list' conference.slug%}?proposal_type={{group}}"> {{count.0}}</a></td>
                                 <td>{{count.1}}</td>
                                 <td>{{count.2}}</td>
                             </tr>
@@ -121,7 +121,7 @@
                             {% for group,count in group_by_reviewer_section.items %}
                             <tr>
                                 <td>{{count.3}}</td>
-                                <td><a href="{% url 'conference-detail' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
+                                <td><a href="{% url 'proposals-list' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
                                 <td>{{count.1}}</td>
                                 <td>{{count.2}}</td>
                             </tr>
@@ -144,7 +144,7 @@
                              {% for group, count in group_by_section.items %}
                             <tr>
                                 <td>{{count.3}}</td>
-                                <td><a href="{% url 'conference-detail' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
+                                <td><a href="{% url 'proposals-list' conference.slug %}?section={{group}}"> {{count.0}}</a></td>
                                 <td>{{count.1}}</td>
                                 <td>{{count.2}}</td>
                             </tr>
