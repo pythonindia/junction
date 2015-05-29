@@ -9,7 +9,6 @@
     <style>
      li {
          list-style: none;
-         display: inline;
      }
     </style>
 {% endblock %}
@@ -41,7 +40,7 @@
                                 {% if field.errors %}
                                     {{field.errors}}
                                 {% endif %}
-                                <div class="col-sm-offset-1">
+                                <div class="col-sm-offset-4">
                                     {{field}}
                                 </div>
                             {% endfor %}
@@ -68,7 +67,7 @@
                                 {% if field.errors %}
                                     {{field.errors}}
                                 {% endif %}
-                                <div>
+                                <div class="col-sm-offset-4">
                                     {{field}}
                                 </div>
                             {% endfor %}
