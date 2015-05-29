@@ -144,13 +144,23 @@ class ProposalVote(TimeAuditModel):
 
 
 @python_2_unicode_compatible
+class ProposalSectionReviewerVoteValue(AuditModel):
+    """ Proposal reviewer vote choices. """
+    vote_value = models.SmallIntegerField()
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "[{}] {}".format(self.vote_value, self.description)
+
+
+@python_2_unicode_compatible
 class ProposalSectionReviewerVote(TimeAuditModel):
 
     """ Reviewer vote for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(ProposalSectionReviewer)
     role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=2)
-    vote_value = models.SmallIntegerField(default=True)
+    vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
 
     def __str__(self):
         return "[{}] {}".format(self.vote_value, self.proposal)

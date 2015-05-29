@@ -27,7 +27,8 @@ from .models import (
     ProposalSectionReviewer,
     ProposalType,
     ProposalVote,
-    ProposalSectionReviewerVote
+    ProposalSectionReviewerVote,
+    ProposalSectionReviewerVoteValue
 )
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
@@ -253,7 +254,7 @@ def review_proposal(request, conference_slug, slug):
 
     try:
         vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=request.user)
-        vote_value = vote.vote_value
+        vote_value = vote.vote_value.vote_value
     except ProposalSectionReviewerVote.DoesNotExist:
         pass
 
@@ -283,7 +284,8 @@ def review_proposal(request, conference_slug, slug):
                                                              'proposal': proposal,
                                                              'vote_form_errors': vote_form.errors})
         else:
-            vote.vote_value = vote_form.cleaned_data['vote_value']
+            vote_value = vote_form.cleaned_data['vote_value']
+            vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
             vote.save()
 
     if 'review-form' in request.POST:
