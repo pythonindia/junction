@@ -253,10 +253,16 @@ def review_proposal(request, conference_slug, slug):
     vote_value = None
 
     try:
-        vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=request.user)
+        vote = ProposalSectionReviewerVote.objects.get(
+            proposal=proposal,
+            voter=ProposalSectionReviewer.objects.get(
+                conference_reviewer__reviewer=request.user,
+                conference_reviewer__conference=conference,
+                proposal_section=proposal.proposal_section),
+        )
         vote_value = vote.vote_value.vote_value
     except ProposalSectionReviewerVote.DoesNotExist:
-        pass
+        vote = None
 
     if request.method == 'GET':
 
@@ -285,8 +291,18 @@ def review_proposal(request, conference_slug, slug):
                                                              'vote_form_errors': vote_form.errors})
         else:
             vote_value = vote_form.cleaned_data['vote_value']
-            vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
-            vote.save()
+            if not vote:
+                vote = ProposalSectionReviewerVote.objects.create(
+                    proposal=proposal,
+                    voter=ProposalSectionReviewer.objects.get(
+                        conference_reviewer__reviewer=request.user,
+                        conference_reviewer__conference=conference,
+                        proposal_section=proposal.proposal_section),
+                    vote_value=ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value),
+                )
+            else:
+                vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
+                vote.save()
 
     if 'review-form' in request.POST:
         review_form = ProposalReviewForm(request.POST)
