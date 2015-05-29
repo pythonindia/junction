@@ -417,22 +417,6 @@ def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
 
 
-@login_required
-@require_http_methods(['POST'])
-def proposal_section_reviewer_vote(request, conference_slug, proposal_slug, up_vote):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
-
-    proposal_vote, created = ProposalSectionReviewerVote.objects.get_or_create(
-        proposal=proposal, voter=request.user)  # @UnusedVariable
-
-    proposal_vote.role = 2
-    proposal_vote.up_vote = up_vote
-    proposal_vote.save()
-
-    return HttpResponse(proposal.get_section_reviewer_votes_count())
-
-
 def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,
                           up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
