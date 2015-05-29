@@ -152,6 +152,9 @@ class ProposalSectionReviewerVoteValue(AuditModel):
     def __str__(self):
         return "[{}] {}".format(self.vote_value, self.description)
 
+    class Meta:
+        ordering = ('-vote_value',)
+
 
 @python_2_unicode_compatible
 class ProposalSectionReviewerVote(TimeAuditModel):
