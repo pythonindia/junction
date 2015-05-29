@@ -262,11 +262,11 @@ def review_proposal(request, conference_slug, slug):
         ctx = {
             'proposal': proposal,
             'proposal_review_form': proposal_review_form,
-            'reviewers_comments': comments.filter(private=True),
-            'reviewers_only_comments': comments.filter(review=True),
+            'reviewers_comments': comments.get_reviewers_comments(),
+            'reviewers_only_comments': comments.get_reviewers_only_comments(),
             'reviewers_proposal_comment_form': ProposalCommentForm(
                 initial={'private': True}),
-            'reviewers_only_proposal_comment_form':ProposalCommentForm(
+            'reviewers_only_proposal_comment_form': ProposalCommentForm(
                 initial={'review': True}),
         }
 
