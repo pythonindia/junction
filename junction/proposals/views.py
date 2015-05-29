@@ -159,8 +159,10 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    read_private_comment = _is_proposal_author_or_proposal_reviewer(request.user, conference, proposal)
-    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
+    read_private_comment = _is_proposal_author_or_proposal_reviewer(
+        request.user, conference, proposal)
+    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(
+        request.user, conference, proposal)
     is_reviewer = _is_proposal_reviewer(request.user, conference)
     vote_value = 0
 
@@ -179,7 +181,8 @@ def detail_proposal(request, conference_slug, slug):
         'write_private_comment': write_private_comment,
         'vote_value': vote_value,
         'is_author': request.user == proposal.author,
-        'is_reviewer': _is_proposal_section_reviewer(request.user, conference, proposal)
+        'is_reviewer': _is_proposal_section_reviewer(request.user, conference,
+                                                     proposal)
     }
 
     comments = ProposalComment.objects.filter(
@@ -189,11 +192,13 @@ def detail_proposal(request, conference_slug, slug):
     if read_private_comment:
         ctx['reviewers_comments'] = comments.filter(private=True)
     if write_private_comment:
-        ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(initial={'private': True})
+        ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(
+            initial={'private': True})
     if is_reviewer:
-        ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(initial={'reviewer': True})
+        ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(
+            initial={'reviewer': True})
         ctx['reviewers_only_comments'] = comments.filter(reviewer=True)
-    ctx.update({'comments': comments.filter(private=False,reviewer=False),
+    ctx.update({'comments': comments.filter(private=False, reviewer=False),
                 'proposal_comment_form': ProposalCommentForm()})
 
     return render(request, 'proposals/detail/base.html', ctx)
