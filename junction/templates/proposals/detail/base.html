@@ -73,9 +73,12 @@
                 </div>
             {% endif %}
 
-            {% if is_reviewer %}
-              <a class="tag label label-proposal-type" href="{{ proposal.get_review_url }}">Review proposal</a>
-            {% endif %}
+            {% comment %}
+              {% if is_reviewer %}
+                <a class="tag label label-proposal-type" href="{{ proposal.get_review_url }}">Review proposal</a>
+                {% endif %}
+            {% endcomment %}
+
         </div>
     </div>
 
