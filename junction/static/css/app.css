@@ -8395,10 +8395,6 @@ body {
   font-family: 'Open Sans', sans-serif;
   color: #333;
 }
-html,
-body {
-  height: 100%;
-}
 footer {
   padding: 20px 0;
   background-color: #fff7f8;
