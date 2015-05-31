@@ -55,9 +55,13 @@ def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal)
 
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
-    conference = get_object_or_404(Conference, slug=conference_slug)
+    conference = get_object_or_404(
+        Conference, slug=conference_slug)
+    # .prefetch_related('proposal_types', 'proposal_sections')
 
-    proposals_qs = Proposal.objects.filter(conference=conference)
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(conference=conference)
 
     user_proposals_list = []
     if request.user.is_authenticated():  # Display the proposals by this user
@@ -98,8 +102,8 @@ def list_proposals(request, conference_slug):
     public_proposals_list = proposals_qs.exclude(review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
         status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
-    proposal_sections = ProposalSection.objects.filter(conferences=conference)
-    proposal_types = ProposalType.objects.filter(conferences=conference)
+    proposal_sections = conference.proposal_types.all()
+    proposal_types = conference.proposal_sections.all()
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
