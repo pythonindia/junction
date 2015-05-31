@@ -18,9 +18,7 @@ from .models import (
     Proposal,
     ProposalComment,
     ProposalCommentVote,
-    ProposalSection,
     ProposalSectionReviewer,
-    ProposalType,
     ProposalVote
 )
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
