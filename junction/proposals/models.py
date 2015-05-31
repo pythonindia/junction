@@ -112,8 +112,12 @@ class Proposal(TimeAuditModel):
 
     def get_votes_count(self):
         """ Show only the public comment count """
-        up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
-        down_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=False).count()
+        votes = ProposalVote.objects.filter(
+            proposal=self
+        ).values('up_vote').annotate(counts=models.Count('up_vote'))
+        votes = {item['up_vote']: item['counts'] for item in votes}
+        up_vote_count = votes.get(True, 0)
+        down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
 
     def status_text(self):
