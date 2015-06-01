@@ -12,6 +12,7 @@ Anand Reddy Pandikunta (gh:ChillarAnand)
 Anuvrat Parashar (gh:bhanuvrat/ @bhanuvrat)
 Aayush Kasurde
 Arjoonn Sharma (gh:theSage21)
+Haris Ibrahim K V (gh:harisibrahimkv / @harisibrahimkv)
 
 * Possesses commit rights
 
