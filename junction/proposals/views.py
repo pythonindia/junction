@@ -23,9 +23,7 @@ from .models import (
     Proposal,
     ProposalComment,
     ProposalCommentVote,
-    ProposalSection,
     ProposalSectionReviewer,
-    ProposalType,
     ProposalVote,
     ProposalSectionReviewerVote,
     ProposalSectionReviewerVoteValue
@@ -62,9 +60,13 @@ def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal)
 
 @require_http_methods(['GET'])
 def list_proposals(request, conference_slug):
-    conference = get_object_or_404(Conference, slug=conference_slug)
+    conference = get_object_or_404(
+        Conference, slug=conference_slug)
+    # .prefetch_related('proposal_types', 'proposal_sections')
 
-    proposals_qs = Proposal.objects.filter(conference=conference)
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(conference=conference)
 
     user_proposals_list = []
     if request.user.is_authenticated():  # Display the proposals by this user
@@ -105,8 +107,8 @@ def list_proposals(request, conference_slug):
     public_proposals_list = proposals_qs.exclude(review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
         status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
-    proposal_sections = ProposalSection.objects.filter(conferences=conference)
-    proposal_types = ProposalType.objects.filter(conferences=conference)
+    proposal_sections = conference.proposal_types.all()
+    proposal_types = conference.proposal_sections.all()
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
@@ -166,8 +168,10 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    read_private_comment = _is_proposal_author_or_proposal_reviewer(request.user, conference, proposal)
-    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(request.user, conference, proposal)
+    read_private_comment = _is_proposal_author_or_proposal_reviewer(
+        request.user, conference, proposal)
+    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(
+        request.user, conference, proposal)
     is_reviewer = _is_proposal_reviewer(request.user, conference)
     vote_value = 0
 
@@ -186,7 +190,7 @@ def detail_proposal(request, conference_slug, slug):
         'write_private_comment': write_private_comment,
         'vote_value': vote_value,
         'is_author': request.user == proposal.author,
-        'is_reviewer': _is_proposal_section_reviewer(request.user, conference, proposal)
+        'is_reviewer': is_reviewer,
     }
 
     comments = ProposalComment.objects.filter(
@@ -194,13 +198,15 @@ def detail_proposal(request, conference_slug, slug):
     )
 
     if read_private_comment:
-        ctx['reviewers_comments'] = comments.filter(private=True)
+        ctx['reviewers_comments'] = comments.get_reviewers_comments()
     if write_private_comment:
-        ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(initial={'private': True})
+        ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(
+            initial={'private': True})
     if is_reviewer:
-        ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(initial={'reviewer': True})
-        ctx['reviewers_only_comments'] = comments.filter(reviewer=True)
-    ctx.update({'comments': comments.filter(private=False, reviewer=False),
+        ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(
+            initial={'reviewer': True})
+        ctx['reviewers_only_comments'] = comments.get_reviewers_only_comments()
+    ctx.update({'comments': comments.get_public_comments(),
                 'proposal_comment_form': ProposalCommentForm()})
 
     return render(request, 'proposals/detail/base.html', ctx)
@@ -261,8 +267,8 @@ def review_proposal(request, conference_slug, slug):
         ctx = {
             'proposal': proposal,
             'proposal_review_form': proposal_review_form,
-            'reviewers_comments': comments.filter(private=True),
-            'reviewers_only_comments': comments.filter(review=True),
+            'reviewers_comments': comments.get_reviewers_comments(),
+            'reviewers_only_comments': comments.get_reviewers_only_comments(),
             'reviewers_proposal_comment_form': ProposalCommentForm(
                 initial={'private': True}),
             'reviewers_only_proposal_comment_form': ProposalCommentForm(

@@ -112,8 +112,12 @@ class Proposal(TimeAuditModel):
 
     def get_votes_count(self):
         """ Show only the public comment count """
-        up_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=True).count()
-        down_vote_count = ProposalVote.objects.filter(proposal=self, up_vote=False).count()
+        votes = ProposalVote.objects.filter(
+            proposal=self
+        ).values('up_vote').annotate(counts=models.Count('up_vote'))
+        votes = {item['up_vote']: item['counts'] for item in votes}
+        up_vote_count = votes.get(True, 0)
+        down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
 
     def status_text(self):
@@ -141,6 +145,31 @@ class ProposalVote(TimeAuditModel):
 
     class Meta:
         unique_together = ("proposal", "voter")
+
+
+class ProposalCommentQuerySet(models.QuerySet):
+    def get_public_comments(self):
+        return self.filter(private=False, reviewer=False)
+
+    def get_reviewers_comments(self):
+        return self.filter(private=True)
+
+    def get_reviewers_only_comments(self):
+        return self.filter(reviewer=True)
+
+
+class ProposalCommentManager(models.Manager):
+    def get_queryset(self):
+        return ProposalCommentQuerySet(self.model, using=self._db)
+
+    def get_public_comments(self):
+        return self.get_queryset().get_public_comments()
+
+    def get_reviewers_comments(self):
+        return self.get_queryset().get_reviewers_comments()
+
+    def get_reviewers_only_comments(self):
+        return self.get_queryset().get_reviewers_only_comments()
 
 
 @python_2_unicode_compatible
@@ -182,6 +211,8 @@ class ProposalComment(TimeAuditModel):
     reviewer = models.BooleanField(default=False, verbose_name="Is Reviewer?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
+
+    objects = ProposalCommentManager()
 
     def __str__(self):
         return "[{} by {}] {}".format(self.comment,

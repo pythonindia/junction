@@ -24,7 +24,7 @@ python manage.py sample_data
 
 Initial auth data: admin/123123
 
-If docker and fig are not installed already:
+If docker and fig are not installed already (Not mandatory):
 --------------------------------------------
 Refer to (http://docs.docker.com/installation/) for detailed installation instructions.
 
