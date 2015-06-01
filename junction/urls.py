@@ -27,7 +27,11 @@ urlpatterns = patterns(
 
     # Proposals related
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/dashboard/', 'junction.proposals.views.dashboard', name='proposal-dashboard'),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
+        'junction.proposals.dashboard.reviewer_dahboard',
+        name='proposal-reviewers-dashboard'),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/',
+        'junction.proposals.dashboard.proposal_dashbaord', name='proposal-dashboard'),
 
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
