@@ -130,19 +130,15 @@ def reviewer_comments_dashboard(request, conference_slug):
     by_section = {}
     for reviewers in conference_reviewers:
         id = reviewers.reviewer.id
-        by_conference.setdefault(id, [
-                                reviewers.reviewer.first_name,
-                                reviewers.reviewer.last_name, 0])
-        by_conference[id][2] = ProposalComment.objects.filter(
+        by_conference.setdefault(id, [reviewers.reviewer, 0])
+        by_conference[id][1] = ProposalComment.objects.filter(
                 commenter=reviewers.reviewer,
-                deleted=False,
-                private=True).count()
+                deleted=False, private=True).count()
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
-        by_section.setdefault(id, {
-                        'reviewer': reviewers.reviewer,
-                        'interaction': []})
+        by_section.setdefault(
+            id, {'reviewer': reviewers.reviewer, 'interaction': []})
         reviewers_section = ProposalSectionReviewer.objects.filter(
                                                 conference_reviewer=reviewers)
         for section in reviewers_section:

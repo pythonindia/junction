@@ -65,15 +65,14 @@
                     <div class="panel-body">
                         <table border=1>
                             <tr>
-                                <th></th>
                                 <th>Reviewers</th>
-                                <th>Proposal commented</th>
+                                <th>Proposal Reviewed</th>
                             </tr>
                             {% for id, data  in by_conference.items %}
                             <tr>
-                                <td></td>
-                                <td>{{data.0}} {{data.1}}</td>
-                                <td>{{data.2}}</td>
+
+                                <td>{{data.0.first_name}} {{data.0.last_name}}</td>
+                                <td>{{data.1}}</td>
 
                             </tr>
                             {% endfor %}
