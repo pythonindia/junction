@@ -132,18 +132,19 @@ def reviewer_comments_dashboard(request, conference_slug):
         id = reviewers.reviewer.id
         by_conference.setdefault(id, [reviewers.reviewer, 0])
         by_conference[id][1] = ProposalComment.objects.filter(
-                commenter=reviewers.reviewer,
-                deleted=False, private=True).count()
+            commenter=reviewers.reviewer,
+            deleted=False, private=True).count()
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
         by_section.setdefault(
-            id, {'reviewer': reviewers.reviewer, 'interaction': []})
+            id,
+            {'reviewer': reviewers.reviewer, 'interaction': []})
         reviewers_section = ProposalSectionReviewer.objects.filter(
-                                                conference_reviewer=reviewers)
+            conference_reviewer=reviewers)
         for section in reviewers_section:
             proposal_qs = proposals_qs.filter(
-                                    proposal_section=section.proposal_section)
+                proposal_section=section.proposal_section)
             commented = 0
             uncommented = 0
             for proposal in proposal_qs:
@@ -154,14 +155,16 @@ def reviewer_comments_dashboard(request, conference_slug):
                     commented = commented + 1
                 else:
                     uncommented = uncommented + 1
-            by_section[id]['interaction'].append([
-                        proposal_qs.count(), commented,
-                        uncommented, section.proposal_section.name])
+            by_section[id]['interaction'].append(
+                [
+                    proposal_qs.count(), commented,
+                    uncommented, section.proposal_section.name]
+                )
+
     ctx = {
-                'conference':  conference,
-                'conference_reviewers': conference_reviewers,
-                'by_conference': by_conference,
-                'by_section': by_section
-            }
+        'conference': conference,
+        'conference_reviewers': conference_reviewers,
+        'by_conference': by_conference,
+        'by_section': by_section}
 
     return render(request, 'proposals/reviewers_dashboard.html', ctx)
