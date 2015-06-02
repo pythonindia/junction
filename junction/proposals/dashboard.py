@@ -19,7 +19,7 @@ from junction.conferences.models import (
 
 @login_required
 @require_http_methods(['GET'])
-def proposal_dashbaord(request, conference_slug):
+def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     if not request.user.is_superuser:
@@ -81,8 +81,8 @@ def proposal_dashbaord(request, conference_slug):
 
     audience_dict = {
         1: 'Beginner',
-        2:  'Intermediate',
-        3:  'Advanced'
+        2: 'Intermediate',
+        3: 'Advanced'
     }
 
     for proposal in proposals_qs:
@@ -116,7 +116,7 @@ def proposal_dashbaord(request, conference_slug):
 
 @login_required
 @require_http_methods(['GET'])
-def reviewer_dahboard(request, conference_slug):
+def reviewer_comments_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     if not request.user.is_superuser:
