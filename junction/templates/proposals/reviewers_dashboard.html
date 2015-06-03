@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} {{ conference.name }} Reviewers dashbaord {% endblock %}
+{% block og_title %} {{ conference.name }} Reviewers dashboard {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Dashboard" "proposals-dashoboard" conference.slug %}
+{% endblock %}
+
+
+{% block navbar_logo %}
+    {% if conference.logo %}
+    <a href="{% url "conference-detail" conference.slug %}">
+        <img src="{{ conference.logo.url }}">
+    </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block page_classes %}{{ block.super}} page-proposals{% endblock page_classes %}
+
+{% block content %}
+<section class="content custom-container proposal-list">
+    <div class="push-4-bottom push-1-top">
+        <div class="row">
+            <div class="col-xs -12 col-sm-12 ">
+                <p class="meta">
+                    <b class="text-muted">
+                        <span class="start_date">{{ conference.start_date }}</span> –
+                        <span class="end_date">{{ conference.end_date }}</span>
+                    </b>
+                    {% if is_proposal_reviewer %}
+                        <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">
+                            Reviewer Dashboard
+                        </a>
+                    {% endif %}
+                    <span class="status status-{{conference.status}}">
+                        {{ conference.get_status_display }}
+                    </span>
+                </p>
+                <hr>
+                <p class="text-left">{{ conference.description|markdown }}</p>
+            </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs -6 col-sm-6 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> By Reviewers</div>
+                    <div class="panel-body">
+                        <table border=1>
+                            <tr>
+                                <th>Reviewers</th>
+                                <th>Proposal Reviewed</th>
+                            </tr>
+                            {% for id, data  in by_conference.items %}
+                            <tr>
+
+                                <td>{{data.0.first_name}} {{data.0.last_name}}</td>
+                                <td>{{data.1}}</td>
+
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+        <div class="col-xs -8 col-sm-8 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Reviewer/Section </div>
+                    <div class="panel-body">
+                     <table border=1>
+                            <tr>
+                                <th>Reviewers</th>
+                                <th>Section Based Stat</th>
+                            </tr>
+                            {% for id,section in by_section.items %}
+                             <tr>
+                                <td>
+                                {{section.reviewer.first_name}} {{section.reviewer.last_name}}
+                                </td>
+                                <td>
+                                <table border=1>
+                                 <tr>
+                                        <td>Section </td>
+                                        <td>Total</td>
+                                        <td>Reviewed</td>
+                                        <td>Yet to be reviewed</td>
+                                 </tr>
+                                {% for values  in section.interaction %}
+                                <tr>
+                                 <td width="250">{{values.3}}</td>
+                                 <td width="50">{{values.0}}</td>
+                                 <td>{{values.1}}</td>
+                                 <td>{{values.2}}</td>
+                                 </tr>
+                                {% endfor %}
+
+                                </table>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+{% endblock %}
