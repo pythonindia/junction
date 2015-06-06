@@ -29,7 +29,8 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
                             'comment': proposal_comment,
                             'commenter': commenter,
                             'host': host,
-                            'login_url': login_url})
+                            'login_url': login_url,
+                            'by_author': commenter == proposal.author})
 
 
 def comment_recipients(proposal_comment):
