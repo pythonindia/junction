@@ -15,7 +15,7 @@ from .models import ProposalSection, ProposalSectionReviewer
 logger = logging.getLogger(__name__)
 
 
-def send_mail_for_new_comment(proposal_comment, host, login_url):
+def send_mail_for_new_comment(proposal_comment, login_url):
     proposal = proposal_comment.proposal
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
@@ -28,7 +28,6 @@ def send_mail_for_new_comment(proposal_comment, host, login_url):
                             'proposal': proposal,
                             'comment': proposal_comment,
                             'commenter': commenter,
-                            'host': host,
                             'login_url': login_url,
                             'by_author': commenter == proposal.author})
 
