@@ -13,13 +13,20 @@ from django.views.decorators.http import require_http_methods
 from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
-from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm
+from .forms import (
+    ProposalCommentForm,
+    ProposalForm,
+    ProposalReviewForm,
+    ProposalReviewerVoteForm,
+)
 from .models import (
     Proposal,
     ProposalComment,
     ProposalCommentVote,
     ProposalSectionReviewer,
-    ProposalVote
+    ProposalVote,
+    ProposalSectionReviewerVote,
+    ProposalSectionReviewerVoteValue
 )
 from .services import send_mail_for_new_comment, send_mail_for_new_proposal
 
@@ -253,12 +260,9 @@ def review_proposal(request, conference_slug, slug):
 
     if request.method == 'GET':
 
-        comments = ProposalComment.objects.filter(
-            proposal=proposal, deleted=False,
-        )
+        comments = ProposalComment.objects.filter(proposal=proposal, deleted=False,)
 
-        proposal_review_form = ProposalReviewForm(
-            initial={'review_status': proposal.review_status})
+        proposal_review_form = ProposalReviewForm(initial={'review_status': proposal.review_status})
 
         ctx = {
             'proposal': proposal,
@@ -278,13 +282,73 @@ def review_proposal(request, conference_slug, slug):
     if not form.is_valid():
         return render(request, 'proposals/review.html', {'form': form,
                                                          'proposal': proposal,
-                                                         'errors': form.errors})
+                                                         'form_errors': form.errors})
 
     # Valid Form
     proposal.review_status = form.cleaned_data['review_status']
     proposal.save()
-    return HttpResponseRedirect(reverse('proposals-list',
-                                        args=[conference.slug]))
+
+    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def proposal_reviewer_vote(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not _is_proposal_section_reviewer(request.user, conference, proposal):
+        return HttpResponseForbidden()
+
+    vote_value = None
+
+    try:
+        vote = ProposalSectionReviewerVote.objects.get(
+            proposal=proposal,
+            voter=ProposalSectionReviewer.objects.get(
+                conference_reviewer__reviewer=request.user,
+                conference_reviewer__conference=conference,
+                proposal_section=proposal.proposal_section),
+        )
+        vote_value = vote.vote_value.vote_value
+    except ProposalSectionReviewerVote.DoesNotExist:
+        vote = None
+
+    if request.method == 'GET':
+
+        proposal_vote_form = ProposalReviewerVoteForm(initial={'vote_value': vote_value})
+
+        ctx = {
+            'proposal': proposal,
+            'proposal_vote_form': proposal_vote_form,
+            'vote_value': vote_value,
+        }
+
+        return render(request, 'proposals/vote.html', ctx)
+
+    # POST Workflow
+    form = ProposalReviewerVoteForm(request.POST)
+    if not form.is_valid():
+        return render(request, 'proposals/vote.html', {'form': form,
+                                                       'proposal': proposal,
+                                                       'form_errors': form.errors})
+
+    # Valid Form
+    vote_value = form.cleaned_data['vote_value']
+    if not vote:
+        vote = ProposalSectionReviewerVote.objects.create(
+            proposal=proposal,
+            voter=ProposalSectionReviewer.objects.get(
+                conference_reviewer__reviewer=request.user,
+                conference_reviewer__conference=conference,
+                proposal_section=proposal.proposal_section),
+            vote_value=ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value),
+        )
+    else:
+        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
+        vote.save()
+
+    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
 
 
 @login_required

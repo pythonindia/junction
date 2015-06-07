@@ -18,7 +18,13 @@ from sampledatahelper.helper import SampleDataHelper
 # Junction Stuff
 from junction.base import constants
 from junction.conferences.models import Conference
-from junction.proposals.models import Proposal, ProposalComment, ProposalSection, ProposalType
+from junction.proposals.models import (
+    Proposal,
+    ProposalComment,
+    ProposalSection,
+    ProposalType,
+    ProposalSectionReviewerVoteValue
+)
 
 NUM_USERS = getattr(settings, "NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
@@ -103,6 +109,10 @@ class Command(BaseCommand):
         reviewers = [i.reviewer for i in self.proposal_reviewers]
         for x in range(NUM_REVIEWER_COMMENTS):
             self.create_proposal_comment(users=reviewers)
+
+        print(' Creating default choices for proposal reviewer vote values.')
+        for vote in constants.PROPOSAL_REVIEW_VOTES_LIST:
+            ProposalSectionReviewerVoteValue.objects.create(vote_value=vote[0], description=vote[1])
 
     def create_proposal_sections(self):
         sections = []

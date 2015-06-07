@@ -35,6 +35,8 @@ urlpatterns = patterns(
         views.proposal_vote_up, name='proposal-vote-up'),
     url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$',
         views.proposal_vote_down, name='proposal-vote-down'),
+    url(r'^(?P<slug>[\w-]+)/vote/$',
+        views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
 )
 
 # random addition to attempt to merge

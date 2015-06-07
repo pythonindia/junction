@@ -173,6 +173,35 @@ class ProposalCommentManager(models.Manager):
 
 
 @python_2_unicode_compatible
+class ProposalSectionReviewerVoteValue(AuditModel):
+    """ Proposal reviewer vote choices. """
+    vote_value = models.SmallIntegerField()
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "[{}] {}".format(self.vote_value, self.description)
+
+    class Meta:
+        ordering = ('-vote_value',)
+
+
+@python_2_unicode_compatible
+class ProposalSectionReviewerVote(TimeAuditModel):
+
+    """ Reviewer vote for a specific proposal """
+    proposal = models.ForeignKey(Proposal)
+    voter = models.ForeignKey(ProposalSectionReviewer)
+    role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=2)
+    vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
+
+    def __str__(self):
+        return "[{}] {}".format(self.vote_value, self.proposal)
+
+    class Meta:
+        unique_together = ("proposal", "voter")
+
+
+@python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 
     """ User comments for a specific proposal """

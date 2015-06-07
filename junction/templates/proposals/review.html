@@ -5,6 +5,14 @@
 
 {% block head_title %} Review Proposal | {{ block.super }} {% endblock %}
 
+{% block style_extra %}
+    <style>
+     li {
+         list-style: none;
+     }
+    </style>
+{% endblock %}
+
 {% block endhead %}
     <!-- Custom Form CSS -->
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
@@ -19,55 +27,98 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="space-2-bottom">
+                <div class="row">
+                    <h4 class="fill-blue text-center">Proposal Voting</h4>
+                    <hr class="hr-mini">
+                    <form method="POST" action="." class="vote-form form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group clearfix">
+                            {% for field in proposal_vote_form %}
+                                {% if field.errors %}
+                                    {{field.errors}}
+                                {% endif %}
+                                <div class="col-sm-offset-4">
+                                    {{field}}
+                                </div>
+                            {% endfor %}
+                        </div>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="space-2-bottom">
-            <h4 class="fill-blue text-center">Review Proposal </h4>
-            <hr class="hr-mini">
-            <form method="POST" action="." class="review-form form-horizontal">
-                {% csrf_token %}
-
-                <div class="form-group clearfix">
-                  {% for field in proposal_review_form %}
-                    {% if field.errors %}
-                      {{field.errors}}
-                    {% endif %}
-
-                    <label for="" class="control-label col-sm-4">
-                        {{field.label}}
-                    </label>
-
-                    <div class="col-sm-8">
-                        {{field}}
-                    </div>
-                  {% endfor %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary" name="vote-form">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+                
+                <hr class="hr-mini">
+                <div class="row">
+                    <h4 class="fill-blue text-center">Review Proposal</h4>
+                    <hr class="hr-mini">
+                    <form method="POST" action="." class="review-form form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group clearfix">
+                            {% for field in proposal_review_form %}
+                                {% if field.errors %}
+                                    {{field.errors}}
+                                {% endif %}
+                                <div class="col-sm-offset-4">
+                                    {{field}}
+                                </div>
+                            {% endfor %}
+                        </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <button type="submit" class="btn btn-primary">
-                          Submit
-                        </button>
-                    </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary" name="review-form">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr class="hr-mini">
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <div class="col-sm-6 left-bordered">
-        <h4 class="text-center">Reviewers Comments </h4>
-        <hr class="hr-mini">
-        <div class="col-sm-12">
-            <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active" role="presentation">
-                        {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
-                            {% include "proposals/detail/comments.html" %}
-                        {% endwith %}
-                    </li>
+        <div class="col-sm-6 left-bordered">
+            <h4 class="text-center">Reviewers Comments </h4>
+            <hr class="hr-mini">
+            <div class="col-sm-12">
+                <div role="tabpanel" class="comments-and-reviews-panel" id="comments">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active" role="presentation">
+                            {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                                {% include "proposals/detail/comments.html" %}
+                            {% endwith %}
+                        </li>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
+
+
+{% block script_extra %}
+    <script>
+     $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+         e.preventDefault();
+         var _that = $(this);
+         if (_that.hasClass('active')){
+             return
+         }
+         var url = _that.attr('data-url');
+         $('.proposal-vote-count').html("...");
+         $.post(url, {}, function(result){
+             $('.btn-vote').removeClass('active');
+             $(_that).addClass('active');
+             $('.proposal-vote-count').html(result);
+         });
+     });
+    </script>
+{% endblock script_extra %}

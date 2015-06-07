@@ -7,8 +7,16 @@ from django.utils.safestring import mark_safe
 from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_LIST, PROPOSAL_STATUS_LIST, PROPOSAL_TARGET_AUDIENCES
-from junction.proposals.models import ProposalSection, ProposalType
+from junction.base.constants import (
+    PROPOSAL_REVIEW_STATUS_LIST,
+    PROPOSAL_STATUS_LIST,
+    PROPOSAL_TARGET_AUDIENCES
+)
+from junction.proposals.models import (
+    ProposalSection,
+    ProposalType,
+    ProposalSectionReviewerVoteValue
+)
 
 
 def _get_proposal_section_choices(conference):
@@ -19,6 +27,11 @@ def _get_proposal_section_choices(conference):
 def _get_proposal_type_choices(conference):
     return [(str(cpt.id), cpt.name)
             for cpt in ProposalType.objects.filter(conferences=conference)]
+
+
+def _get_proposal_section_reviewer_vote_choices():
+    return [(i.vote_value, '{} ({})'.format(i.description, i.vote_value))
+            for i in ProposalSectionReviewerVoteValue.objects.all()]
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -108,4 +121,18 @@ class ProposalReviewForm(forms.Form):
     """
     Used to review the proposal.
     """
-    review_status = forms.ChoiceField(choices=PROPOSAL_REVIEW_STATUS_LIST)
+    review_status = forms.ChoiceField(
+        choices=PROPOSAL_REVIEW_STATUS_LIST,
+        widget=forms.RadioSelect()
+    )
+
+
+class ProposalReviewerVoteForm(forms.Form):
+
+    """
+    Used by ProposalSectionReviewers to vote on proposals.
+    """
+    vote_value = forms.ChoiceField(
+        choices=_get_proposal_section_reviewer_vote_choices(),
+        widget=forms.RadioSelect()
+    )
