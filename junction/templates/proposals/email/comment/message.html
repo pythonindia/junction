@@ -4,7 +4,7 @@ There is a new comment on "<a href="{{host}}{{proposal.get_absolute_url}}">
     {% if by_author %}
 </a>" by <b>by Author.</b>:
     {% else %}
-</a>" by <b>by a Reviewer.</b>:
+</a>" by <b>by a Reviewer[{{comment.commenter.pk}}].</b>:
     {% endif  %}
 {% else %}
 </a>" by <b>{{comment.commenter}}</b>:
