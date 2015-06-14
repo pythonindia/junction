@@ -6,4 +6,4 @@ DATABASES = {
 
 ALLOWED_HOSTS = ['*']
 
-DEGUG = False
+DEBUG = False
