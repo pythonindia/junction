@@ -4,6 +4,6 @@ DATABASES = {
     'default': dj_database_url.config()
 }
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*.herokuapp.com']
 
 DEBUG = False
