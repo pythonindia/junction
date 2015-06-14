@@ -1,6 +1,8 @@
 junction
 ========
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 [![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Coverage Status](https://coveralls.io/repos/pythonindia/junction/badge.svg?branch=master)](https://coveralls.io/r/pythonindia/junction?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Version**: 0.2.0-dev
@@ -41,7 +43,7 @@ alias docker='sudo docker'
 alias fig='sudo fig'
 ```
 
-Finally, run 
+Finally, run
 ```
 fig up
 ```
@@ -50,7 +52,7 @@ fig up
 Configuring Django-allauth
 ---------------------------
 
- - Go to `http://localhost:8000/nimda/sites/site/` 
+ - Go to `http://localhost:8000/nimda/sites/site/`
  - Change the default site's(the one with ID = 1) name and display to `localhost:8000`
  - Go to `Social Applications` in admin panel and add [Github](http://django-allauth.readthedocs.org/en/latest/providers.html#github) and [Google](http://django-allauth.readthedocs.org/en/latest/providers.html#google)'s auth details
 
@@ -72,7 +74,7 @@ Contributing
 1. Choose an [issue][issue-list] and ask any doubts in the issue thread.
 2. Report any bugs/feature request as github [new issue][new-issue], if it's already not present.
 3. If you are starting to work on an issue, please leave a comment saying "I am working on it".
-4. Once you are done with feature/bug fix, send a pull request according to the [guidelines]. 
+4. Once you are done with feature/bug fix, send a pull request according to the [guidelines].
 
 [issue-list]: https://github.com/pythonindia/junction/issues/
 [new-issue]: https://github.com/pythonindia/junction/issues/new
