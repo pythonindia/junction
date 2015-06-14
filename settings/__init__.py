@@ -26,4 +26,4 @@ except ImportError:
 # heroku
 
 if 'DYNO' in os.environ:
-    from .heroku import *
+    from .heroku import *  # noqa
