@@ -13,11 +13,15 @@ Setup
 =====
 
 Junction uses `pandoc` for converting markdown to html.
-To install run this command in Your terminal.
+If You are using Ubuntu, You can install it using
 
 ```
 sudo apt-get install pandoc
 ```
+
+For other operating systems & more installing options checkout [Pandoc installation guide].
+
+[Pandoc installation guide]: http://pandoc.org/installing.html
 
 It is advised to install all the requirements inside [virtualenv], use [virtualenvwrapper] to manage virtualenvs.
 
