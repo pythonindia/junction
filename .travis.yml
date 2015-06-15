@@ -9,6 +9,10 @@ cache:
   directories:
   - $HOME/.pip-cache/
 
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qqy pandoc
+
 install:
   - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
   - pip install coveralls

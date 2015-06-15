@@ -12,6 +12,13 @@ Junction is a software to manage proposals, reviews, schedule, feedback during c
 Setup
 =====
 
+Junction uses `pandoc` for converting markdown to html.
+To install run this command in Your terminal.
+
+```
+sudo apt-get install pandoc
+```
+
 It is advised to install all the requirements inside [virtualenv], use [virtualenvwrapper] to manage virtualenvs.
 
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
