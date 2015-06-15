@@ -55,20 +55,24 @@
 
             {% if is_author %}
                 <div class="btn-group" role="group">
-                    <a href="{{ proposal.get_update_url }}" class="btn btn-default">
+                    <a href="{{ proposal.get_update_url }}"
+                       class="btn btn-default"
+                       title='Edit...'
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-pencil-square-o"></i>
                     </a>
 
-                    <a href="{{ proposal.get_delete_url }}" class="btn btn-default" type="button">
+                    <a href="{{ proposal.get_delete_url }}"
+                       class="btn btn-default"
+                       type="button"
+                       title="Delete..."
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-trash-o"></i>
                     </a>
 
-                    <a href="#public-comments" class="btn btn-default" type="button">
+                    <a href="#public-comments" class="btn btn-default" type="button" title="Comments"
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-comments-o"></i>
-                    </a>
-
-                    <a href="#reviewers-comments" class="btn btn-default" type="button">
-                        <i class="fa fa-info"></i>
                     </a>
                 </div>
             {% endif %}
