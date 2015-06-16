@@ -6,6 +6,8 @@ import logging
 
 # Third Party Stuff
 from django.conf import settings
+from markdown2 import markdown
+
 
 # Junction Stuff
 from junction.base.emailer import send_email
@@ -15,10 +17,20 @@ from .models import ProposalSection, ProposalSectionReviewer
 logger = logging.getLogger(__name__)
 
 
+def markdown_to_html(md):
+    """
+    Convert given markdown to html.
+    :param md: string
+    :return: string - converted html
+    """
+    return markdown(md)
+
+
 def send_mail_for_new_comment(proposal_comment, login_url):
     proposal = proposal_comment.proposal
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
+    proposal_comment.comment = markdown_to_html(proposal_comment.comment)
     for to in send_to:
         if to == proposal_comment.commenter:
             continue

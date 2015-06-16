@@ -11,7 +11,7 @@ There is a new comment on "<a href="{{host}}{{proposal.get_absolute_url}}">
 {% endif  %}
 <br/>
 <br/>
-<i>"{{comment.comment}}"</i>
+<i>"{{comment.comment | safe}}"</i>
 
 <hr/>
 PS: Please, don't reply to the email. You can
