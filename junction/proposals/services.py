@@ -6,7 +6,7 @@ import logging
 
 # Third Party Stuff
 from django.conf import settings
-import pypandoc
+from markdown2 import markdown
 
 
 # Junction Stuff
@@ -17,13 +17,13 @@ from .models import ProposalSection, ProposalSectionReviewer
 logger = logging.getLogger(__name__)
 
 
-def markdown_to_html(markdown):
+def markdown_to_html(md):
     """
     Convert given markdown to html.
-    :param markdown: string
+    :param md: string
     :return: string - converted html
     """
-    return pypandoc.convert(markdown, 'html', format='markdown')
+    return markdown(md)
 
 
 def send_mail_for_new_comment(proposal_comment, login_url):
