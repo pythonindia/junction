@@ -26,8 +26,9 @@ def markdown_to_html(md):
     return markdown(md)
 
 
-def send_mail_for_new_comment(proposal_comment, login_url):
+def send_mail_for_new_comment(proposal_comment, host):
     proposal = proposal_comment.proposal
+    login_url = '{}?next={}'.format(settings.LOGIN_URL, proposal.get_absolute_url())
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
     proposal_comment.comment = markdown_to_html(proposal_comment.comment)
@@ -37,10 +38,11 @@ def send_mail_for_new_comment(proposal_comment, login_url):
         send_email(to=to,
                    template_dir='proposals/email/comment',
                    context={'to': to,
+                            'host': host,
+                            'login_url': login_url,
                             'proposal': proposal,
                             'comment': proposal_comment,
                             'commenter': commenter,
-                            'login_url': login_url,
                             'by_author': commenter == proposal.author})
 
 
