@@ -36,7 +36,7 @@ def send_mail_for_new_comment(proposal_comment, login_url):
             context['nickname'] = nick
         send_email(to=to,
                    template_dir='proposals/email/comment',
-                   )
+                   context=context)
 
 
 def comment_recipients(proposal_comment):
