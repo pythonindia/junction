@@ -77,6 +77,7 @@ class ConferenceProposalReviewer(AuditModel):
     """ List of global proposal reviewers """
     conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
+    nick = models.CharField(max_length=20, verbose_name='Nickname', default='Reviewer')
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
     class Meta:

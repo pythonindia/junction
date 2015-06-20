@@ -22,14 +22,21 @@ def send_mail_for_new_comment(proposal_comment, login_url):
     for to in send_to:
         if to == proposal_comment.commenter:
             continue
+        context={'to': to,
+                 'proposal': proposal,
+                 'comment': proposal_comment,
+                 'commenter': commenter,
+                 'login_url': login_url,
+                 'by_author': commenter == proposal.author}
+        try:
+            nick = commenter.ConferenceProposalReviewer_set.first()
+        except:
+            pass
+        else:
+            context['nickname'] = nick
         send_email(to=to,
                    template_dir='proposals/email/comment',
-                   context={'to': to,
-                            'proposal': proposal,
-                            'comment': proposal_comment,
-                            'commenter': commenter,
-                            'login_url': login_url,
-                            'by_author': commenter == proposal.author})
+                   )
 
 
 def comment_recipients(proposal_comment):
