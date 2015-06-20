@@ -160,8 +160,8 @@ def create_proposal(request, conference_slug):
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
     send_mail_for_new_proposal(proposal, host)
 
-    return HttpResponseRedirect(reverse('proposals-list',
-                                        args=[conference.slug]))
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
 
 
 @require_http_methods(['GET'])
@@ -245,8 +245,8 @@ def update_proposal(request, conference_slug, slug):
     proposal.proposal_type_id = form.cleaned_data['proposal_type']
     proposal.proposal_section_id = form.cleaned_data['proposal_section']
     proposal.save()
-    return HttpResponseRedirect(reverse('proposals-list',
-                                        args=[conference.slug]))
+    return HttpResponseRedirect(reverse('proposal-detail',
+                                        args=[conference.slug, proposal.slug]))
 
 
 @login_required
@@ -388,11 +388,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
             proposal=proposal, comment=comment,
             private=private, reviewer=reviewer, commenter=request.user
         )
-        login_url = '{}://{}{}?next={}'.format(
-            settings.SITE_PROTOCOL, request.META['HTTP_HOST'],
-            settings.LOGIN_URL, proposal.get_absolute_url()
-        )
-        send_mail_for_new_comment(proposal_comment, login_url=login_url)
+        host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
+        send_mail_for_new_comment(proposal_comment, host)
 
     redirect_url = reverse('proposal-detail', args=[conference.slug, proposal.slug])
 
