@@ -16,7 +16,7 @@ from junction.base.constants import (
     PROPOSAL_USER_VOTE_ROLES
 )
 from junction.base.models import AuditModel, TimeAuditModel
-from junction.conferences.models import Conference
+from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 
 @python_2_unicode_compatible
@@ -229,6 +229,11 @@ class ProposalComment(TimeAuditModel):
         up_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=True).count()
         down_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=False).count()
         return up_vote_count - down_vote_count
+
+    def get_reviewer_nick(self):
+        reviewer = ConferenceProposalReviewer.objects.get(conference_id=self.proposal.conference_id,
+                                                          reviewer_id=self.commenter_id)
+        return reviewer.nick
 
 
 @python_2_unicode_compatible

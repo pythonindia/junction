@@ -78,6 +78,7 @@ class ConferenceProposalReviewer(AuditModel):
     conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
+    nick = models.CharField(max_length=255, verbose_name="Nick Name", null=True, blank=True)
 
     class Meta:
         verbose_name = 'proposals reviewer'
