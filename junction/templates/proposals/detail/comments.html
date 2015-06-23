@@ -44,7 +44,7 @@
                   {% if comment.commenter == proposal.author %}
                   Comment by proposer.
                   {% else %}
-                  Comment by reviewer.
+                  Comment by {{comment.get_reviewer_nick}}.
                   {% endif %}
               {% else %}
                   {% if comment.commenter.get_full_name %}
