@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='conferenceproposalreviewer',
             name='nick',
-            field=models.CharField(max_length=255, null=True, verbose_name='Nick Name', blank=True),
+            field=models.CharField(default='Reviewer', max_length=255, verbose_name='Nick Name'),
             preserve_default=True,
         ),
     ]
