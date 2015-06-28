@@ -33,6 +33,9 @@ urlpatterns = patterns(
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/',
         'junction.proposals.dashboard.proposals_dashboard', name='proposal-dashboard'),
 
+    # Schedule related
+    url(r'^(?P<conference_slug>[\w-]+)/schedule/',
+        include('junction.schedule.urls')),
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
     url(r'^schedule/$', TemplateView.as_view(template_name='static-content/schedule.html',), name='schedule-static'),

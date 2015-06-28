@@ -388,11 +388,8 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
             proposal=proposal, comment=comment,
             private=private, reviewer=reviewer, commenter=request.user
         )
-        login_url = '{}://{}{}?next={}'.format(
-            settings.SITE_PROTOCOL, request.META['HTTP_HOST'],
-            settings.LOGIN_URL, proposal.get_absolute_url()
-        )
-        send_mail_for_new_comment(proposal_comment, login_url=login_url)
+        host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
+        send_mail_for_new_comment(proposal_comment, host)
 
     redirect_url = reverse('proposal-detail', args=[conference.slug, proposal.slug])
 

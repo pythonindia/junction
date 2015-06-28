@@ -14,5 +14,6 @@ Anuvrat Parashar (gh:bhanuvrat/ @bhanuvrat)
 Aayush Kasurde
 Arjoonn Sharma (gh:theSage21)
 Haris Ibrahim K V (gh:harisibrahimkv / @harisibrahimkv)
+dhilipsiva (gh:dhilipsiva / @dhilipsiva)
 
 * Possesses commit rights

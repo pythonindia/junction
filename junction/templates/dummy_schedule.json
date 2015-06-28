@@ -1,0 +1,251 @@
+{
+    "conference": {
+        "id": 1,
+        "name": "PyCon India 2015",
+        "start_date": "2015-10-02",
+        "end_date": "2015-10-04",
+        "timezone": "Asia/Kolkatta",
+        "venue": {
+            "name": "Nimhans",
+            "google_map_url": "https://goo.gl/XITV4W"
+        },
+        "rooms": [
+            {
+                "id": 1,
+                "name": "Audi 1",
+                "floor": "Ground",
+                "note": "Straight from entrance"
+            },
+            {
+                "id": 2,
+                "name": "Audi 2",
+                "floor": "Ground",
+                "note": "Right side of entrance"
+            },
+            {
+                "id": 3,
+                "name": "Audi 3",
+                "floor": "Ground",
+                "note": "Right extreme"
+            },
+            {
+                "id": 4,
+                "name": "Open Space",
+                "floor": "First",
+                "note": ""
+            },
+            {
+                "id": 5,
+                "name": "Lunch Hall",
+                "floor": "Ground",
+                "note": "Left side of the entrance"
+            }
+        ],
+        "days": [
+            {
+                "name": "Workshop Day",
+                "slots": [
+                    {
+                        "start_datetime": "2015-10-02T04:00:00.000000Z",
+                        "end_datetime": "2015-10-02T06:30:00.000000Z",
+                        "sessions": [
+                            {
+                                "room_id": 1,
+                                "session_id": 1,
+                                "title": "Workshop 1",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Batman",
+                                "speaker_links": "Links in markdown",
+                                "section": "Web development",
+                                "type": "Workshop",
+                                "target_audience": "Beginners",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-1/feedback/",
+                                "full_name": "Batman Rises",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 2,
+                                "session_id": 2,
+                                "title": "Workshop 2",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Joker",
+                                "speaker_links": "Links in markdown",
+                                "section": "Infrastructure",
+                                "type": "Workshop",
+                                "target_audience": "Intermediate",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-2/feedback/",
+                                "full_name": "Joker",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 3,
+                                "session_id": 3,
+                                "title": "Workshop 3",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Arun",
+                                "speaker_links": "Links in markdown",
+                                "section": "Core Python",
+                                "type": "Workshop",
+                                "target_audience": "Advanced",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-3/feedback/",
+                                "full_name": "Arun",
+                                "is_break": false,
+                                "is_lunch": false
+                            }
+                        ]
+                    },
+                    {
+                        "start_datetime": "2015-10-02T06:30:00.000000Z",
+                        "end_datetime": "2015-10-02T07:30:00.000000Z",
+                        "sessions": [
+                            {
+                                "room_id": 4,
+                                "session_id": 4,
+                                "title": "Lunch",
+                                "is_break": false,
+                                "is_lunch": true
+                            }
+                        ]
+                    },
+                    {
+                        "start_datetime": "2015-10-02T07:30:00.000000Z",
+                        "end_datetime": "2015-10-02T10:00:00.000000Z",
+                        "sessions": [
+                            {
+                                "room_id": 1,
+                                "session_id": 5,
+                                "title": "Workshop 4",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Batman 1",
+                                "speaker_links": "Links in markdown",
+                                "section": "Web development",
+                                "type": "Workshop",
+                                "target_audience": "Beginners",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-4/feedback/",
+                                "full_name": "Batman Rises",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 2,
+                                "session_id": 6,
+                                "title": "Workshop 5",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Joker",
+                                "speaker_links": "Links in markdown",
+                                "section": "Infrastructure",
+                                "type": "Workshop",
+                                "target_audience": "Intermediate",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-5/feedback/",
+                                "full_name": "Joker",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 3,
+                                "session_id": 7,
+                                "title": "Workshop 6",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Arun",
+                                "speaker_links": "Links in markdown",
+                                "section": "Core Python",
+                                "type": "Workshop",
+                                "target_audience": "Advanced",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-6/feedback/",
+                                "full_name": "Arun",
+                                "is_break": false,
+                                "is_lunch": false
+                            }
+                        ]
+                    },
+                    {
+                        "start_datetime": "2015-10-02T10:00:00.000000Z",
+                        "end_datetime": "2015-10-02T10:30:00.000000Z",
+                        "sessions": [
+                            {
+                                "room_id": 4,
+                                "session_id": 8,
+                                "title": "Break",
+                                "is_break": true,
+                                "is_lunch": false
+                            }
+                        ]
+                    },
+                    {
+                        "start_datetime": "2015-10-02T10:30:00.000000Z",
+                        "end_datetime": "2015-10-02T13:00:00.000000Z",
+                        "sessions": [
+                            {
+                                "room_id": 1,
+                                "session_id": 9,
+                                "title": "Workshop 7",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Batman 1",
+                                "speaker_links": "Links in markdown",
+                                "section": "Web development",
+                                "type": "Workshop",
+                                "target_audience": "Beginners",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-7/feedback/",
+                                "full_name": "Batman Rises",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 2,
+                                "session_id": 10,
+                                "title": "Workshop 8",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Joker",
+                                "speaker_links": "Links in markdown",
+                                "section": "Infrastructure",
+                                "type": "Workshop",
+                                "target_audience": "Intermediate",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-8/feedback/",
+                                "full_name": "Joker",
+                                "is_break": false,
+                                "is_lunch": false
+                            },
+                            {
+                                "room_id": 3,
+                                "session_id": 11,
+                                "title": "Workshop 9",
+                                "description": "Description will be long and supports markdown.",
+                                "prerequisites": "This is also markdown, text area",
+                                "content_urls": "Again Markdown",
+                                "speaker_info": "Arun",
+                                "speaker_links": "Links in markdown",
+                                "section": "Core Python",
+                                "type": "Workshop",
+                                "target_audience": "Advanced",
+                                "feedback_url": "https://in.pycon.org/cfp/2015/sessions/workshop-9/feedback/",
+                                "full_name": "Arun",
+                                "is_break": false,
+                                "is_lunch": false
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "total": 20,
+        "count": 20
+    }
+}
