@@ -75,14 +75,7 @@ def list_proposals(request, conference_slug):
     if request.user.is_authenticated():  # Display the proposals by this user
         user_proposals_list = proposals_qs.filter(author=request.user)
 
-    proposals_to_review = []
-    if _is_proposal_reviewer(request.user, conference):
-        proposal_reviewer_sections = [p.proposal_section for p in
-                                      ProposalSectionReviewer.objects.filter(
-                                          conference_reviewer__reviewer=request.user)]
-        proposals_to_review = [p for p in proposals_qs
-                               if p.proposal_section in proposal_reviewer_sections and
-                               p.status == PROPOSAL_STATUS_PUBLIC]
+    is_reviewer = _is_proposal_reviewer(request.user, conference)
 
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
@@ -117,10 +110,10 @@ def list_proposals(request, conference_slug):
                   {'public_proposals_list': public_proposals_list,
                    'user_proposals_list': user_proposals_list,
                    'selected_proposals_list': selected_proposals_list,
-                   'proposals_to_review': proposals_to_review,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
+                   'is_reviewer': is_reviewer,
                    'conference': conference})
 
 

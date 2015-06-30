@@ -53,7 +53,7 @@
                 </p>
                 <hr>
                 <p class="text-left">{{ conference.description|markdown }}</p>
-                {% if proposals_to_review %}
+                {% if is_reviewer %}
                     <a class='btn btn-primary' href="{% url 'proposals-to-review' conference.slug %}">Proposals To Review</a>
                 {% endif %}
             </div>
