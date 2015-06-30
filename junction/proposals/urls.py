@@ -21,6 +21,7 @@ urlpatterns = patterns(
     # proposal urls
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
+    url(r'^to_review/$', views.proposals_to_review, name='proposals-to-review'),
     url(r'^(?P<slug>[\w-]+)/update/$',
         views.update_proposal, name='proposal-update'),
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
@@ -38,5 +39,3 @@ urlpatterns = patterns(
     url(r'^(?P<slug>[\w-]+)/vote/$',
         views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
 )
-
-# random addition to attempt to merge

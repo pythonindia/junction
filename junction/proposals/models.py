@@ -103,11 +103,11 @@ class Proposal(TimeAuditModel):
         return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
 
     def get_comments_count(self):
-        """ Show only the public comment count """
+        """ Show only public comments count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=False).count()
 
     def get_reviews_comments_count(self):
-        """ Show only the public comment count """
+        """ Show only private comments count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count()
 
     def get_votes_count(self):
