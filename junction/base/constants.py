@@ -62,3 +62,9 @@ PROPOSAL_REVIEW_VOTES_LIST = ((2, PROPOSAL_REVIEW_VOTE_MUST_HAVE),
                               (0, PROPOSAL_REVIEW_VOTE_NOT_BAD),
                               (-1, PROPOSAL_REVIEW_VOTE_NOT_ALLOWED),
                               )
+
+REVIEWER_HAS_COMMENTED = 'Yes'
+REVIEWER_HAS_NOT_COMMENTED = 'No'
+PROPOSAL_REVIEWER_COMMENT_CHOICES = (('True', REVIEWER_HAS_COMMENTED),
+                                     ('False', REVIEWER_HAS_NOT_COMMENTED),
+                                     )

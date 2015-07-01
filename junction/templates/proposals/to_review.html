@@ -71,17 +71,11 @@
     <script>
     $( 'button[type="submit"]' ).click(function(e){
         e.preventDefault();
-        console.log('clicked');
         var p_section = $( "#id_proposal_section option:selected" ).text();
         $( ".proposal-section" ).show().not( '[id~="' + p_section + '"]' ).hide();
         var p_type = $( "#id_proposal_type option:selected" ).text();
         $( ".proposal" ).show().not( '[data-type~="' + p_type + '"]' ).hide();
-        var r_comment = $( "#id_reviewer_comment option:selected" ).text();
-        if (r_comment == 'Yes') {
-            r_comment = 'True'
-        } else if (r_comment == 'No') {
-            r_comment = 'False'
-        }
+        var r_comment = $( "#id_reviewer_comment" ).val();
         $( ".proposal" ).show().not( '[data-comment~="' + r_comment + '"]' ).hide();
     });
     </script>
