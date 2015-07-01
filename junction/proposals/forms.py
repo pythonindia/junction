@@ -144,8 +144,8 @@ class ProposalsToReviewForm(forms.Form):
     '''
     Used filter proposals
     '''
-    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
     proposal_section = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
     reviewer_comment = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
 
     def __init__(self, conference, *args, **kwargs):
