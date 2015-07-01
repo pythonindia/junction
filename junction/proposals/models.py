@@ -110,6 +110,10 @@ class Proposal(TimeAuditModel):
         """ Show only private comments count """
         return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count()
 
+    def has_reviewer_comments(self):
+        """ Proposals has reviewer comments """
+        return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count() > 0
+
     def get_votes_count(self):
         """ Show only the public comment count """
         votes = ProposalVote.objects.filter(

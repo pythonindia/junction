@@ -21,6 +21,7 @@ from .forms import (
     ProposalForm,
     ProposalReviewForm,
     ProposalReviewerVoteForm,
+    ProposalsToReviewForm
 )
 from .models import (
     Proposal,
@@ -268,12 +269,14 @@ def proposals_to_review(request, conference_slug):
 
     proposal_sections = conference.proposal_types.all()
     proposal_types = conference.proposal_sections.all()
+    form = ProposalsToReviewForm(conference=conference)
 
     ctx = {
         'proposals_to_review': proposals_to_review,
         'proposal_sections': proposal_sections,
         'proposal_types': proposal_types,
-        'conference': conference
+        'conference': conference,
+        'form': form,
     }
 
     return render(request, 'proposals/to_review.html', ctx)
