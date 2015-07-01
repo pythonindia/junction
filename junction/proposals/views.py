@@ -323,9 +323,9 @@ def review_proposal(request, conference_slug, slug):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def proposal_reviewer_vote(request, conference_slug, slug):
+def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
 
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
