@@ -10,7 +10,8 @@ from pagedown.widgets import PagedownWidget
 from junction.base.constants import (
     PROPOSAL_REVIEW_STATUS_LIST,
     PROPOSAL_STATUS_LIST,
-    PROPOSAL_TARGET_AUDIENCES
+    PROPOSAL_TARGET_AUDIENCES,
+    PROPOSAL_REVIEWER_COMMENT_CHOICES,
 )
 from junction.proposals.models import (
     ProposalSection,
@@ -136,3 +137,19 @@ class ProposalReviewerVoteForm(forms.Form):
         choices=_get_proposal_section_reviewer_vote_choices(),
         widget=forms.RadioSelect()
     )
+
+
+class ProposalsToReviewForm(forms.Form):
+
+    '''
+    Used filter proposals
+    '''
+    proposal_section = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    reviewer_comment = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+
+    def __init__(self, conference, *args, **kwargs):
+        super(ProposalsToReviewForm, self).__init__(*args, **kwargs)
+        self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
+        self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
+        self.fields['reviewer_comment'].choices = PROPOSAL_REVIEWER_COMMENT_CHOICES

@@ -21,22 +21,17 @@ urlpatterns = patterns(
     # proposal urls
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
-    url(r'^(?P<slug>[\w-]+)/update/$',
-        views.update_proposal, name='proposal-update'),
+    url(r'^to_review/$', views.proposals_to_review, name='proposals-to-review'),
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
-    url(r'^(?P<slug>[\w-]+)/delete/$',
-        views.delete_proposal, name='proposal-delete'),
-    # url(r'^(?P<slug>[\w-]+)/review/$',
-    #     views.review_proposal, name='proposal-review'),
+    url(r'^(?P<slug>[\w-]+)/delete/$', views.delete_proposal, name='proposal-delete'),
+    url(r'^(?P<slug>[\w-]+)/update/$', views.update_proposal, name='proposal-update'),
+    # url(r'^(?P<slug>[\w-]+)/review/$', views.review_proposal, name='proposal-review'),
+
     # comment urls
     url(r'^comment/', include(comment_urls)),
-    # Voting
-    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$',
-        views.proposal_vote_up, name='proposal-vote-up'),
-    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$',
-        views.proposal_vote_down, name='proposal-vote-down'),
-    url(r'^(?P<slug>[\w-]+)/vote/$',
-        views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
-)
 
-# random addition to attempt to merge
+    # Voting
+    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
+    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$', views.proposal_vote_down, name='proposal-vote-down'),
+    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$', views.proposal_vote_up, name='proposal-vote-up'),
+)

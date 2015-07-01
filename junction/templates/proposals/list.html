@@ -47,13 +47,15 @@
                     Reviewer Dashboard
                     </a>
                     {% endif %}
-
                     <span class="status status-{{conference.status}}">
                         {{ conference.get_status_display }}
                     </span>
                 </p>
                 <hr>
                 <p class="text-left">{{ conference.description|markdown }}</p>
+                {% if is_reviewer %}
+                    <a class='btn btn-primary' href="{% url 'proposals-to-review' conference.slug %}">Proposals To Review</a>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -90,21 +92,16 @@
             </a>
         {% endif %}
         </div>
-
-        {% if proposals_to_review %}
-        {% include 'proposals/partials/proposal-list--items.html' with proposals=proposals_to_review title="Proposals To Be Reviewed" display_status=False %}
-        {% endif %}
-
         {% if selected_proposals_list %}
-        {% include 'proposals/partials/proposal-list--items.html' with proposals=selected_proposals_list title="Selected Proposals" display_status=False %}
+            {% include 'proposals/partials/proposal-list--items.html' with proposals=selected_proposals_list title="Selected Proposals" display_status=False %}
         {% endif %}
 
         {% if user_proposals_list %}
-        {% include 'proposals/partials/proposal-list--items.html' with proposals=user_proposals_list title="My Proposals" display_status=True %}
+            {% include 'proposals/partials/proposal-list--items.html' with proposals=user_proposals_list title="My Proposals" display_status=True %}
         {% endif %}
 
         {% if public_proposals_list %}
-        {% include 'proposals/partials/proposal-list--items.html' with proposals=public_proposals_list title="List of Proposals" display_status=False %}
+            {% include 'proposals/partials/proposal-list--items.html' with proposals=public_proposals_list title="List of Proposals" display_status=False %}
         {% else %}
             <hr>
             <h2>List of Proposals</h2>

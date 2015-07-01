@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+# Standard Library
+import collections
+
 # Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -18,6 +21,7 @@ from .forms import (
     ProposalForm,
     ProposalReviewForm,
     ProposalReviewerVoteForm,
+    ProposalsToReviewForm
 )
 from .models import (
     Proposal,
@@ -72,14 +76,7 @@ def list_proposals(request, conference_slug):
     if request.user.is_authenticated():  # Display the proposals by this user
         user_proposals_list = proposals_qs.filter(author=request.user)
 
-    proposals_to_review = []
-    if _is_proposal_reviewer(request.user, conference):
-        proposal_reviewer_sections = [p.proposal_section for p in
-                                      ProposalSectionReviewer.objects.filter(
-                                          conference_reviewer__reviewer=request.user)]
-        proposals_to_review = [p for p in proposals_qs
-                               if p.proposal_section in proposal_reviewer_sections and
-                               p.status == PROPOSAL_STATUS_PUBLIC]
+    is_reviewer = _is_proposal_reviewer(request.user, conference)
 
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
@@ -114,10 +111,10 @@ def list_proposals(request, conference_slug):
                   {'public_proposals_list': public_proposals_list,
                    'user_proposals_list': user_proposals_list,
                    'selected_proposals_list': selected_proposals_list,
-                   'proposals_to_review': proposals_to_review,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
+                   'is_reviewer': is_reviewer,
                    'conference': conference})
 
 
@@ -251,6 +248,42 @@ def update_proposal(request, conference_slug, slug):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
+def proposals_to_review(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+
+    if not _is_proposal_reviewer(request.user, conference):
+        return HttpResponseForbidden()
+
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(conference=conference).filter(status=PROPOSAL_STATUS_PUBLIC)
+
+    proposal_reviewer_sections = [p.proposal_section for p in
+                                  ProposalSectionReviewer.objects.filter(
+                                      conference_reviewer__reviewer=request.user)]
+    proposals_to_review = []
+    s_items = collections.namedtuple('section_items', 'section proposals')
+    for section in proposal_reviewer_sections:
+        section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+        proposals_to_review.append(s_items(section, section_proposals))
+
+    proposal_sections = conference.proposal_types.all()
+    proposal_types = conference.proposal_sections.all()
+    form = ProposalsToReviewForm(conference=conference)
+
+    ctx = {
+        'proposals_to_review': proposals_to_review,
+        'proposal_sections': proposal_sections,
+        'proposal_types': proposal_types,
+        'conference': conference,
+        'form': form,
+    }
+
+    return render(request, 'proposals/to_review.html', ctx)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
 def review_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
@@ -293,9 +326,9 @@ def review_proposal(request, conference_slug, slug):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def proposal_reviewer_vote(request, conference_slug, slug):
+def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
 
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
