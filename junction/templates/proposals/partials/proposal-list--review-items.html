@@ -1,3 +1,6 @@
+{% load proposal_filters %}
+
+
 <div id="{{title}}" class="proposal-section">
     
     {% if title %}
@@ -5,7 +8,7 @@
     {% endif %}
 
     {% for proposal in proposals %}
-        <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal.has_reviewer_comments}}">
+        <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
             <div class="col-xs-12" >
                 <div class="proposal-list-content">
                     <div class="col-sm-1 hidden-xs proposal-stats">
@@ -43,7 +46,7 @@
                                 {% endif %}
                                 <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
                                 <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
-                                {% if proposal.has_reviewer_comments %}
+                                {% if proposal|reviewer_comments:request.user %}
                                     <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="Left a review comment">
                                         <i class="fa fa-comments-o"></i>
                                     </a>
