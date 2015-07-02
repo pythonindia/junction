@@ -40,18 +40,20 @@
             {% if proposals_to_review %}
                 <h2>Proposals To Review</h2>
                 <hr>
-                <h3>Filter Proposals</h3>
-                <form method="POST" action="" class="form-inline">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% buttons %}
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                            Filter
-                        </button>
-                    </div>
-                {% endbuttons %}
-                </form>
+                <div id="filter">
+                    <h3>Filter Proposals</h3>
+                    <form method="POST" action="" class="form-inline">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                Filter
+                            </button>
+                        </div>
+                       {% endbuttons %}
+                    </form>
+                </div>
 
                 <hr>
                 <div id="#proposals">
@@ -59,7 +61,7 @@
                         {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
                     {% endfor %}
                 </div>
-                
+
             {% else %}
                 <p>No proposals to review. </p>
             {% endif %}
@@ -69,14 +71,32 @@
 
 {% block script_extra %}
     <script>
+    function clear_filters() {
+        $('#filter').append('<div class="row" id="clear-filters"><a class="btn btn-info pull-left" href="./" style="margin-left: 15px; margin-top: 10px;"><i class="fa fa-list"></i>Clear Filters<i class="fa fa-close"></i></a></div><br />');
+    };
+
+    is_clicked = false;
     $( 'button[type="submit"]' ).click(function(e){
         e.preventDefault();
-        var p_section = $( "#id_proposal_section option:selected" ).text();
-        $( ".proposal-section" ).show().not( '[id~="' + p_section + '"]' ).hide();
-        var p_type = $( "#id_proposal_type option:selected" ).text();
-        $( ".proposal" ).show().not( '[data-type~="' + p_type + '"]' ).hide();
-        var r_comment = $( "#id_reviewer_comment" ).val();
-        $( ".proposal" ).show().not( '[data-comment~="' + r_comment + '"]' ).hide();
+        var filter = false;
+        console.log(filter);
+        var p_section = $( "#id_proposal_section option:selected" ).text(),
+            p_type = $( "#id_proposal_type option:selected" ).text(),
+            r_comment = $( "#id_reviewer_comment" ).val();
+
+        if (p_section != 'All') {
+            $( ".proposal-section" ).show().not( '[id~="' + p_section + '"]' ).hide();
+        }
+        if (p_type != 'All') {
+            $( ".proposal" ).show().not( '[data-type~="' + p_type + '"]' ).hide();
+        }
+        if (r_comment != 'All') {
+            $( ".proposal" ).show().not( '[data-comment~="' + r_comment + '"]' ).hide();
+        }
+        if ( !is_clicked && (r_comment != 'All' || p_section != 'All' || p_type != 'All')) {
+            clear_filters();
+            is_clicked = true;
+        }
     });
     </script>
 {% endblock %}
