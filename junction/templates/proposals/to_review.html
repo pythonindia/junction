@@ -75,6 +75,11 @@
         $('#filter').append('<div class="row" id="clear-filters"><a class="btn btn-info pull-left" href="./" style="margin-left: 15px; margin-top: 10px;"><i class="fa fa-list"></i>Clear Filters<i class="fa fa-close"></i></a></div><br />');
     };
 
+    $.each($('select'), function(val, text) {
+        $(this).prepend( new Option('All', 'All') );
+        $(this).val('All').change();
+    });
+
     is_clicked = false;
     $( 'button[type="submit"]' ).click(function(e){
         e.preventDefault();
