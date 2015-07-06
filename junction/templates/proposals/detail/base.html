@@ -12,7 +12,7 @@
 {% block page_classes %} {{ block.super}} proposal proposal-detail {% endblock page_classes %}
 
 {% block endhead %}
-    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/>css'
+    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/css'>
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
 {% endblock %}
 
@@ -128,7 +128,7 @@
           {% endif %}
 
           <div class="row">
-              <a name="upload-content" class='btn btn-primary' href="#">
+              <a id="upload-content" class='btn btn-primary' href="#">
                   Ask proposer to upload content
               </a>
           </div>
