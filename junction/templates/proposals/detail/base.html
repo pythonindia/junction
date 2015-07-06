@@ -12,6 +12,8 @@
 {% block page_classes %} {{ block.super}} proposal proposal-detail {% endblock page_classes %}
 
 {% block endhead %}
+    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/>css'
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -125,6 +127,12 @@
           </div>
           {% endif %}
 
+          <div class="row">
+              <a name="upload-content" class='btn btn-primary' href="#">
+                  Ask proposer to upload content
+              </a>
+          </div>
+
           {% if proposal.speaker_info %}
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Speaker Info:</b></h4>
@@ -233,20 +241,31 @@
 {% endblock %}
 
 {% block script_extra %}
-<script>
-$(document).ready(function() {
+    <script>
+    $(document).ready(function() {
+        
+        $('#upload-content').click(function(e){
+            e.preventDefault();
+            
+            $.ajax({
+                method: "POST",
+                url: "{% url 'proposal-upload-content' proposal.conference.slug proposal.slug %}",
+            })
+             .done(function( msg ) {
+                 swal( msg );
+             });
+        });
 
-  $('a[href=#public-comments]').click(function(){
-    $('a[href=#js-comments]').parent().addClass('active').siblings().removeClass("active");
-  });
+        $('a[href=#public-comments]').click(function(){
+            $('a[href=#js-comments]').parent().addClass('active').siblings().removeClass("active");
+        });
+        $('a[href=#reviewers-comments]').click(function(){
+            $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
+        });
+        $('a[href=#reviewers-only-comments]').click(function(){
+            $('a[href=#js-only-reviewers]').parent().addClass('active').siblings().removeClass("active");
+        });
 
-  $('a[href=#reviewers-comments]').click(function(){
-    $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
-  });
-  $('a[href=#reviewers-only-comments]').click(function(){
-    $('a[href=#js-only-reviewers]').parent().addClass('active').siblings().removeClass("active");
-  });
-
-});
-</script>
+    });
+    </script>
 {% endblock %}

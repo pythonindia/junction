@@ -32,7 +32,11 @@ from .models import (
     ProposalSectionReviewerVote,
     ProposalSectionReviewerVoteValue
 )
-from .services import send_mail_for_new_comment, send_mail_for_new_proposal
+from .services import (
+    send_mail_for_new_comment,
+    send_mail_for_new_proposal,
+    send_mail_for_proposal_content,
+)
 
 
 def _is_proposal_author(user, proposal):
@@ -322,6 +326,26 @@ def review_proposal(request, conference_slug, slug):
     proposal.save()
 
     return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_upload_content(request, conference_slug, slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+
+    if not _is_proposal_section_reviewer(request.user, conference, proposal):
+        return HttpResponseForbidden()
+
+    host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
+    response = send_mail_for_proposal_content(conference, proposal, host)
+
+    if response == 1:
+        message = 'Email sent successfully.'
+    else:
+        message = 'There is problem in sending mail. Please contact conference chair.'
+
+    return HttpResponse(message)
 
 
 @login_required

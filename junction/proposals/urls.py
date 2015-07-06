@@ -25,6 +25,7 @@ urlpatterns = patterns(
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)/delete/$', views.delete_proposal, name='proposal-delete'),
     url(r'^(?P<slug>[\w-]+)/update/$', views.update_proposal, name='proposal-update'),
+    url(r'^(?P<slug>[\w-]+)/upload-content/$', views.proposal_upload_content, name='proposal-upload-content'),
     # url(r'^(?P<slug>[\w-]+)/review/$', views.review_proposal, name='proposal-review'),
 
     # comment urls

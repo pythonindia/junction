@@ -1,0 +1,16 @@
+Hi {{ author_name }},
+
+We are glad with Your proposal {{ proposal.title }} for {{ conference.name }}. As you are aware that reviewers are providing feedback and helping you with the content, we request you to share the draft version of your presentation in junction.
+
+We understand that you might feel that its too early to upload the presentation without knowing about talk selection. But this would help the reviewers understand your content in detail and provide feedback accordingly.
+
+If you have proposed a workshop, do share the draft version of the content you are planning to present in ppt or pdf format, code snippets can be added later.
+
+Looking forward to seeing you in {{ conference.name }}. 
+
+Thanks,  <br />
+{{ conference.name }} Team  <br /><br />
+
+-------------------------------------------------------------------------------
+PS: Please, don't reply to the email.  You can login ({{host}}{{login_url}}) to add content to proposal.
+
