@@ -5,5 +5,3 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = ['.herokuapp.com']
-
-DEBUG = False
