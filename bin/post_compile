@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Run Django migrations.
+./manage.py migrate
