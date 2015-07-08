@@ -108,8 +108,8 @@ def list_proposals(request, conference_slug):
     public_proposals_list = proposals_qs.exclude(review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
         status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
 
-    proposal_sections = conference.proposal_types.all()
-    proposal_types = conference.proposal_sections.all()
+    proposal_sections = conference.proposal_sections.all()
+    proposal_types = conference.proposal_types.all()
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
@@ -271,8 +271,8 @@ def proposals_to_review(request, conference_slug):
         section_proposals = [p for p in proposals_qs if p.proposal_section == section]
         proposals_to_review.append(s_items(section, section_proposals))
 
-    proposal_sections = conference.proposal_types.all()
-    proposal_types = conference.proposal_sections.all()
+    proposal_sections = conference.proposal_sections.all()
+    proposal_types = conference.proposal_types.all()
     form = ProposalsToReviewForm(conference=conference)
 
     ctx = {
