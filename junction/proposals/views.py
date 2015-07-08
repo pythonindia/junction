@@ -334,7 +334,8 @@ def proposal_upload_content(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not _is_proposal_section_reviewer(request.user, conference, proposal):
+    if not (_is_proposal_section_reviewer(request.user, conference, proposal) or
+            request.user.is_superuser):
         return HttpResponseForbidden()
 
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])

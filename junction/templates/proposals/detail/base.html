@@ -127,11 +127,13 @@
           </div>
           {% endif %}
 
-          <div class="row">
-              <a id="upload-content" class='btn btn-primary' href="#">
-                  Ask proposer to upload content
-              </a>
-          </div>
+          {% if is_reviewer or user.is_authenticated and user.is_superuser %}
+              <div class="row">
+                  <a id="upload-content" class='btn btn-primary' href="#">
+                      Ask proposer to upload content
+                  </a>
+              </div>
+          {% endif %}
 
           {% if proposal.speaker_info %}
           <div class="proposal-writeup--section">
