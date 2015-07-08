@@ -95,3 +95,20 @@ def _get_proposal_section_reviewers(proposal):
     recipients = {proposal_reviewer.conference_reviewer.reviewer
                   for proposal_reviewer in proposal_reviewers}
     return recipients
+
+
+def send_mail_for_proposal_content(conference, proposal, host):
+    """
+    Send mail to proposal author to upload content for proposal.
+    """
+    login_url = '{}?next={}'.format(settings.LOGIN_URL, proposal.get_absolute_url())
+    author = proposal.author
+    author_name = author.get_full_name() or author.username
+    context = {
+        'host': host,
+        'login_url': login_url,
+        'conference': conference,
+        'proposal': proposal,
+        'author_name': author_name,
+    }
+    return send_email(to=author, template_dir='proposals/email/upload_content', context=context)
