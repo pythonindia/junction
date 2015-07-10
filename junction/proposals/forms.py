@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 # Third Party Stuff
 from django import forms
 from django.utils.safestring import mark_safe
+from django.utils.timezone import now
 from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
@@ -22,7 +23,8 @@ from junction.proposals.models import (
 
 def _get_proposal_section_choices(conference):
     return [(str(cps.id), cps.name)
-            for cps in ProposalSection.objects.filter(conferences=conference)]
+            for cps in ProposalSection.objects.filter(
+                conferences=conference, end_date__gt=now())]
 
 
 def _get_proposal_type_choices(conference):
