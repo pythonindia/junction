@@ -22,7 +22,7 @@ from junction.proposals.models import (
 
 
 class ProposalSectionAdmin(AuditAdmin):
-    list_display = ('name', 'active') + AuditAdmin.list_display
+    list_display = ('name', 'active', 'start_date', 'end_date') + AuditAdmin.list_display
 
 
 class ProposalSectionReviewerAdmin(AuditAdmin):
