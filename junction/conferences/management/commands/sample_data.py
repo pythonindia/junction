@@ -168,7 +168,7 @@ class Command(BaseCommand):
         conference = Conference.objects.create(
             name='%s Conference' % self.sd.words(1, 2).title(),
             description=self.sd.paragraph(),
-            status=self.sd.choices_key(constants.CONFERENCE_STATUS_LIST),
+            status=self.sd.choices_key(constants.ConferenceStatus.CHOICES),
             start_date=start_date,
             end_date=end_date,
             created_by=self.sd.choice(self.users),

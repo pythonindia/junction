@@ -14,7 +14,7 @@ from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
+from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC, ConferenceStatus
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import (
@@ -120,7 +120,8 @@ def list_proposals(request, conference_slug):
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
                    'is_reviewer': is_reviewer,
-                   'conference': conference})
+                   'conference': conference,
+                   'ConferenceStatus': ConferenceStatus})
 
 
 @login_required

@@ -1,17 +1,35 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Conference Application Choice Fields
-CONFERENCE_STATUS_ACCEPTING_CFP = "Accepting Proposals"
-CONFERENCE_STATUS_CLOSED_CFP = "Proposal submission closed"
-CONFERENCE_STATUS_ACCEPTING_VOTES = "Accepting Votes"
-CONFERENCE_STATUS_SCHEDULE_PUBLISHED = "Schedule Published"
+import inspect
 
-CONFERENCE_STATUS_LIST = ((1, CONFERENCE_STATUS_ACCEPTING_CFP),
-                          (2, CONFERENCE_STATUS_CLOSED_CFP),
-                          (3, CONFERENCE_STATUS_ACCEPTING_VOTES),
-                          (4, CONFERENCE_STATUS_SCHEDULE_PUBLISHED),
-                          )
+
+def _user_attributes(cls):
+    defaults = dir(type(str('defaults'), (object,), {}))  # gives all inbuilt attrs
+    return [
+        item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
+
+
+def choices(cls):
+    """
+    Decorator to set `CHOICES` and other attributes
+    """
+    _choices = []
+    for attr in _user_attributes(cls):
+        val = getattr(cls, attr)
+        setattr(cls, attr[1:], val[0])
+        _choices.append((val[0], val[1]))
+    setattr(cls, 'CHOICES', tuple(_choices))
+    return cls
+
+
+@choices
+class ConferenceStatus:
+    _ACCEPTING_CFP = [1, "Accepting Proposals"]
+    _CLOSED_CFP = [2, "Proposal submission closed"]
+    _ACCEPTING_VOTES = [3, "Accepting Votes"]
+    _SCHEDULE_PUBLISHED = [4, "Schedule Published"]
+
 
 # Proposal Application Choice Fields
 PROPOSAL_STATUS_DRAFT = 1
