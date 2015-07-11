@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from datetime import datetime
+
 # Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -27,6 +29,8 @@ class ProposalSection(AuditModel):
     description = models.TextField(default="")
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
+    start_date = models.DateField(default=datetime.now, verbose_name="Start Date")
+    end_date = models.DateField(default=datetime.now, verbose_name="End Date")
 
     def __str__(self):
         return self.name
