@@ -21,10 +21,15 @@ from junction.proposals.models import (
 )
 
 
-def _get_proposal_section_choices(conference):
-    return [(str(cps.id), cps.name)
-            for cps in ProposalSection.objects.filter(
-                conferences=conference, end_date__gt=now())]
+def _get_proposal_section_choices(conference, action="edit"):
+    if action == "create":
+        return [(str(cps.id), cps.name)
+                for cps in ProposalSection.objects.filter(
+                    conferences=conference, end_date__gt=now())]
+    else:
+        return [(str(cps.id), cps.name)
+                for cps in ProposalSection.objects.filter(
+                    conferences=conference)]
 
 
 def _get_proposal_type_choices(conference):
@@ -86,10 +91,10 @@ class ProposalForm(forms.Form):
         widget=PagedownWidget(show_preview=True), required=False,
         help_text="Links to your previous work like Blog, Open Source Contributions etc ...")
 
-    def __init__(self, conference, *args, **kwargs):
+    def __init__(self, conference, action="edit", *args, **kwargs):
         super(ProposalForm, self).__init__(*args, **kwargs)
         self.fields['proposal_section'].choices = _get_proposal_section_choices(
-            conference)
+            conference, action=action)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(
             conference)
 
