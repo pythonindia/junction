@@ -29,6 +29,8 @@ class Conference(AuditModel):
     logo = models.ImageField(blank=True, null=True, upload_to=upload_to)
     status = models.PositiveSmallIntegerField(
         choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
+    venue = models.ForeignKey('ConferenceVenue', null=True)
+
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     class Meta:
@@ -87,3 +89,24 @@ class ConferenceProposalReviewer(AuditModel):
 
     def __str__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+
+
+@python_2_unicode_compatible
+class ConferenceVenue(AuditModel):
+    name = models.CharField(max_length=100)
+
+    address = models.TextField()
+
+    latitude = models.DecimalField(max_digits=17, decimal_places=15)
+    longitudes = models.DecimalField(max_digits=19, decimal_places=16)
+
+    def __str__(self):
+        return self.name
+
+
+class Room(AuditModel):
+    name = models.CharField(max_length=100)
+    venue = models.ForeignKey(ConferenceVenue)
+
+    def __str__(self):
+        return "{}, {}".format(self.name, self.venue)

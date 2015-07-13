@@ -13,6 +13,9 @@ from django.http.response import HttpResponse, HttpResponseForbidden, HttpRespon
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
+from rest_framework import viewsets
+
+
 # Junction Stuff
 from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
 from junction.conferences.models import Conference, ConferenceProposalReviewer
@@ -33,6 +36,7 @@ from .models import (
     ProposalSectionReviewerVote,
     ProposalSectionReviewerVoteValue
 )
+from .serializers import ProposalSerializer
 from .services import (
     send_mail_for_new_comment,
     send_mail_for_new_proposal,
@@ -522,3 +526,8 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
                                proposal_comment_id):
     return proposal_comment_vote(request, conference_slug, proposal_slug,
                                  proposal_comment_id, False)
+
+
+class ProposalView(viewsets.ReadOnlyModelViewSet):
+    queryset = Proposal.objects.all()
+    serializer_class = ProposalSerializer

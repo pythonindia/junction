@@ -70,12 +70,15 @@ THIRD_PARTY_APPS = (
     'pagedown',
     'django_markdown',
     'django_bootstrap_breadcrumbs',
+
+    'rest_framework',
 )
 
 OUR_APPS = (
     'junction.base',
     'junction.conferences',
     'junction.proposals',
+    'junction.schedule',
     'junction.pages',
 )
 

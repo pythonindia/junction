@@ -8,6 +8,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 
+from rest_framework import routers
+from junction.schedule import views as schedule_views
+from junction.proposals import views as proposal_views
+from junction.conferences import views as conference_views
+
+router = routers.DefaultRouter()
+
+router.register('schedules', schedule_views.ScheduleView)
+router.register('proposals', proposal_views.ProposalView)
+router.register('venues', conference_views.VenueView)
+router.register('rooms', conference_views.RoomView)
+router.register('conferences', conference_views.ConferenceView)
+
 '''
 Root url routering file.
 
@@ -32,6 +45,8 @@ urlpatterns = patterns(
         name='proposal-reviewers-dashboard'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/',
         'junction.proposals.dashboard.proposals_dashboard', name='proposal-dashboard'),
+
+    url(r'^api/v1/', include(router.urls)),
 
     # Schedule related
     url(r'^(?P<conference_slug>[\w-]+)/schedule/',
