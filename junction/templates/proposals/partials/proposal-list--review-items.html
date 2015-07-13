@@ -51,6 +51,14 @@
                                         <i class="fa fa-comments-o"></i>
                                     </a>
                                 {% endif %}
+                                {% if proposal|has_content_urls %}
+                                    <a class='tag tag__proposal_section label label-proposal-type inline-block'
+                                    data-toggle="tooltip"
+                                    data-original-title="Content URL
+                                    available">
+                                        <i class="fa fa-external-link"></i>
+                                    </a>
+                                {% endif %} 
                                 
                             </div>
 
