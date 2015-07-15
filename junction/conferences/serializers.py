@@ -4,6 +4,8 @@ from .models import Conference, ConferenceVenue, Room
 
 
 class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
+    status = serializers.CharField(source='get_status_display')
+
     class Meta:
         model = Conference
         fields = ('name', 'slug', 'description', 'start_date',
