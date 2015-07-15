@@ -47,18 +47,18 @@
                                 <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
                                 <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
                                 {% if proposal|reviewer_comments:request.user %}
-                                    <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="Left a review comment">
+                                <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="Left a review comment">
                                         <i class="fa fa-comments-o"></i>
                                     </a>
                                 {% endif %}
-                                {% if proposal|has_content_urls %}
-                                    <a class='tag tag__proposal_section label label-proposal-type inline-block'
+                                    {% if proposal|has_content_urls %}
+                            <a class='tag tag__proposal_section label label-proposal-type inline-block'
                                     data-toggle="tooltip"
                                     data-original-title="Content URL
                                     available">
                                         <i class="fa fa-external-link"></i>
-                                    </a>
-                                {% endif %} 
+                            </a>
+                            {% endif %} 
                                 
                             </div>
 
