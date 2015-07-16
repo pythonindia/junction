@@ -526,8 +526,3 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
                                proposal_comment_id):
     return proposal_comment_vote(request, conference_slug, proposal_slug,
                                  proposal_comment_id, False)
-
-
-class ProposalView(viewsets.ReadOnlyModelViewSet):
-    queryset = Proposal.objects.all()
-    serializer_class = ProposalSerializer

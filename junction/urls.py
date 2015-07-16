@@ -10,16 +10,15 @@ from django.views.generic.base import RedirectView, TemplateView
 
 from rest_framework import routers
 from junction.schedule import views as schedule_views
-from junction.proposals import views as proposal_views
 from junction.conferences import views as conference_views
 
 router = routers.DefaultRouter()
 
-router.register('schedules', schedule_views.ScheduleView)
-router.register('proposals', proposal_views.ProposalView)
+router.register('conferences', conference_views.ConferenceView)
 router.register('venues', conference_views.VenueView)
 router.register('rooms', conference_views.RoomView)
-router.register('conferences', conference_views.ConferenceView)
+
+router.register('schedules', schedule_views.ScheduleView)
 
 '''
 Root url routering file.
