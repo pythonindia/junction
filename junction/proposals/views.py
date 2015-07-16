@@ -13,8 +13,6 @@ from django.http.response import HttpResponse, HttpResponseForbidden, HttpRespon
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from rest_framework import viewsets
-
 
 # Junction Stuff
 from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
@@ -36,7 +34,6 @@ from .models import (
     ProposalSectionReviewerVote,
     ProposalSectionReviewerVoteValue
 )
-from .serializers import ProposalSerializer
 from .services import (
     send_mail_for_new_comment,
     send_mail_for_new_proposal,
