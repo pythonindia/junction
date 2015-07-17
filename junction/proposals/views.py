@@ -6,7 +6,6 @@ import collections
 
 # Third Party Stuff
 from django.conf import settings
-from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
@@ -128,16 +127,16 @@ def list_proposals(request, conference_slug):
 def create_proposal(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     if request.method == 'GET':
-        if conference.proposal_sections.filter(end_date__gt=now()).count() == 0:
+        if not conference.is_accepting_proposals():
             return render(request, 'proposals/closed.html',
                           {'conference': conference})
-        form = ProposalForm(conference)
+        form = ProposalForm(conference, action="create")
         return render(request, 'proposals/create.html',
                       {'form': form,
                        'conference': conference, })
 
     # POST Workflow
-    form = ProposalForm(conference, request.POST)
+    form = ProposalForm(conference, data=request.POST, action="create")
 
     if not form.is_valid():
         return render(request, 'proposals/create.html',
@@ -229,11 +228,12 @@ def update_proposal(request, conference_slug, slug):
                                                          'proposal': proposal})
 
     # POST Workflow
-    form = ProposalForm(conference, request.POST)
+    form = ProposalForm(conference, data=request.POST)
     if not form.is_valid():
-        return render(request, 'proposals/update.html', {'form': form,
-                                                         'proposal': proposal,
-                                                         'errors': form.errors})
+        return render(request, 'proposals/update.html',
+                      {'form': form,
+                       'proposal': proposal,
+                       'errors': form.errors})
 
     # Valid Form
     proposal.title = form.cleaned_data['title']

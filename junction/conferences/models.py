@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
@@ -52,6 +53,11 @@ class Conference(AuditModel):
         if not self.slug:
             self.slug = slugify(self.name)
         return super(Conference, self).save(*args, **kwargs)
+
+    def is_accepting_proposals(self):
+        """Check if any one of the proposal section is accepting proposal.
+        """
+        return self.proposal_sections.filter(end_date__gt=now()).exists()
 
 
 @python_2_unicode_compatible
