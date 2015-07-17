@@ -15,12 +15,13 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
         return proposal.proposal_type.name
 
     def get_author(self, proposal):
-        return "{} {}".format(proposal.author.first_name,
-                              proposal.author.first_name)
+        author = proposal.author
+        return "{} {}".format(
+            author.first_name, author.last_name).strip() or author.username
 
     class Meta:
         model = Proposal
         fields = ('title', 'section', 'type', 'author',
                   'slug', 'description', 'target_audience',
                   'prerequisites', 'content_urls', 'speaker_info',
-                  'speaker_links', 'status', 'review_status')
+                  'speaker_links')
