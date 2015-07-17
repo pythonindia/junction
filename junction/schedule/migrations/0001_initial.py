@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
-                ('event_date', models.DateField()),
-                ('start_time', models.TimeField()),
+                ('event_date', models.DateField(db_index=True)),
+                ('start_time', models.TimeField(db_index=True)),
                 ('end_time', models.TimeField()),
                 ('alt_name', models.CharField(max_length=100, blank=True)),
                 ('type', models.CharField(default=b'TALK', max_length=20, choices=[(b'TALK', b'Talk'), (b'LUNCH', b'Lunch'), (b'BREAK', b'Break')])),
@@ -32,8 +32,11 @@ class Migration(migrations.Migration):
                 ('session', models.ForeignKey(to='proposals.Proposal', null=True)),
             ],
             options={
-                'abstract': False,
             },
             bases=(models.Model,),
+        ),
+        migrations.AlterIndexTogether(
+            name='scheduleitem',
+            index_together=set([('event_date', 'start_time')]),
         ),
     ]

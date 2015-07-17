@@ -14,8 +14,8 @@ class ScheduleItem(AuditModel):
                           (BREAK, 'Break'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
-    event_date = models.DateField()
-    start_time = models.TimeField()
+    event_date = models.DateField(db_index=True)
+    start_time = models.TimeField(db_index=True)
     end_time = models.TimeField()
     alt_name = models.CharField(max_length=100, blank=True)
     session = models.ForeignKey(Proposal, null=True)
@@ -30,3 +30,8 @@ class ScheduleItem(AuditModel):
     @property
     def name(self):
         return self.alt_name or self.session.title
+
+    class Meta:
+        index_together = [
+            ('event_date', 'start_time')
+        ]

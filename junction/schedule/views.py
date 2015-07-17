@@ -18,7 +18,7 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         return super(ScheduleView, self).get_queryset().prefetch_related(
             'session', 'session__proposal_type', 'session__proposal_section',
-            'session__author')
+            'session__author').order_by('event_date', 'start_time')
 
 
 def dummy_schedule(request, conference_slug):
