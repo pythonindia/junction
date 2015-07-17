@@ -38,6 +38,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('name', models.CharField(max_length=100)),
+                ('note', models.CharField(max_length=255)),
                 ('created_by', models.ForeignKey(related_name='created_room_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('modified_by', models.ForeignKey(related_name='updated_room_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('venue', models.ForeignKey(to='conferences.ConferenceVenue')),

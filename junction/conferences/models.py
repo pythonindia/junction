@@ -108,5 +108,7 @@ class Room(AuditModel):
     name = models.CharField(max_length=100)
     venue = models.ForeignKey(ConferenceVenue)
 
+    note = models.CharField(max_length=255)
+
     def __str__(self):
         return "{}, {}".format(self.name, self.venue)

@@ -21,4 +21,4 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Room
-        fields = ('name', 'venue')
+        fields = ('name', 'venue', 'note')
