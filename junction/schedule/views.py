@@ -15,6 +15,11 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
     filter_backend = (filters.DjangoFilterBackend,)
     filter_fields = ('room', 'conference', 'event_date')
 
+    def get_queryset(self):
+        return super(ScheduleView, self).get_queryset().prefetch_related(
+            'session', 'session__proposal_type', 'session__proposal_section',
+            'session__author')
+
 
 def dummy_schedule(request, conference_slug):
     data = render_to_string('dummy_schedule.json')
