@@ -8,9 +8,9 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('proposals', '0011_auto_20150530_0224'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('conferences', '0010_auto_20150713_2331'),
+        ('proposals', '0012_auto_20150709_0842'),
     ]
 
     operations = [
@@ -24,6 +24,7 @@ class Migration(migrations.Migration):
                 ('start_time', models.TimeField()),
                 ('end_time', models.TimeField()),
                 ('alt_name', models.CharField(max_length=100, blank=True)),
+                ('type', models.CharField(default=b'TALK', max_length=20, choices=[(b'TALK', b'Talk'), (b'LUNCH', b'Lunch'), (b'BREAK', b'Break')])),
                 ('conference', models.ForeignKey(to='conferences.Conference')),
                 ('created_by', models.ForeignKey(related_name='created_scheduleitem_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('modified_by', models.ForeignKey(related_name='updated_scheduleitem_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),

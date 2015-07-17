@@ -6,6 +6,12 @@ from junction.conferences.models import Conference, Room
 
 
 class ScheduleItem(AuditModel):
+    TALK = 'TALK'
+    LUNCH = 'LUNCH'
+    BREAK = 'BREAK'
+    SCHEDULE_ITEM_TYPE = ((TALK, 'Talk'),
+                          (LUNCH, 'Lunch'),
+                          (BREAK, 'Break'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField()
@@ -13,6 +19,8 @@ class ScheduleItem(AuditModel):
     end_time = models.TimeField()
     alt_name = models.CharField(max_length=100, blank=True)
     session = models.ForeignKey(Proposal, null=True)
+    type = models.CharField(max_length=20, choices=SCHEDULE_ITEM_TYPE,
+                            default=TALK)
 
     conference = models.ForeignKey(Conference)
 
