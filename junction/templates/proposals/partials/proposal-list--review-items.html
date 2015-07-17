@@ -51,16 +51,17 @@
                                         <i class="fa fa-comments-o"></i>
                                     </a>
                                 {% endif %}
-                                    {% if proposal|has_content_urls %}
-                            <a href="{{ proposal|has_content_urls }}" class='tag tag__proposal_section label label-proposal-type inline-block'
+                                {% for url in proposal|get_content_urls %}
+                                    {% if url %}
+                                    <a href='{{ url }}' class='tag tag__proposal_section label label-proposal-type inline-block'
                                     data-toggle="tooltip"
                                     data-original-title="Content URL
                                     available" >
                                         <i class="fa fa-external-link"></i>
                             </a>
-                            {% endif %} 
-                                
-                            </div>
+                                    {% endif %}
+                                {% endfor %}
+                             </div>
 
                             <small class="pull-right">
                                 <i class="fa fa-user"></i> <b>
