@@ -8662,6 +8662,10 @@ a.status:focus {
   display: table-cell;
   vertical-align: top;
 }
+.js-proposal-comment-upvote.active, .js-proposal-comment-downvote.active
+{
+  color: #f85441;
+}
 .comment-panel {
   -webkit-box-shadow: none;
   box-shadow: none;
