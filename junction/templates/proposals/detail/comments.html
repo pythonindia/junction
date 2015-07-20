@@ -16,7 +16,7 @@
                 <div>
                     <a href="#" class="js-proposal-comment-upvote text-muted 
                         {% if request.user.is_authenticated %}
-                            {% if comment|has_upvoted_comment:request.user == True %}
+                        {% if comment|has_upvoted_comment:request.user == True %}
                             btn-vote active 
                         {% endif %}{% endif %}">
                         <i class="fa fa-chevron-up"></i>
