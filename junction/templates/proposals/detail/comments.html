@@ -14,7 +14,11 @@
         <div class="comment-vote-panel text-center">
             <div class="text-center">
                 <div>
-                    <a href="#" class="btn-vote js-proposal-comment-upvote text-muted {% if comment.get_votes_count == 1 %} active {% endif %}">
+                    <a href="#" class="js-proposal-comment-upvote text-muted 
+                        {% if request.user.is_authenticated %}
+                            {% if comment|has_upvoted_comment:request.user == True %}
+                            btn-vote active 
+                        {% endif %}{% endif %}">
                         <i class="fa fa-chevron-up"></i>
                     </a>
                 </div>
@@ -24,7 +28,11 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="btn-vote js-proposal-comment-downvote text-muted {% if comment.get_votes_count == -1 %} active {% endif %}">
+                    <a href="#" class="js-proposal-comment-downvote text-muted 
+                        {% if request.user.is_authenticated %}
+                        {% if comment|has_upvoted_comment:request.user == False %}
+                            btn-vote active 
+                        {% endif %}{% endif %}">
                         <i class="fa fa-chevron-down"></i>
                     </a>
                 </div>

@@ -46,3 +46,8 @@ def get_content_urls(proposal):
         return urls
     else:
         return []
+        
+@register.filter(name='has_upvoted_comment')
+def has_upvoted_comment(comment, user):
+     vote = comment.proposalcommentvote_set.get(voter=user)
+     return vote.up_vote
