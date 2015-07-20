@@ -160,13 +160,13 @@ class ProposalVote(TimeAuditModel):
 
 class ProposalCommentQuerySet(models.QuerySet):
     def get_public_comments(self):
-        return self.filter(private=False, reviewer=False)
+        return self.filter(private=False, reviewer=False, vote=False)
 
     def get_reviewers_comments(self):
-        return self.filter(private=True)
+        return self.filter(private=True, vote=False)
 
     def get_reviewers_only_comments(self):
-        return self.filter(reviewer=True)
+        return self.filter(reviewer=True, vote=False)
 
 
 class ProposalCommentManager(models.Manager):

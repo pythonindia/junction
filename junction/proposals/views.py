@@ -195,7 +195,7 @@ def detail_proposal(request, conference_slug, slug):
     }
 
     comments = ProposalComment.objects.filter(
-        proposal=proposal, deleted=False,
+        proposal=proposal, deleted=False, vote=False
     )
 
     if read_private_comment:
@@ -385,7 +385,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     if request.method == 'GET':
 
         proposal_vote_form = ProposalReviewerVoteForm(
-            initial={'vote_value': vote_value, 'vote_comment': vote_comment}
+            initial={'vote_value': vote_value, 'comment': vote_comment.comment}
         )
 
         ctx = {
