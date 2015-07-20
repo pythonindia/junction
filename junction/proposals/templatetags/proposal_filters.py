@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+# Standard Library
+import re
+
 # Third Party Stuff
 from django import template
-import re
+
+# Junction Stuff
+from junction.proposals.models import (
+    ProposalSectionReviewer,
+    ProposalSectionReviewerVote,
+)
 
 
 register = template.Library()
@@ -12,6 +20,22 @@ register = template.Library()
 @register.filter(name='reviewer_comments')
 def reviewer_comments(proposal, user):
     return proposal.get_reviewer_comments_count(user) > 0
+
+
+@register.filter(name='is_reviewer_voted')
+def is_reviewer_voted(proposal, user):
+    try:
+        vote = ProposalSectionReviewerVote.objects.get(
+            proposal=proposal,
+            voter=ProposalSectionReviewer.objects.get(
+                conference_reviewer__reviewer=user,
+                conference_reviewer__conference=proposal.conference,
+                proposal_section=proposal.proposal_section),
+        )
+    except ProposalSectionReviewerVote.DoesNotExist:
+        vote = None
+
+    return vote
 
 
 @register.filter(name='get_content_urls')
