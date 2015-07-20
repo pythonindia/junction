@@ -97,6 +97,9 @@ class Proposal(TimeAuditModel):
     def get_review_url(self):
         return reverse('proposal-review', args=[self.conference.slug, self.slug])
 
+    def get_vote_url(self):
+        return reverse('proposal-reviewer-vote', args=[self.conference.slug, self.slug])
+
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
@@ -187,7 +190,7 @@ class ProposalSectionReviewerVoteValue(AuditModel):
     description = models.CharField(max_length=255)
 
     def __str__(self):
-        return "[{}] {}".format(self.vote_value, self.description)
+        return "{} ({})".format(self.description, self.vote_value)
 
     class Meta:
         ordering = ('-vote_value',)

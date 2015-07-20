@@ -28,6 +28,11 @@
 
 {% block content %}
     <div class="row">
+        {% if vote %}
+            <div class="alert alert-danger center" style="text-align: center;">
+                You have casted <strong>"{{ vote.vote_value }}"</strong> vote. Submitting again will override the existing one.
+            </div>
+        {% endif %}
         <div class="col-sm-offset-2 col-sm-6">
             <div class="space-2-bottom">
                 <div class="row">
@@ -56,7 +61,7 @@
                         </div>
                     </form>
                 </div>
-                                   <hr class="hr-mini">
+                <hr class="hr-mini">
 
             </div>
         </div>

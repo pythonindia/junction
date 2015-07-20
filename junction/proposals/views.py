@@ -380,7 +380,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
         ctx = {
             'proposal': proposal,
             'proposal_vote_form': proposal_vote_form,
-            'vote_value': vote_value,
+            'vote': vote,
         }
 
         return render(request, 'proposals/vote.html', ctx)
