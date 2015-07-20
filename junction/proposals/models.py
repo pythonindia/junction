@@ -220,6 +220,7 @@ class ProposalComment(TimeAuditModel):
     commenter = models.ForeignKey(User)
     private = models.BooleanField(default=False, verbose_name="Is Private?")
     reviewer = models.BooleanField(default=False, verbose_name="Is Reviewer?")
+    vote = models.BooleanField(default=False, verbose_name="Is Justification?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
