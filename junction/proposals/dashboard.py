@@ -21,14 +21,14 @@ from junction.conferences.models import (
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    
+
     if not request.user.is_superuser:
         return HttpResponseForbidden()
-        
+
     proposals_qs = Proposal.objects.filter(
         conference=conference,
         status=PROPOSAL_STATUS_PUBLIC)
-        
+
     by_type = {}
     by_section = {}
     by_reviewer = {}
@@ -61,7 +61,7 @@ def proposals_dashboard(request, conference_slug):
             conference_reviewer__reviewer=request.user)\
         .distinct('proposal_section__id')
     # Hande case if reviewer is added to section twice'
-    
+
     for section in sections:
         proposal_qs = proposals_qs.filter(proposal_section=section.proposal_section)
         # due to space and number issue for key used this
@@ -76,13 +76,13 @@ def proposals_dashboard(request, conference_slug):
                 by_reviewer[key_id][1] = by_reviewer[key_id][1] + 1
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
-                
+
     audience_dict = {
         1: 'Beginner',
         2: 'Intermediate',
         3: 'Advanced'
     }
-    
+
     for proposal in proposals_qs:
         audience = audience_dict[proposal.target_audience]
         by_audience.setdefault(audience, [0, 0, 0, audience])
@@ -97,7 +97,7 @@ def proposals_dashboard(request, conference_slug):
         else:
             by_audience[audience][2] = by_audience[audience][2] + 1
             by_audience[audience][0] = by_audience[audience][0] + 1
-            
+
     ctx = {
         'conference': conference,
         'total': proposals_qs.count(),
