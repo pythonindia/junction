@@ -25,13 +25,14 @@ from junction.proposals.models import (
     ProposalType,
     ProposalSectionReviewerVoteValue
 )
+from junction.schedule.models import ScheduleItem
 
 NUM_USERS = getattr(settings, "NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
 NUM_EMPTY_CONFERENCES = getattr(settings, "NUM_EMPTY_CONFERENCES", 2)
 NUM_PROPOSAL_SECTIONS = getattr(settings, "NUM_PROPOSAL_SECTIONS", 5)
 NUM_PROPOSAL_TYPES = getattr(settings, "NUM_PROPOSAL_TYPES", 8)
-NUM_PUBLIC_PROPOSALS = getattr(settings, "NUM_PUBLIC_PROPOSALS", 7)
+NUM_PUBLIC_PROPOSALS = getattr(settings, "NUM_PUBLIC_PROPOSALS", 20)
 NUM_DRAFT_PROPOSALS = getattr(settings, "NUM_DRAFT_PROPOSALS", 7)
 NUM_CANCELLED_PROPOSALS = getattr(settings, "NUM_CANCELLED_PROPOSALS", 7)
 NUM_PUBLIC_COMMENTS = getattr(settings, "NUM_PUBLIC_COMMENTS", 10)
@@ -101,6 +102,14 @@ class Command(BaseCommand):
         for x in range(NUM_CANCELLED_PROPOSALS):
             self.proposals.append(self.create_proposal(proposal_type="Cancelled"))
 
+        print('  Create sample Schedule')
+        for proposal in self.proposals:
+            if not proposal.get_status_display() == 'Public':
+                continue
+            self.create_scheduled_item(proposal=proposal)
+        self.create_scheduled_item(proposal='Break',
+                                   conference=self.conferences[0])
+
         # create comments
         print('  Creating sample proposal comments')
         for x in range(NUM_PUBLIC_COMMENTS):
@@ -149,6 +158,23 @@ class Command(BaseCommand):
             proposal_reviewers.append(conference.proposal_reviewers.create(
                 reviewer=user, active=self.sd.boolean()))
         return proposal_reviewers
+
+    def create_scheduled_item(self, proposal, conference=None):
+        kwargs = {}
+        kwargs['conference'] = conference if conference \
+            else proposal.conference
+        kwargs['event_date'] = kwargs['conference'].start_date
+        kwargs['start_time'] = datetime.datetime.time(datetime.datetime.now())
+        kwargs['end_time'] = datetime.datetime.time(
+            datetime.datetime.now() + datetime.timedelta(minutes=45))
+        if isinstance(proposal, basestring):
+            ScheduleItem.objects.create(
+                alt_name=proposal,
+                **kwargs)
+        else:
+            ScheduleItem.objects.create(
+                session=proposal,
+                **kwargs)
 
     def create_conference(self, counter, start_date=None, end_date=None):
         if counter == 0:

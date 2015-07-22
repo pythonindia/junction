@@ -25,4 +25,7 @@ class ConferenceProposallReviewerAdmin(AuditAdmin):
 
 admin.site.register(models.Conference, ConferenceAdmin)
 admin.site.register(models.ConferenceModerator, ConferenceModeratorAdmin)
-admin.site.register(models.ConferenceProposalReviewer, ConferenceProposallReviewerAdmin)
+admin.site.register(models.ConferenceProposalReviewer,
+                    ConferenceProposallReviewerAdmin)
+admin.site.register(models.ConferenceVenue)
+admin.site.register(models.Room)
