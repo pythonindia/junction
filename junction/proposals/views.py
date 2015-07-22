@@ -354,7 +354,8 @@ def proposal_upload_content(request, conference_slug, slug):
 @require_http_methods(['GET', 'POST'])
 def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug,
+                                 conference=conference)
 
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
         return HttpResponseForbidden()
@@ -383,11 +384,13 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     except:
         vote_comment = None
     if request.method == 'GET':
-
-        proposal_vote_form = ProposalReviewerVoteForm(
-            initial={'vote_value': vote_value, 'comment': vote_comment.comment}
-        )
-
+        if vote_comment:
+            proposal_vote_form = ProposalReviewerVoteForm(
+                initial={'vote_value': vote_value,
+                         'comment': vote_comment.comment})
+        else:
+            proposal_vote_form = ProposalReviewerVoteForm(
+                initial={'vote_value': vote_value})
         ctx = {
             'proposal': proposal,
             'proposal_vote_form': proposal_vote_form,
@@ -399,9 +402,10 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     # POST Workflow
     form = ProposalReviewerVoteForm(request.POST)
     if not form.is_valid():
-        return render(request, 'proposals/vote.html', {'form': form,
-                                                       'proposal': proposal,
-                                                       'form_errors': form.errors})
+        return render(request, 'proposals/vote.html',
+                      {'form': form,
+                       'proposal': proposal,
+                       'form_errors': form.errors})
 
     # Valid Form
     vote_value = form.cleaned_data['vote_value']
@@ -413,10 +417,12 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                 conference_reviewer__reviewer=request.user,
                 conference_reviewer__conference=conference,
                 proposal_section=proposal.proposal_section),
-            vote_value=ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value),
+            vote_value=ProposalSectionReviewerVoteValue.objects.get(
+                vote_value=vote_value),
         )
     else:
-        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
+        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(
+            vote_value=vote_value)
         vote.save()
     if not vote_comment:
         vote_comment = ProposalComment.objects.create(
@@ -428,7 +434,8 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     else:
         vote_comment.comment = comment
         vote_comment.save()
-    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+    return HttpResponseRedirect(reverse('proposals-to-review',
+                                        args=[conference.slug]))
 
 
 @login_required
