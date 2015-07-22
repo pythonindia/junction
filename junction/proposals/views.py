@@ -195,7 +195,7 @@ def detail_proposal(request, conference_slug, slug):
     }
 
     comments = ProposalComment.objects.filter(
-        proposal=proposal, deleted=False,
+        proposal=proposal, deleted=False, vote=False
     )
 
     if read_private_comment:
@@ -373,14 +373,25 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     except ProposalSectionReviewerVote.DoesNotExist:
         vote = None
 
+    try:
+        vote_comment = ProposalComment.objects.get(
+            proposal=proposal,
+            commenter=request.user,
+            vote=True,
+            deleted=False,
+        )
+    except:
+        vote_comment = None
     if request.method == 'GET':
 
-        proposal_vote_form = ProposalReviewerVoteForm(initial={'vote_value': vote_value})
+        proposal_vote_form = ProposalReviewerVoteForm(
+            initial={'vote_value': vote_value, 'comment': vote_comment.comment}
+        )
 
         ctx = {
             'proposal': proposal,
             'proposal_vote_form': proposal_vote_form,
-            'vote_value': vote_value,
+            'vote': vote,
         }
 
         return render(request, 'proposals/vote.html', ctx)
@@ -394,6 +405,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
 
     # Valid Form
     vote_value = form.cleaned_data['vote_value']
+    comment = form.cleaned_data['comment']
     if not vote:
         vote = ProposalSectionReviewerVote.objects.create(
             proposal=proposal,
@@ -406,7 +418,16 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     else:
         vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(vote_value=vote_value)
         vote.save()
-
+    if not vote_comment:
+        vote_comment = ProposalComment.objects.create(
+            proposal=proposal,
+            commenter=request.user,
+            comment=comment,
+            vote=True,
+        )
+    else:
+        vote_comment.comment = comment
+        vote_comment.save()
     return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
 
 

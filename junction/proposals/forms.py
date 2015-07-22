@@ -144,6 +144,11 @@ class ProposalReviewerVoteForm(forms.Form):
         choices=_get_proposal_section_reviewer_vote_choices(),
         widget=forms.RadioSelect()
     )
+    comment = forms.CharField(
+        widget=forms.Textarea,
+        required=False,
+        help_text="Leave a comment justifying your vote.",
+    )
 
 
 class ProposalsToReviewForm(forms.Form):

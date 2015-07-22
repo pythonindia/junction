@@ -51,6 +51,12 @@
                                         <i class="fa fa-comments-o"></i>
                                     </a>
                                 {% endif %}
+                                {% if proposal|is_reviewer_voted:request.user %}
+                                    <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="You have casted the vote">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                {% endif %}
+
                                 {% for url in proposal|get_content_urls %}
                                     {% if url %}
                                     <a href='{{ url }}' class='tag tag__proposal_section label label-proposal-type inline-block'

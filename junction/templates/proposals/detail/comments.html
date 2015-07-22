@@ -1,10 +1,11 @@
 {% load bootstrap3 %}
 {% load django_markdown %}
 {% load humanize %}
+
 {% if not comments %}
-<p class="text-muted lead">
-    No comments added so far.
-</p>
+    <p class="text-muted lead">
+        No comments added so far.
+    </p>
 {% endif %}
 
 {% for comment in comments %}
