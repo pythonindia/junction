@@ -47,6 +47,9 @@ urlpatterns = patterns(
 
     url(r'^api/v1/', include(router.urls)),
 
+    # User Dashboard
+    url(r'^dashboard/', include('junction.profiles.urls')),
+
     # Schedule related
     url(r'^(?P<conference_slug>[\w-]+)/schedule/',
         include('junction.schedule.urls')),
