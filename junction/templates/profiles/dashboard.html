@@ -29,9 +29,13 @@
 <section class="content custom-container proposal-list">
     <div class="push-4-bottom push-1-top">
         <div class="row">
-            <h2>Your Proposals</h2>
-            {% if user_proposal_list %}
-                {% for proposal in user_proposal_list %}
+            <h1>Your Proposals</h1>
+            <hr>
+            <br>
+            {% if conf_proposals %}
+                {% for conference,proposals in conf_proposals.items %}
+                <h3>{{ conference }}</h3>
+                {% for proposal in proposals %}
         <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
             <div class="col-xs-12" >
                 <div class="proposal-list-content">
@@ -70,8 +74,6 @@
                                 {% endif %}
                                 <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
                                 <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
-                                <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.conference }}</a>
-
                                 {% for url in proposal|get_content_urls %}
                                     {% if url %}
                                     <a href='{{ url }}' class='tag tag__proposal_section label label-proposal-type inline-block'
@@ -100,6 +102,7 @@
             </div>
         </div>
         <br>
+    {% endfor %}
     {% endfor %}
     {% else %}
             <p>No proposals avaiable yet. </p>
