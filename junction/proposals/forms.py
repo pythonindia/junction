@@ -63,7 +63,7 @@ class ProposalForm(forms.Form):
                             widget=forms.TextInput(attrs={'class': 'charfield'}))
     description = forms.CharField(widget=PagedownWidget(show_preview=True),
                                   help_text=("Describe your proposal with clear objective in simple sentence."
-                                  " Keep it short and simple."))
+                                             " Keep it short and simple."))
     target_audience = forms.ChoiceField(
         choices=PROPOSAL_TARGET_AUDIENCES,
         widget=forms.Select(attrs={'class': 'dropdown'}))
