@@ -25,7 +25,7 @@ def _get_proposal_section_choices(conference, action="edit"):
     if action == "create":
         return [(str(cps.id), cps.name)
                 for cps in ProposalSection.objects.filter(
-                    conferences=conference, end_date__gt=now())]
+                    conferences=conference)]
     else:
         return [(str(cps.id), cps.name)
                 for cps in ProposalSection.objects.filter(
@@ -34,7 +34,8 @@ def _get_proposal_section_choices(conference, action="edit"):
 
 def _get_proposal_type_choices(conference):
     return [(str(cpt.id), cpt.name)
-            for cpt in ProposalType.objects.filter(conferences=conference)]
+            for cpt in ProposalType.objects.filter(
+                conferences=conference, end_date__gt=now())]
 
 
 def _get_proposal_section_reviewer_vote_choices():
