@@ -54,12 +54,12 @@ class ProposalTargetAudience:
     _INTERMEDIATE = [2, "Intermediate"]
     _ADVANCED = [3, "Advanced"]
 
-PROPOSAL_USER_VOTE_ROLE_PUBLIC = "Public"
-PROPOSAL_USER_VOTE_ROLE_REVIEWER = "Reviewer"
 
-PROPOSAL_USER_VOTE_ROLES = ((1, PROPOSAL_USER_VOTE_ROLE_PUBLIC),
-                            (2, PROPOSAL_USER_VOTE_ROLE_REVIEWER),
-                            )
+@choices
+class ProposalUserVoteRole:
+    _PUBLIC = [1, "Public"]
+    _REVIEWER = [2, "Reviewer"]
+
 
 PROPOSAL_REVIEW_VOTE_MUST_HAVE = "Must have"
 PROPOSAL_REVIEW_VOTE_GOOD = "Good"

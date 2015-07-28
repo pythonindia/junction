@@ -15,7 +15,7 @@ from junction.base.constants import (
     ProposalReviewStatus,
     ProposalStatus,
     ProposalTargetAudience,
-    PROPOSAL_USER_VOTE_ROLES
+    ProposalUserVoteRole
 )
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
@@ -148,7 +148,7 @@ class ProposalVote(TimeAuditModel):
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(User)
     role = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_USER_VOTE_ROLES, default=1)
+        choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.PUBLIC)
     up_vote = models.BooleanField(default=True)
 
     def __str__(self):
@@ -202,7 +202,8 @@ class ProposalSectionReviewerVote(TimeAuditModel):
     """ Reviewer vote for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(ProposalSectionReviewer)
-    role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=2)
+    role = models.PositiveSmallIntegerField(
+        choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.REVIEWER)
     vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
 
     def __str__(self):

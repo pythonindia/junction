@@ -14,7 +14,7 @@ from django.views.decorators.http import require_http_methods
 
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus
+from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus, ProposalUserVoteRole
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import (
@@ -501,7 +501,10 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     proposal_vote, created = ProposalVote.objects.get_or_create(
         proposal=proposal, voter=request.user)  # @UnusedVariable
 
-    role = 2 if _is_proposal_reviewer(request.user, conference) else 1
+    if _is_proposal_reviewer(request.user, conference):
+        role = ProposalUserVoteRole.REVIEWER
+    else:
+        role = ProposalUserVoteRole.PUBLIC
 
     proposal_vote.role = role
     proposal_vote.up_vote = up_vote
