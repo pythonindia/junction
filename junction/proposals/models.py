@@ -74,15 +74,17 @@ class Proposal(TimeAuditModel):
     slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
-        choices=ProposalTargetAudience.CHOICES, default=1, verbose_name="Target Audience")
+        choices=ProposalTargetAudience.CHOICES, default=ProposalTargetAudience.BEGINNER,
+        verbose_name="Target Audience")
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
     speaker_info = models.TextField(blank=True, default="")
     speaker_links = models.TextField(blank=True, default="")
     status = models.PositiveSmallIntegerField(
-        choices=ProposalStatus.CHOICES, default=1)
+        choices=ProposalStatus.CHOICES, default=ProposalStatus.DRAFT)
     review_status = models.PositiveSmallIntegerField(
-        choices=ProposalReviewStatus.CHOICES, default=1, verbose_name="Review Status")
+        choices=ProposalReviewStatus.CHOICES, default=ProposalReviewStatus.YET_TO_BE_REVIEWED,
+        verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __str__(self):
