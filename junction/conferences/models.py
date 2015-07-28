@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
@@ -29,6 +30,8 @@ class Conference(AuditModel):
     logo = models.ImageField(blank=True, null=True, upload_to=upload_to)
     status = models.PositiveSmallIntegerField(
         choices=ConferenceStatus.CHOICES, verbose_name="Current Status")
+    venue = models.ForeignKey('ConferenceVenue', null=True)
+
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     class Meta:
@@ -52,6 +55,11 @@ class Conference(AuditModel):
         if not self.slug:
             self.slug = slugify(self.name)
         return super(Conference, self).save(*args, **kwargs)
+
+    def is_accepting_proposals(self):
+        """Check if any one of the proposal section is accepting proposal.
+        """
+        return self.proposal_sections.filter(end_date__gt=now()).exists()
 
 
 @python_2_unicode_compatible
@@ -87,3 +95,26 @@ class ConferenceProposalReviewer(AuditModel):
 
     def __str__(self):
         return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+
+
+@python_2_unicode_compatible
+class ConferenceVenue(AuditModel):
+    name = models.CharField(max_length=100)
+
+    address = models.TextField()
+
+    latitude = models.DecimalField(max_digits=17, decimal_places=15)
+    longitudes = models.DecimalField(max_digits=19, decimal_places=16)
+
+    def __str__(self):
+        return self.name
+
+
+class Room(AuditModel):
+    name = models.CharField(max_length=100)
+    venue = models.ForeignKey(ConferenceVenue)
+
+    note = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "{}, {}".format(self.name, self.venue)

@@ -3,7 +3,22 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-# Create your views here.
+from rest_framework import viewsets, filters
+
+from .models import ScheduleItem
+from .serializers import ScheduleSerializer
+
+
+class ScheduleView(viewsets.ReadOnlyModelViewSet):
+    queryset = ScheduleItem.objects.all()
+    serializer_class = ScheduleSerializer
+    filter_backend = (filters.DjangoFilterBackend,)
+    filter_fields = ('room', 'conference', 'event_date')
+
+    def get_queryset(self):
+        return super(ScheduleView, self).get_queryset().prefetch_related(
+            'session', 'session__proposal_type', 'session__proposal_section',
+            'session__author').order_by('event_date', 'start_time')
 
 
 def dummy_schedule(request, conference_slug):

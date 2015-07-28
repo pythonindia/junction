@@ -14,7 +14,7 @@ from .models import (
 )
 from junction.conferences.models import (
     ConferenceProposalReviewer
-    )
+)
 
 
 @login_required
@@ -41,7 +41,6 @@ def proposals_dashboard(request, conference_slug):
         # dict structure {'id':[total, review, unreview, name]}
         by_type.setdefault(pro_type.id, [0, 0, 0, pro_type.name])
         by_type[pro_type.id][0] = by_type[pro_type.id][0] + 1
-
         by_section.setdefault(section.id, [0, 0, 0, section.name])
         by_section[section.id][0] = by_section[section.id][0] + 1
         private_comment_count = \
@@ -57,7 +56,6 @@ def proposals_dashboard(request, conference_slug):
             unreviewed_count = unreviewed_count + 1
             by_type[pro_type.id][2] = by_type[pro_type.id][2] + 1
             by_section[section.id][2] = by_section[section.id][2] + 1
-
     sections = \
         ProposalSectionReviewer.objects.filter(
             conference_reviewer__reviewer=request.user)\
@@ -101,7 +99,7 @@ def proposals_dashboard(request, conference_slug):
             by_audience[audience][0] = by_audience[audience][0] + 1
 
     ctx = {
-        'conference':  conference,
+        'conference': conference,
         'total': proposals_qs.count(),
         'reviewed': reviewed_count,
         'unreviewed': unreviewed_count,
@@ -110,7 +108,6 @@ def proposals_dashboard(request, conference_slug):
         'group_by_reviewer_section': by_reviewer,
         'by_target_audience': by_audience
     }
-
     return render(request, 'proposals/dashboard.html', ctx)
 
 
@@ -159,7 +156,7 @@ def reviewer_comments_dashboard(request, conference_slug):
                 [
                     proposal_qs.count(), commented,
                     uncommented, section.proposal_section.name]
-                )
+            )
 
     ctx = {
         'conference': conference,

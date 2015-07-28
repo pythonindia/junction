@@ -97,6 +97,9 @@ class Proposal(TimeAuditModel):
     def get_review_url(self):
         return reverse('proposal-review', args=[self.conference.slug, self.slug])
 
+    def get_vote_url(self):
+        return reverse('proposal-reviewer-vote', args=[self.conference.slug, self.slug])
+
     def get_delete_url(self):
         return reverse('proposal-delete', args=[self.conference.slug, self.slug])
 
@@ -157,13 +160,13 @@ class ProposalVote(TimeAuditModel):
 
 class ProposalCommentQuerySet(models.QuerySet):
     def get_public_comments(self):
-        return self.filter(private=False, reviewer=False)
+        return self.filter(private=False, reviewer=False, vote=False)
 
     def get_reviewers_comments(self):
-        return self.filter(private=True)
+        return self.filter(private=True, vote=False)
 
     def get_reviewers_only_comments(self):
-        return self.filter(reviewer=True)
+        return self.filter(reviewer=True, vote=False)
 
 
 class ProposalCommentManager(models.Manager):
@@ -187,7 +190,7 @@ class ProposalSectionReviewerVoteValue(AuditModel):
     description = models.CharField(max_length=255)
 
     def __str__(self):
-        return "[{}] {}".format(self.vote_value, self.description)
+        return "{} ({})".format(self.description, self.vote_value)
 
     class Meta:
         ordering = ('-vote_value',)
@@ -217,6 +220,7 @@ class ProposalComment(TimeAuditModel):
     commenter = models.ForeignKey(User)
     private = models.BooleanField(default=False, verbose_name="Is Private?")
     reviewer = models.BooleanField(default=False, verbose_name="Is Reviewer?")
+    vote = models.BooleanField(default=False, verbose_name="What is the reason?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 

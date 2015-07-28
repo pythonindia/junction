@@ -1,13 +1,41 @@
+{% extends 'base.html' %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
 {% load proposal_filters %}
 
+{% block head_title %} Dashboard {% endblock %}
+{% block og_title %} Dashboard {% endblock %}
+{% block og_description %} Dashboard {% endblock %}
+{% block page_description %} Dashboard {% endblock %}
 
-<div id="{{title}}" class="proposal-section">
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
 
-    {% if title %}
-        <h3 class="section-title">{{ title }}</h3>
-    {% endif %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Dashboard" "user-proposals-list" %}
+{% endblock %}
 
-    {% for proposal in proposals %}
+{% block navbar_logo %}
+        <a href="#" class="navbar-brand">Dashboard</a>
+{% endblock navbar_logo %}
+
+
+{% block content %}
+<section class="content custom-container proposal-list">
+    <div class="push-4-bottom push-1-top">
+        <div class="row">
+            <h1>Your Proposals</h1>
+            <hr>
+            <br>
+            {% if conf_proposals %}
+                {% for conference,proposals in conf_proposals.items %}
+                <h3>{{ conference }}</h3>
+                {% for proposal in proposals %}
         <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
             <div class="col-xs-12" >
                 <div class="proposal-list-content">
@@ -46,17 +74,6 @@
                                 {% endif %}
                                 <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
                                 <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
-                                {% if proposal|reviewer_comments:request.user %}
-                                <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="Left a review comment">
-                                        <i class="fa fa-comments-o"></i>
-                                    </a>
-                                {% endif %}
-                                {% if proposal|is_reviewer_voted:request.user %}
-                                    <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="You have casted the vote">
-                                        <i class="fa fa-check"></i>
-                                    </a>
-                                {% endif %}
-
                                 {% for url in proposal|get_content_urls %}
                                     {% if url %}
                                     <a href='{{ url }}' class='tag tag__proposal_section label label-proposal-type inline-block'
@@ -86,4 +103,11 @@
         </div>
         <br>
     {% endfor %}
-</div>
+    {% endfor %}
+    {% else %}
+            <p>No proposals avaiable yet. </p>
+    {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -70,13 +70,17 @@ THIRD_PARTY_APPS = (
     'pagedown',
     'django_markdown',
     'django_bootstrap_breadcrumbs',
+
+    'rest_framework',
 )
 
 OUR_APPS = (
     'junction.base',
     'junction.conferences',
     'junction.proposals',
+    'junction.schedule',
     'junction.pages',
+    'junction.profiles',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -217,3 +221,7 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None
 # Add connection life time
 # Make sure DB request held on for minimim 5 minutes
 CONN_MAX_AGE = 300
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}

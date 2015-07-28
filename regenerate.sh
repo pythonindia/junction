@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "-> Install requirements:"
+pip install -r requirements-dev.txt
+
 echo "-> Remove database:"
 rm db.sqlite3
 
