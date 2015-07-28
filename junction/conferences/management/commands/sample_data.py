@@ -120,7 +120,7 @@ class Command(BaseCommand):
             self.create_proposal_comment(users=reviewers)
 
         print(' Creating default choices for proposal reviewer vote values.')
-        for vote in constants.PROPOSAL_REVIEW_VOTES_LIST:
+        for vote in constants.ProposalReviewVote.CHOICES:
             ProposalSectionReviewerVoteValue.objects.create(vote_value=vote[0], description=vote[1])
 
     def create_proposal_sections(self):

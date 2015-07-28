@@ -61,16 +61,12 @@ class ProposalUserVoteRole:
     _REVIEWER = [2, "Reviewer"]
 
 
-PROPOSAL_REVIEW_VOTE_MUST_HAVE = "Must have"
-PROPOSAL_REVIEW_VOTE_GOOD = "Good"
-PROPOSAL_REVIEW_VOTE_NOT_BAD = "Not Bad"
-PROPOSAL_REVIEW_VOTE_NOT_ALLOWED = "Shouldn't be allowed"
-
-PROPOSAL_REVIEW_VOTES_LIST = ((2, PROPOSAL_REVIEW_VOTE_MUST_HAVE),
-                              (1, PROPOSAL_REVIEW_VOTE_GOOD),
-                              (0, PROPOSAL_REVIEW_VOTE_NOT_BAD),
-                              (-1, PROPOSAL_REVIEW_VOTE_NOT_ALLOWED),
-                              )
+@choices
+class ProposalReviewVote:
+    _MUST_HAVE = [2, "Must have"]
+    _GOOD = [1, "Good"]
+    _NOT_BAD = [0, "Not Bad"]
+    _NOT_ALLOWED = [-1, "Shouldn't be allowed"]
 
 REVIEWER_HAS_COMMENTED = 'Yes'
 REVIEWER_HAS_NOT_COMMENTED = 'No'
