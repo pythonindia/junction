@@ -179,13 +179,7 @@
                 <tr>
                     <td class="text-muted text-right"><small>Target Audience:</small></td>
                     <td>
-                        {% if proposal.target_audience == 1 %}
-                            Beginner
-                        {% elif proposal.target_audience == 2 %}
-                            Intermediate
-                        {% else %}
-                            Advanced
-                        {% endif %}
+                        {{ proposal.get_target_audience_display }}
                     </td>
                 </tr>
             </table>
@@ -255,10 +249,10 @@
 {% block script_extra %}
     <script>
     $(document).ready(function() {
-        
+
         $('#upload-content').click(function(e){
             e.preventDefault();
-            
+
             $.ajax({
                 method: "POST",
                 url: "{% url 'proposal-upload-content' proposal.conference.slug proposal.slug %}",
