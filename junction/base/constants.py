@@ -31,7 +31,6 @@ class ConferenceStatus:
     _SCHEDULE_PUBLISHED = [4, "Schedule Published"]
 
 
-# Proposal Application Choice Fields
 @choices
 class ProposalStatus:
     _DRAFT = [1, "Draft"]
