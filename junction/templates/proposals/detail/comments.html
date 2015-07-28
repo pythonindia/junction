@@ -1,10 +1,12 @@
 {% load bootstrap3 %}
 {% load django_markdown %}
 {% load humanize %}
+{% load proposal_filters %}
+
 {% if not comments %}
-<p class="text-muted lead">
-    No comments added so far.
-</p>
+    <p class="text-muted lead">
+        No comments added so far.
+    </p>
 {% endif %}
 
 {% for comment in comments %}
@@ -13,7 +15,11 @@
         <div class="comment-vote-panel text-center">
             <div class="text-center">
                 <div>
-                    <a href="#" class="js-proposal-comment-upvote text-muted">
+                    <a href="#" class="js-proposal-comment-upvote text-muted 
+                        {% if request.user.is_authenticated %}
+                        {% if comment|has_upvoted_comment:request.user == True %}
+                            btn-vote active 
+                        {% endif %}{% endif %}">
                         <i class="fa fa-chevron-up"></i>
                     </a>
                 </div>
@@ -23,7 +29,11 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="js-proposal-comment-downvote text-muted">
+                    <a href="#" class="js-proposal-comment-downvote text-muted 
+                        {% if request.user.is_authenticated %}
+                        {% if comment|has_upvoted_comment:request.user == False %}
+                            btn-vote active 
+                        {% endif %}{% endif %}">
                         <i class="fa fa-chevron-down"></i>
                     </a>
                 </div>
@@ -40,11 +50,19 @@
         <div class="comment-description" id="comment-{{comment.id}}">
             <span>{{ comment.comment|markdown }}</span>
             <b>
-                {% if comment.commenter.get_full_name %}
-                {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
-                {% else %}
-                {{ comment.commenter.username }}
-                {% endif %}
+              {% if comment.private %}
+                  {% if comment.commenter == proposal.author %}
+                  Comment by proposer.
+                  {% else %}
+                  Comment by {{comment.get_reviewer_nick}}.
+                  {% endif %}
+              {% else %}
+                  {% if comment.commenter.get_full_name %}
+                  {{ comment.commenter.get_full_name }} (~{{ comment.commenter.username }})
+                  {% else %}
+                  {{ comment.commenter.username }}
+                  {% endif %}
+              {% endif %}
             </b>
             <small class="text-muted">
                 <a href="#comment-{{comment.id}}" class="link-disguise"><time datetime={{comment.created_at|date:"c"}}>{{ comment.created_at|naturaltime }}</time></a>
@@ -55,7 +73,9 @@
 {% endfor %}
 
 <div class="add-comment-wrapper">
-    {% if user.is_authenticated %}
+
+  {% if write_private_comment or not review_comments and user.is_authenticated  %}
+
     <a href="#" class="js-add-comment">add a comment</a>
 
     <form method="POST" class="new-comment js-new-comment-form" style="display:none;" action="{% url 'proposal-comment-create' proposal.conference.slug proposal.slug %}">
@@ -66,6 +86,8 @@
 
         {% bootstrap_field proposal_comment_form.private %}
 
+        {% bootstrap_field proposal_comment_form.reviewer %}
+
         {% buttons %}
         <button type="submit" class="btn btn-primary">
             Add Comment
@@ -73,6 +95,8 @@
         <button type="button" class="btn btn-default js-hide-comment-form">Cancel</button>
         {% endbuttons %}
     </form>
+    {% elif read_private_comment %}
+    <!-- pass -->
     {% else %}
     <p>
         <a href="{{login_url}}?next={{ proposal.get_absolute_url }}">

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} {{ conference.name }} proposals to review {% endblock %}
+{% block og_title %} {{ conference.name }} proposals to review {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Proposals To Review" "proposals-to-review" conference.slug %}
+{% endblock %}
+
+{% block navbar_logo %}
+    {% if conference.logo %}
+        <a href="{% url "conference-detail" conference.slug %}">
+            <img src="{{ conference.logo.url }}">
+        </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block page_classes %}{{ block.super}} page-proposals{% endblock page_classes %}
+
+{% block content %}
+    <section class="content custom-container proposal-list">
+        <div class="push-4-bottom push-1-top">
+            <a name="proposals"></a>
+            {% if proposals_to_review %}
+                <h2>Proposals To Review</h2>
+                <hr>
+                <div id="filter">
+                    <form method="POST" action="" class="form-inline">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                        <a class="btn-clear-filter" href="./" style='display: none; margin-left: 1em;'>
+                            clear filters
+                        </a>
+                       {% endbuttons %}
+                    </form>
+                </div>
+
+                <hr>
+                <div id="#proposals">
+                    {% for section_items in proposals_to_review  %}
+                        {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <p>No proposals to review. </p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block script_extra %}
+    <script>
+    $.each($('#filter select'), function(val, text) {
+        $(this).prepend( new Option('All', 'All') );
+        $(this).val('All').change();
+    });
+
+    $('#filter select').change(function(e){
+        e.preventDefault();
+        var filter = false;
+        var p_section = $( "#id_proposal_section option:selected" ).text(),
+            p_type = $( "#id_proposal_type option:selected" ).text(),
+            r_comment = $( "#id_reviewer_comment" ).val();
+
+        if (p_section != 'All') {
+            $( ".proposal-section" ).show().not( '[id~="' + p_section + '"]' ).hide();
+        }
+        if (p_type != 'All') {
+            $( ".proposal" ).show().not( '[data-type~="' + p_type + '"]' ).hide();
+        }
+        if (r_comment != 'All') {
+            $( ".proposal" ).show().not( '[data-comment~="' + r_comment + '"]' ).hide();
+        }
+        if ( r_comment == 'All' && p_section == 'All' && p_type == 'All') {
+            $('.btn-clear-filter').hide()
+        } else {
+            $('.btn-clear-filter').show()
+        }
+    });
+    </script>
+{% endblock %}

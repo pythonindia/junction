@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 # Standard Library
 from os import path
 
@@ -19,15 +21,15 @@ def send_email(to, context, template_dir):
     :rtype: None
 
     """
-    expected_templates = {'message': 'message.txt', 'subject': 'subject.txt',
-                          'html_message': 'message.html'}
+    to_str = lambda x: render_to_string(path.join(template_dir, x), context).strip()
 
-    kwargs = {key: render_to_string(path.join(template_dir, template),
-                                    context).strip()
-              for key, template in expected_templates.items()}
+    subject = to_str('subject.txt')
+    text_message = to_str('message.txt')
+    html_message = to_str('message.html')
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [_format_email(to)]
 
-    return send_mail(from_email=settings.DEFAULT_FROM_EMAIL,
-                     recipient_list=[_format_email(to)], **kwargs)
+    return send_mail(subject, text_message, from_email, recipient_list, html_message=html_message)
 
 
 def _format_email(user):

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} Proposal Voting | {{ block.super }} {% endblock %}
+
+{% block style_extra %}
+    <style>
+     li {
+         list-style: none;
+     }
+    </style>
+{% endblock %}
+
+{% block endhead %}
+    <!-- Custom Form CSS -->
+    <link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb proposal.conference.name "conference-detail" proposal.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" proposal.conference.slug %}
+    {% breadcrumb proposal.title "proposal-detail" proposal.conference.slug proposal.slug %}
+    {% breadcrumb "Voting" "" %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if vote %}
+            <div class="alert alert-danger center" style="text-align: center;">
+                You have casted <strong>"{{ vote.vote_value }}"</strong> vote. Submitting again will override the existing one.
+            </div>
+        {% endif %}
+        <div class="col-sm-offset-2 col-sm-6">
+            <div class="space-2-bottom">
+                <div class="row">
+                    <hr class="hr-mini">
+                    <h4 class="fill-blue text-center">Proposal Voting</h4>
+                    <hr class="hr-mini">
+                    <form method="POST" action="."> {% csrf_token %}
+                        {% bootstrap_form proposal_vote_form %}
+                        {% buttons %}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                        {% endbuttons %}
+                    </form>
+                </div>
+                <hr class="hr-mini">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

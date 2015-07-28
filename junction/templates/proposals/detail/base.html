@@ -12,6 +12,8 @@
 {% block page_classes %} {{ block.super}} proposal proposal-detail {% endblock page_classes %}
 
 {% block endhead %}
+    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -53,25 +55,36 @@
                 </small>
             </p>
 
-            {% if can_delete %}
+            {% if is_author %}
                 <div class="btn-group" role="group">
-                    <a href="{{ proposal.get_update_url }}" class="btn btn-default">
+                    <a href="{{ proposal.get_update_url }}"
+                       class="btn btn-default"
+                       title='Edit...'
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-pencil-square-o"></i>
                     </a>
 
-                    <a href="{{ proposal.get_delete_url }}" class="btn btn-default" type="button">
+                    <a href="{{ proposal.get_delete_url }}"
+                       class="btn btn-default"
+                       type="button"
+                       title="Delete..."
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-trash-o"></i>
                     </a>
 
-                    <a href="#public-comments" class="btn btn-default" type="button">
+                    <a href="#public-comments" class="btn btn-default" type="button" title="Comments"
+                       data-toggle="tooltip" data-placement="bottom">
                         <i class="fa fa-comments-o"></i>
-                    </a>
-
-                    <a href="#reviewers-comments" class="btn btn-default" type="button">
-                        <i class="fa fa-info"></i>
                     </a>
                 </div>
             {% endif %}
+
+            {% comment %}
+              {% if is_reviewer %}
+                <a class="tag label label-proposal-type" href="{{ proposal.get_review_url }}">Review proposal</a>
+                {% endif %}
+            {% endcomment %}
+
         </div>
     </div>
 
@@ -94,52 +107,60 @@
             </div>
         </div>
 
-        <div class="col-sm-8">
-            <h4>
-                Description :
-            </h4>
-            <p>
-                {{ proposal.description|markdown }}
-            </p>
+        <section class="col-sm-8 proposal-writeup">
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Description:</b></h4>
+            <p>{{ proposal.description|markdown }}</p>
+          </div>
 
-            {% if proposal.prerequisites %}
-                <h4>
-                    Prerequisites :
-                </h4>
-                <p>
-                    {{ proposal.prerequisites|markdown }}
-                </p>
-            {% endif %}
+          {% if proposal.prerequisites %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Prerequisites:</b></h4>
+            <p>{{ proposal.prerequisites|markdown }}</p>
+          </div>
+          {% endif %}
 
-            {% if proposal.content_urls %}
-                <h4>
-                    Content URLS :
-                </h4>
-                <p>
-                    {{ proposal.content_urls|markdown }}
-                </p>
-            {% endif %}
+          {% if proposal.content_urls %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Content URLs:</b></h4>
+            <p>{{ proposal.content_urls|markdown }}</p>
+          </div>
+          {% endif %}
 
-            {% if proposal.speaker_info %}
-                <h4>
-                    Speaker Info :
-                </h4>
-                <p>
-                    {{ proposal.speaker_info|markdown }}
-                </p>
-            {% endif %}
+          {% if is_reviewer or user.is_authenticated and user.is_superuser %}
+              <div class="row">
+                  <a id="upload-content" class='btn btn-primary' href="#">
+                      Ask proposer to upload content
+                  </a>
+              </div>
+          {% endif %}
 
-            {% if proposal.speaker_links %}
-                <h4>
-                    Speaker Links :
-                </h4>
-                <p>
-                    {{ proposal.speaker_links|markdown }}
-                </p>
-            {% endif %}
-        </div>
+          {% if proposal.speaker_info %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Speaker Info:</b></h4>
+            <p>{{ proposal.speaker_info|markdown }}</p>
+          </div>
+          {% endif %}
 
-        <div class="col-sm-3 proposal-meta">
+          {% if proposal.speaker_links %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>Speaker Links:</b></h4>
+            <p>{{ proposal.speaker_links|markdown }}</p>
+          </div>
+          {% endif %}
+
+          {% if is_reviewer or user.is_authenticated and user.is_superuser %}
+              <div class="proposal-writeup--section">
+                  <h4 class='heading'><b>Reviewer Actions:</b></h4>
+                  <a class='btn btn-primary' href="{{ proposal.get_vote_url }}">
+                      Vote for proposal
+                  </a>
+              </div>
+          {% endif %}
+
+        </section>
+
+        <section class="col-sm-3 proposal-meta">
             <table class="table table-borderless">
                 <tr>
                     <td class="text-muted text-right"><small>Section:</small></td>
@@ -152,24 +173,18 @@
                 {% if is_author %}
                     <tr>
                         <td class="text-muted text-right"><small>Status:</small></td>
-                        <td> {{ proposal.status_text }} </td>
+                        <td> {{ proposal.get_status_display }} </td>
                     </tr>
                 {% endif %}
                 <tr>
                     <td class="text-muted text-right"><small>Target Audience:</small></td>
                     <td>
-                        {% if proposal.target_audience == 1 %}
-                            Beginner
-                        {% elif proposal.target_audience == 2 %}
-                            Intermediate
-                        {% else %}
-                            Advanced
-                        {% endif %}
+                        {{ proposal.get_target_audience_display }}
                     </td>
                 </tr>
             </table>
             {% include "social_shares.html" %}
-        </div>
+        </section>
     </div>
 
     <hr>
@@ -184,12 +199,20 @@
                           Comments
                       </a>
                   </li>
-
-                  {% if allow_private_comment %}
+                  {% if read_private_comment %}
                   <li role="presentation" id="reviewers-comments">
                       <a href="#js-reviewers" role="tab" data-toggle="tab">
                           <i class="fa fa-thumbs-up"></i>
                           Reviewers
+                      </a>
+                  </li>
+                  {% endif %}
+
+                  {% if is_reviewer %}
+                  <li role="presentation" id="reviewers-only-comments">
+                      <a href="#js-only-reviewers" role="tab" data-toggle="tab">
+                          <i class="fa fa-thumbs-up"></i>
+                          Reviewers Talk
                       </a>
                   </li>
                   {% endif %}
@@ -199,9 +222,18 @@
                   <div class="tab-pane active" id="js-comments" role="tabpanel">
                       {% include "proposals/detail/comments.html"%}
                   </div>
-                  {% if allow_private_comment %}
+                  {% if read_private_comment %}
                   <div class="tab-pane" id="js-reviewers" role="tabpanel">
-                      {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form %}
+                      <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
+                      {% with comments=reviewers_comments proposal_comment_form=reviewers_proposal_comment_form review_comments='1' %}
+                          {% include "proposals/detail/comments.html" %}
+                      {% endwith %}
+                  </div>
+                  {% endif %}
+                  {% if is_reviewer %}
+                  <div class="tab-pane" id="js-only-reviewers" role="tabpanel">
+                      <span class="alert-info">This tab is for reviewers only.</span>
+                      {% with comments=reviewers_only_comments proposal_comment_form=reviewers_only_proposal_comment_form review_comments='1' %}
                           {% include "proposals/detail/comments.html" %}
                       {% endwith %}
                   </div>
@@ -215,17 +247,31 @@
 {% endblock %}
 
 {% block script_extra %}
-<script>
-$(document).ready(function() {
+    <script>
+    $(document).ready(function() {
 
-  $('a[href=#public-comments]').click(function(){
-    $('a[href=#js-comments]').parent().addClass('active').siblings().removeClass("active");
-  });
+        $('#upload-content').click(function(e){
+            e.preventDefault();
 
-  $('a[href=#reviewers-comments]').click(function(){
-    $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
-  });
+            $.ajax({
+                method: "POST",
+                url: "{% url 'proposal-upload-content' proposal.conference.slug proposal.slug %}",
+            })
+             .done(function( msg ) {
+                 swal( msg );
+             });
+        });
 
-});
-</script>
+        $('a[href=#public-comments]').click(function(){
+            $('a[href=#js-comments]').parent().addClass('active').siblings().removeClass("active");
+        });
+        $('a[href=#reviewers-comments]').click(function(){
+            $('a[href=#js-reviewers]').parent().addClass('active').siblings().removeClass("active");
+        });
+        $('a[href=#reviewers-only-comments]').click(function(){
+            $('a[href=#js-only-reviewers]').parent().addClass('active').siblings().removeClass("active");
+        });
+
+    });
+    </script>
 {% endblock %}

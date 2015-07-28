@@ -1,10 +1,13 @@
-import os
-
-from django.conf.global_settings import *  # noqa
-from django.utils.translation import ugettext_lazy as _
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
 
 # Standard Library
+import os
 from os.path import dirname, join
+
+# Third Party Stuff
+from django.conf.global_settings import *  # noqa
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
@@ -29,6 +32,7 @@ SITE_VARIABLES = {
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
+    'footer': 'Copyright &copy; 2015. Python Software Society of India.'
 }
 
 MIDDLEWARE_CLASSES = (
@@ -42,6 +46,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 CORE_APPS = (
+    'flat',  # https://github.com/elky/django-flat-theme
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,13 +70,17 @@ THIRD_PARTY_APPS = (
     'pagedown',
     'django_markdown',
     'django_bootstrap_breadcrumbs',
+
+    'rest_framework',
 )
 
 OUR_APPS = (
     'junction.base',
     'junction.conferences',
     'junction.proposals',
+    'junction.schedule',
     'junction.pages',
+    'junction.profiles',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
@@ -208,3 +217,11 @@ TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', None)
 TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', None)
 TWITTER_ACCESS_TOKEN_KEY = os.environ.get('TWITTER_ACCESS_TOKEN_KEY', None)
 TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None)
+
+# Add connection life time
+# Make sure DB request held on for minimim 5 minutes
+CONN_MAX_AGE = 300
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}

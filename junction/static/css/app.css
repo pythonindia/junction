@@ -8404,6 +8404,10 @@ footer {
   background-color: #fff7f8;
   border-top: 1px solid #ffdee2;
   border-bottom: 1px solid #ffdee2;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  top: 100%;
 }
 .navbar-default {
   border-top: none;
@@ -8636,7 +8640,11 @@ a.status:focus {
   padding: 0;
 }
 .proposal-meta table td {
-  padding: 3px;
+  padding: 3px !important;
+}
+.proposal-writeup .heading {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
 }
 .comments-and-reviews-panel {
   margin-bottom: 20px;
@@ -8738,4 +8746,10 @@ fieldset[disabled] .review-form select {
 }
 textarea.review-form select {
   height: auto;
+}
+.charfield {
+  margin-left: 10px;
+}
+.dropdown {
+  margin-left: 10px;
 }

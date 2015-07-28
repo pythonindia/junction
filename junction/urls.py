@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
-Root url routering file.
-
-You should put the url config in their respective app putting only a
-reference to them here.
-'''
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.conf import settings
@@ -13,6 +7,25 @@ from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
+
+from rest_framework import routers
+from junction.schedule import views as schedule_views
+from junction.conferences import views as conference_views
+
+router = routers.DefaultRouter()
+
+router.register('conferences', conference_views.ConferenceView)
+router.register('venues', conference_views.VenueView)
+router.register('rooms', conference_views.RoomView)
+
+router.register('schedules', schedule_views.ScheduleView)
+
+'''
+Root url routering file.
+
+You should put the url config in their respective app putting only a
+reference to them here.
+'''
 
 urlpatterns = patterns(
     '',
@@ -25,9 +38,21 @@ urlpatterns = patterns(
     url('^markdown/', include('django_markdown.urls')),
 
     # Proposals related
-    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.proposal_urls')),
-    url(r'^(?P<conference_slug>[\w-]+)/proposal-comments/', include('junction.proposals.comment_urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
+        'junction.proposals.dashboard.reviewer_comments_dashboard',
+        name='proposal-reviewers-dashboard'),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/',
+        'junction.proposals.dashboard.proposals_dashboard', name='proposal-dashboard'),
 
+    url(r'^api/v1/', include(router.urls)),
+
+    # User Dashboard
+    url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
+
+    # Schedule related
+    url(r'^(?P<conference_slug>[\w-]+)/schedule/',
+        include('junction.schedule.urls')),
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
     url(r'^schedule/$', TemplateView.as_view(template_name='static-content/schedule.html',), name='schedule-static'),
