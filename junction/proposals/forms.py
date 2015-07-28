@@ -11,7 +11,7 @@ from pagedown.widgets import PagedownWidget
 from junction.base.constants import (
     ProposalReviewStatus,
     ProposalStatus,
-    PROPOSAL_TARGET_AUDIENCES,
+    ProposalTargetAudience,
     PROPOSAL_REVIEWER_COMMENT_CHOICES,
 )
 from junction.proposals.models import (
@@ -65,7 +65,7 @@ class ProposalForm(forms.Form):
                                   help_text=("Describe your proposal with clear objective in simple sentence."
                                              " Keep it short and simple."))
     target_audience = forms.ChoiceField(
-        choices=PROPOSAL_TARGET_AUDIENCES,
+        choices=ProposalTargetAudience.CHOICES,
         widget=forms.Select(attrs={'class': 'dropdown'}))
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}),

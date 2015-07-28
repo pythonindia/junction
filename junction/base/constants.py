@@ -48,14 +48,11 @@ class ProposalReviewStatus:
     _WAIT_LISTED = [5, "Wait-listed"]
 
 
-PROPOSAL_TARGET_AUDIENCE_BEGINNER = "Beginner"
-PROPOSAL_TARGET_AUDIENCE_INTERMEDIATE = "Intermediate"
-PROPOSAL_TARGET_AUDIENCE_ADVANCED = "Advanced"
-
-PROPOSAL_TARGET_AUDIENCES = ((1, PROPOSAL_TARGET_AUDIENCE_BEGINNER),
-                             (2, PROPOSAL_TARGET_AUDIENCE_INTERMEDIATE),
-                             (3, PROPOSAL_TARGET_AUDIENCE_ADVANCED),
-                             )
+@choices
+class ProposalTargetAudience:
+    _BEGINNER = [1, "Beginner"]
+    _INTERMEDIATE = [2, "Intermediate"]
+    _ADVANCED = [3, "Advanced"]
 
 PROPOSAL_USER_VOTE_ROLE_PUBLIC = "Public"
 PROPOSAL_USER_VOTE_ROLE_REVIEWER = "Reviewer"

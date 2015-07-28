@@ -14,7 +14,7 @@ from django_extensions.db.fields import AutoSlugField
 from junction.base.constants import (
     ProposalReviewStatus,
     ProposalStatus,
-    PROPOSAL_TARGET_AUDIENCES,
+    ProposalTargetAudience,
     PROPOSAL_USER_VOTE_ROLES
 )
 from junction.base.models import AuditModel, TimeAuditModel
@@ -74,7 +74,7 @@ class Proposal(TimeAuditModel):
     slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
+        choices=ProposalTargetAudience.CHOICES, default=1, verbose_name="Target Audience")
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
     speaker_info = models.TextField(blank=True, default="")
