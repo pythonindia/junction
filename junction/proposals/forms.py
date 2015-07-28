@@ -10,7 +10,7 @@ from pagedown.widgets import PagedownWidget
 # Junction Stuff
 from junction.base.constants import (
     PROPOSAL_REVIEW_STATUS_LIST,
-    PROPOSAL_STATUS_LIST,
+    ProposalStatus,
     PROPOSAL_TARGET_AUDIENCES,
     PROPOSAL_REVIEWER_COMMENT_CHOICES,
 )
@@ -69,7 +69,7 @@ class ProposalForm(forms.Form):
         widget=forms.Select(attrs={'class': 'dropdown'}))
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}),
-        choices=PROPOSAL_STATUS_LIST,
+        choices=ProposalStatus.CHOICES,
         help_text=("If you choose DRAFT people can't the see the session in the list."
                    " Make the proposal PUBLIC when you're done with editing the session."))
     proposal_type = forms.ChoiceField(

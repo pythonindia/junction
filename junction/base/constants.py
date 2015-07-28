@@ -32,14 +32,12 @@ class ConferenceStatus:
 
 
 # Proposal Application Choice Fields
-PROPOSAL_STATUS_DRAFT = 1
-PROPOSAL_STATUS_PUBLIC = 2
-PROPOSAL_STATUS_CANCELLED = 3
+@choices
+class ProposalStatus:
+    _DRAFT = [1, "Draft"]
+    _PUBLIC = [2, "Public"]
+    _CANCELLED = [3, "Cancelled"]
 
-PROPOSAL_STATUS_LIST = ((PROPOSAL_STATUS_PUBLIC, "Public"),
-                        (PROPOSAL_STATUS_DRAFT, "Draft"),
-                        (PROPOSAL_STATUS_CANCELLED, "Cancelled"),
-                        )
 
 PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED = 1
 PROPOSAL_REVIEW_STATUS_SELECTED = 2

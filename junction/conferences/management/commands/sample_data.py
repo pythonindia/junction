@@ -226,7 +226,7 @@ class Command(BaseCommand):
 
     def create_proposal(self, proposal_type):
 
-        status = next((i[0] for i in constants.PROPOSAL_STATUS_LIST if
+        status = next((i[0] for i in constants.ProposalStatus.CHOICES if
                        i[1] == proposal_type))
 
         proposal = Proposal.objects.create(
