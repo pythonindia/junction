@@ -133,12 +133,6 @@ class Proposal(TimeAuditModel):
         down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
 
-    def status_text(self):
-        """ Text representation of status values """
-        for value, text in ProposalStatus.CHOICES:
-            if self.status == value:
-                return text
-
     class Meta:
         unique_together = ("conference", "slug")
 

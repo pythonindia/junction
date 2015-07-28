@@ -173,7 +173,7 @@
                 {% if is_author %}
                     <tr>
                         <td class="text-muted text-right"><small>Status:</small></td>
-                        <td> {{ proposal.status_text }} </td>
+                        <td> {{ proposal.get_status_display }} </td>
                     </tr>
                 {% endif %}
                 <tr>
