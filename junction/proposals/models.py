@@ -12,7 +12,7 @@ from django_extensions.db.fields import AutoSlugField
 
 # Junction Stuff
 from junction.base.constants import (
-    PROPOSAL_REVIEW_STATUS_LIST,
+    ProposalReviewStatus,
     ProposalStatus,
     PROPOSAL_TARGET_AUDIENCES,
     PROPOSAL_USER_VOTE_ROLES
@@ -82,7 +82,7 @@ class Proposal(TimeAuditModel):
     status = models.PositiveSmallIntegerField(
         choices=ProposalStatus.CHOICES, default=1)
     review_status = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
+        choices=ProposalReviewStatus.CHOICES, default=1, verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __str__(self):

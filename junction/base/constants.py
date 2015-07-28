@@ -39,18 +39,14 @@ class ProposalStatus:
     _CANCELLED = [3, "Cancelled"]
 
 
-PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED = 1
-PROPOSAL_REVIEW_STATUS_SELECTED = 2
-PROPOSAL_REVIEW_STATUS_REJECTED = 3
-PROPOSAL_REVIEW_STATUS_ON_HOLD = 4
-PROPOSAL_REVIEW_STATUS_WAIT_LISTED = 5
+@choices
+class ProposalReviewStatus:
+    _YET_TO_BE_REVIEWED = [1, "Yet to be reviewed"]
+    _SELECTED = [2, "Selected"]
+    _REJECTED = [3, "Rejected"]
+    _ON_HOLD = [4, "On hold"]
+    _WAIT_LISTED = [5, "Wait-listed"]
 
-PROPOSAL_REVIEW_STATUS_LIST = ((PROPOSAL_REVIEW_STATUS_YET_TO_BE_REVIEWED, "Yet to be reviewed"),
-                               (PROPOSAL_REVIEW_STATUS_SELECTED, "Selected"),
-                               (PROPOSAL_REVIEW_STATUS_REJECTED, "Rejected"),
-                               (PROPOSAL_REVIEW_STATUS_ON_HOLD, "On hold"),
-                               (PROPOSAL_REVIEW_STATUS_WAIT_LISTED, "Wait-listed"),
-                               )
 
 PROPOSAL_TARGET_AUDIENCE_BEGINNER = "Beginner"
 PROPOSAL_TARGET_AUDIENCE_INTERMEDIATE = "Intermediate"

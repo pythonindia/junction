@@ -9,7 +9,7 @@ from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
 from junction.base.constants import (
-    PROPOSAL_REVIEW_STATUS_LIST,
+    ProposalReviewStatus,
     ProposalStatus,
     PROPOSAL_TARGET_AUDIENCES,
     PROPOSAL_REVIEWER_COMMENT_CHOICES,
@@ -130,7 +130,7 @@ class ProposalReviewForm(forms.Form):
     Used to review the proposal.
     """
     review_status = forms.ChoiceField(
-        choices=PROPOSAL_REVIEW_STATUS_LIST,
+        choices=ProposalReviewStatus.CHOICES,
         widget=forms.RadioSelect()
     )
 
