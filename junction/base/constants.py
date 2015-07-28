@@ -68,8 +68,9 @@ class ProposalReviewVote:
     _NOT_BAD = [0, "Not Bad"]
     _NOT_ALLOWED = [-1, "Shouldn't be allowed"]
 
-REVIEWER_HAS_COMMENTED = 'Yes'
-REVIEWER_HAS_NOT_COMMENTED = 'No'
-PROPOSAL_REVIEWER_COMMENT_CHOICES = (('True', REVIEWER_HAS_COMMENTED),
-                                     ('False', REVIEWER_HAS_NOT_COMMENTED),
-                                     )
+
+# FIXME: `ProposalReviewerComment` should be Boolean
+@choices
+class ProposalReviewerComment:
+    _COMMENTED = ['True', 'Yes']
+    _NOT_COMMENTED = ['False', 'No']

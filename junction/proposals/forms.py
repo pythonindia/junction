@@ -12,7 +12,7 @@ from junction.base.constants import (
     ProposalReviewStatus,
     ProposalStatus,
     ProposalTargetAudience,
-    PROPOSAL_REVIEWER_COMMENT_CHOICES,
+    ProposalReviewerComment,
 )
 from junction.proposals.models import (
     ProposalSection,
@@ -164,4 +164,4 @@ class ProposalsToReviewForm(forms.Form):
         super(ProposalsToReviewForm, self).__init__(*args, **kwargs)
         self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
-        self.fields['reviewer_comment'].choices = PROPOSAL_REVIEWER_COMMENT_CHOICES
+        self.fields['reviewer_comment'].choices = ProposalReviewerComment.CHOICES
