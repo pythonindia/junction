@@ -12,10 +12,10 @@ from django_extensions.db.fields import AutoSlugField
 
 # Junction Stuff
 from junction.base.constants import (
-    PROPOSAL_REVIEW_STATUS_LIST,
-    PROPOSAL_STATUS_LIST,
-    PROPOSAL_TARGET_AUDIENCES,
-    PROPOSAL_USER_VOTE_ROLES
+    ProposalReviewStatus,
+    ProposalStatus,
+    ProposalTargetAudience,
+    ProposalUserVoteRole
 )
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
@@ -74,15 +74,17 @@ class Proposal(TimeAuditModel):
     slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_TARGET_AUDIENCES, default=1, verbose_name="Target Audience")
+        choices=ProposalTargetAudience.CHOICES, default=ProposalTargetAudience.BEGINNER,
+        verbose_name="Target Audience")
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
     speaker_info = models.TextField(blank=True, default="")
     speaker_links = models.TextField(blank=True, default="")
     status = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_STATUS_LIST, default=1)
+        choices=ProposalStatus.CHOICES, default=ProposalStatus.DRAFT)
     review_status = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_REVIEW_STATUS_LIST, default=1, verbose_name="Review Status")
+        choices=ProposalReviewStatus.CHOICES, default=ProposalReviewStatus.YET_TO_BE_REVIEWED,
+        verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
     def __str__(self):
@@ -131,12 +133,6 @@ class Proposal(TimeAuditModel):
         down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
 
-    def status_text(self):
-        """ Text representation of status values """
-        for value, text in PROPOSAL_STATUS_LIST:
-            if self.status == value:
-                return text
-
     class Meta:
         unique_together = ("conference", "slug")
 
@@ -148,7 +144,7 @@ class ProposalVote(TimeAuditModel):
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(User)
     role = models.PositiveSmallIntegerField(
-        choices=PROPOSAL_USER_VOTE_ROLES, default=1)
+        choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.PUBLIC)
     up_vote = models.BooleanField(default=True)
 
     def __str__(self):
@@ -202,7 +198,8 @@ class ProposalSectionReviewerVote(TimeAuditModel):
     """ Reviewer vote for a specific proposal """
     proposal = models.ForeignKey(Proposal)
     voter = models.ForeignKey(ProposalSectionReviewer)
-    role = models.PositiveSmallIntegerField(choices=PROPOSAL_USER_VOTE_ROLES, default=2)
+    role = models.PositiveSmallIntegerField(
+        choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.REVIEWER)
     vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
 
     def __str__(self):

@@ -8,7 +8,7 @@ import factory
 from factory import fuzzy
 
 # Junction Stuff
-from junction.base.constants import CONFERENCE_STATUS_LIST
+from junction.base.constants import ConferenceStatus
 
 
 class Factory(factory.DjangoModelFactory):
@@ -49,7 +49,7 @@ class ConferenceFactory(Factory):
     start_date = fuzzy.FuzzyDate(datetime.date.today(), datetime.date(2017, 1, 1)).fuzz()
     end_date = start_date + datetime.timedelta(3)
     # logo
-    status = factory.Iterator(dict(CONFERENCE_STATUS_LIST).keys())
+    status = factory.Iterator(dict(ConferenceStatus.CHOICES).keys())
     # deleted
 
 

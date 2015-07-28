@@ -3,8 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from django.http.response import HttpResponseForbidden
 
-from junction.base.constants import (
-    PROPOSAL_STATUS_PUBLIC)
+from junction.base.constants import ProposalStatus
 from junction.conferences.models import Conference
 
 from .models import (
@@ -27,7 +26,7 @@ def proposals_dashboard(request, conference_slug):
 
     proposals_qs = Proposal.objects.filter(
         conference=conference,
-        status=PROPOSAL_STATUS_PUBLIC)
+        status=ProposalStatus.PUBLIC)
 
     by_type = {}
     by_section = {}
@@ -122,7 +121,7 @@ def reviewer_comments_dashboard(request, conference_slug):
         conference=conference, active=True)
     proposals_qs = Proposal.objects.filter(
         conference=conference,
-        status=PROPOSAL_STATUS_PUBLIC)
+        status=ProposalStatus.PUBLIC)
     by_conference = {}
     by_section = {}
     for reviewers in conference_reviewers:

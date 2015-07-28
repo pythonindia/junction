@@ -9,10 +9,10 @@ from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
 from junction.base.constants import (
-    PROPOSAL_REVIEW_STATUS_LIST,
-    PROPOSAL_STATUS_LIST,
-    PROPOSAL_TARGET_AUDIENCES,
-    PROPOSAL_REVIEWER_COMMENT_CHOICES,
+    ProposalReviewStatus,
+    ProposalStatus,
+    ProposalTargetAudience,
+    ProposalReviewerComment,
 )
 from junction.proposals.models import (
     ProposalSection,
@@ -65,11 +65,11 @@ class ProposalForm(forms.Form):
                                   help_text=("Describe your proposal with clear objective in simple sentence."
                                              " Keep it short and simple."))
     target_audience = forms.ChoiceField(
-        choices=PROPOSAL_TARGET_AUDIENCES,
+        choices=ProposalTargetAudience.CHOICES,
         widget=forms.Select(attrs={'class': 'dropdown'}))
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}),
-        choices=PROPOSAL_STATUS_LIST,
+        choices=ProposalStatus.CHOICES,
         help_text=("If you choose DRAFT people can't the see the session in the list."
                    " Make the proposal PUBLIC when you're done with editing the session."))
     proposal_type = forms.ChoiceField(
@@ -130,7 +130,7 @@ class ProposalReviewForm(forms.Form):
     Used to review the proposal.
     """
     review_status = forms.ChoiceField(
-        choices=PROPOSAL_REVIEW_STATUS_LIST,
+        choices=ProposalReviewStatus.CHOICES,
         widget=forms.RadioSelect()
     )
 
@@ -164,4 +164,4 @@ class ProposalsToReviewForm(forms.Form):
         super(ProposalsToReviewForm, self).__init__(*args, **kwargs)
         self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
-        self.fields['reviewer_comment'].choices = PROPOSAL_REVIEWER_COMMENT_CHOICES
+        self.fields['reviewer_comment'].choices = ProposalReviewerComment.CHOICES

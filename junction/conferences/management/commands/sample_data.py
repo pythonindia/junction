@@ -120,7 +120,7 @@ class Command(BaseCommand):
             self.create_proposal_comment(users=reviewers)
 
         print(' Creating default choices for proposal reviewer vote values.')
-        for vote in constants.PROPOSAL_REVIEW_VOTES_LIST:
+        for vote in constants.ProposalReviewVote.CHOICES:
             ProposalSectionReviewerVoteValue.objects.create(vote_value=vote[0], description=vote[1])
 
     def create_proposal_sections(self):
@@ -194,7 +194,7 @@ class Command(BaseCommand):
         conference = Conference.objects.create(
             name='%s Conference' % self.sd.words(1, 2).title(),
             description=self.sd.paragraph(),
-            status=self.sd.choices_key(constants.CONFERENCE_STATUS_LIST),
+            status=self.sd.choices_key(constants.ConferenceStatus.CHOICES),
             start_date=start_date,
             end_date=end_date,
             created_by=self.sd.choice(self.users),
@@ -226,7 +226,7 @@ class Command(BaseCommand):
 
     def create_proposal(self, proposal_type):
 
-        status = next((i[0] for i in constants.PROPOSAL_STATUS_LIST if
+        status = next((i[0] for i in constants.ProposalStatus.CHOICES if
                        i[1] == proposal_type))
 
         proposal = Proposal.objects.create(

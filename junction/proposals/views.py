@@ -14,7 +14,7 @@ from django.views.decorators.http import require_http_methods
 
 
 # Junction Stuff
-from junction.base.constants import PROPOSAL_REVIEW_STATUS_SELECTED, PROPOSAL_STATUS_PUBLIC
+from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus, ProposalUserVoteRole
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import (
@@ -100,14 +100,14 @@ def list_proposals(request, conference_slug):
 
     # make sure it's after the tag filtering is applied
     selected_proposals_list = proposals_qs.filter(
-        review_status=PROPOSAL_REVIEW_STATUS_SELECTED)
+        review_status=ProposalReviewStatus.SELECTED)
 
     # Display proposals which are public & exclude logged in user proposals
     if request.user.is_authenticated():
         proposals_qs = proposals_qs.exclude(author=request.user.id)
 
-    public_proposals_list = proposals_qs.exclude(review_status=PROPOSAL_REVIEW_STATUS_SELECTED).filter(
-        status=PROPOSAL_STATUS_PUBLIC).order_by('-created_at')
+    public_proposals_list = proposals_qs.exclude(review_status=ProposalReviewStatus.SELECTED).filter(
+        status=ProposalStatus.PUBLIC).order_by('-created_at')
 
     proposal_sections = conference.proposal_sections.all()
     proposal_types = conference.proposal_types.all()
@@ -120,7 +120,8 @@ def list_proposals(request, conference_slug):
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
                    'is_reviewer': is_reviewer,
-                   'conference': conference})
+                   'conference': conference,
+                   'ConferenceStatus': ConferenceStatus})
 
 
 @login_required
@@ -262,7 +263,7 @@ def proposals_to_review(request, conference_slug):
 
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
-    ).filter(conference=conference).filter(status=PROPOSAL_STATUS_PUBLIC)
+    ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
 
     proposal_reviewer_sections = [p.proposal_section for p in
                                   ProposalSectionReviewer.objects.filter(
@@ -500,7 +501,10 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     proposal_vote, created = ProposalVote.objects.get_or_create(
         proposal=proposal, voter=request.user)  # @UnusedVariable
 
-    role = 2 if _is_proposal_reviewer(request.user, conference) else 1
+    if _is_proposal_reviewer(request.user, conference):
+        role = ProposalUserVoteRole.REVIEWER
+    else:
+        role = ProposalUserVoteRole.PUBLIC
 
     proposal_vote.role = role
     proposal_vote.up_vote = up_vote

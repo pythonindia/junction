@@ -14,7 +14,7 @@ from slugify import slugify
 from uuid_upload_path import upload_to
 
 # Junction Stuff
-from junction.base.constants import CONFERENCE_STATUS_LIST
+from junction.base.constants import ConferenceStatus
 from junction.base.models import AuditModel
 
 
@@ -29,7 +29,7 @@ class Conference(AuditModel):
     end_date = models.DateField(verbose_name="End Date")
     logo = models.ImageField(blank=True, null=True, upload_to=upload_to)
     status = models.PositiveSmallIntegerField(
-        choices=CONFERENCE_STATUS_LIST, verbose_name="Current Status")
+        choices=ConferenceStatus.CHOICES, verbose_name="Current Status")
     venue = models.ForeignKey('ConferenceVenue', null=True)
 
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
