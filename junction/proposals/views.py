@@ -77,10 +77,6 @@ def list_proposals(request, conference_slug):
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference)
 
-    user_proposals_list = []
-    if request.user.is_authenticated():  # Display the proposals by this user
-        user_proposals_list = proposals_qs.filter(author=request.user)
-
     is_reviewer = _is_proposal_reviewer(request.user, conference)
 
     # Filtering
@@ -114,7 +110,6 @@ def list_proposals(request, conference_slug):
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
-                   'user_proposals_list': user_proposals_list,
                    'selected_proposals_list': selected_proposals_list,
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,

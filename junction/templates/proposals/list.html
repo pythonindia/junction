@@ -95,9 +95,9 @@
         {% if selected_proposals_list %}
             {% include 'proposals/partials/proposal-list--items.html' with proposals=selected_proposals_list title="Selected Proposals" display_status=False %}
         {% endif %}
-
-        {% if user_proposals_list %}
-            {% include 'proposals/partials/proposal-list--items.html' with proposals=user_proposals_list title="My Proposals" display_status=True %}
+        
+        {% if user.is_authenticated %}
+        <a class='btn btn-primary' href="{% url 'profiles:dashboard' %}">My Dashboard</a>
         {% endif %}
 
         {% if public_proposals_list %}
