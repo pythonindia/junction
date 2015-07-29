@@ -102,8 +102,9 @@ def list_proposals(request, conference_slug):
     if request.user.is_authenticated():
         proposals_qs = proposals_qs.exclude(author=request.user.id)
 
-    public_proposals_list = proposals_qs.exclude(review_status=ProposalReviewStatus.SELECTED).filter(
-        status=ProposalStatus.PUBLIC).order_by('-created_at')
+    public_proposals_list = proposals_qs.exclude(
+        review_status=ProposalReviewStatus.SELECTED).filter(
+            status=ProposalStatus.PUBLIC).order_by('-created_at')
 
     proposal_sections = conference.proposal_sections.all()
     proposal_types = conference.proposal_types.all()
@@ -127,7 +128,8 @@ def create_proposal(request, conference_slug):
         if not conference.is_accepting_proposals():
             return render(request, 'proposals/closed.html',
                           {'conference': conference})
-        form = ProposalForm(conference, action="create")
+        form = ProposalForm(conference, action="create",
+                            initial={'status': ProposalStatus.PUBLIC})
         return render(request, 'proposals/create.html',
                       {'form': form,
                        'conference': conference, })
