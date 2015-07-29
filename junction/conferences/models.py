@@ -59,7 +59,7 @@ class Conference(AuditModel):
     def is_accepting_proposals(self):
         """Check if any one of the proposal section is accepting proposal.
         """
-        return self.proposal_sections.filter(end_date__gt=now()).exists()
+        return self.proposal_types.filter(end_date__gt=now()).exists()
 
 
 @python_2_unicode_compatible
