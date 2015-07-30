@@ -7,8 +7,9 @@ import collections
 # Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
@@ -221,7 +222,7 @@ def update_proposal(request, conference_slug, slug):
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
     if not proposal.author == request.user:
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     if request.method == 'GET':
         form = ProposalForm.populate_form_for_update(proposal)
@@ -258,7 +259,7 @@ def proposals_to_review(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     if not _is_proposal_reviewer(request.user, conference):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
@@ -295,7 +296,7 @@ def review_proposal(request, conference_slug, slug):
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     if request.method == 'GET':
 
@@ -338,7 +339,7 @@ def proposal_upload_content(request, conference_slug, slug):
 
     if not (_is_proposal_section_reviewer(request.user, conference, proposal) or
             request.user.is_superuser):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
     response = send_mail_for_proposal_content(conference, proposal, host)
@@ -359,7 +360,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                                  conference=conference)
 
     if not _is_proposal_section_reviewer(request.user, conference, proposal):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     vote_value = None
 
@@ -446,7 +447,7 @@ def delete_proposal(request, conference_slug, slug):
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
     if not proposal.author == request.user:
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     if request.method == 'GET':
         return render(request, 'proposals/delete.html', {'proposal': proposal})
