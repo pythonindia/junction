@@ -173,6 +173,7 @@ def detail_proposal(request, conference_slug, slug):
     write_private_comment = _is_proposal_author_or_proposal_section_reviewer(
         request.user, conference, proposal)
     is_reviewer = _is_proposal_reviewer(request.user, conference)
+    is_section_reviewer = _is_proposal_section_reviewer(request.user, conference, proposal)
     vote_value = 0
 
     try:
@@ -191,6 +192,7 @@ def detail_proposal(request, conference_slug, slug):
         'vote_value': vote_value,
         'is_author': request.user == proposal.author,
         'is_reviewer': is_reviewer,
+        'is_section_reviewer': is_section_reviewer,
     }
 
     comments = ProposalComment.objects.filter(

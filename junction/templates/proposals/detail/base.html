@@ -149,7 +149,7 @@
           </div>
           {% endif %}
 
-          {% if is_reviewer or user.is_authenticated and user.is_superuser %}
+          {% if is_section_reviewer or user.is_authenticated and user.is_superuser %}
               <div class="proposal-writeup--section">
                   <h4 class='heading'><b>Reviewer Actions:</b></h4>
                   <a class='btn btn-primary' href="{{ proposal.get_vote_url }}">
