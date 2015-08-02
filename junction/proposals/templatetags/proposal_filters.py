@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 # Standard Library
+import collections
 import re
 
 # Third Party Stuff
@@ -9,6 +10,7 @@ from django import template
 
 # Junction Stuff
 from junction.proposals.models import (
+    ProposalComment,
     ProposalSectionReviewer,
     ProposalSectionReviewerVote,
 )
@@ -53,3 +55,33 @@ def has_upvoted_comment(comment, user):
     vote = comment.proposalcommentvote_set.filter(voter=user)
     if vote:
         return vote[0].up_vote
+
+
+@register.filter(name='get_reviewers_vote_details')
+def get_reviewers_vote_details(proposal, user):
+    """
+    """
+    v_detail = collections.namedtuple('v_detail', 'voter vote_value vote_comment')
+    reviewers = ProposalSectionReviewer.objects.filter(proposal_section=proposal.proposal_section)
+
+    vote_details = []
+    for reviewer in reviewers:
+        voter = reviewer.conference_reviewer.reviewer.get_full_name()
+        try:
+            vote_value = ProposalSectionReviewerVote.objects.get(
+                proposal=proposal,
+                voter=reviewer,
+            ).vote_value.vote_value
+            vote_comment = ProposalComment.objects.get(
+                proposal=proposal,
+                commenter=user,
+                vote=True
+            ).comment
+        except ProposalSectionReviewerVote.DoesNotExist:
+        # except SyntaxError:
+            vote_value = None
+            vote_comment = None
+
+        vote_details.append(v_detail(voter, vote_value, vote_comment))
+
+    return vote_details

@@ -1,5 +1,9 @@
+import collections
+
+from .models import Proposal, ProposalComment, ProposalSectionReviewer
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
@@ -14,6 +18,7 @@ from .models import (
 from junction.conferences.models import (
     ConferenceProposalReviewer
 )
+from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 
 @login_required
@@ -164,3 +169,29 @@ def reviewer_comments_dashboard(request, conference_slug):
         'by_section': by_section}
 
     return render(request, 'proposals/reviewers_dashboard.html', ctx)
+
+
+@require_http_methods(['GET'])
+def reviewer_votes_dashboard(request, conference_slug):
+
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal_sections = conference.proposal_sections.all()
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(conference=conference)
+
+    proposals = []
+    s_items = collections.namedtuple('section_items', 'section proposals')
+    for section in proposal_sections:
+        section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+        proposals.append(s_items(section, section_proposals))
+
+    ctx =  {
+        'conference': conference,
+        'proposals': proposals,
+    }
+
+    return render(request, 'proposals/votes-dashboard.html', ctx)
