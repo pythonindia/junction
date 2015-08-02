@@ -43,6 +43,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 )
 
 CORE_APPS = (
@@ -72,6 +73,7 @@ THIRD_PARTY_APPS = (
     'django_bootstrap_breadcrumbs',
 
     'rest_framework',
+    'simple_history',
 )
 
 OUR_APPS = (
