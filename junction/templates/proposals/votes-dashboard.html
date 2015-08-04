@@ -19,10 +19,30 @@
             <a name="proposals"></a>
             <h2>Proposal Votes Dashboard</h2>
             <hr>
-            
+            <div id="filter">
+                <form method="POST" action="" class="form-inline">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <span class="pull-right">
+
+                        {% buttons %}
+                        <div class="text-center">
+
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                        {% endbuttons %}
+                    </span>
+
+                </form>
+            </div>
+            <hr>
             <div id="#proposals" class="row">
                 {% for section_items in proposals  %}
-                    {% include 'proposals/partials/proposal-list--votes-dashboard.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                    {% if section_items.proposals %}
+                        {% include 'proposals/partials/proposal-list--votes-dashboard.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

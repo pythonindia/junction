@@ -13,6 +13,7 @@ from junction.base.constants import (
     ProposalStatus,
     ProposalTargetAudience,
     ProposalReviewerComment,
+    ProposalVotesFilter,
 )
 from junction.proposals.models import (
     ProposalSection,
@@ -32,11 +33,16 @@ def _get_proposal_section_choices(conference, action="edit"):
                     conferences=conference)]
 
 
-def _get_proposal_type_choices(conference):
-    return [(str(cpt.id), cpt.name)
+def _get_proposal_type_choices(conference, action='edit'):
+    if action == "create":
+        return [(str(cpt.id), cpt.name)
             for cpt in ProposalType.objects.filter(
                 conferences=conference, end_date__gt=now())]
-
+    else:
+        return [(str(cpt.id), cpt.name)
+            for cpt in ProposalType.objects.filter(
+                    conferences=conference)]
+        
 
 def _get_proposal_section_reviewer_vote_choices():
     return [(i.vote_value, '{} ({})'.format(i.description, i.vote_value))
@@ -97,7 +103,7 @@ class ProposalForm(forms.Form):
         self.fields['proposal_section'].choices = _get_proposal_section_choices(
             conference, action=action)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(
-            conference)
+            conference, action=action)
 
     @classmethod
     def populate_form_for_update(self, proposal):
@@ -166,3 +172,23 @@ class ProposalsToReviewForm(forms.Form):
         self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
         self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
         self.fields['reviewer_comment'].choices = ProposalReviewerComment.CHOICES
+
+
+class ProposalVotesFilterForm(forms.Form):
+    """
+    Form  to filter proposals based on votes and review_status.
+    """
+    proposal_section = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    votes = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown votes'}))
+    review_status = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+
+    def __init__(self, conference, *args, **kwargs):
+        super(ProposalVotesFilterForm, self).__init__(*args, **kwargs)
+        self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
+        self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
+        self.fields['votes'].choices = ProposalVotesFilter.CHOICES
+        self.fields['review_status'].choices = ProposalReviewStatus.CHOICES
+        
+        for name, field in self.fields.items():
+            field.choices.insert(0, ('all', 'All'))

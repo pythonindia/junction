@@ -1,5 +1,6 @@
 import collections
 
+from .forms import ProposalVotesFilterForm
 from .models import Proposal, ProposalComment, ProposalSectionReviewer
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -171,7 +172,7 @@ def reviewer_comments_dashboard(request, conference_slug):
     return render(request, 'proposals/reviewers_dashboard.html', ctx)
 
 
-@require_http_methods(['GET'])
+@require_http_methods(['GET', 'POST'])
 def reviewer_votes_dashboard(request, conference_slug):
 
     if not request.user.is_superuser:
@@ -185,13 +186,45 @@ def reviewer_votes_dashboard(request, conference_slug):
 
     proposals = []
     s_items = collections.namedtuple('section_items', 'section proposals')
+    form = ProposalVotesFilterForm(conference=conference)
+
+    if request.method == 'GET':
+        for section in proposal_sections:
+            section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+            proposals.append(s_items(section, section_proposals))
+
+        return render(request, 'proposals/votes-dashboard.html',
+                      {'conference': conference,
+                       'proposals': proposals,
+                       'form': form,})
+
+    form = ProposalVotesFilterForm(conference=conference, data=request.POST)
+
+    if not form.is_valid():
+        return render(request, 'proposals/votes-dashboard.html',
+                      {'form': form,
+                       'conference': conference,
+                       'errors': form.errors})
+
+    # Valid form
+    cps = form.cleaned_data['proposal_section']
+    cpt = form.cleaned_data['proposal_type']
+    votes = form.cleaned_data['votes']
+    review_status = form.cleaned_data['review_status']
+    proposal_sections = conference.proposal_sections.all()
+
+    if cps != 'all':
+        proposal_sections = ProposalSection.objects.filter(pk=cps)
+    if cpt != 'all':
+        proposals_qs = proposals_qs.filter(proposal_type__id__in=cpt)
+    if review_status != 'all':
+        proposals_qs = proposals_qs.filter(review_status=review_status)
+
     for section in proposal_sections:
         section_proposals = [p for p in proposals_qs if p.proposal_section == section]
         proposals.append(s_items(section, section_proposals))
 
-    ctx =  {
-        'conference': conference,
-        'proposals': proposals,
-    }
-
-    return render(request, 'proposals/votes-dashboard.html', ctx)
+    return render(request, 'proposals/votes-dashboard.html',
+                  {'conference': conference,
+                   'proposals': proposals,
+                   'form': form, })

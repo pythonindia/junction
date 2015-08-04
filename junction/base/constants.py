@@ -73,3 +73,10 @@ class ProposalReviewVote:
 class ProposalReviewerComment:
     _COMMENTED = ['True', 'Yes']
     _NOT_COMMENTED = ['False', 'No']
+
+
+@choices
+class ProposalVotesFilter:
+    _NO_VOTES = [0, "No votes"]
+    _MIN_ONE_VOTE = [1, "Minimum 1 vote"]
+    _SORT = [2, "Sort by vote value"]
