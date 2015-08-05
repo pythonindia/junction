@@ -32,6 +32,10 @@ python-openid==2.2.5
 requests==2.7.0
 requests-oauthlib==0.5.0
 
+# Admin
+# -------------------------------------------------
+simple_history==1.1
+
 # Frontend Helpers
 # -------------------------------------------------
 django-bootstrap3==6.1.0
