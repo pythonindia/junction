@@ -36,13 +36,13 @@ def _get_proposal_section_choices(conference, action="edit"):
 def _get_proposal_type_choices(conference, action='edit'):
     if action == "create":
         return [(str(cpt.id), cpt.name)
-            for cpt in ProposalType.objects.filter(
-                conferences=conference, end_date__gt=now())]
+                for cpt in ProposalType.objects.filter(
+                    conferences=conference, end_date__gt=now())]
     else:
         return [(str(cpt.id), cpt.name)
-            for cpt in ProposalType.objects.filter(
+                for cpt in ProposalType.objects.filter(
                     conferences=conference)]
-        
+
 
 def _get_proposal_section_reviewer_vote_choices():
     return [(i.vote_value, '{} ({})'.format(i.description, i.vote_value))
@@ -189,6 +189,6 @@ class ProposalVotesFilterForm(forms.Form):
         self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
         self.fields['votes'].choices = ProposalVotesFilter.CHOICES
         self.fields['review_status'].choices = ProposalReviewStatus.CHOICES
-        
+
         for name, field in self.fields.items():
             field.choices.insert(0, ('all', 'All'))

@@ -1,26 +1,19 @@
 import collections
 
-from .forms import ProposalVotesFilterForm
-from .models import Proposal, ProposalComment, ProposalSectionReviewer
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 from junction.base.constants import ProposalStatus, ProposalVotesFilter
-from junction.conferences.models import Conference
-
+from junction.conferences.models import Conference, ConferenceProposalReviewer
+from .forms import ProposalVotesFilterForm
 from .models import (
     Proposal,
     ProposalComment,
     ProposalSection,
     ProposalSectionReviewer
 )
-from junction.conferences.models import (
-    ConferenceProposalReviewer
-)
-from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 
 @login_required
@@ -197,7 +190,7 @@ def reviewer_votes_dashboard(request, conference_slug):
         return render(request, 'proposals/votes-dashboard.html',
                       {'conference': conference,
                        'proposals': proposals,
-                       'form': form,})
+                       'form': form, })
 
     form = ProposalVotesFilterForm(conference=conference, data=request.POST)
 

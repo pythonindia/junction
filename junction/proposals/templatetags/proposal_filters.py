@@ -81,7 +81,8 @@ def get_reviewers_vote_details(proposal, user):
                 commenter=user,
                 vote=True
             ).comment
-        except (ProposalSectionReviewerVote.DoesNotExist, ProposalComment.DoesNotExist) as e:
+        except (ProposalSectionReviewerVote.DoesNotExist,
+                ProposalComment.DoesNotExist) as e:  # noqa
             vote_value = None
             vote_comment = None
 
