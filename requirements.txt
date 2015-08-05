@@ -34,7 +34,7 @@ requests-oauthlib==0.5.0
 
 # Admin
 # -------------------------------------------------
-simple_history==1.1
+django_simple_history==1.6.3
 
 # Frontend Helpers
 # -------------------------------------------------
