@@ -135,6 +135,11 @@ class Proposal(TimeAuditModel):
 
     def get_reviewer_votes_count(self):
         """ Show sum of reviewer vote value. """
+        return ProposalSectionReviewerVote.objects.filter(
+            proposal=self
+        ).count()
+
+    def get_reviewer_votes_sum(self):
         votes = ProposalSectionReviewerVote.objects.filter(
             proposal=self,
         )

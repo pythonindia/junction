@@ -8,12 +8,13 @@ from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from junction.base.constants import ProposalStatus
+from junction.base.constants import ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference
 
 from .models import (
     Proposal,
     ProposalComment,
+    ProposalSection,
     ProposalSectionReviewer
 )
 from junction.conferences.models import (
@@ -217,8 +218,17 @@ def reviewer_votes_dashboard(request, conference_slug):
         proposal_sections = ProposalSection.objects.filter(pk=cps)
     if cpt != 'all':
         proposals_qs = proposals_qs.filter(proposal_type__id__in=cpt)
+    if votes != 'all':
+        votes = int(votes)
     if review_status != 'all':
         proposals_qs = proposals_qs.filter(review_status=review_status)
+
+    if votes == ProposalVotesFilter.NO_VOTES:
+        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() == votes]
+    elif votes == ProposalVotesFilter.MIN_ONE_VOTE:
+        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
+    elif votes == ProposalVotesFilter.SORT:
+        proposals_qs = sorted(proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
 
     for section in proposal_sections:
         section_proposals = [p for p in proposals_qs if p.proposal_section == section]

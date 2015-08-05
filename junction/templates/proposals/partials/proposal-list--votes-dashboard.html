@@ -36,7 +36,7 @@
                 </h3>
 
                 <div>
-                    Total Votes: {{ proposal.get_reviewer_votes_count }}
+                    Sum of Votes: {{ proposal.get_reviewer_votes_sum }}
                     {% for vote in proposal|get_reviewers_vote_details:request.user %}
                         <li>
                             {{ vote.voter }}:
