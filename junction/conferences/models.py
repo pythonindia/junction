@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
 from uuid_upload_path import upload_to
+from simple_history.models import HistoricalRecords
 
 # Junction Stuff
 from junction.base.constants import ConferenceStatus
@@ -87,6 +88,7 @@ class ConferenceProposalReviewer(AuditModel):
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     nick = models.CharField(max_length=255, verbose_name="Nick Name", default="Reviewer")
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'proposals reviewer'

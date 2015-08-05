@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.http.response import HttpResponseForbidden
 
 from junction.base.constants import ProposalStatus
 from junction.conferences.models import Conference
@@ -22,7 +22,7 @@ def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     if not request.user.is_superuser:
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     proposals_qs = Proposal.objects.filter(
         conference=conference,
@@ -116,7 +116,7 @@ def reviewer_comments_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     if not request.user.is_superuser:
-        return HttpResponseForbidden()
+        raise PermissionDenied
     conference_reviewers = ConferenceProposalReviewer.objects.filter(
         conference=conference, active=True)
     proposals_qs = Proposal.objects.filter(
