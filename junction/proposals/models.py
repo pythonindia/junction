@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from datetime import datetime
-from simple_history.models import HistoricalRecords
+#from simple_history.models import HistoricalRecords
 
 # Third Party Stuff
 from django.contrib.auth.models import User
@@ -87,7 +87,7 @@ class Proposal(TimeAuditModel):
         choices=ProposalReviewStatus.CHOICES, default=ProposalReviewStatus.YET_TO_BE_REVIEWED,
         verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
-    history = HistoricalRecords()
+    #history = HistoricalRecords()
 
     def __str__(self):
         return self.title
@@ -203,7 +203,7 @@ class ProposalSectionReviewerVote(TimeAuditModel):
     role = models.PositiveSmallIntegerField(
         choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.REVIEWER)
     vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
-    history = HistoricalRecords()
+    #history = HistoricalRecords()
 
     def __str__(self):
         return "[{}] {}".format(self.vote_value, self.proposal)

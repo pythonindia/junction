@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.contrib import admin
-from simple_history.admin import SimpleHistoryAdmin
+#from simple_history.admin import SimpleHistoryAdmin
 
 # Junction Stuff
 from junction.base.admin import AuditAdmin
@@ -20,7 +20,7 @@ class ConferenceModeratorAdmin(AuditAdmin):
     list_display = ('conference', 'moderator', 'active') + AuditAdmin.list_display
 
 
-class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
+class ConferenceProposallReviewerAdmin(AuditAdmin):
     list_display = ('conference', 'reviewer', 'active') + AuditAdmin.list_display
 
 
