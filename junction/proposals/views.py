@@ -13,7 +13,6 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-
 # Junction Stuff
 from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus, ProposalUserVoteRole
 from junction.conferences.models import Conference, ConferenceProposalReviewer
