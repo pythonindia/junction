@@ -196,7 +196,7 @@ def reviewer_votes_dashboard(request, conference_slug):
         return render(request, 'proposals/votes-dashboard.html',
                       {'conference': conference,
                        'proposals': proposals,
-                       'form': form, })
+                       'form': form})
 
     form = ProposalVotesFilterForm(conference=conference, data=request.POST)
 
@@ -236,4 +236,4 @@ def reviewer_votes_dashboard(request, conference_slug):
     return render(request, 'proposals/votes-dashboard.html',
                   {'conference': conference,
                    'proposals': proposals,
-                   'form': form, })
+                   'form': form})

@@ -257,7 +257,7 @@ def update_proposal(request, conference_slug, slug):
 def proposals_to_review(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not _is_proposal_reviewer(request.user, conference):
+    if not request.user.is_superuser:
         raise PermissionDenied
 
     proposals_qs = Proposal.objects.select_related(
