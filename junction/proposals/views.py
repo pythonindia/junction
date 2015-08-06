@@ -413,8 +413,6 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
     if not vote:
-        if isinstance(vote_value, list):
-            vote_value = vote_value[0]
         vote = ProposalSectionReviewerVote.objects.create(
             proposal=proposal,
             voter=ProposalSectionReviewer.objects.get(
@@ -422,7 +420,8 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                 conference_reviewer__conference=conference,
                 proposal_section=proposal.proposal_section),
             vote_value=ProposalSectionReviewerVoteValue.objects.get(
-                vote_value=vote_value))
+                vote_value=vote_value),
+        )
     else:
         vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(
             vote_value=vote_value)

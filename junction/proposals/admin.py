@@ -5,7 +5,7 @@ from __future__ import absolute_import, unicode_literals
 from django.contrib import admin
 from django.db import models
 from pagedown.widgets import AdminPagedownWidget
-#from simple_history.admin import SimpleHistoryAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
 # Junction Stuff
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
@@ -34,7 +34,7 @@ class ProposalTypeAdmin(AuditAdmin):
     list_display = ('name', 'active', 'start_date', 'end_date') + AuditAdmin.list_display
 
 
-class ProposalAdmin(TimeAuditAdmin):
+class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
     list_display = ('conference', 'proposal_section', 'proposal_type', 'author',
                     'title', 'slug', 'status', 'review_status') + TimeAuditAdmin.list_display
     list_filter = ['proposal_section__name', 'target_audience']
