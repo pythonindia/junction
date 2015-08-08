@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+{% load proposal_filters %}
+
+{% block head_title %} Proposal Votes Dashboard | {{ block.super }} {% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Dashboard" "proposals-dashoboard" conference.slug %}
+    {% breadcrumb "Proposal Votes Dashboard" "" %}
+{% endblock %}
+
+{% block content %}
+    <section class="content custom-container proposal-list">
+        <div class="push-4-bottom push-1-top">
+            <a name="proposals"></a>
+            <h2>Proposal Votes Dashboard</h2>
+            <hr>
+            <div id="filter" class="row">
+                <form method="POST" action="" class="form-inline">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <br /><br />
+                </form>
+                    {% buttons %}
+                <span class="pull-right"></span>
+                <div class="col-sm-offset-5 col-sm-2 text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+                    {% endbuttons %}
+            </div>
+            <br />
+            <div id="#proposals" class="row">
+                {% for section_items in proposals  %}
+                    {% if section_items.proposals %}
+                        {% include 'proposals/partials/proposal-list--votes-dashboard.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -135,6 +135,25 @@ class Proposal(TimeAuditModel):
         down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
 
+    def get_reviewer_votes_count(self):
+        """ Show sum of reviewer vote value. """
+        return ProposalSectionReviewerVote.objects.filter(
+            proposal=self
+        ).count()
+
+    def get_reviewer_votes_sum(self):
+        votes = ProposalSectionReviewerVote.objects.filter(
+            proposal=self,
+        )
+        sum_of_votes = sum((v.vote_value.vote_value for v in votes))
+        return sum_of_votes
+
+    def get_reviewers_count(self):
+        """ Count of reviewers for given proposal section """
+        return ProposalSectionReviewer.objects.filter(
+            proposal_section=self.proposal_section
+        ).count()
+
     class Meta:
         unique_together = ("conference", "slug")
 
