@@ -11,7 +11,7 @@
             <div class="col-sm-1 hidden-xs proposal-stats">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
+                        <h4 class="clear-margin">{{ proposal.get_votes_count }}</h>
                         <small class="text-muted"> Votes </small>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                             {% if vote.vote_comment %}
                                 , "{{ vote.vote_comment }}"
                             {% endif %}
-                            
+
                         </li>
                     {% endfor %}
                     <br />
@@ -52,8 +52,8 @@
                         Accept/Reject Proposal
                     </a>
                 </div>
-                
-                
+
+
                 <div class="clearfix">
                     <div class="pull-left">
                         {% if display_status %}
