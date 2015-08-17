@@ -115,15 +115,17 @@ class Proposal(TimeAuditModel):
 
     def get_comments_count(self):
         """ Show only public comments count """
-        return ProposalComment.objects.filter(proposal=self, deleted=False, private=False).count()
+        return ProposalComment.objects.filter(proposal=self, deleted=False, private=False, vote=False).count()
 
     def get_reviews_comments_count(self):
         """ Show only private comments count """
-        return ProposalComment.objects.filter(proposal=self, deleted=False, private=True).count()
+        return ProposalComment.objects.filter(proposal=self, deleted=False, private=True, vote=False).count()
 
     def get_reviewer_comments_count(self, reviewer):
         """ Number of private comments by a reviewer """
-        return ProposalComment.objects.filter(proposal=self, deleted=False, private=True, commenter=reviewer).count()
+        return ProposalComment.objects.filter(
+            proposal=self, deleted=False, private=True, commenter=reviewer, vote=False
+        ).count()
 
     def get_votes_count(self):
         """ Show only the public comment count """
