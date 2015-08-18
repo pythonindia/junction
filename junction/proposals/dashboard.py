@@ -267,7 +267,7 @@ def export_reviewer_votes(request, conference_slug):
 
     with Workbook(output) as book:
         for section in proposal_sections:
-            sheet = book.add_worksheet(section.name)
+            sheet = book.add_worksheet(section.name[:30])
             cell_format = book.add_format({'bold': True})
             sheet.write_row(0, 0, header, cell_format)
 
