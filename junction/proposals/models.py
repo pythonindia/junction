@@ -148,6 +148,7 @@ class Proposal(TimeAuditModel):
         return ProposalSectionReviewerVote.objects.filter(
             proposal=self, vote_value=vote_value
         ).count()
+
     def get_reviewer_votes_sum(self):
         votes = ProposalSectionReviewerVote.objects.filter(
             proposal=self,
