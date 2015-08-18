@@ -3,22 +3,27 @@ from __future__ import absolute_import, unicode_literals
 
 # Standard Library
 import collections
+import cStringIO as StringIO
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+from xlsxwriter.workbook import Workbook
 
 # Junction Stuff
-from junction.base.constants import ProposalStatus, ProposalVotesFilter
+from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference, ConferenceProposalReviewer
+
 from .forms import ProposalVotesFilterForm
 from .models import (
     Proposal,
     ProposalComment,
     ProposalSection,
-    ProposalSectionReviewer
+    ProposalSectionReviewer,
+    ProposalSectionReviewerVoteValue,
 )
 
 
@@ -237,3 +242,58 @@ def reviewer_votes_dashboard(request, conference_slug):
                   {'conference': conference,
                    'proposals': proposals,
                    'form': form})
+
+
+@require_http_methods(['GET', 'POST'])
+def export_reviewer_votes(request, conference_slug):
+    """
+    Write reviewer votes to a spreadsheet.
+    """
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal_sections = conference.proposal_sections.all()
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(conference=conference)
+    proposals_qs = sorted(proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
+    vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by('-vote_value')
+    vote_values_desc = tuple(i.description
+                             for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
+    header = ('Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
+        tuple(vote_values_desc) + ('Public votes count', )
+    output = StringIO.StringIO()
+
+    with Workbook(output) as book:
+        for section in proposal_sections:
+            sheet = book.add_worksheet(section.name)
+            cell_format = book.add_format({'bold': True})
+            sheet.write_row(0, 0, header, cell_format)
+
+            section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+
+            for index, p in enumerate(section_proposals, 1):
+                vote_details = tuple(p.get_reviewer_votes_count_by_value(v.vote_value) for v in vote_values_list)
+                row = (p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + \
+                    vote_details + (p.get_votes_count(),)
+
+                if p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_ALLOWED) > 0:
+                    cell_format = book.add_format({'bg_color': 'red'})
+                elif p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 2:
+                    cell_format = book.add_format({'bg_color': 'green'})
+                elif p.get_reviewer_votes_count() < 2:
+                    cell_format = book.add_format({'bg_color': 'yellow'})
+                else:
+                    cell_format = None
+
+                sheet.write_row(index, 0, row, cell_format)
+
+    output.seek(0)
+    response = HttpResponse(
+        output.read(),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response['Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
+
+    return response

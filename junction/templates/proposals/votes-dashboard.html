@@ -15,6 +15,12 @@
 
 {% block content %}
     <section class="content custom-container proposal-list">
+
+        <a class='btn btn-primary' href="{% url 'export-reviewer-votes' conference.slug %}">
+            Export reviewer votes
+        </a>
+        <hr>
+
         <div class="push-4-bottom push-1-top">
             <a name="proposals"></a>
             <h2>Proposal Votes Dashboard</h2>

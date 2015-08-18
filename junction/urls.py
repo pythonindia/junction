@@ -44,9 +44,12 @@ urlpatterns = patterns(
         name='proposal-reviewers-dashboard'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/$',
         'junction.proposals.dashboard.proposals_dashboard', name='proposal-dashboard'),
-    url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/',
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/$',
         'junction.proposals.dashboard.reviewer_votes_dashboard',
         name='proposal-reviewer-votes-dashboard'),
+    url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/export/$',
+        'junction.proposals.dashboard.export_reviewer_votes',
+        name='export-reviewer-votes'),
 
     url(r'^api/v1/', include(router.urls)),
 
