@@ -16,9 +16,9 @@ class ScheduleItem(AuditModel):
     SCHEDULE_ITEM_TYPE = ((TALK, 'Talk'),
                           (LUNCH, 'Lunch'),
                           (BREAK, 'Break'),
-                          (WORKSHOP, 'WORKSHOP'),
-                          (POSTER, 'POSTER'),
-                          (OPEN_SPACE, 'OPEN_SPACE'))
+                          (WORKSHOP, 'Workshop'),
+                          (POSTER, 'Poster'),
+                          (OPEN_SPACE, 'Open Space'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField(db_index=True)
