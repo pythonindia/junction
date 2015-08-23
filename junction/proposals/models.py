@@ -68,14 +68,17 @@ class Proposal(TimeAuditModel):
 
     """ The proposals master """
     conference = models.ForeignKey(Conference)
-    proposal_section = models.ForeignKey(ProposalSection, verbose_name="Proposal Section")
-    proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
+    proposal_section = models.ForeignKey(ProposalSection,
+                                         verbose_name="Proposal Section")
+    proposal_type = models.ForeignKey(ProposalType,
+                                      verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
     slug = AutoSlugField(max_length=255, populate_from=('title',))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
-        choices=ProposalTargetAudience.CHOICES, default=ProposalTargetAudience.BEGINNER,
+        choices=ProposalTargetAudience.CHOICES,
+        default=ProposalTargetAudience.BEGINNER,
         verbose_name="Target Audience")
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
@@ -84,7 +87,8 @@ class Proposal(TimeAuditModel):
     status = models.PositiveSmallIntegerField(
         choices=ProposalStatus.CHOICES, default=ProposalStatus.DRAFT)
     review_status = models.PositiveSmallIntegerField(
-        choices=ProposalReviewStatus.CHOICES, default=ProposalReviewStatus.YET_TO_BE_REVIEWED,
+        choices=ProposalReviewStatus.CHOICES,
+        default=ProposalReviewStatus.YET_TO_BE_REVIEWED,
         verbose_name="Review Status")
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
     history = HistoricalRecords()
@@ -93,39 +97,52 @@ class Proposal(TimeAuditModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('proposal-detail', args=[self.conference.slug, self.slug])
+        return reverse('proposal-detail',
+                       args=[self.conference.slug, self.slug])
 
     def get_update_url(self):
-        return reverse('proposal-update', args=[self.conference.slug, self.slug])
+        return reverse('proposal-update',
+                       args=[self.conference.slug, self.slug])
 
     def get_review_url(self):
-        return reverse('proposal-review', args=[self.conference.slug, self.slug])
+        return reverse('proposal-review',
+                       args=[self.conference.slug, self.slug])
 
     def get_vote_url(self):
-        return reverse('proposal-reviewer-vote', args=[self.conference.slug, self.slug])
+        return reverse('proposal-reviewer-vote',
+                       args=[self.conference.slug, self.slug])
 
     def get_delete_url(self):
-        return reverse('proposal-delete', args=[self.conference.slug, self.slug])
+        return reverse('proposal-delete',
+                       args=[self.conference.slug, self.slug])
 
     def get_up_vote_url(self):
-        return reverse('proposal-vote-up', args=[self.conference.slug, self.slug])
+        return reverse('proposal-vote-up',
+                       args=[self.conference.slug, self.slug])
 
     def get_down_vote_url(self):
-        return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
+        return reverse('proposal-vote-down',
+                       args=[self.conference.slug, self.slug])
 
     def get_comments_count(self):
         """ Show only public comments count """
-        return ProposalComment.objects.filter(proposal=self, deleted=False, private=False, vote=False).count()
+        return ProposalComment.objects.filter(proposal=self,
+                                              deleted=False,
+                                              private=False,
+                                              vote=False).count()
 
     def get_reviews_comments_count(self):
         """ Show only private comments count """
-        return ProposalComment.objects.filter(proposal=self, deleted=False, private=True, vote=False).count()
+        return ProposalComment.objects.filter(proposal=self,
+                                              deleted=False,
+                                              private=True,
+                                              vote=False).count()
 
     def get_reviewer_comments_count(self, reviewer):
         """ Number of private comments by a reviewer """
         return ProposalComment.objects.filter(
-            proposal=self, deleted=False, private=True, commenter=reviewer, vote=False
-        ).count()
+            proposal=self, deleted=False, private=True,
+            commenter=reviewer, vote=False).count()
 
     def get_votes_count(self):
         """ Show only the public comment count """
