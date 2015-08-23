@@ -7,8 +7,10 @@ from .models import ScheduleItem
 
 class ScheduleSerializer(serializers.HyperlinkedModelSerializer):
     session = ProposalSerializer()
+    room_id = serializers.PrimaryKeyRelatedField(source='room',
+                                                 read_only=True)
 
     class Meta:
         model = ScheduleItem
-        fields = ('room', 'event_date', 'start_time', 'end_time',
+        fields = ('room_id', 'event_date', 'start_time', 'end_time',
                   'name', 'session', 'type', 'conference')
