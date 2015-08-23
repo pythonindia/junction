@@ -15,7 +15,7 @@ class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
 class VenueSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ConferenceVenue
-        fields = ('name', 'address')
+        fields = ('name', 'address', 'latitude', 'longitudes')
 
 
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
