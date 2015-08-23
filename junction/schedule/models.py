@@ -35,7 +35,9 @@ class ScheduleItem(AuditModel):
     conference = models.ForeignKey(Conference)
 
     def __unicode__(self):
-        return self.name
+        return u"{} - {} on {} from {} to {} in {}".format(
+            self.conference, self.name, self.event_date, self.start_time,
+            self.end_time, self.room)
 
     @property
     def name(self):
