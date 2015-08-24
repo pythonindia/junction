@@ -48,20 +48,18 @@ def send_mail_for_new_comment(proposal_comment, host):
 
 def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
-    if proposal_comment.private:
+    if proposal_comment.reviewer:
         recipients = _get_proposal_section_reviewers(
             proposal=proposal)
+    elif proposal_comment.private:
+        recipients = _get_proposal_section_reviewers(
+            proposal=proposal)
+        recipients.add(proposal.author)
     else:
         recipients = {
             comment.commenter
             for comment in proposal.proposalcomment_set
             .all().select_related('commenter')}
-    if proposal_comment.reviewer:
-        # Don't add proposer to reviwer only comments
-        section_reviewers = _get_proposal_section_reviewers(
-            proposal=proposal)
-        recipients.union(section_reviewers)
-    else:
         recipients.add(proposal.author)
 
     return recipients
