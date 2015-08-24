@@ -61,7 +61,7 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
 class ProposalCommentAdmin(TimeAuditAdmin):
     list_display = (
         'proposal', 'commenter', 'private', 'comment') + TimeAuditAdmin.list_display
-    list_filter = ['private', 'reviewer', 'commenter']
+    list_filter = ['private', 'reviewer']
 
 
 class ProposalCommentVoteAdmin(TimeAuditAdmin):
