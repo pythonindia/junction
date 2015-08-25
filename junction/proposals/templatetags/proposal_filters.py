@@ -62,7 +62,8 @@ def get_reviewers_vote_details(proposal, user):
     """
     Get voter name & details for given proposals.
     """
-    v_detail = collections.namedtuple('v_detail', 'voter vote_value vote_comment')
+    v_detail = collections.namedtuple('v_detail',
+                                      'voter vote_value vote_comment')
     reviewers = ProposalSectionReviewer.objects.filter(
         proposal_section=proposal.proposal_section,
         conference_reviewer__conference=proposal.conference,
@@ -71,19 +72,21 @@ def get_reviewers_vote_details(proposal, user):
     vote_details = []
     for reviewer in reviewers:
         voter = reviewer.conference_reviewer.reviewer.get_full_name()
-        try:
-            vote_value = ProposalSectionReviewerVote.objects.get(
-                proposal=proposal,
-                voter=reviewer,
-            ).vote_value.vote_value
-            vote_comment = ProposalComment.objects.get(
-                proposal=proposal,
-                commenter=user,
-                vote=True
-            ).comment
-        except (ProposalSectionReviewerVote.DoesNotExist,
-                ProposalComment.DoesNotExist) as e:  # noqa
+        rv_qs = ProposalSectionReviewerVote.objects.filter(
+            proposal=proposal,
+            voter=reviewer)
+        if rv_qs:
+            vote_value = rv_qs[0].vote_value
+        else:
             vote_value = None
+
+        vc_qs = ProposalComment.objects.filter(
+            proposal=proposal,
+            commenter=reviewer,
+            vote=True)
+        if vc_qs:
+            vote_comment = vc_qs[0].comment
+        else:
             vote_comment = None
 
         vote_details.append(v_detail(voter, vote_value, vote_comment))
