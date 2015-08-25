@@ -274,7 +274,8 @@ def export_reviewer_votes(request, conference_slug):
             section_proposals = [p for p in proposals_qs if p.proposal_section == section]
 
             for index, p in enumerate(section_proposals, 1):
-                vote_details = tuple(p.get_reviewer_votes_count_by_value(v.vote_value) for v in vote_values_list)
+                vote_details = tuple(p.get_reviewer_votes_count_by_value(v)
+                                     for v in vote_values_list)
                 row = (p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + \
                     vote_details + (p.get_votes_count(),)
 
