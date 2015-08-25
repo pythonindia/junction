@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import collections
-import cStringIO as StringIO
 
-# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from xlsxwriter.workbook import Workbook
 
-# Junction Stuff
+import cStringIO as StringIO
 from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference, ConferenceProposalReviewer
+from xlsxwriter.workbook import Workbook
 
 from .forms import ProposalVotesFilterForm
 from .models import (
@@ -27,6 +24,9 @@ from .models import (
 )
 
 
+# Standard Library
+# Third Party Stuff
+# Junction Stuff
 @login_required
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):
@@ -73,7 +73,8 @@ def proposals_dashboard(request, conference_slug):
     # Hande case if reviewer is added to section twice'
 
     for section in sections:
-        proposal_qs = proposals_qs.filter(proposal_section=section.proposal_section)
+        proposal_qs = proposals_qs.filter(
+            proposal_section=section.proposal_section)
         # due to space and number issue for key used this
         key_id = '%s' % section.proposal_section.id
         by_reviewer.setdefault(
@@ -195,7 +196,8 @@ def reviewer_votes_dashboard(request, conference_slug):
 
     if request.method == 'GET':
         for section in proposal_sections:
-            section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+            section_proposals = [
+                p for p in proposals_qs if p.proposal_section == section]
             proposals.append(s_items(section, section_proposals))
 
         return render(request, 'proposals/votes-dashboard.html',
@@ -228,14 +230,18 @@ def reviewer_votes_dashboard(request, conference_slug):
         proposals_qs = proposals_qs.filter(review_status=review_status)
 
     if votes == ProposalVotesFilter.NO_VOTES:
-        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() == votes]
+        proposals_qs = [
+            p for p in proposals_qs if p.get_reviewer_votes_count() == votes]
     elif votes == ProposalVotesFilter.MIN_ONE_VOTE:
-        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
+        proposals_qs = [
+            p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
     elif votes == ProposalVotesFilter.SORT:
-        proposals_qs = sorted(proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
+        proposals_qs = sorted(
+            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
 
     for section in proposal_sections:
-        section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+        section_proposals = [
+            p for p in proposals_qs if p.proposal_section == section]
         proposals.append(s_items(section, section_proposals))
 
     return render(request, 'proposals/votes-dashboard.html',
@@ -257,8 +263,10 @@ def export_reviewer_votes(request, conference_slug):
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference)
-    proposals_qs = sorted(proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
-    vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by('-vote_value')
+    proposals_qs = sorted(
+        proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
+    vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by(
+        '-vote_value')
     vote_values_desc = tuple(i.description
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
@@ -271,17 +279,19 @@ def export_reviewer_votes(request, conference_slug):
             cell_format = book.add_format({'bold': True})
             sheet.write_row(0, 0, header, cell_format)
 
-            section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+            section_proposals = [
+                p for p in proposals_qs if p.proposal_section == section]
 
             for index, p in enumerate(section_proposals, 1):
                 vote_details = tuple(p.get_reviewer_votes_count_by_value(v)
                                      for v in vote_values_list)
                 row = (p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + \
                     vote_details + (p.get_votes_count(),)
-
-                if p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_ALLOWED) > 0:
+                if p.get_reviewer_votes_count_by_value(
+                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
                     cell_format = book.add_format({'bg_color': 'red'})
-                elif p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 2:
+                elif p.get_reviewer_votes_count_by_value(
+                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
                     cell_format = book.add_format({'bg_color': 'green'})
                 elif p.get_reviewer_votes_count() < 2:
                     cell_format = book.add_format({'bg_color': 'yellow'})
@@ -295,6 +305,7 @@ def export_reviewer_votes(request, conference_slug):
         output.read(),
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response['Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
+    response[
+        'Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
 
     return response
