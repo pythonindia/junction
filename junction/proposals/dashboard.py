@@ -270,7 +270,7 @@ def export_reviewer_votes(request, conference_slug):
     vote_values_desc = tuple(i.description
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
-        tuple(vote_values_desc) + ('Public votes count', )
+        tuple(vote_values_desc) + ('Public votes count', 'Vote Comments')
     output = StringIO.StringIO()
 
     with Workbook(output) as book:
@@ -285,8 +285,11 @@ def export_reviewer_votes(request, conference_slug):
             for index, p in enumerate(section_proposals, 1):
                 vote_details = tuple(p.get_reviewer_votes_count_by_value(v)
                                      for v in vote_values_list)
+                vote_comment = '\n'.join([comment.comment for comment in
+                                          p.proposalcomment_set.filter(
+                                              vote=True, deleted=False,)])
                 row = (p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + \
-                    vote_details + (p.get_votes_count(),)
+                    vote_details + (p.get_votes_count(), vote_comment,)
                 if p.get_reviewer_votes_count_by_value(
                         ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
                     cell_format = book.add_format({'bg_color': 'red'})
