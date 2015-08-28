@@ -269,7 +269,7 @@ def export_reviewer_votes(request, conference_slug):
         '-vote_value')
     vote_values_desc = tuple(i.description
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
-    header = ('Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
+    header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
         tuple(vote_values_desc) + ('Public votes count', 'Vote Comments')
     output = StringIO.StringIO()
 
@@ -288,7 +288,8 @@ def export_reviewer_votes(request, conference_slug):
                 vote_comment = '\n'.join([comment.comment for comment in
                                           p.proposalcomment_set.filter(
                                               vote=True, deleted=False,)])
-                row = (p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + \
+                row = (p.proposal_type.name, p.title, p.get_reviewer_votes_sum(),
+                       p.get_reviewer_votes_count(),) + \
                     vote_details + (p.get_votes_count(), vote_comment,)
                 if p.get_reviewer_votes_count_by_value(
                         ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
