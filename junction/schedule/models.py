@@ -55,10 +55,11 @@ class ScheduleItem(AuditModel):
     def to_response(self, request):
         """method will return dict which can be passed to response
         """
-        data = {'room_id': getattr(self.room, 'id', None),
+        data = {'id': self.id,
+                'room_id': getattr(self.room, 'id', None),
                 'event_date': self.event_date.strftime("%Y-%m-%d"),
                 'start_time': self.start_time.strftime("%H:%M:%S"),
-                'end_time': self.start_time.strftime("%H:%M:%S"),
+                'end_time': self.end_time.strftime("%H:%M:%S"),
                 'name': self.name,
                 'conference': reverse("conference-detail",
                                       kwargs={'pk': self.conference_id},
@@ -67,7 +68,8 @@ class ScheduleItem(AuditModel):
             session = self.session
             author = u"{} {}".format(session.author.first_name,
                                      session.author.last_name)
-            data['session'] = {'title': session.title,
+            data['session'] = {'id': session.id,
+                               'title': session.title,
                                'section': session.proposal_section.name,
                                'author': author,
                                'description': session.description,
