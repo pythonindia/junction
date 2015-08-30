@@ -29,12 +29,12 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
         schedule = defaultdict(dict)
         for datum in data:
             d = datum.to_response(request=request)
-            start_time = d['start_time']
+            key = "{} - {}".format(d['start_time'], d['end_time'])
             event_date = d['event_date']
             try:
-                schedule[event_date][start_time].append(d)
+                schedule[event_date][key].append(d)
             except KeyError:
-                schedule[event_date][start_time] = [d]
+                schedule[event_date][key] = [d]
         return Response(schedule)
 
 

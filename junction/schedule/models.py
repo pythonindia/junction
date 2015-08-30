@@ -58,7 +58,7 @@ class ScheduleItem(AuditModel):
         data = {'room_id': getattr(self.room, 'id', None),
                 'event_date': self.event_date.strftime("%Y-%m-%d"),
                 'start_time': self.start_time.strftime("%H:%M:%S"),
-                'end_time': self.start_time.strftime("%H:%M:%S"),
+                'end_time': self.end_time.strftime("%H:%M:%S"),
                 'name': self.name,
                 'conference': reverse("conference-detail",
                                       kwargs={'pk': self.conference_id},
