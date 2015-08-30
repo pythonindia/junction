@@ -37,7 +37,7 @@ class ProposalTypeAdmin(AuditAdmin):
 class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
     list_display = ('conference', 'proposal_section', 'proposal_type', 'author',
                     'title', 'slug', 'status', 'review_status') + TimeAuditAdmin.list_display
-    list_filter = ['proposal_section__name', 'target_audience']
+    list_filter = ['proposal_section__name', 'target_audience', 'conference']
     formfield_overrides = {
         models.TextField: {'widget': AdminPagedownWidget},
     }

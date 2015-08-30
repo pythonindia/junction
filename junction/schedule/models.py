@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 
 from junction.base.models import AuditModel
 from junction.base.constants import ProposalReviewStatus
 from junction.proposals.models import Proposal
 from junction.conferences.models import Conference, Room
+
+from rest_framework.reverse import reverse
 
 
 class ScheduleItem(AuditModel):
@@ -47,3 +51,29 @@ class ScheduleItem(AuditModel):
         index_together = [
             ('event_date', 'start_time')
         ]
+
+    def to_response(self, request):
+        """method will return dict which can be passed to response
+        """
+        data = {'room_id': getattr(self.room, 'id', None),
+                'event_date': self.event_date.strftime("%Y-%m-%d"),
+                'start_time': self.start_time.strftime("%H:%M:%S"),
+                'end_time': self.start_time.strftime("%H:%M:%S"),
+                'name': self.name,
+                'conference': reverse("conference-detail",
+                                      args=[self.conference_id],
+                                      request=request)}
+        if self.session:
+            session = self.session
+            author = u"{} {}".format(session.author.first_name,
+                                     session.author.last_name)
+            data['session'] = {'title': session.title,
+                               'section': session.proposal_section.name,
+                               'author': author,
+                               'description': session.description,
+                               'target_audience': session.target_audience,
+                               'prerequisites': session.prerequisites,
+                               'content_urls': session.content_urls,
+                               'speaker_links': session.speaker_links,
+                               'speaker_info': session.speaker_info}
+        return data
