@@ -67,7 +67,8 @@ class ScheduleItem(AuditModel):
             session = self.session
             author = u"{} {}".format(session.author.first_name,
                                      session.author.last_name)
-            data['session'] = {'title': session.title,
+            data['session'] = {'id': session.id,
+                               'title': session.title,
                                'section': session.proposal_section.name,
                                'author': author,
                                'description': session.description,
