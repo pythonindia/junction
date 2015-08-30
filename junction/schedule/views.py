@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -26,7 +26,7 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
 
     def list(self, request):
         data = self.get_queryset()
-        schedule = defaultdict(dict)
+        schedule = defaultdict(OrderedDict)
         for datum in data:
             d = datum.to_response(request=request)
             key = "{} - {}".format(d['start_time'], d['end_time'])
