@@ -98,7 +98,7 @@ class Proposal(TimeAuditModel):
 
     def is_public(self):
         # TODO: Fix with proper enum
-        return self.status == 1
+        return self.status == 2
 
     def get_absolute_url(self):
         return reverse('proposal-detail',
