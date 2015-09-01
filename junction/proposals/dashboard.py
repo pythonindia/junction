@@ -283,6 +283,9 @@ def export_reviewer_votes(request, conference_slug):
                 p for p in proposals_qs if p.proposal_section == section]
 
             for index, p in enumerate(section_proposals, 1):
+                if not p.is_public():
+                    continue
+
                 vote_details = tuple(p.get_reviewer_votes_count_by_value(v)
                                      for v in vote_values_list)
                 vote_comment = '\n'.join([comment.comment for comment in
