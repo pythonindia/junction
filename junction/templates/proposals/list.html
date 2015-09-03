@@ -102,8 +102,8 @@
             </a>
         {% endif %}
         </div>
-        {% if selected_proposals_list %}
-            {% include 'proposals/partials/proposal-list--items.html' with proposals=selected_proposals_list title="Selected Proposals" display_status=False %}
+        {% if selected_proposals %}
+            {% include 'proposals/partials/proposal-list--selected-items.html' with proposals=selected_proposals title="Selected Proposals" display_status=False %}
         {% endif %}
 
 
