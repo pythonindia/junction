@@ -13,6 +13,9 @@ install:
   - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
   - pip install coveralls
 
+env:
+  - DJANGO_SETTINGS_MODULE="settings.test_settings"
+
 script:
 - flake8
 - coverage run --source=junction --omit='*tests*,*commands*,*migrations*,*admin*,*wsgi*' -m py.test -v --tb=native

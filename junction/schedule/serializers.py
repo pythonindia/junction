@@ -13,4 +13,4 @@ class ScheduleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ScheduleItem
         fields = ('room_id', 'event_date', 'start_time', 'end_time',
-                  'name', 'session', 'type', 'conference')
+                  'name', 'session', 'type', 'conference', 'id')
