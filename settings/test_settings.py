@@ -24,6 +24,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 INSTALLED_APPS += ('django_extensions',)
 
 DEVICE_VERIFICATION_CODE = 11111
-
-# DEBUG TOOLBAR
-INSTALLED_APPS += ('debug_toolbar',)
