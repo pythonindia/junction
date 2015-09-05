@@ -96,6 +96,10 @@ class Proposal(TimeAuditModel):
     def __str__(self):
         return self.title
 
+    def is_public(self):
+        # TODO: Fix with proper enum
+        return self.status == 2
+
     def get_absolute_url(self):
         return reverse('proposal-detail',
                        args=[self.conference.slug, self.slug])

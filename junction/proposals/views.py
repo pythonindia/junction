@@ -98,10 +98,12 @@ def list_proposals(request, conference_slug):
     selected_proposals_list = proposals_qs.filter(
         review_status=ProposalReviewStatus.SELECTED)
 
-    # Display proposals which are public & exclude logged in user proposals
-    if request.user.is_authenticated():
-        proposals_qs = proposals_qs.exclude(author=request.user.id)
+    selected_proposals = collections.defaultdict(list)
+    for proposal in selected_proposals_list:
+        name = proposal.proposal_type.name
+        selected_proposals[name].append(proposal)
 
+    # Display proposals which are public
     public_proposals_list = proposals_qs.exclude(
         review_status=ProposalReviewStatus.SELECTED).filter(
             status=ProposalStatus.PUBLIC).order_by('-created_at')
@@ -111,7 +113,7 @@ def list_proposals(request, conference_slug):
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
-                   'selected_proposals_list': selected_proposals_list,
+                   'selected_proposals': dict(selected_proposals),
                    'proposal_sections': proposal_sections,
                    'proposal_types': proposal_types,
                    'is_filtered': is_filtered,
