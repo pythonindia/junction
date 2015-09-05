@@ -103,10 +103,7 @@ def list_proposals(request, conference_slug):
         name = proposal.proposal_type.name
         selected_proposals[name].append(proposal)
 
-    # Display proposals which are public & exclude logged in user proposals
-    if request.user.is_authenticated():
-        proposals_qs = proposals_qs.exclude(author=request.user.id)
-
+    # Display proposals which are public
     public_proposals_list = proposals_qs.exclude(
         review_status=ProposalReviewStatus.SELECTED).filter(
             status=ProposalStatus.PUBLIC).order_by('-created_at')
