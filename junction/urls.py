@@ -11,7 +11,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from rest_framework import routers
 from junction.schedule import views as schedule_views
 from junction.conferences import views as conference_views
-from junction.devices.views import DeviceListApiView
+from junction.devices.views import DeviceListApiView, DeviceDetailApiView
 
 
 router = routers.DefaultRouter()
@@ -55,6 +55,8 @@ urlpatterns = patterns(
 
     url(r'^api/v1/', include(router.urls)),
     url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
+    url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(),
+        name='device-detail'),
     # User Dashboard
     url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
 

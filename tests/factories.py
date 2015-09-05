@@ -78,6 +78,12 @@ class ProposalSectionReviewerFactory(Factory):
         strategy = factory.CREATE_STRATEGY
 
 
+class ProposalSectionReviewerVoteValueFactory(Factory):
+    class Meta:
+        model = "proposals.ProposalSectionReviewerVoteValue"
+        strategy = factory.CREATE_STRATEGY
+
+
 class ProposalTypeFactory(Factory):
     class Meta:
         model = "proposals.ProposalType"
@@ -129,6 +135,8 @@ class ProposalFactory(Factory):
 
 def create_conference(**kwargs):
     """ Create a conference """
+    ProposalSectionReviewerVoteValueFactory.create(vote_value=1,
+                                                   description="Good")
     return ConferenceFactory.create(**kwargs)
 
 
