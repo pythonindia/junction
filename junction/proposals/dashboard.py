@@ -31,7 +31,6 @@ except ImportError:
     from io import StringIO
 
 
-
 @login_required
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):
@@ -317,7 +316,6 @@ def export_reviewer_votes(request, conference_slug):
         output.read(),
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response[
-        'Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
+    response['Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
 
     return response
