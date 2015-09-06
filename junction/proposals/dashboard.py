@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Standard Library
 import collections
+import uuid
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
@@ -316,6 +317,7 @@ def export_reviewer_votes(request, conference_slug):
         output.read(),
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response['Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
+    file_name = str(uuid.uuid4())[:8]
+    response['Content-Disposition'] = "attachment; filename=junction-{}.xlsx".format(file_name)
 
     return response
