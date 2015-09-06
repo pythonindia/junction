@@ -193,7 +193,7 @@ def reviewer_votes_dashboard(request, conference_slug):
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
-    ).filter(conference=conference)
+    ).filter(conference=conference, status=ProposalStatus.PUBLIC)
 
     proposals = []
     s_items = collections.namedtuple('section_items', 'section proposals')
@@ -267,7 +267,7 @@ def export_reviewer_votes(request, conference_slug):
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
-    ).filter(conference=conference)
+    ).filter(conference=conference, status=ProposalStatus.PUBLIC)
     proposals_qs = sorted(
         proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
     vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by(
@@ -288,9 +288,6 @@ def export_reviewer_votes(request, conference_slug):
                 p for p in proposals_qs if p.proposal_section == section]
 
             for index, p in enumerate(section_proposals, 1):
-                if not p.is_public():
-                    continue
-
                 vote_details = tuple(p.get_reviewer_votes_count_by_value(v)
                                      for v in vote_values_list)
                 vote_comment = '\n'.join([comment.comment for comment in
