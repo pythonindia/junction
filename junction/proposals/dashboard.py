@@ -316,7 +316,7 @@ def export_reviewer_votes(request, conference_slug):
         output.read(),
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response[
-        'Content-Disposition'] = "attachment; filename=reviewer_votes.xlsx"
+    file_name = str(uuid.uuid4())[:8]
+    response['Content-Disposition'] = "attachment; filename={}.xlsx".format(file_name)
 
     return response
