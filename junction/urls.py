@@ -12,6 +12,7 @@ from rest_framework import routers
 from junction.schedule import views as schedule_views
 from junction.conferences import views as conference_views
 from junction.devices.views import DeviceListApiView, DeviceDetailApiView
+from junction.feedback.views import FeedbackQuestionListApiView
 
 
 router = routers.DefaultRouter()
@@ -54,9 +55,14 @@ urlpatterns = patterns(
         name='export-reviewer-votes'),
 
     url(r'^api/v1/', include(router.urls)),
+    # Device
     url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
     url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(),
         name='device-detail'),
+    # Feedback
+    url('^api/v1/feedback_questions/$',
+        FeedbackQuestionListApiView.as_view(),
+        name='feedback-list'),
     # User Dashboard
     url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
 
