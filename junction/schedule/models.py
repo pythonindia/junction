@@ -9,6 +9,16 @@ from junction.conferences.models import Conference, Room
 
 from rest_framework.reverse import reverse
 
+from django.utils.encoding import python_2_unicode_compatible
+
+
+@python_2_unicode_compatible
+class ScheduleItemType(AuditModel):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
 
 class ScheduleItem(AuditModel):
     TALK = 'TALK'
