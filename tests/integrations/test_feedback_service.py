@@ -18,11 +18,12 @@ def test_get_feedback_questions_with_conference():
     schedule_item_types = ['Workshop', 'Talk']
     num_choice_questions = 2
     num_text_questions = 1
-    conference = factories.create_feedback_questions(
+    objects = factories.create_feedback_questions(
         schedule_item_types=schedule_item_types,
         num_text_questions=num_text_questions,
         num_choice_questions=num_choice_questions)
 
+    conference = objects['conference']
     result = service.get_feedback_questions(conference_id=conference.id)
 
     assert result.keys() == schedule_item_types
