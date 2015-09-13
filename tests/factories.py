@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Standard Library
+import uuid
 import threading
 import datetime
+import time
 
 # Third Party Stuff
 import factory
@@ -9,6 +11,7 @@ from factory import fuzzy
 
 # Junction Stuff
 from junction.base.constants import ConferenceStatus
+from junction.devices.models import Device
 
 
 class Factory(factory.DjangoModelFactory):
@@ -134,18 +137,31 @@ class ProposalFactory(Factory):
     # deleted
 
 
-class ScheduleItemTypeFactory(Factory):
+class DeviceFactory(Factory):
     class Meta:
-        model = "schedule.ScheduleItemType"
+        model = "devices.Device"
         strategy = factory.CREATE_STRATEGY
-
-    title = factory.Sequence(lambda n: "type-{}".format(n))
 
 
 class ScheduleItemFactory(Factory):
     class Meta:
         model = "schedule.ScheduleItem"
         strategy = factory.CREATE_STRATEGY
+
+    event_date = fuzzy.FuzzyDate(datetime.date.today(),
+                                 datetime.date(2017, 1, 1)).fuzz()
+    start_time = fuzzy.FuzzyChoice(['9:30.750000', ]).fuzz()
+    end_time = fuzzy.FuzzyChoice(['10:15.750000', ]).fuzz()
+    conference = factory.SubFactory("tests.factories.ConferenceFactory")
+    session = factory.SubFactory("tests.factories.ProposalFactory")
+
+
+class ScheduleItemTypeFactory(Factory):
+    class Meta:
+        model = "schedule.ScheduleItemType"
+        strategy = factory.CREATE_STRATEGY
+
+    title = factory.Sequence(lambda n: "type-{}".format(n))
 
 
 class TextFeedbackQuestionFactory(Factory):
@@ -172,12 +188,10 @@ class ChoiceFeedbackQuestionValueFactory(Factory):
     class Meta:
         model = 'feedback.ChoiceFeedbackQuestionValue'
         strategy = factory.CREATE_STRATEGY
-
-    schedule_item_type = factory.SubFactory(
-        'tests.factories.ScheduleItemTypeFactory')
-    conference = factory.SubFactory("tests.factories.ConferenceFactory")
     question = factory.SubFactory(
         "tests.factories.ChoiceFeedbackQuestionFactory")
+    title = factory.Sequence(lambda n: "title{}".format(n))
+    value = factory.Sequence(lambda n: n)
 
 
 def create_conference(**kwargs):
@@ -223,15 +237,38 @@ def create_feedback_questions(schedule_item_types,
         item = ScheduleItemTypeFactory.create(title=item_type)
         item_types.append(item)
 
+    choices = []
     for _ in range(num_choice_questions):
         for item_type in item_types:
-            ChoiceFeedbackQuestionFactory.create(
+            obj = ChoiceFeedbackQuestionFactory.create(
                 schedule_item_type=item_type,
                 conference=conference)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            choices.append(obj)
 
+    text = []
     for _ in range(num_text_questions):
         for item_type in item_types:
-            TextFeedbackQuestionFactory.create(
+            obj = TextFeedbackQuestionFactory.create(
                 schedule_item_type=item_type,
                 conference=conference)
-    return conference
+            text.append(obj)
+
+    d = {'conference': conference, 'text': text, 'choices': choices}
+    return d
+
+
+def create_device(**kwargs):
+    uuid1 = uuid.uuid1()
+    kwargs['uuid'] = uuid1
+    kwargs['verification_code'] = '2345'
+    return DeviceFactory.create(**kwargs)
+
+
+def create_schedule_item(**kwargs):
+    return ScheduleItemFactory.create(**kwargs)

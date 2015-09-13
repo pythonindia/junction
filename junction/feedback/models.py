@@ -10,7 +10,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from junction.base.models import TimeAuditModel
 from junction.conferences.models import Conference
 from junction.devices.models import Device
-from junction.base.constants import ProposalReviewStatus
 from junction.schedule.models import ScheduleItemType, ScheduleItem
 
 
@@ -69,7 +68,7 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
                                  related_name="allowed_values")
     title = models.CharField(max_length=255,
                              verbose_name="Choice Feedback Value Title")
-    value = models.SmallIntegerField()
+    value = models.SmallIntegerField(db_index=True)
 
     def __str__(self):
         return u"question: {}, title: {}, value: {}".format(
@@ -78,10 +77,13 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
 
 @python_2_unicode_compatible
 class ScheduleItemTextFeedback(TimeAuditModel):
-    schedule_item = models.ForeignKey(ScheduleItem)
+    schedule_item = models.ForeignKey(ScheduleItem, db_index=True)
     question = models.ForeignKey(TextFeedbackQuestion)
     text = models.TextField()
-    device = models.ForeignKey(Device, null=True, blank=True)
+    device = models.ForeignKey(Device, null=True, blank=True, db_index=True)
+
+    class Meta:
+        index_together = [["device", "schedule_item"]]
 
     def __str__(self):
         return u"schedule_item: {}, question: {}, text: {}, device: {}".format(
@@ -92,9 +94,12 @@ class ScheduleItemTextFeedback(TimeAuditModel):
 class ScheduleItemChoiceFeedback(TimeAuditModel):
     schedule_item = models.ForeignKey(ScheduleItem)
     question = models.ForeignKey(ChoiceFeedbackQuestion)
-    value = models.SmallIntegerField()
+    value = models.SmallIntegerField(db_index=True)
     device = models.ForeignKey(Device, null=True, blank=True)
 
+    class Meta:
+        index_together = [["device", "schedule_item"],
+                          ["schedule_item", "value"]]
     def __str__(self):
         return u"schedule_item: {}, question: {}, value: {}, device: {}".format(
             self.schedule_item, self.question, self.value, self.device)

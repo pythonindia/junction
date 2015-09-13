@@ -12,7 +12,8 @@ from rest_framework import routers
 from junction.schedule import views as schedule_views
 from junction.conferences import views as conference_views
 from junction.devices.views import DeviceListApiView, DeviceDetailApiView
-from junction.feedback.views import FeedbackQuestionListApiView
+from junction.feedback.views import (FeedbackQuestionListApiView,
+                                     FeedbackListApiView)
 
 
 router = routers.DefaultRouter()
@@ -62,6 +63,9 @@ urlpatterns = patterns(
     # Feedback
     url('^api/v1/feedback_questions/$',
         FeedbackQuestionListApiView.as_view(),
+        name='feedback-questions-list'),
+    url('^api/v1/feedback/$',
+        FeedbackListApiView.as_view(),
         name='feedback-list'),
     # User Dashboard
     url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
