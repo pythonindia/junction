@@ -19,7 +19,11 @@ class Explara(object):
         return [{'title': e.get('eventTitle'), 'eventId': e.get('eventId')} for e in events.get('events')]
 
     def get_ticket_types(self, explara_eventid):
-        ticket_types = requests.post(self.base_url.format('get-tickets'), headers=self.headers, data={'eventId': explara_eventid}).json()
+        ticket_types = requests.post(
+            self.base_url.format('get-tickets'),
+            headers=self.headers,
+            data={'eventId': explara_eventid}
+        ).json()
         return ticket_types
 
     def get_orders(self, explara_eventid):
@@ -28,8 +32,16 @@ class Explara(object):
         from_record = 0
         to_record = 50
         while not completed:
-            payload = {'eventId': explara_eventid, 'fromRecord': from_record, 'toRecord': to_record}
-            attendee_response = requests.post(self.base_url.format('attendee-list'), headers=self.headers, data=payload).json()
+            payload = {
+                'eventId': explara_eventid,
+                'fromRecord': from_record,
+                'toRecord': to_record
+            }
+            attendee_response = requests.post(
+                self.base_url.format('attendee-list'),
+                headers=self.headers,
+                data=payload
+            ).json()
             if not attendee_response.get('attendee'):
                 completed = True
             elif isinstance(attendee_response.get('attendee'), list):
@@ -41,4 +53,3 @@ class Explara(object):
             to_record += 50
 
         return ticket_orders
-

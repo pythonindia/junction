@@ -9,4 +9,3 @@ from .models import Ticket
 
 
 admin.site.register(Ticket)
-
