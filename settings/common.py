@@ -84,6 +84,7 @@ OUR_APPS = (
     'junction.pages',
     'junction.profiles',
     'junction.devices',
+    'junction.tickets',
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
