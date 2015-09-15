@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	{% if message %}
+		<b>{{message}}</b>
+	{% endif %}
+	<form method="POST" action=".">
+		{% csrf_token %}
+		{{ form }}
+                <button type="submit">
+			Sync data
+		</button>
+	</form>	
+{% endblock %}
+
