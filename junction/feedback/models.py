@@ -100,6 +100,7 @@ class ScheduleItemChoiceFeedback(TimeAuditModel):
     class Meta:
         index_together = [["device", "schedule_item"],
                           ["schedule_item", "value"]]
+
     def __str__(self):
         return u"schedule_item: {}, question: {}, value: {}, device: {}".format(
             self.schedule_item, self.question, self.value, self.device)
