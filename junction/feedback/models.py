@@ -15,7 +15,7 @@ from junction.schedule.models import ScheduleItemType, ScheduleItem
 
 class BaseSessionQuestionMixin(models.Model):
     schedule_item_type = models.ForeignKey(ScheduleItemType)
-    is_required = models.BooleanField(default=False)
+    is_required = models.BooleanField(default=True)
     conference = models.ForeignKey(Conference)
 
     class Meta:
