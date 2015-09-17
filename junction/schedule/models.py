@@ -3,7 +3,6 @@
 from django.db import models
 
 from junction.base.models import AuditModel
-from junction.base.constants import ProposalReviewStatus
 from junction.proposals.models import Proposal
 from junction.conferences.models import Conference, Room
 
@@ -21,6 +20,7 @@ class ScheduleItemType(AuditModel):
 
 
 class ScheduleItem(AuditModel):
+    INTROUDCTION = 'Introduction'
     TALK = 'Talk'
     LUNCH = 'Lunch'
     BREAK = 'Break'
@@ -32,17 +32,18 @@ class ScheduleItem(AuditModel):
                           (BREAK, 'Break'),
                           (WORKSHOP, 'Workshop'),
                           (POSTER, 'Poster'),
-                          (OPEN_SPACE, 'Open Space'))
+                          (OPEN_SPACE, 'Open Space'),
+                          (INTROUDCTION, 'Introduction'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField(db_index=True)
     start_time = models.TimeField(db_index=True)
     end_time = models.TimeField()
     alt_name = models.CharField(max_length=100, blank=True)
-    session = models.ForeignKey(
-        Proposal,
-        limit_choices_to={'review_status': ProposalReviewStatus.SELECTED},
-        null=True)
+    # limit_choices_to={'review_status': ProposalReviewStatus.SELECTED},
+    # Using limit choices prevents schedule item without session like
+    # Breaakfast etc..
+    session = models.ForeignKey(Proposal, null=True)
     type = models.CharField(max_length=20, choices=SCHEDULE_ITEM_TYPE,
                             default=TALK)
 
