@@ -3,7 +3,6 @@
 import uuid
 import threading
 import datetime
-import time
 
 # Third Party Stuff
 import factory
@@ -11,7 +10,6 @@ from factory import fuzzy
 
 # Junction Stuff
 from junction.base.constants import ConferenceStatus
-from junction.devices.models import Device
 
 
 class Factory(factory.DjangoModelFactory):
