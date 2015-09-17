@@ -28,6 +28,10 @@ class FeedbackListApiView(views.APIView):
     def post(self, request):
         feedback = FeedbackSerializer(data=request.data)
         if feedback.is_valid():
+            data = feedback_service.has_required_fields_data(feedback)
+            if data[0] is False:
+                return Response(status=status.HTTP_400_BAD_REQUEST,
+                                data={'error': data[1]})
             if feedback_service.has_submitted(feedback,
                                               device_uuid=self.device_uuid):
                 return Response(status=status.HTTP_400_BAD_REQUEST,

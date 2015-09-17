@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from junction.devices.models import Device
 
-
+from junction.schedule.models import ScheduleItem, ScheduleItemType
 from .models import (TextFeedbackQuestion, ChoiceFeedbackQuestion,
                      ScheduleItemTextFeedback, ScheduleItemChoiceFeedback,
                      ChoiceFeedbackQuestionValue)
@@ -64,18 +64,69 @@ def has_submitted(feedback, device_uuid):
     return choice_feedback
 
 
+def _has_required_ids(master, submitted):
+    for item in master:
+        if item not in submitted:
+            return False
+    return True
+
+
+def has_required_fields_data(feedback):
+    try:
+        data = feedback.validated_data
+        sch = ScheduleItem.objects.get(pk=data['schedule_item_id'])
+        sch_type = ScheduleItemType.objects.get(
+            title=sch.type)
+
+        t_ids = TextFeedbackQuestion.objects.filter(
+            schedule_item_type=sch_type,
+            conference=sch.conference, is_required=True).values_list(
+                'id', flat=True)
+
+        if not data.get('text'):
+            if t_ids:
+                return False, "Text Feedback is missing"
+        else:
+            submitted_t_ids = {d['id'] for d in data.get('text')}
+
+            if not _has_required_ids(master=t_ids, submitted=submitted_t_ids):
+                return False, "Required text questions are missing"
+
+        c_ids = ChoiceFeedbackQuestion.objects.filter(
+            schedule_item_type=sch_type,
+            conference=sch.conference, is_required=True).values_list(
+                'id', flat=True)
+
+        if not data.get('choices'):
+            if c_ids:
+                return False, "Choice feedback is missing"
+        else:
+            submitted_c_ids = {d['id'] for d in data.get('choices')}
+
+            if not _has_required_ids(master=c_ids, submitted=submitted_c_ids):
+                return False, "Choice feedback is missing"
+        return True, ""
+    except ObjectDoesNotExist as e:
+        print(e)
+        return False
+
+
 def create(feedback, device_uuid):
     device = Device.objects.get(uuid=device_uuid)
+    schedule_item_id = feedback.validated_data['schedule_item_id']
     try:
         with transaction.atomic():
-            text = create_text_feedback(
-                schedule_item_id=feedback.validated_data['schedule_item_id'],
-                feedbacks=feedback.validated_data['text'],
-                device=device)
-            choices = create_choice_feedback(
-                schedule_item_id=feedback.validated_data['schedule_item_id'],
-                feedbacks=feedback.validated_data['choices'],
-                device=device)
+            text, choices = [], []
+            if feedback.validated_data.get('text'):
+                text = create_text_feedback(
+                    schedule_item_id=schedule_item_id,
+                    feedbacks=feedback.validated_data.get('text'),
+                    device=device)
+            if feedback.validated_data.get('choices'):
+                choices = create_choice_feedback(
+                    schedule_item_id=schedule_item_id,
+                    feedbacks=feedback.validated_data.get('choices'),
+                    device=device)
             return {'text': text, 'choices': choices}
     except (IntegrityError, ObjectDoesNotExist) as e:
         print(e)  # Replace with log

@@ -160,8 +160,7 @@ class ScheduleItemTypeFactory(Factory):
     class Meta:
         model = "schedule.ScheduleItemType"
         strategy = factory.CREATE_STRATEGY
-
-    title = factory.Sequence(lambda n: "type-{}".format(n))
+        django_get_or_create = ('title',)
 
 
 class TextFeedbackQuestionFactory(Factory):
@@ -242,7 +241,7 @@ def create_feedback_questions(schedule_item_types,
         for item_type in item_types:
             obj = ChoiceFeedbackQuestionFactory.create(
                 schedule_item_type=item_type,
-                conference=conference)
+                conference=conference, is_required=True)
             ChoiceFeedbackQuestionValueFactory.create(
                 question=obj)
             ChoiceFeedbackQuestionValueFactory.create(
@@ -256,7 +255,7 @@ def create_feedback_questions(schedule_item_types,
         for item_type in item_types:
             obj = TextFeedbackQuestionFactory.create(
                 schedule_item_type=item_type,
-                conference=conference)
+                conference=conference, is_required=True)
             text.append(obj)
 
     d = {'conference': conference, 'text': text, 'choices': choices}
@@ -270,5 +269,10 @@ def create_device(**kwargs):
     return DeviceFactory.create(**kwargs)
 
 
-def create_schedule_item(**kwargs):
-    return ScheduleItemFactory.create(**kwargs)
+def create_schedule_items(**kwargs):
+    d = []
+    for item_type in kwargs['item_types']:
+        ScheduleItemTypeFactory.create(title=item_type)
+        d.append(ScheduleItemFactory.create(type=item_type,
+                                            conference=kwargs['conference']))
+    return d

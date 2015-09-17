@@ -31,12 +31,12 @@ class ChoiceFeedbackSerializer(serializers.Serializer):
     value_id = serializers.IntegerField()
 
     def validate(self, data):
-        if object_exists(ChoiceFeedbackQuestion, pk=data['value_id']):
+        if object_exists(ChoiceFeedbackQuestion, pk=data['id']):
             if ChoiceFeedbackQuestionValue.objects.filter(
                     question_id=data['id'], pk=data['value_id']).exists():
                 return data
             raise serializers.ValidationError(
-                "The question doesn't exist")
+                "The multiple choice value isn't associated with question")
 
 
 class FeedbackSerializer(serializers.Serializer):
