@@ -94,7 +94,7 @@ class Proposal(TimeAuditModel):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.title
+        return "{}, {}".format(self.title, self.proposal_type)
 
     def is_public(self):
         # TODO: Fix with proper enum

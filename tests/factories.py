@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Standard Library
+import uuid
 import threading
 import datetime
 
@@ -114,7 +115,8 @@ class ProposalFactory(Factory):
         strategy = factory.CREATE_STRATEGY
 
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
-    proposal_section = factory.SubFactory("tests.factories.ProposalSectionFactory")
+    proposal_section = factory.SubFactory(
+        "tests.factories.ProposalSectionFactory")
     proposal_type = factory.SubFactory('tests.factories.ProposalTypeFactory')
     author = factory.SubFactory("tests.factories.UserFactory")
     # title
@@ -133,6 +135,62 @@ class ProposalFactory(Factory):
     # deleted
 
 
+class DeviceFactory(Factory):
+    class Meta:
+        model = "devices.Device"
+        strategy = factory.CREATE_STRATEGY
+
+
+class ScheduleItemFactory(Factory):
+    class Meta:
+        model = "schedule.ScheduleItem"
+        strategy = factory.CREATE_STRATEGY
+
+    event_date = fuzzy.FuzzyDate(datetime.date.today(),
+                                 datetime.date(2017, 1, 1)).fuzz()
+    start_time = fuzzy.FuzzyChoice(['9:30.750000', ]).fuzz()
+    end_time = fuzzy.FuzzyChoice(['10:15.750000', ]).fuzz()
+    conference = factory.SubFactory("tests.factories.ConferenceFactory")
+    session = factory.SubFactory("tests.factories.ProposalFactory")
+
+
+class ScheduleItemTypeFactory(Factory):
+    class Meta:
+        model = "schedule.ScheduleItemType"
+        strategy = factory.CREATE_STRATEGY
+        django_get_or_create = ('title',)
+
+
+class TextFeedbackQuestionFactory(Factory):
+    class Meta:
+        model = 'feedback.TextFeedbackQuestion'
+        strategy = factory.CREATE_STRATEGY
+
+    schedule_item_type = factory.SubFactory(
+        'tests.factories.ScheduleItemTypeFactory')
+    conference = factory.SubFactory("tests.factories.ConferenceFactory")
+
+
+class ChoiceFeedbackQuestionFactory(Factory):
+    class Meta:
+        model = 'feedback.ChoiceFeedbackQuestion'
+        strategy = factory.CREATE_STRATEGY
+
+    schedule_item_type = factory.SubFactory(
+        'tests.factories.ScheduleItemTypeFactory')
+    conference = factory.SubFactory("tests.factories.ConferenceFactory")
+
+
+class ChoiceFeedbackQuestionValueFactory(Factory):
+    class Meta:
+        model = 'feedback.ChoiceFeedbackQuestionValue'
+        strategy = factory.CREATE_STRATEGY
+    question = factory.SubFactory(
+        "tests.factories.ChoiceFeedbackQuestionFactory")
+    title = factory.Sequence(lambda n: "title{}".format(n))
+    value = factory.Sequence(lambda n: n)
+
+
 def create_conference(**kwargs):
     """ Create a conference """
     ProposalSectionReviewerVoteValueFactory.create(vote_value=1,
@@ -147,3 +205,72 @@ def create_user(**kwargs):
 
 def create_proposal(**kwargs):
     return ProposalFactory.create(**kwargs)
+
+
+def create_schedule_item_type(**kwargs):
+    return ScheduleItemFactory.create(**kwargs)
+
+
+def create_text_feedback_question(**kwargs):
+    return TextFeedbackQuestionFactory(**kwargs)
+
+
+def create_choice_feedback_question(**kwargs):
+    question = ChoiceFeedbackQuestionFactory(**kwargs)
+    ChoiceFeedbackQuestionValueFactory.create(
+        question=question, title="Bad", value=0)
+    ChoiceFeedbackQuestionValueFactory.create(
+        question=question, title="Ok", value=1)
+    ChoiceFeedbackQuestionValueFactory.create(
+        question=question, title="Awesome", value=2)
+
+
+def create_feedback_questions(schedule_item_types,
+                              num_text_questions,
+                              num_choice_questions):
+    conference = create_conference()
+    item_types = []
+    for item_type in schedule_item_types:
+        item = ScheduleItemTypeFactory.create(title=item_type)
+        item_types.append(item)
+
+    choices = []
+    for _ in range(num_choice_questions):
+        for item_type in item_types:
+            obj = ChoiceFeedbackQuestionFactory.create(
+                schedule_item_type=item_type,
+                conference=conference, is_required=True)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            ChoiceFeedbackQuestionValueFactory.create(
+                question=obj)
+            choices.append(obj)
+
+    text = []
+    for _ in range(num_text_questions):
+        for item_type in item_types:
+            obj = TextFeedbackQuestionFactory.create(
+                schedule_item_type=item_type,
+                conference=conference, is_required=True)
+            text.append(obj)
+
+    d = {'conference': conference, 'text': text, 'choices': choices}
+    return d
+
+
+def create_device(**kwargs):
+    uuid1 = uuid.uuid1()
+    kwargs['uuid'] = uuid1
+    kwargs['verification_code'] = '2345'
+    return DeviceFactory.create(**kwargs)
+
+
+def create_schedule_items(**kwargs):
+    d = []
+    for item_type in kwargs['item_types']:
+        ScheduleItemTypeFactory.create(title=item_type)
+        d.append(ScheduleItemFactory.create(type=item_type,
+                                            conference=kwargs['conference']))
+    return d
