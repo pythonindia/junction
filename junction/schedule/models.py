@@ -42,7 +42,8 @@ class ScheduleItem(AuditModel):
     event_date = models.DateField(db_index=True)
     start_time = models.TimeField(db_index=True)
     end_time = models.TimeField()
-    alt_name = models.CharField(max_length=100, blank=True)
+    alt_name = models.CharField(max_length=255, blank=True)
+    alt_description = models.TextField(blank=True)
     limit_choices = {'review_status': ProposalReviewStatus.SELECTED}
     session = models.ForeignKey(Proposal, null=True, blank=True,
                                 limit_choices_to=limit_choices)
@@ -92,4 +93,6 @@ class ScheduleItem(AuditModel):
                                'content_urls': session.content_urls,
                                'speaker_links': session.speaker_links,
                                'speaker_info': session.speaker_info}
+        else:
+            data['session'] = {'description': self.alt_description}
         return data
