@@ -21,12 +21,12 @@ class ScheduleItemType(AuditModel):
 
 
 class ScheduleItem(AuditModel):
-    TALK = 'TALK'
-    LUNCH = 'LUNCH'
-    BREAK = 'BREAK'
-    WORKSHOP = 'WORKSHOP'
-    POSTER = 'POSTER'
-    OPEN_SPACE = "OPEN_SPACE"
+    TALK = 'Talk'
+    LUNCH = 'Lunch'
+    BREAK = 'Break'
+    WORKSHOP = 'Workshop'
+    POSTER = 'Poster'
+    OPEN_SPACE = "Open Space"
     SCHEDULE_ITEM_TYPE = ((TALK, 'Talk'),
                           (LUNCH, 'Lunch'),
                           (BREAK, 'Break'),
