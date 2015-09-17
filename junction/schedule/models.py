@@ -71,6 +71,7 @@ class ScheduleItem(AuditModel):
                 'start_time': self.start_time.strftime("%H:%M:%S"),
                 'end_time': self.end_time.strftime("%H:%M:%S"),
                 'name': self.name,
+                'type': self.type,
                 'conference': reverse("conference-detail",
                                       kwargs={'pk': self.conference_id},
                                       request=request)}
