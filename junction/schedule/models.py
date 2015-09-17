@@ -28,13 +28,15 @@ class ScheduleItem(AuditModel):
     WORKSHOP = 'Workshop'
     POSTER = 'Poster'
     OPEN_SPACE = "Open Space"
+    LIGHTNING_TALK = "Lightning Talk"
     SCHEDULE_ITEM_TYPE = ((TALK, 'Talk'),
                           (LUNCH, 'Lunch'),
                           (BREAK, 'Break'),
                           (WORKSHOP, 'Workshop'),
                           (POSTER, 'Poster'),
                           (OPEN_SPACE, 'Open Space'),
-                          (INTROUDCTION, 'Introduction'))
+                          (INTROUDCTION, 'Introduction'),
+                          (LIGHTNING_TALK, 'Lightning Talk'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField(db_index=True)
