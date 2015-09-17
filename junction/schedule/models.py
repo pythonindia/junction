@@ -3,36 +3,47 @@
 from django.db import models
 
 from junction.base.models import AuditModel
-from junction.base.constants import ProposalReviewStatus
 from junction.proposals.models import Proposal
 from junction.conferences.models import Conference, Room
 
 from rest_framework.reverse import reverse
 
+from django.utils.encoding import python_2_unicode_compatible
+
+
+@python_2_unicode_compatible
+class ScheduleItemType(AuditModel):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
 
 class ScheduleItem(AuditModel):
-    TALK = 'TALK'
-    LUNCH = 'LUNCH'
-    BREAK = 'BREAK'
-    WORKSHOP = 'WORKSHOP'
-    POSTER = 'POSTER'
-    OPEN_SPACE = "OPEN_SPACE"
+    INTROUDCTION = 'Introduction'
+    TALK = 'Talk'
+    LUNCH = 'Lunch'
+    BREAK = 'Break'
+    WORKSHOP = 'Workshop'
+    POSTER = 'Poster'
+    OPEN_SPACE = "Open Space"
     SCHEDULE_ITEM_TYPE = ((TALK, 'Talk'),
                           (LUNCH, 'Lunch'),
                           (BREAK, 'Break'),
                           (WORKSHOP, 'Workshop'),
                           (POSTER, 'Poster'),
-                          (OPEN_SPACE, 'Open Space'))
+                          (OPEN_SPACE, 'Open Space'),
+                          (INTROUDCTION, 'Introduction'))
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField(db_index=True)
     start_time = models.TimeField(db_index=True)
     end_time = models.TimeField()
     alt_name = models.CharField(max_length=100, blank=True)
-    session = models.ForeignKey(
-        Proposal,
-        limit_choices_to={'review_status': ProposalReviewStatus.SELECTED},
-        null=True)
+    # limit_choices_to={'review_status': ProposalReviewStatus.SELECTED},
+    # Using limit choices prevents schedule item without session like
+    # Breaakfast etc..
+    session = models.ForeignKey(Proposal, null=True)
     type = models.CharField(max_length=20, choices=SCHEDULE_ITEM_TYPE,
                             default=TALK)
 
@@ -61,6 +72,7 @@ class ScheduleItem(AuditModel):
                 'start_time': self.start_time.strftime("%H:%M:%S"),
                 'end_time': self.end_time.strftime("%H:%M:%S"),
                 'name': self.name,
+                'type': self.type,
                 'conference': reverse("conference-detail",
                                       kwargs={'pk': self.conference_id},
                                       request=request)}
