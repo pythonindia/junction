@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %}{{ sch_item.name }} | {{ sch_item.conference.name }} {% endblock %}
+{% block og_title %}{{ sch_item.title }} | {{ sch_item.conference.name }} {% endblock %}
+{% block og_description %} {{ sch_item.alt_description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ sch_item.alt_description|markdown|safe|striptags}} {% endblock %}
+
+{% block page_classes %} {{ block.super}} proposal proposal-detail {% endblock page_classes %}
+
+{% block endhead %}
+    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb sch_item.conference.name "conference-detail" sch_item.conference.slug %}
+    {% breadcrumb "Proposals" "proposals-list" sch_item.conference.slug %}
+    {% breadcrumb sch_item.name "proposal-detail" sch_item.conference.slug sch_item.slug %}
+{% endblock %}
+
+{% block navbar_logo %}
+    {% if sch_item.conference.logo %}
+    <a href="{% url "conference-detail" conference.slug %}">
+        <img src="{{ conference.logo.url }}">
+    </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ sch_item.conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block content %}
+<div class="custom-container">
+<div class="proposal-details">
+    <div class="row">
+        <div class="col-sm-12 proposal-header">
+            <h1 class="proposal-title">
+                {{ sch_item.name }}
+            </h1>
+            <section class="col-sm-8 proposal-writeup">
+                <div class="proposal-writeup--section">
+                    <h4 class='heading'><b>Description:</b></h4>
+                    <p>{{ sch_item.alt_description|markdown }}</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
