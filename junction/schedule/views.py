@@ -4,6 +4,8 @@ from collections import defaultdict, OrderedDict
 
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import Http404, render
 
 from rest_framework import viewsets, filters
 from rest_framework.response import Response
@@ -41,3 +43,12 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
 def dummy_schedule(request, conference_slug):
     data = render_to_string('dummy_schedule.json')
     return HttpResponse(data, content_type='application/json')
+
+
+def non_proposal_schedule_item_view(request, sch_item_id):
+    try:
+        sch_item = ScheduleItem.objects.get(pk=sch_item_id)
+        return render(request, 'proposals/detail/schedule-item.html',
+                      {'sch_item': sch_item})
+    except ObjectDoesNotExist:
+        raise Http404()

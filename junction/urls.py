@@ -14,6 +14,7 @@ from junction.conferences import views as conference_views
 from junction.devices.views import DeviceListApiView, DeviceDetailApiView
 from junction.feedback.views import (FeedbackQuestionListApiView,
                                      FeedbackListApiView)
+from junction.schedule.views import non_proposal_schedule_item_view
 
 
 router = routers.DefaultRouter()
@@ -55,6 +56,9 @@ urlpatterns = patterns(
         'junction.proposals.dashboard.export_reviewer_votes',
         name='export-reviewer-votes'),
 
+    url(r'^schedule_item/(?P<sch_item_id>\d)/$',
+        non_proposal_schedule_item_view,
+        name="schedule-item"),
     url(r'^api/v1/', include(router.urls)),
     # Device
     url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
