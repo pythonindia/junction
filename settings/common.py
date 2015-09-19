@@ -84,6 +84,7 @@ OUR_APPS = (
     'junction.pages',
     'junction.profiles',
     'junction.devices',
+    'junction.tickets',
     'junction.feedback',
 )
 

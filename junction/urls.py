@@ -42,6 +42,9 @@ urlpatterns = patterns(
     url(r'^accounts/', include('allauth.urls')),
     url('^markdown/', include('django_markdown.urls')),
 
+    # Tickets
+    url(r'^tickets/', include('junction.tickets.urls')),
+
     # Proposals related
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
