@@ -56,7 +56,7 @@ urlpatterns = patterns(
         'junction.proposals.dashboard.export_reviewer_votes',
         name='export-reviewer-votes'),
 
-    url(r'^schedule_item/(?P<sch_item_id>\d)/$',
+    url(r'^schedule_item/(?P<sch_item_id>\d+)/$',
         non_proposal_schedule_item_view,
         name="schedule-item"),
     url(r'^api/v1/', include(router.urls)),
