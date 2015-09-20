@@ -25,4 +25,4 @@ class Ticket(AuditModel):
     others = JSONField()
 
     def __str__(self):
-        return self.ticket_no
+        return self.name, self.email, self.ticket_no
