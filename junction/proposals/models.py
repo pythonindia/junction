@@ -60,7 +60,7 @@ class ProposalType(AuditModel):
     end_date = models.DateField(default=datetime.now, verbose_name="End Date")
 
     def __str__(self):
-        return self.name, self.conference
+        return self.name, self.conferences
 
 
 @python_2_unicode_compatible
