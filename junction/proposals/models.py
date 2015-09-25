@@ -32,7 +32,7 @@ class ProposalSection(AuditModel):
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
     def __str__(self):
-        return self.name, self.conferences
+        return self.name
 
 
 @python_2_unicode_compatible
@@ -60,7 +60,7 @@ class ProposalType(AuditModel):
     end_date = models.DateField(default=datetime.now, verbose_name="End Date")
 
     def __str__(self):
-        return self.name, self.conferences
+        return self.name
 
 
 @python_2_unicode_compatible
