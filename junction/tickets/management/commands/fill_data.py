@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-import os
-import optparse
-
 # Third Party Stuff
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -17,28 +14,9 @@ class Command(BaseCommand):
     Read a csv file containing ticket numbers and
     fill all the details for it.
     """
-    option_list = BaseCommand.option_list + (
-        optparse.make_option(
-            "-i",
-            "--infile",
-            dest = "filename",
-            help = "specify import file",
-            metavar = "FILE"
-        ),
-    )
-
-    option_list = option_list + (
-        optparse.make_option(
-            "-o",
-            "--outfile",
-            dest = "category",
-            help = "specify output file name",
-            metavar = "FILE"
-        ),
-    )
-
     @transaction.atomic
     def handle(self, *args, **options):
+
         if len(args) != 2:
             raise CommandError('Usage: python manage.py fill_data <in_file> <out_file>')
 
