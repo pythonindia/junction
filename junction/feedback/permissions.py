@@ -23,3 +23,14 @@ class CanSubmitFeedBack(permissions.BasePermission):
                     uuid=view.device_uuid).exists()
             return False
         return False
+
+
+def can_view_feedback(user, schedule_item):
+    """Given a schedule item object, say a requesting user can view the
+    feedback.
+    """
+    if user.is_superuser:
+        return True
+
+    session = schedule_item.session
+    return session and session.author == user

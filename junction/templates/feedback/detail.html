@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %}{{ schedule_item.name }} {% endblock %}
+{% block og_title %}{{ schedule_item.name }} {% endblock %}
+
+{% block endhead %}
+    <link href="{% static 'css/sweetalert.css' %}" rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb schedule_item.conference.name "conference-detail" schedule_item.conference.slug %}
+{% endblock %}
+
+{% block navbar_logo %}
+    {% if schedule_item.conference.logo %}
+    <a href="{% url "conference-detail" schedule_item.conference.slug %}">
+        <img src="{{ schedule_item.conference.logo.url }}">
+    </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ schedule_item.conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block content %}
+        <h1 class="proposal-title">{{ schedule_item.name }} - Feedback</h1>
+        <hr class="hr-mini">
+        {% for choice_feedback in feedback.choices %}
+        <div class="question">
+            <h4> {{ choice_feedback.question.title }} </h4>
+        </div>
+        {% if choice_feedback.values %}
+        <canvas id="chart-{{forloop.counter}}" width="400" height="400">
+        </canvas>
+        <script>
+            var ctx = $("#chart-{{forloop.counter}}").get(0).getContext("2d")
+                data = {{ choice_feedback.values|safe }};
+
+            var myDoughnutChart = new Chart(ctx).Doughnut(data);
+        </script>
+        {% else %}
+        <p> No feedback submitted </p>
+        {% endif %}
+        <hr>
+        {% endfor %}
+        <br>
+        {% for txt in feedback.text %}
+        <div class="text-question">
+            <h4>{{ txt.question.title }}</h4>
+        </div>
+        {% for value in txt.values %}
+        <div class="comment-description">
+            <p>{{ value.text|markdown }}</p>
+        </div>
+        <hr class="hr-mini">
+        {% empty %}
+        <p> No feedback submitted </p>
+        {% endfor %}
+        {% endfor %}
+<br/>
+{% endblock content %}

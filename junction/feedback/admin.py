@@ -30,11 +30,13 @@ class ChoiceFeedbackQuestionValueAdmin(TimeAuditAdmin):
 class ScheduleItemTextFeedbackAdmin(TimeAuditAdmin):
     list_display = ('schedule_item', 'question', 'text', 'device') + \
                    TimeAuditAdmin.list_display  # noqa
+    list_filter = ['schedule_item']  # noqa
 
 
 class ScheduleItemChoiceFeedbackAdmin(TimeAuditAdmin):
     list_display = ('schedule_item', 'question', 'value', 'device') + \
                    TimeAuditAdmin.list_display  # noqa
+    list_filter = ['schedule_item']  # noqa
 
 
 admin.site.register(TextFeedbackQuestion, TextFeedbackQuestionAdmin)

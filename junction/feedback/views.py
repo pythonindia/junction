@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseForbidden
+#from django.http import Http403
+
 from rest_framework import views, status
 from rest_framework.response import Response
 
+from junction.schedule.models import ScheduleItem
 from .serializers import FeedbackQueryParamsSerializer, FeedbackSerializer
-from .permissions import CanSubmitFeedBack
+from .permissions import CanSubmitFeedBack, can_view_feedback
 from . import service as feedback_service
 
 
@@ -41,3 +46,15 @@ class FeedbackListApiView(views.APIView):
             return Response(status=status.HTTP_201_CREATED, data=data)
         return Response(data=feedback.errors,
                         status=status.HTTP_400_BAD_REQUEST)
+
+
+def view_feedback(request, schedule_item_id):
+    """Show text/choice feedback for the schedule.
+    """
+    schedule_item = get_object_or_404(ScheduleItem, pk=schedule_item_id)
+    if not can_view_feedback(user=request.user,
+                             schedule_item=schedule_item):
+        return HttpResponseForbidden("Access Denied")
+    feedback = feedback_service.get_feedback(schedule_item=schedule_item)
+    context = {'feedback': feedback, 'schedule_item': schedule_item}
+    return render(request, "feedback/detail.html", context)
