@@ -13,7 +13,7 @@ from junction.schedule import views as schedule_views
 from junction.conferences import views as conference_views
 from junction.devices.views import DeviceListApiView, DeviceDetailApiView
 from junction.feedback.views import (FeedbackQuestionListApiView,
-                                     FeedbackListApiView)
+                                     FeedbackListApiView, view_feedback)
 from junction.schedule.views import non_proposal_schedule_item_view
 
 
@@ -58,7 +58,9 @@ urlpatterns = patterns(
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/export/$',
         'junction.proposals.dashboard.export_reviewer_votes',
         name='export-reviewer-votes'),
-
+    url(r'^feedback/(?P<schedule_item_id>\d+)/$',
+        view_feedback,
+        name='feedback-detail'),
     url(r'^schedule_item/(?P<sch_item_id>\d+)/$',
         non_proposal_schedule_item_view,
         name="schedule-item"),

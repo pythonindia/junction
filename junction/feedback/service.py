@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
+
+from django.db.models import Count
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -10,6 +12,9 @@ from junction.schedule.models import ScheduleItem, ScheduleItemType
 from .models import (TextFeedbackQuestion, ChoiceFeedbackQuestion,
                      ScheduleItemTextFeedback, ScheduleItemChoiceFeedback,
                      ChoiceFeedbackQuestionValue)
+
+
+COLORS = ["#F7464A", "#46BFBD", "#FDB45C"]
 
 
 def get_feedback_questions(conference_id):
@@ -160,6 +165,50 @@ def create_choice_feedback(schedule_item_id, feedbacks, device):
              'schedule_item_id': schedule_item_id}
         choices.append(d)
     return choices
+
+
+def get_feedback(schedule_item):
+    feedback = {'text': _get_text_feedback(schedule_item=schedule_item),
+                'choices': _get_choice_feedback(
+                    schedule_item=schedule_item)}
+    return feedback
+
+
+def _get_text_feedback(schedule_item):
+    questions = TextFeedbackQuestion.objects.filter(
+        schedule_item_type__title=schedule_item.type)
+    text = [{'question': question,
+             'values': ScheduleItemTextFeedback.objects.filter(
+                 question=question, schedule_item=schedule_item)}
+            for question in questions]
+    return text
+
+
+def _get_choice_feedback(schedule_item):
+    questions = ChoiceFeedbackQuestion.objects.filter(
+        schedule_item_type__title=schedule_item.type).select_related(
+            'allowed_values')
+    choices = []
+    for question in questions:
+        values = ScheduleItemChoiceFeedback.objects.filter(
+            schedule_item=schedule_item, question=question).values(
+                'value').annotate(Count('value'))
+        d = {'question': question,
+             'values': _get_choice_value_for_chart(question=question,
+                                                   values=values)}
+        choices.append(d)
+    return choices
+
+
+def _get_choice_value_for_chart(question, values):
+    data = []
+    for index, value in enumerate(values):
+        d = {'label': str(question.allowed_values.get(
+            value=value['value']).title)}
+        d['value'] = value['value__count']
+        d['color'] = COLORS[index]
+        data.append(d)
+    return data
 
 
 def _get_question_oragnized_by_type(qs):

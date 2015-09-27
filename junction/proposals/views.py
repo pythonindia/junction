@@ -16,6 +16,7 @@ from django.views.decorators.http import require_http_methods
 # Junction Stuff
 from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus, ProposalUserVoteRole
 from junction.conferences.models import Conference, ConferenceProposalReviewer
+from junction.feedback import permissions as feedback_permission
 
 from .forms import (
     ProposalCommentForm,
@@ -195,8 +196,14 @@ def detail_proposal(request, conference_slug, slug):
         'is_author': request.user == proposal.author,
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
+        'can_view_feedback': False
     }
 
+    if proposal.scheduleitem_set.all():
+        schedule_item = proposal.scheduleitem_set.all()[0]
+        ctx['can_view_feedback'] = feedback_permission.can_view_feedback(
+            user=request.user, schedule_item=schedule_item)
+        ctx['schedule_item'] = schedule_item
     comments = ProposalComment.objects.filter(
         proposal=proposal, deleted=False, vote=False
     )

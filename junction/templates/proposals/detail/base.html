@@ -132,6 +132,10 @@
                   <a id="upload-content" class='btn btn-primary' href="#">
                       Ask proposer to upload content
                   </a>
+                  {% if schedule_item %}
+                  <a id="view-feedback" class="btn btn-success"
+                     href="{% url 'feedback-detail' schedule_item.id %}">Participants Feedback</a>
+                  {% endif %}
               </div>
           {% endif %}
 
