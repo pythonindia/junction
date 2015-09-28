@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 # Third Party Stuff
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
@@ -28,7 +29,10 @@ class Command(BaseCommand):
         fh.write(','.join(header) + '\n')
 
         for ticket_num in ticket_nums:
-            ticket = Ticket.objects.get(ticket_no=ticket_num)
+            try:
+                ticket = Ticket.objects.get(ticket_no=ticket_num)
+            except ObjectDoesNotExist:
+                continue
 
             details = ticket.others
             for attendee in details['attendee']:
