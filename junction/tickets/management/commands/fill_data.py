@@ -32,7 +32,7 @@ class Command(BaseCommand):
             try:
                 ticket = Ticket.objects.get(ticket_no=ticket_num)
             except ObjectDoesNotExist:
-                continue
+                print(u"Ticket num: {} not found".format(ticket_num))
 
             details = ticket.others
             for attendee in details['attendee']:
