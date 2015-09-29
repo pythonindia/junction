@@ -46,4 +46,5 @@ class Command(BaseCommand):
 
                 if created:
                     qr_code = qrcode.make(ticket_no)
-                    qr_code.save('{}/{}.png'.format(settings.QR_CODES_DIR, ticket_no))
+                    file_name = attendee.get('name') + '_' + ticket_no
+                    qr_code.save('{}/{}.png'.format(settings.QR_CODES_DIR, file_name))
