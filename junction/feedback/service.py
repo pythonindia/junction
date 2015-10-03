@@ -14,7 +14,7 @@ from .models import (TextFeedbackQuestion, ChoiceFeedbackQuestion,
                      ChoiceFeedbackQuestionValue)
 
 
-COLORS = ["#F7464A", "#46BFBD", "#FDB45C"]
+COLORS = ["#46BFBD", "#FDB45C", "#F7464A"]
 
 
 def get_feedback_questions(conference_id):
