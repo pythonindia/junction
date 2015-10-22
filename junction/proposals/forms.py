@@ -195,5 +195,5 @@ class ProposalVotesFilterForm(ProposalTypesChoices):
         self.fields['votes'].choices = ProposalVotesFilter.CHOICES
         self.fields['review_status'].choices = ProposalReviewStatus.CHOICES
 
-        for name, field in self.fields.items():
+        for name, field in list(self.fields.items()):
             field.choices.insert(0, ('all', 'All'))
