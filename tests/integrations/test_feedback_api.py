@@ -37,7 +37,7 @@ class TestFeedbackQuestionListApi(APITestCase):
         assert res.status_code == status.HTTP_200_OK
         result = res.data
 
-        assert result.keys() == schedule_item_types
+        assert list(result.keys()) == schedule_item_types
         for item_type in schedule_item_types:
             assert len(result[item_type]['text']) == num_text_questions
             assert len(result[item_type]['choice']) == num_choice_questions

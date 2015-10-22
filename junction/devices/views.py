@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from .models import Device
 from .serializers import (DeviceRegistrationSerializer,
                           DeviceConfirmationSerializer)
-
+from six.moves import range
 # Create your views here.
 
 
@@ -23,7 +23,7 @@ class DeviceListApiView(views.APIView):
         if os.environ.get('TESTING'):
             code = settings.DEVICE_VERIFICATION_CODE
         else:
-            code = random.choice(range(10000, 99999))
+            code = random.choice(list(range(10000, 99999)))
         device = Device.objects.create(uuid=data['uuid'],
                                        verification_code=code)
         return device
