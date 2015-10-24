@@ -13,4 +13,4 @@ def test_google_analytics_rendering(client, settings):
 
     settings.SITE_VARIABLES['google_analytics_id'] = 'UA-MY-ID'
     response = client.get(url)
-    assert 'UA-MY-ID' in response.content
+    assert 'UA-MY-ID' in str(response.content)
