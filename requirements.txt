@@ -5,7 +5,7 @@ django-filter==0.10.0
 
 # Persistent Store
 # -------------------------------------------------
-psycopg2==2.6.1
+psycopg2cffi==2.7.2
 redis==2.10.3
 dj-database-url==0.3.*
 
@@ -62,4 +62,3 @@ django-uuidfield==0.5.0
 # Ticket
 qrcode==5.1
 jsonfield==1.0.3
-
