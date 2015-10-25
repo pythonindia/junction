@@ -9,7 +9,11 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-import cStringIO as StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 from xlsxwriter.workbook import Workbook
@@ -271,7 +275,7 @@ def export_reviewer_votes(request, conference_slug):
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
         tuple(vote_values_desc) + ('Public votes count', 'Vote Comments')
-    output = StringIO.StringIO()
+    output = StringIO()
 
     with Workbook(output) as book:
         for section in proposal_sections:

@@ -14,6 +14,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.timezone import now
 from sampledatahelper.helper import SampleDataHelper
+from six import string_types
 
 # Junction Stuff
 from junction.base import constants
@@ -167,7 +168,7 @@ class Command(BaseCommand):
         kwargs['start_time'] = datetime.datetime.time(datetime.datetime.now())
         kwargs['end_time'] = datetime.datetime.time(
             datetime.datetime.now() + datetime.timedelta(minutes=45))
-        if isinstance(proposal, basestring):
+        if isinstance(proposal, string_types):
             ScheduleItem.objects.create(
                 alt_name=proposal,
                 **kwargs)
