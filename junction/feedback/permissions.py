@@ -5,6 +5,7 @@ import uuid
 from rest_framework import permissions
 
 from junction.devices.models import Device
+from junction.conferences.permissions import is_reviewer
 
 
 def get_authorization_header(request):
@@ -33,4 +34,5 @@ def can_view_feedback(user, schedule_item):
         return True
 
     session = schedule_item.session
-    return session and session.author == user
+    res = is_reviewer(user=user, conference=schedule_item.conference)
+    return session and (session.author == user or res)
