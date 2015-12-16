@@ -50,7 +50,7 @@ class ConferenceFactory(Factory):
     start_date = fuzzy.FuzzyDate(datetime.date.today(), datetime.date(2017, 1, 1)).fuzz()
     end_date = start_date + datetime.timedelta(3)
     # logo
-    status = factory.Iterator(dict(ConferenceStatus.CHOICES).keys())
+    status = factory.Iterator(list(dict(ConferenceStatus.CHOICES).keys()))
     # deleted
 
 

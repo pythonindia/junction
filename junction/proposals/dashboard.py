@@ -9,7 +9,10 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-import cStringIO as StringIO
+try:
+    import cStringIO as StringIO
+except ImportError:
+    from io import StringIO
 from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 from xlsxwriter.workbook import Workbook
