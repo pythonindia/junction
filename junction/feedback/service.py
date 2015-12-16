@@ -224,7 +224,7 @@ def _merge_questions(text_questions, choice_questions):
     {'Talk': {'text': [..], 'choice': [...]},}
     """
     types = set(text_questions.keys())
-    types.union(choice_questions.keys())
+    types.union(list(choice_questions.keys()))
     questions = {}
     for item in types:
         questions[item] = {'text': text_questions.get(item),
