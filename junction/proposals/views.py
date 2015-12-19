@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Standard Library
 import collections
+from datetime import datetime
 
 # Third Party Stuff
 from django.conf import settings
@@ -154,7 +155,7 @@ def detail_proposal(request, conference_slug, slug):
     is_section_reviewer = permissions.is_proposal_section_reviewer(
         request.user, conference, proposal)
     vote_value = 0
-
+    voting = True if conference.start_date > datetime.now().date() else False
     try:
         if request.user.is_authenticated():
             proposal_vote = ProposalVote.objects.get(
@@ -172,7 +173,8 @@ def detail_proposal(request, conference_slug, slug):
         'is_author': request.user == proposal.author,
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
-        'can_view_feedback': False
+        'can_view_feedback': False,
+        'can_vote':voting
     }
 
     if proposal.scheduleitem_set.all():
