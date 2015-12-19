@@ -13,7 +13,7 @@ def is_proposal_author(user, proposal):
 def is_proposal_reviewer(user, conference):
     authenticated = user.is_authenticated()
     is_reviewer = ConferenceProposalReviewer.objects.filter(
-        reviewer=user, conference=conference, active=True).exists()
+        reviewer=user.id, conference=conference, active=True).exists()
     return authenticated and is_reviewer
 
 
