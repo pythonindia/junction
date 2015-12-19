@@ -26,6 +26,7 @@ from junction.proposals.models import (
     ProposalSectionReviewerVoteValue
 )
 from junction.schedule.models import ScheduleItem
+import six
 
 NUM_USERS = getattr(settings, "NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
@@ -167,7 +168,7 @@ class Command(BaseCommand):
         kwargs['start_time'] = datetime.datetime.time(datetime.datetime.now())
         kwargs['end_time'] = datetime.datetime.time(
             datetime.datetime.now() + datetime.timedelta(minutes=45))
-        if isinstance(proposal, basestring):
+        if isinstance(proposal, six.string_types):
             ScheduleItem.objects.create(
                 alt_name=proposal,
                 **kwargs)

@@ -48,7 +48,7 @@ class Explara(object):
                 ticket_orders.extend([order for order in attendee_response.get('attendee')])
             # after the first batch, subsequent batches are dicts with batch no. as key.
             elif isinstance(attendee_response.get('attendee'), dict):
-                ticket_orders.extend([order for order_idx, order in attendee_response.get('attendee').items()])
+                ticket_orders.extend([order for order_idx, order in list(attendee_response.get('attendee').items())])
             print("Synced {} records".format(to_record))
             from_record = to_record
             to_record += 50
