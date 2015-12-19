@@ -89,21 +89,33 @@
     </div>
 
     <hr class="hr-mini">
-
     <div class="row proposal-description">
-        <div class="col-sm-1 section--voting">
+         <div class="col-sm-1 section--voting ">
             <div class="text-center">
-                <a href="#" data-url="{{ proposal.get_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
+                {% if can_vote %}
+                  <a href="#" data-url="{{ proposal.get_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
                     <i class="fa fa-chevron-up fa-2x"></i>
-                </a>
-
+                  </a>
+                {% else %}
+                  <span class="text-muted {% if vote_value == 1 %} active btn-vote {% endif %}">
+                  <i class="fa fa-chevron-up fa-2x"></i>
+                  </span>
+                {% endif %}
                 <h1 class="clear-margin text-muted proposal-vote-count">
                     {{ proposal.get_votes_count }}
                 </h1>
 
-                <a href="#" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
+                {% if can_vote %}
+                    <a href="#" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
                     <i class="fa fa-chevron-down fa-2x"></i>
-                </a>
+                    </a>
+                {% else %}
+                  <span class="text-muted {% if vote_value == -1 %} active btn-vote {% endif %}">
+                  <i class="fa fa-chevron-down fa-2x"></i>
+                  </span>
+                {% endif %}
+
+
             </div>
         </div>
 
