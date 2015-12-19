@@ -399,8 +399,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                 initial={'vote_value': vote_value,
                          'comment': vote_comment.comment})
         else:
-            proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value})
+            proposal_vote_form = ProposalReviewerVoteForm()
         ctx = {
             'proposal': proposal,
             'proposal_vote_form': proposal_vote_form,
