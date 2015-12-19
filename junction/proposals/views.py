@@ -174,7 +174,7 @@ def detail_proposal(request, conference_slug, slug):
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
         'can_view_feedback': False,
-        'can_vote':voting
+        'can_vote': voting
     }
 
     if proposal.scheduleitem_set.all():
