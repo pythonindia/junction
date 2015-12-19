@@ -46,7 +46,7 @@ def _get_proposal_type_choices(conference, action='edit'):
 
 def _get_proposal_section_reviewer_vote_choices():
     return [(i.vote_value, '{} ({})'.format(i.description, i.vote_value))
-            for i in ProposalSectionReviewerVoteValue.objects.all()]
+            for i in ProposalSectionReviewerVoteValue.objects.exclude(vote_value=0)]
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -147,16 +147,13 @@ class ProposalReviewerVoteForm(forms.Form):
     """
     Used by ProposalSectionReviewers to vote on proposals.
     """
-    vote_value = forms.ChoiceField(widget=forms.RadioSelect())
+    vote_value = forms.ChoiceField(widget=forms.RadioSelect(),
+                                   choices=_get_proposal_section_reviewer_vote_choices())
     comment = forms.CharField(
         widget=forms.Textarea,
         required=False,
         help_text="Leave a comment justifying your vote.",
     )
-
-    def __init_(self):
-        choices = _get_proposal_section_reviewer_vote_choices()
-        self.fields['vote_value'].choices = choices
 
 
 class ProposalTypesChoices(forms.Form):
