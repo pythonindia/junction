@@ -11,9 +11,10 @@ def is_proposal_author(user, proposal):
 
 
 def is_proposal_reviewer(user, conference):
+    authenticated = user.is_authenticated()
     is_reviewer = ConferenceProposalReviewer.objects.filter(
         reviewer=user, conference=conference, active=True).exists()
-    return user.is_authenticated() and is_reviewer
+    return authenticated and is_reviewer
 
 
 def is_proposal_section_reviewer(user, conference, proposal):
