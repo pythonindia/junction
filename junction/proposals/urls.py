@@ -4,16 +4,16 @@ from __future__ import absolute_import, unicode_literals
 # Third Party Stuff
 from django.conf.urls import include, patterns, url
 
-from . import views
+from . import (views, votes_views, comments_views)
 
 comment_urls = patterns(
     '',
     url(r'^(?P<proposal_slug>[\w-]+)/create/$',
-        views.create_proposal_comment, name='proposal-comment-create'),
+        comments_views.create_proposal_comment, name='proposal-comment-create'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/up-vote/$',
-        views.proposal_comment_up_vote, name='proposal-comment-up-vote'),
+        votes_views.proposal_comment_up_vote, name='proposal-comment-up-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/down-vote/$',
-        views.proposal_comment_down_vote, name='proposal-comment-down-vote'),
+        votes_views.proposal_comment_down_vote, name='proposal-comment-down-vote'),
 )
 
 urlpatterns = patterns(
@@ -32,7 +32,7 @@ urlpatterns = patterns(
     url(r'^comment/', include(comment_urls)),
 
     # Voting
-    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
-    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$', views.proposal_vote_down, name='proposal-vote-down'),
-    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$', views.proposal_vote_up, name='proposal-vote-up'),
+    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
+    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$', votes_views.proposal_vote_down, name='proposal-vote-down'),
+    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$', votes_views.proposal_vote_up, name='proposal-vote-up'),
 )
