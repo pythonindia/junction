@@ -11,62 +11,36 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import Http404, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ConferenceStatus, ProposalUserVoteRole
-from junction.conferences.models import Conference, ConferenceProposalReviewer
+
+from junction.base.constants import (ProposalReviewStatus,
+                                     ProposalStatus,
+                                     ConferenceStatus)
+from junction.conferences.models import Conference
+
 from junction.feedback import permissions as feedback_permission
 
 from .forms import (
     ProposalCommentForm,
     ProposalForm,
     ProposalReviewForm,
-    ProposalReviewerVoteForm,
     ProposalsToReviewForm
 )
 from .models import (
     Proposal,
     ProposalComment,
-    ProposalCommentVote,
     ProposalSectionReviewer,
-    ProposalVote,
-    ProposalSectionReviewerVote,
-    ProposalSectionReviewerVoteValue
+    ProposalVote
 )
 from .services import (
-    send_mail_for_new_comment,
     send_mail_for_new_proposal,
     send_mail_for_proposal_content,
 )
 
-
-def _is_proposal_author(user, proposal):
-    return user.is_authenticated() and proposal.author == user
-
-
-def _is_proposal_reviewer(user, conference):
-    return user.is_authenticated() and ConferenceProposalReviewer.objects.filter(
-        reviewer=user, conference=conference, active=True).exists()
-
-
-def _is_proposal_section_reviewer(user, conference, proposal):
-    return user.is_authenticated() and ProposalSectionReviewer.objects.filter(
-        conference_reviewer__reviewer=user,
-        conference_reviewer__conference=conference,
-        proposal_section=proposal.proposal_section,
-        active=True).exists()
-
-
-def _is_proposal_author_or_proposal_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) or \
-        _is_proposal_reviewer(user, conference)
-
-
-def _is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
-    return _is_proposal_author(user, proposal) or \
-        _is_proposal_section_reviewer(user, conference, proposal)
+from . import permissions
 
 
 @require_http_methods(['GET'])
@@ -79,7 +53,8 @@ def list_proposals(request, conference_slug):
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference)
 
-    is_reviewer = _is_proposal_reviewer(request.user, conference)
+    is_reviewer = permissions.is_proposal_reviewer(
+        user=request.user, conference=conference)
 
     # Filtering
     proposal_section_filter = request.GET.getlist('proposal_section')
@@ -172,12 +147,13 @@ def create_proposal(request, conference_slug):
 def detail_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
-    read_private_comment = _is_proposal_author_or_proposal_reviewer(
+    read_private_comment = permissions.is_proposal_author_or_proposal_reviewer(
         request.user, conference, proposal)
-    write_private_comment = _is_proposal_author_or_proposal_section_reviewer(
+    write_private_comment = permissions.is_proposal_author_or_proposal_section_reviewer(
         request.user, conference, proposal)
-    is_reviewer = _is_proposal_reviewer(request.user, conference)
-    is_section_reviewer = _is_proposal_section_reviewer(request.user, conference, proposal)
+    is_reviewer = permissions.is_proposal_reviewer(request.user, conference)
+    is_section_reviewer = permissions.is_proposal_section_reviewer(
+        request.user, conference, proposal)
     vote_value = 0
     voting = True if conference.start_date > datetime.now().date() else False
     try:
@@ -198,7 +174,7 @@ def detail_proposal(request, conference_slug, slug):
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
         'can_view_feedback': False,
-        'can_vote':voting
+        'can_vote': voting
     }
 
     if proposal.scheduleitem_set.all():
@@ -231,7 +207,8 @@ def update_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not proposal.author == request.user:
+    if not permissions.is_proposal_author(
+            user=request.user, proposal=proposal):
         raise PermissionDenied
 
     if request.method == 'GET':
@@ -268,20 +245,21 @@ def update_proposal(request, conference_slug, slug):
 def proposals_to_review(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not _is_proposal_reviewer(request.user, conference):
+    if not permissions.is_proposal_reviewer(request.user, conference):
         raise PermissionDenied
 
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
 
-    proposal_reviewer_sections = [p.proposal_section for p in
-                                  ProposalSectionReviewer.objects.filter(
-                                      conference_reviewer__reviewer=request.user)]
+    psr = ProposalSectionReviewer.objects.filter(
+        conference_reviewer__reviewer=request.user)
+    proposal_reviewer_sections = [p.proposal_section for p in psr]
     proposals_to_review = []
     s_items = collections.namedtuple('section_items', 'section proposals')
     for section in proposal_reviewer_sections:
-        section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+        section_proposals = [p for p in proposals_qs
+                             if p.proposal_section == section]
         proposals_to_review.append(s_items(section, section_proposals))
 
     proposal_sections = conference.proposal_sections.all()
@@ -305,14 +283,16 @@ def review_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not _is_proposal_section_reviewer(request.user, conference, proposal):
+    if not permissions.is_proposal_section_reviewer(request.user,
+                                                    conference, proposal):
         raise PermissionDenied
 
     if request.method == 'GET':
+        comments = ProposalComment.objects.filter(proposal=proposal,
+                                                  deleted=False)
 
-        comments = ProposalComment.objects.filter(proposal=proposal, deleted=False,)
-
-        proposal_review_form = ProposalReviewForm(initial={'review_status': proposal.review_status})
+        proposal_review_form = ProposalReviewForm(
+            initial={'review_status': proposal.review_status})
 
         ctx = {
             'proposal': proposal,
@@ -330,15 +310,17 @@ def review_proposal(request, conference_slug, slug):
     # POST Workflow
     form = ProposalReviewForm(request.POST)
     if not form.is_valid():
-        return render(request, 'proposals/review.html', {'form': form,
-                                                         'proposal': proposal,
-                                                         'form_errors': form.errors})
+        context = {'form': form,
+                   'proposal': proposal,
+                   'form_errors': form.errors}
+        return render(request, 'proposals/review.html', context)
 
     # Valid Form
     proposal.review_status = form.cleaned_data['review_status']
     proposal.save()
 
-    return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+    return HttpResponseRedirect(reverse('proposals-list',
+                                        args=[conference.slug]))
 
 
 @login_required
@@ -347,7 +329,8 @@ def proposal_upload_content(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not (_is_proposal_section_reviewer(request.user, conference, proposal) or
+    if not (permissions.is_proposal_section_reviewer(
+        request.user, conference, proposal) or
             request.user.is_superuser):
         raise PermissionDenied
 
@@ -364,100 +347,12 @@ def proposal_upload_content(request, conference_slug, slug):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def proposal_reviewer_vote(request, conference_slug, proposal_slug):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug,
-                                 conference=conference)
-
-    if not _is_proposal_section_reviewer(request.user, conference, proposal):
-        raise PermissionDenied
-
-    vote_value = None
-
-    try:
-        vote = ProposalSectionReviewerVote.objects.get(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
-                conference_reviewer__reviewer=request.user,
-                conference_reviewer__conference=conference,
-                proposal_section=proposal.proposal_section),
-        )
-        vote_value = vote.vote_value.vote_value
-    except ProposalSectionReviewerVote.DoesNotExist:
-        vote = None
-
-    try:
-        vote_comment = ProposalComment.objects.get(
-            proposal=proposal,
-            commenter=request.user,
-            vote=True,
-            deleted=False,
-        )
-    except:
-        vote_comment = None
-    if request.method == 'GET':
-        if vote_comment:
-            proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value,
-                         'comment': vote_comment.comment})
-        else:
-            proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value})
-        ctx = {
-            'proposal': proposal,
-            'proposal_vote_form': proposal_vote_form,
-            'vote': vote,
-        }
-
-        return render(request, 'proposals/vote.html', ctx)
-
-    # POST Workflow
-    form = ProposalReviewerVoteForm(request.POST)
-    if not form.is_valid():
-        return render(request, 'proposals/vote.html',
-                      {'form': form,
-                       'proposal': proposal,
-                       'form_errors': form.errors})
-
-    # Valid Form
-    vote_value = form.cleaned_data['vote_value']
-    comment = form.cleaned_data['comment']
-    if not vote:
-        vote = ProposalSectionReviewerVote.objects.create(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
-                conference_reviewer__reviewer=request.user,
-                conference_reviewer__conference=conference,
-                proposal_section=proposal.proposal_section),
-            vote_value=ProposalSectionReviewerVoteValue.objects.get(
-                vote_value=vote_value),
-        )
-    else:
-        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(
-            vote_value=vote_value)
-        vote.save()
-    if not vote_comment:
-        vote_comment = ProposalComment.objects.create(
-            proposal=proposal,
-            commenter=request.user,
-            comment=comment,
-            vote=True,
-        )
-    else:
-        vote_comment.comment = comment
-        vote_comment.save()
-    return HttpResponseRedirect(reverse('proposals-to-review',
-                                        args=[conference.slug]))
-
-
-@login_required
-@require_http_methods(['GET', 'POST'])
 def delete_proposal(request, conference_slug, slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
 
-    if not proposal.author == request.user:
-        raise PermissionDenied
+    permissions.is_proposal_author_or_permisson_denied(
+        user=request.user, proposal=proposal)
 
     if request.method == 'GET':
         return render(request, 'proposals/delete.html', {'proposal': proposal})
@@ -465,105 +360,3 @@ def delete_proposal(request, conference_slug, slug):
         proposal.delete()
         return HttpResponseRedirect(reverse('proposals-list',
                                             args=[conference.slug]))
-
-
-@login_required
-@require_http_methods(['POST'])
-def create_proposal_comment(request, conference_slug, proposal_slug):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(
-        Proposal, slug=proposal_slug, conference=conference)
-    form = ProposalCommentForm(request.POST)
-    if form.is_valid():
-        comment = form.cleaned_data['comment']
-        private = form.cleaned_data['private']
-        reviewer = form.cleaned_data['reviewer']
-
-        if private and not _is_proposal_author_or_proposal_section_reviewer(
-                request.user, conference, proposal):
-            raise Http404()
-
-        proposal_comment = ProposalComment.objects.create(
-            proposal=proposal, comment=comment,
-            private=private, reviewer=reviewer, commenter=request.user
-        )
-        host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
-        send_mail_for_new_comment(proposal_comment, host)
-
-    redirect_url = reverse('proposal-detail', args=[conference.slug, proposal.slug])
-
-    if private:
-        redirect_url += "#js-reviewers"
-    elif reviewer:
-        redirect_url += "#js-only-reviewers"
-    else:
-        redirect_url += "#js-comments"
-
-    return HttpResponseRedirect(redirect_url)
-
-
-@login_required
-def proposal_vote(request, conference_slug, proposal_slug, up_vote):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    if conference.start_date < datetime.now().date():
-        raise PermissionDenied
-    proposal = get_object_or_404(
-        Proposal, slug=proposal_slug, conference=conference)
-
-    proposal_vote, created = ProposalVote.objects.get_or_create(
-        proposal=proposal, voter=request.user)  # @UnusedVariable
-
-    if _is_proposal_reviewer(request.user, conference):
-        role = ProposalUserVoteRole.REVIEWER
-    else:
-        role = ProposalUserVoteRole.PUBLIC
-
-    proposal_vote.role = role
-    proposal_vote.up_vote = up_vote
-    proposal_vote.save()
-
-    return HttpResponse(proposal.get_votes_count())
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_vote_up(request, conference_slug, proposal_slug):
-    return proposal_vote(request, conference_slug, proposal_slug, True)
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_vote_down(request, conference_slug, proposal_slug):
-    return proposal_vote(request, conference_slug, proposal_slug, False)
-
-
-def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,
-                          up_vote):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=proposal_slug,
-                                 conference=conference)
-    proposal_comment = get_object_or_404(ProposalComment, proposal=proposal,
-                                         id=comment_id)
-    proposal_comment_vote, created = ProposalCommentVote.objects.get_or_create(
-        proposal_comment=proposal_comment, voter=request.user)
-    proposal_comment_vote.up_vote = up_vote
-    proposal_comment_vote.save()
-
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_comment_up_vote(request, conference_slug, proposal_slug,
-                             proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug,
-                                 proposal_comment_id, True)
-
-
-@login_required
-@require_http_methods(['POST'])
-def proposal_comment_down_vote(request, conference_slug, proposal_slug,
-                               proposal_comment_id):
-    return proposal_comment_vote(request, conference_slug, proposal_slug,
-                                 proposal_comment_id, False)
