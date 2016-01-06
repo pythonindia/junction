@@ -27,26 +27,26 @@ python manage.py sample_data
 
 Initial auth data: admin/123123
 
-If docker and fig are not installed already (Not mandatory):
+If docker and docker-compose are not installed already (Not mandatory):
 --------------------------------------------
 Refer to (http://docs.docker.com/installation/) for detailed installation instructions.
 
 ```
-sudo pip install fig
 curl -sSL https://get.docker.com/ | sudo sh
+sudo pip install docker-compose
 ```
 
-Create aliases for docker and fig to avoid running them with sudo everytime.
+Create aliases for docker and docker-compose to avoid running them with sudo everytime.
 Append the following lines to your ~/.bashrc or ~/.zshrc
 
 ```
 alias docker='sudo docker'
-alias fig='sudo fig'
+alias docker-compose='sudo docker-compose'
 ```
 
 Finally, run
 ```
-fig up
+docker-compose up
 ```
 
 
