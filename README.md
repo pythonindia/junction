@@ -32,8 +32,8 @@ If docker and fig are not installed already (Not mandatory):
 Refer to (http://docs.docker.com/installation/) for detailed installation instructions.
 
 ```
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 sudo pip install fig
+curl -sSL https://get.docker.com/ | sudo sh
 ```
 
 Create aliases for docker and fig to avoid running them with sudo everytime.
