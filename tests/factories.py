@@ -218,7 +218,13 @@ def create_conference(**kwargs):
 
 def create_user(**kwargs):
     "Create an user along with her dependencies"
-    return UserFactory.create(**kwargs)
+    user = UserFactory.create(**kwargs)
+    password = kwargs.pop('password', None)
+    if password:
+        user.set_password(password)
+        user.is_active = True
+        user.save()
+    return user
 
 
 def create_proposal(**kwargs):

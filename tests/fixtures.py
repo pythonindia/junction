@@ -8,6 +8,8 @@ import mock
 import pytest
 
 from junction.base.constants import ConferenceStatus
+from junction.conferences.models import ConferenceProposalReviewer
+from junction.proposals.models import ProposalSectionReviewer
 
 from . import factories
 
@@ -27,7 +29,8 @@ class PartialMethodCaller:
         self.partial_params = partial_params
 
     def __getattr__(self, name):
-        return functools.partial(getattr(self.obj, name), **self.partial_params)
+        return functools.partial(getattr(self.obj, name),
+                                 **self.partial_params)
 
 
 @pytest.fixture
@@ -35,7 +38,9 @@ def client():
     from django.test.client import Client
 
     class _Client(Client):
-        def login(self, user=None, backend="django.contrib.auth.backends.ModelBackend", **credentials):
+        def login(self, user=None,
+                  backend="django.contrib.auth.backends.ModelBackend",
+                  **credentials):
             if user is None:
                 return super(_Client, self).login(**credentials)
 
@@ -101,3 +106,29 @@ def login(create_user, client):
     username, password = create_user['username'], create_user['password']
     client.login(username=username, password=password)
     return client, create_user['user']
+
+
+@pytest.fixture
+def create_reviewer(create_user, conferences):
+    user = create_user['user']
+    conference = conferences['future']
+    conference_reviewer = ConferenceProposalReviewer.objects.create(
+        conference=conference,
+        reviewer=user)
+    for section in conference.proposal_sections.all():
+        ProposalSectionReviewer.objects.create(
+            conference_reviewer=conference_reviewer,
+            proposal_section=section)
+    return user
+
+
+@pytest.fixture
+def create_proposal(conferences, create_user):
+    conference, user = conferences['future'], create_user['user']
+    section = conference.proposal_sections.all()[0]
+    proposal_type = conference.proposal_types.all()[0]
+    proposal = factories.create_proposal(conference=conference,
+                                         proposal_section=section,
+                                         proposal_type=proposal_type,
+                                         author=user)
+    return proposal

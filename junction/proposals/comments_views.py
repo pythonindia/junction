@@ -40,7 +40,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
             private=private, reviewer=reviewer, commenter=request.user
         )
         host = '{}://{}'.format(settings.SITE_PROTOCOL,
-                                request.META['HTTP_HOST'])
+                                request.META.get('HTTP_HOST'))
         send_mail_for_new_comment(proposal_comment, host)
 
     redirect_url = reverse('proposal-detail',

@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 from django.core.urlresolvers import reverse
 from .. import factories as f
 from . import helpers
 
 pytestmark = pytest.mark.django_db
+
+
+#  Proposal
 
 
 def test_list_proposals_pass(client, settings):
