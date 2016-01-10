@@ -47,7 +47,8 @@ class ConferenceFactory(Factory):
     name = factory.Sequence(lambda n: "conference{}".format(n))
     # slug = factory.LazyAttribute(lambda obj: slugify)
     # description =
-    start_date = fuzzy.FuzzyDate(datetime.date.today(), datetime.date(2017, 1, 1)).fuzz()
+    start_date = fuzzy.FuzzyDate(datetime.date.today(),
+                                 datetime.date(datetime.date.today().year + 1, 1, 1)).fuzz()
     end_date = start_date + datetime.timedelta(3)
     # logo
     status = factory.Iterator(list(dict(ConferenceStatus.CHOICES).keys()))
@@ -195,7 +196,24 @@ def create_conference(**kwargs):
     """ Create a conference """
     ProposalSectionReviewerVoteValueFactory.create(vote_value=1,
                                                    description="Good")
-    return ConferenceFactory.create(**kwargs)
+    conference = ConferenceFactory.create(**kwargs)
+    start_date = kwargs.pop('start_date', None)
+    end_date = kwargs.pop('end_date', None)
+    if start_date and end_date:
+        workshop = ProposalTypeFactory.create(name="Workshop",
+                                              start_date=start_date,
+                                              end_date=end_date)
+        conference.proposal_types.add(workshop)
+        talks = ProposalTypeFactory.create(name="Talks",
+                                           start_date=start_date,
+                                           end_date=end_date)
+        conference.proposal_types.add(talks)
+        conference.save()
+
+    section = ProposalSectionFactory.create()
+    conference.proposal_sections.add(section)
+    conference.save()
+    return conference
 
 
 def create_user(**kwargs):
