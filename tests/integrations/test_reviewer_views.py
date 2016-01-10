@@ -207,3 +207,24 @@ class TestReviewerViews:
 
     #     assert response.status_code == 200
     #     assert 'vote_value' in response.context['form_errors']
+
+
+def test_public_comment(settings, login, conferences,
+                        create_proposal):
+    client = login[0]
+    conference = conferences['future']
+    proposal = create_proposal
+
+    username, password = "tmp", "tmp"
+    f.create_user(password=password, username=username)
+    client.login(username=username, password=password)
+    kwargs = {'conference_slug': conference.slug,
+              'proposal_slug': proposal.slug}
+
+    url = reverse('proposal-comment-create', kwargs=kwargs)
+    data = {'comment': 'Test'}
+
+    response = client.post(url, data)
+
+    assert response.status_code == 302
+    assert response.url.endswith('#js-comments')
