@@ -59,15 +59,13 @@ def test_create_proposal_with_missing_data(settings, login, conferences):
     conference = conferences['future']
     url = reverse('proposal-create', kwargs={'conference_slug':
                                              conference.slug})
-    section = conference.proposal_sections.all()[0]
-    proposal_type = conference.proposal_types.all()[0]
 
     data = {'title': 'Proposal Title for the conf',
             'description': 'Loong Text',
             'target_audience': '1',
             'status': '2',
-            'proposal_type': str(section.id),
-            'proposal_section': str(proposal_type.id)}
+            'proposal_type': 34,
+            'proposal_section': 34}
     response = client.post(url, data)
 
     assert response.status_code == 200
@@ -229,3 +227,22 @@ def test_update_proposal_with_invalid_data(settings, login, conferences):
 
     assert response.status_code == 200
     assert 'title' in response.context['errors']
+
+
+def test_proposal_filters(settings, login, conferences):
+    client, user = login[0], login[1]
+    conference = conferences['future']
+    section = conference.proposal_sections.all()[1]
+    proposal_type = conference.proposal_types.all()[1]
+    f.create_proposal(conference=conference,
+                      proposal_section=section,
+                      proposal_type=proposal_type,
+                      author=user)
+    kwargs = {'conference_slug': conference.slug}
+    url = reverse('proposals-list', kwargs=kwargs)
+
+    response = client.get(url, {'proposal_section': section.id,
+                                'proposal_type': proposal_type.id})
+
+    assert response.status_code == 200
+    assert response.context['is_filtered'] is True

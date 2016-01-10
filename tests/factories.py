@@ -214,6 +214,8 @@ def create_conference(**kwargs):
 
     section = ProposalSectionFactory.create()
     conference.proposal_sections.add(section)
+    section = ProposalSectionFactory.create()
+    conference.proposal_sections.add(section)
     conference.save()
     return conference
 
