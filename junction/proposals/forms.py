@@ -154,7 +154,8 @@ class ProposalReviewerVoteForm(forms.Form):
         help_text="Leave a comment justifying your vote.",
     )
 
-    def __init_(self):
+    def __init__(self, *args, **kwargs):
+        super(ProposalReviewerVoteForm, self).__init__(*args, **kwargs)
         choices = _get_proposal_section_reviewer_vote_choices()
         self.fields['vote_value'].choices = choices
 
@@ -163,13 +164,17 @@ class ProposalTypesChoices(forms.Form):
     """
     Base proposal form with proposal sections & types.
     """
-    proposal_section = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
-    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    proposal_section = forms.ChoiceField(widget=forms.Select(
+        attrs={'class': 'dropdown'}))
+    proposal_type = forms.ChoiceField(widget=forms.Select(
+        attrs={'class': 'dropdown'}))
 
     def __init__(self, conference, *args, **kwargs):
         super(ProposalTypesChoices, self).__init__(*args, **kwargs)
-        self.fields['proposal_section'].choices = _get_proposal_section_choices(conference)
-        self.fields['proposal_type'].choices = _get_proposal_type_choices(conference)
+        self.fields['proposal_section'].choices = _get_proposal_section_choices(
+            conference)
+        self.fields['proposal_type'].choices = _get_proposal_type_choices(
+            conference)
 
 
 class ProposalsToReviewForm(ProposalTypesChoices):

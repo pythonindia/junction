@@ -196,6 +196,8 @@ def create_conference(**kwargs):
     """ Create a conference """
     ProposalSectionReviewerVoteValueFactory.create(vote_value=1,
                                                    description="Good")
+    ProposalSectionReviewerVoteValueFactory.create(vote_value=2,
+                                                   description="Good")
     conference = ConferenceFactory.create(**kwargs)
     start_date = kwargs.pop('start_date', None)
     end_date = kwargs.pop('end_date', None)

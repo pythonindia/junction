@@ -308,7 +308,7 @@ def review_proposal(request, conference_slug, slug):
         return render(request, 'proposals/review.html', ctx)
 
     # POST Workflow
-    form = ProposalReviewForm(request.POST)
+    form = ProposalReviewForm(data=request.POST)
     if not form.is_valid():
         context = {'form': form,
                    'proposal': proposal,
