@@ -7,8 +7,6 @@ import datetime
 import mock
 import pytest
 
-from django.contrib.auth.models import User
-
 from junction.base.constants import ConferenceStatus
 
 from . import factories
