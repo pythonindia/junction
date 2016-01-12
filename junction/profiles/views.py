@@ -17,4 +17,5 @@ def dashboard(request):
                 conf_proposals[conf.name].append(proposal)
             else:
                 conf_proposals[conf.name] = [proposal]
-    return render(request, 'profiles/dashboard.html', {'conf_proposals': conf_proposals})
+    return render(request, 'profiles/dashboard.html',
+                  {'conf_proposals': conf_proposals})

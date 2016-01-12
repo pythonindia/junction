@@ -140,7 +140,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
         return render(request, 'proposals/vote.html', ctx)
 
     # POST Workflow
-    form = ProposalReviewerVoteForm(request.POST)
+    form = ProposalReviewerVoteForm(data=request.POST)
     if not form.is_valid():
         return render(request, 'proposals/vote.html',
                       {'form': form,
@@ -153,16 +153,16 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     if not vote:
         vote = ProposalSectionReviewerVote.objects.create(
             proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
+            voter=ProposalSectionReviewer.objects.filter(
                 conference_reviewer__reviewer=request.user,
                 conference_reviewer__conference=conference,
-                proposal_section=proposal.proposal_section),
-            vote_value=ProposalSectionReviewerVoteValue.objects.get(
-                vote_value=vote_value),
+                proposal_section=proposal.proposal_section)[0],
+            vote_value=ProposalSectionReviewerVoteValue.objects.filter(
+                vote_value=vote_value)[0],
         )
     else:
-        vote.vote_value = ProposalSectionReviewerVoteValue.objects.get(
-            vote_value=vote_value)
+        vote.vote_value = ProposalSectionReviewerVoteValue.objects.filter(
+            vote_value=vote_value)[0]
         vote.save()
     if not vote_comment:
         vote_comment = ProposalComment.objects.create(

@@ -20,7 +20,7 @@ env:
 script:
 - flake8
 - coverage run --source=junction --omit='*tests*,*commands*,*migrations*,*admin*,*wsgi*' -m py.test -v --tb=native
-- coverage report
+- coverage report -m
 
 after_success:
   coveralls
