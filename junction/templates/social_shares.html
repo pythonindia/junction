@@ -1,4 +1,4 @@
-<div class="row text-center">
+<div class="social-share row text-center">
     <script>!function(d,s,id){
         var js,
         fjs=d.getElementsByTagName(s)[0],
@@ -10,42 +10,39 @@
         fjs.parentNode.insertBefore(js,fjs);
         }}(document, 'script', 'twitter-wjs');
     </script>
+
+    {% if SITE_INFO.facebook_app_id %}
     <script>
         window.fbAsyncInit = function() {
         FB.init({
-        appId      : '1412981925681662',
-        xfbml      : true,
-        version    : 'v2.2'
-        });
+            appId      : '{{ SITE_INFO.facebook_app_id }}',
+            xfbml      : true,
+            version    : 'v2.2'
+            });
         };
-
         (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
     </script>
+    {% endif %}
+
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-    <p class='google'>
+    <p class='social-share--google'>
         <div class="g-plusone" data-size="medium"></div>
     </p>
-    <p class='twitter'>
-        <a href="https://twitter.com/share"
-           class="twitter-share-button"
-           data-via="pyconindia"
-           data-related="pyconindia"
-           data-hashtags="pyconindia">
+    <p class='social-share--twitter'>
+        <a href="https://twitter.com/share" class="twitter-share-button"
+        data-via="{{ conference.twitter_id }}" data-related="{{ conference.twitter_id }}" data-hashtags="{{ conference.hashtags }}">
             Tweet</a>
     </p>
-    <p class='facebook'>
-        <div class="fb-like"
-             data-layout="button_count"
-             data-action="like"
-             data-show-faces="true"
-             data-share="true">
-        </div>
+    {% if SITE_INFO.facebook_app_id %}
+    <p class='social-share--facebook'>
+        <div class="fb-like" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
     </p>
+    {% endif %}
 </div>

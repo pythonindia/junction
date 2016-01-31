@@ -32,7 +32,8 @@ SITE_VARIABLES = {
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
-    'footer': 'Copyright &copy; 2015. Python Software Society of India.'
+    'footer': 'Copyright &copy; 2015. Python Software Society of India.',
+    'facebook_app_id': os.environ.get('FACEBOOK_APP_ID', None),  # Enables Facebook sharing of proposals
 }
 
 MIDDLEWARE_CLASSES = (
