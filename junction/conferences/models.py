@@ -31,7 +31,12 @@ class Conference(AuditModel):
     logo = models.ImageField(blank=True, null=True, upload_to=upload_to)
     status = models.PositiveSmallIntegerField(
         choices=ConferenceStatus.CHOICES, verbose_name="Current Status")
-    venue = models.ForeignKey('ConferenceVenue', null=True)
+    venue = models.ForeignKey('ConferenceVenue', null=True, blank=True)
+
+    twitter_id = models.CharField(max_length=100, blank=True, null=True, default='',
+                                  help_text=_('Used in social share widgets.'))
+    hashtags = models.CharField(max_length=100, blank=True, null=True, default='',
+                                help_text=_("Used in social sharing, use commas to separate to tags, no '#' required."))
 
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
