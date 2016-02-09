@@ -10,9 +10,9 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
+from simple_history.models import HistoricalRecords
 from slugify import slugify
 from uuid_upload_path import upload_to
-from simple_history.models import HistoricalRecords
 
 # Junction Stuff
 from junction.base.constants import ConferenceStatus
@@ -65,6 +65,9 @@ class Conference(AuditModel):
     def is_accepting_proposals(self):
         """Check if any one of the proposal section is accepting proposal.
         """
+        if (self.status == ConferenceStatus.CLOSED_CFP or
+                self.status == ConferenceStatus.SCHEDULE_PUBLISHED):
+            return False
         return self.proposal_types.filter(end_date__gt=now()).exists()
 
 
