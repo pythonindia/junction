@@ -80,3 +80,14 @@ class ProposalVotesFilter:
     _NO_VOTES = [0, "No votes"]
     _MIN_ONE_VOTE = [1, "Minimum 1 vote"]
     _SORT = [2, "Sort by vote value"]
+
+
+class ConferenceSettingConstants:
+    ALLOW_PUBLIC_VOTING_ON_PROPOSALS = {
+        "name": "allow_public_voting_on_proposals",
+        "value": True,
+        "description": "Allow public to vote on proposals"}
+
+    DISPLAY_PROPOSALS_IN_PUBLIC = {"name": "display_proposals_in_public",
+                                   "value": True,
+                                   "description": "Display proposals in public"}

@@ -15,7 +15,7 @@ from slugify import slugify
 from uuid_upload_path import upload_to
 
 # Junction Stuff
-from junction.base.constants import ConferenceStatus
+from junction.base.constants import ConferenceStatus, ConferenceSettingConstants
 from junction.base.models import AuditModel
 
 
@@ -24,7 +24,8 @@ class Conference(AuditModel):
 
     """ Conference/Event master """
     name = models.CharField(max_length=255, verbose_name="Conference Name")
-    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',), editable=True)
+    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',),
+                         editable=True)
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
@@ -50,7 +51,8 @@ class Conference(AuditModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("conference-detail", kwargs={'conference_slug': self.slug})
+        return reverse("conference-detail", kwargs={'conference_slug':
+                                                    self.slug})
 
     def clean(self):
         if self.end_date < self.start_date:
@@ -60,7 +62,20 @@ class Conference(AuditModel):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        return super(Conference, self).save(*args, **kwargs)
+        if not self.pk:
+            super(Conference, self).save(*args, **kwargs)
+            public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
+            ConferenceSetting.objects.create(name=public_voting['name'],
+                                             value=public_voting['value'],
+                                             description=public_voting['description'],
+                                             conference=self)
+            display_propsals = ConferenceSettingConstants.DISPLAY_PROPOSALS_IN_PUBLIC
+            ConferenceSetting.objects.create(name=display_propsals['name'],
+                                             value=display_propsals['value'],
+                                             description=display_propsals['description'],
+                                             conference=self)
+            return
+        super(Conference, self).save(*args, **kwargs)
 
     def is_accepting_proposals(self):
         """Check if any one of the proposal section is accepting proposal.
@@ -92,10 +107,12 @@ class ConferenceModerator(AuditModel):
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
-    conference = models.ForeignKey(Conference, related_name='proposal_reviewers')
+    conference = models.ForeignKey(Conference,
+                                   related_name='proposal_reviewers')
     reviewer = models.ForeignKey(User)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    nick = models.CharField(max_length=255, verbose_name="Nick Name", default="Reviewer")
+    nick = models.CharField(max_length=255, verbose_name="Nick Name",
+                            default="Reviewer")
     history = HistoricalRecords()
 
     class Meta:
@@ -128,3 +145,14 @@ class Room(AuditModel):
 
     def __str__(self):
         return "{}, {}".format(self.name, self.venue)
+
+
+@python_2_unicode_compatible
+class ConferenceSetting(AuditModel):
+    conference = models.ForeignKey(Conference)
+    name = models.CharField(max_length=100, db_index=True)
+    value = models.BooleanField(default=False)
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "{}: {}".format(self.name, self.value)

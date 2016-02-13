@@ -18,7 +18,8 @@ from django.views.decorators.http import require_http_methods
 
 from junction.base.constants import (ProposalReviewStatus,
                                      ProposalStatus,
-                                     ConferenceStatus)
+                                     ConferenceStatus,
+                                     ConferenceSettingConstants)
 from junction.conferences.models import Conference
 
 from junction.feedback import permissions as feedback_permission
@@ -48,7 +49,13 @@ def list_proposals(request, conference_slug):
     conference = get_object_or_404(
         Conference, slug=conference_slug)
     # .prefetch_related('proposal_types', 'proposal_sections')
-
+    public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
+    public_voting_setting = conference.conferencesetting_set.filter(
+        name=public_voting['name']).first()
+    if public_voting_setting:
+        public_voting_setting_value = public_voting_setting.value
+    else:
+        public_voting_setting_value = True
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference)
@@ -96,7 +103,8 @@ def list_proposals(request, conference_slug):
                    'is_filtered': is_filtered,
                    'is_reviewer': is_reviewer,
                    'conference': conference,
-                   'ConferenceStatus': ConferenceStatus})
+                   'ConferenceStatus': ConferenceStatus,
+                   'public_voting_setting': public_voting_setting_value})
 
 
 @login_required
@@ -154,15 +162,20 @@ def detail_proposal(request, conference_slug, slug):
     is_reviewer = permissions.is_proposal_reviewer(request.user, conference)
     is_section_reviewer = permissions.is_proposal_section_reviewer(
         request.user, conference, proposal)
-    vote_value = 0
-    voting = True if conference.start_date > datetime.now().date() else False
-    try:
-        if request.user.is_authenticated():
-            proposal_vote = ProposalVote.objects.get(
-                proposal=proposal, voter=request.user)
-            vote_value = 1 if proposal_vote.up_vote else -1
-    except ProposalVote.DoesNotExist:
-        pass
+    public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
+    public_voting_setting = conference.conferencesetting_set.filter(
+        name=public_voting['name']).first()
+    vote_value, voting, public_voting_setting_value = 0, False, True
+    if public_voting_setting:
+        public_voting_setting_value = public_voting_setting.value
+        voting = True if conference.start_date > datetime.now().date() else False
+        try:
+            if request.user.is_authenticated():
+                proposal_vote = ProposalVote.objects.get(
+                    proposal=proposal, voter=request.user)
+                vote_value = 1 if proposal_vote.up_vote else -1
+        except ProposalVote.DoesNotExist:
+            pass
 
     ctx = {
         'login_url': settings.LOGIN_URL,
@@ -174,7 +187,8 @@ def detail_proposal(request, conference_slug, slug):
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
         'can_view_feedback': False,
-        'can_vote': voting
+        'can_vote': voting,
+        'public_voting_setting': public_voting_setting_value
     }
 
     if proposal.scheduleitem_set.all():

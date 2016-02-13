@@ -6,8 +6,9 @@ from django.views.decorators.http import require_http_methods
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 
-from junction.base.constants import ProposalUserVoteRole
+from junction.base.constants import ProposalUserVoteRole, ConferenceSettingConstants
 from junction.conferences.models import Conference
 
 from .forms import ProposalReviewerVoteForm
@@ -27,6 +28,13 @@ from . import permissions
 @login_required
 def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
+
+    public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
+    public_voting_setting = conference.conferencesetting_set.filter(
+        name=public_voting['name']).first()
+    if public_voting_setting and not public_voting_setting.value:
+        return HttpResponseForbidden()
+
     proposal = get_object_or_404(
         Proposal, slug=proposal_slug, conference=conference)
 

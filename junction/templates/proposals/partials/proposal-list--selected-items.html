@@ -9,13 +9,15 @@
 <div class="row user-proposals">
     <div class="col-xs-12" >
         <div class="proposal-list-content">
-            <div class="col-sm-1 hidden-xs proposal-stats">
+          <div class="col-sm-1 hidden-xs proposal-stats">
+            {% if public_voting_setting %}
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
                         <small class="text-muted"> Votes </small>
                     </div>
                 </div>
+            {% endif %}
                 <div class="text-center space-on-top">
                     <i class="fa fa-comments-o"></i>
                     <span class="align-middle">
