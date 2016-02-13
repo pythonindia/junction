@@ -14,6 +14,7 @@ def add_default_values(apps, schema_editor):
     ConferenceSetting = apps.get_model("conferences", "ConferenceSetting")
     public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
     display_propsals = ConferenceSettingConstants.DISPLAY_PROPOSALS_IN_PUBLIC
+    allow_plus_zero_vote = ConferenceSettingConstants.ALLOW_PLUS_ZERO_REVIEWER_VOTE
 
     Conference = apps.get_model("conferences", "Conference")
     for conf in Conference.objects.all():
@@ -26,6 +27,11 @@ def add_default_values(apps, schema_editor):
             name=display_propsals['name'],
             value=display_propsals['value'],
             description=display_propsals['description'],
+            conference=conf)
+        ConferenceSetting.objects.create(
+            name=allow_plus_zero_vote['name'],
+            value=allow_plus_zero_vote['value'],
+            description=allow_plus_zero_vote['description'],
             conference=conf)
 
 
