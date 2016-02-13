@@ -15,7 +15,7 @@ from uuid_upload_path import upload_to
 from simple_history.models import HistoricalRecords
 
 # Junction Stuff
-from junction.base.constants import ConferenceStatus
+from junction.base.constants import ConferenceStatus, ConferenceSettingConstants
 from junction.base.models import AuditModel
 
 
@@ -57,7 +57,20 @@ class Conference(AuditModel):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        return super(Conference, self).save(*args, **kwargs)
+        if not self.pk:
+            super(Conference, self).save(*args, **kwargs)
+            public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
+            ConferenceSetting.objects.create(name=public_voting['name'],
+                                             value=public_voting['value'],
+                                             description=public_voting['description'],
+                                             conference=self)
+            display_propsals = ConferenceSettingConstants.DISPLAY_PROPOSALS_IN_PUBLIC
+            ConferenceSetting.objects.create(name=display_propsals['name'],
+                                             value=display_propsals['value'],
+                                             description=display_propsals['description'],
+                                             conference=self)
+            return
+        super(Conference, self).save(*args, **kwargs)
 
     def is_accepting_proposals(self):
         """Check if any one of the proposal section is accepting proposal.
