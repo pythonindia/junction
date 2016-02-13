@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('conferences', '0012_historicalconferenceproposalreviewer'),
+        ('conferences', '0013_auto_20160131_1954'),
     ]
 
     operations = [
