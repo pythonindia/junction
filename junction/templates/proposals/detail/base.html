@@ -90,6 +90,7 @@
 
     <hr class="hr-mini">
     <div class="row proposal-description">
+      {% if public_voting_setting %}
          <div class="col-sm-1 section--voting ">
             <div class="text-center">
                 {% if can_vote %}
@@ -117,7 +118,8 @@
 
 
             </div>
-        </div>
+         </div>
+      {% endif %}
 
         <section class="col-sm-8 proposal-writeup">
           <div class="proposal-writeup--section">
