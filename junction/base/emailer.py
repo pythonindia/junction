@@ -21,7 +21,8 @@ def send_email(to, context, template_dir):
     :rtype: None
 
     """
-    to_str = lambda x: render_to_string(path.join(template_dir, x), context).strip()
+    def to_str(template_name):
+        return render_to_string(path.join(template_dir, template_name), context).strip()
 
     subject = to_str('subject.txt')
     text_message = to_str('message.txt')
