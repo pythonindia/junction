@@ -14,6 +14,7 @@ from junction.base.constants import (
     ProposalTargetAudience,
     ProposalReviewerComment,
     ProposalVotesFilter,
+    ConferenceSettingConstants
 )
 from junction.proposals.models import (
     ProposalSection,
@@ -44,9 +45,21 @@ def _get_proposal_type_choices(conference, action='edit'):
                     conferences=conference)]
 
 
-def _get_proposal_section_reviewer_vote_choices():
-    return [(i.vote_value, '{} ({})'.format(i.description, i.vote_value))
-            for i in ProposalSectionReviewerVoteValue.objects.all()]
+def _get_proposal_section_reviewer_vote_choices(conference):
+    allow_plus_zero_vote = ConferenceSettingConstants.ALLOW_PLUS_ZERO_REVIEWER_VOTE
+    plus_zero_vote_setting = conference.conferencesetting_set.filter(
+        name=allow_plus_zero_vote['name']).first()
+    if plus_zero_vote_setting:
+        plus_zero_vote_setting_value = plus_zero_vote_setting.value
+    else:
+        plus_zero_vote_setting_value = True
+    values = []
+    for i in ProposalSectionReviewerVoteValue.objects.all():
+        if i.vote_value == 0 and not plus_zero_vote_setting_value:
+            continue
+        values.append((i.vote_value, '{} ({})'.format(
+            i.description, i.vote_value)))
+    return values
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -150,13 +163,13 @@ class ProposalReviewerVoteForm(forms.Form):
     vote_value = forms.ChoiceField(widget=forms.RadioSelect())
     comment = forms.CharField(
         widget=forms.Textarea,
-        required=False,
         help_text="Leave a comment justifying your vote.",
     )
 
     def __init__(self, *args, **kwargs):
+        conference = kwargs.pop('conference', None)
         super(ProposalReviewerVoteForm, self).__init__(*args, **kwargs)
-        choices = _get_proposal_section_reviewer_vote_choices()
+        choices = _get_proposal_section_reviewer_vote_choices(conference)
         self.fields['vote_value'].choices = choices
 
 

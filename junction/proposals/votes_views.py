@@ -135,10 +135,12 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
         if vote_comment:
             proposal_vote_form = ProposalReviewerVoteForm(
                 initial={'vote_value': vote_value,
-                         'comment': vote_comment.comment})
+                         'comment': vote_comment.comment},
+                conference=conference)
         else:
             proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value})
+                initial={'vote_value': vote_value},
+                conference=conference)
         ctx = {
             'proposal': proposal,
             'proposal_vote_form': proposal_vote_form,
@@ -148,7 +150,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
         return render(request, 'proposals/vote.html', ctx)
 
     # POST Workflow
-    form = ProposalReviewerVoteForm(data=request.POST)
+    form = ProposalReviewerVoteForm(data=request.POST, conference=conference)
     if not form.is_valid():
         return render(request, 'proposals/vote.html',
                       {'form': form,

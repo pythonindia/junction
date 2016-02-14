@@ -91,3 +91,7 @@ class ConferenceSettingConstants:
     DISPLAY_PROPOSALS_IN_PUBLIC = {"name": "display_proposals_in_public",
                                    "value": True,
                                    "description": "Display proposals in public"}
+
+    ALLOW_PLUS_ZERO_REVIEWER_VOTE = {"name": "allow_plus_zero_reviewer_vote",
+                                     "value": True,
+                                     "description": "Allow +0 vote in reviewer votes"}

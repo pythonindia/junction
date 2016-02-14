@@ -74,6 +74,12 @@ class Conference(AuditModel):
                                              value=display_propsals['value'],
                                              description=display_propsals['description'],
                                              conference=self)
+            allow_plus_zero_vote = ConferenceSettingConstants.ALLOW_PLUS_ZERO_REVIEWER_VOTE
+            ConferenceSetting.objects.create(
+                name=allow_plus_zero_vote['name'],
+                value=allow_plus_zero_vote['value'],
+                description=allow_plus_zero_vote['description'],
+                conference=self)
             return
         super(Conference, self).save(*args, **kwargs)
 
