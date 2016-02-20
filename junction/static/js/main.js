@@ -25,4 +25,14 @@ $.ajaxSetup({
 // Enable tooltip
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+// Breadcrumb
+$(function(){
+    var el = $('.breadcrumb')
+    if (el.length) {
+        $(window).on("scroll", function(e) {
+          $('body').toggleClass("breadcrumb--fixed", window.scrollY > 74);
+        });
+    }
+});
