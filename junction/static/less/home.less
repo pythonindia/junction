@@ -1,10 +1,10 @@
 .homepage{
   .jumbotron {
-    height: 100%;
-    padding-bottom: 0;
+    height: 50%;
+    padding-bottom: 0em;
     margin-top: -(@navbar-height + 5px);
     background-size: cover;
-    background-position: top center;
+    background-position: center center;
   }
 
   nav.navbar {
@@ -14,18 +14,19 @@
   .navbar-wrapper {
     margin-bottom: @navbar-height + 5px;
   }
+  .message-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+  .message {
+    .align-bottom();
+    padding-bottom: 3em;
+    display: table-cell;
+  }
 }
 
-.message-wrapper {
-  display: table;
-  width: 100%;
-  height: 100%;
-}
 
-.message {
-  .align-bottom();
-  display: table-cell;
-}
 
 .status {
   .label();

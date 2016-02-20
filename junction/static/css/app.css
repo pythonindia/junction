@@ -8760,11 +8760,11 @@ textarea.form-container input[type=password] {
   display: none;
 }
 .homepage .jumbotron {
-  height: 100%;
-  padding-bottom: 0;
+  height: 50%;
+  padding-bottom: 0em;
   margin-top: -80px;
   background-size: cover;
-  background-position: top center;
+  background-position: center center;
 }
 .homepage nav.navbar {
   position: fixed;
@@ -8790,13 +8790,14 @@ textarea.form-container input[type=password] {
 .homepage .navbar-wrapper {
   margin-bottom: 80px;
 }
-.message-wrapper {
+.homepage .message-wrapper {
   display: table;
   width: 100%;
   height: 100%;
 }
-.message {
+.homepage .message {
   vertical-align: bottom;
+  padding-bottom: 3em;
   display: table-cell;
 }
 .status {
