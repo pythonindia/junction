@@ -27,7 +27,7 @@ class ProposalSection(AuditModel):
 
     """ List of Proposal Sections"""
     name = models.CharField(max_length=255, verbose_name="Proposal Section Name")
-    description = models.TextField(default="")
+    description = models.TextField(default="", blank=True)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
@@ -53,7 +53,7 @@ class ProposalType(AuditModel):
 
     """ List of Proposal Types """
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
-    description = models.TextField(default="")
+    description = models.TextField(default="", blank=True)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_types')
     start_date = models.DateField(default=datetime.now, verbose_name="Start Date")

@@ -64,28 +64,26 @@
 
             </div>
         </div>
+
         <div class="row">
-            <div class="col-xs -12 col-sm-12 ">
-                <h2>Proposal Sections</h2>
-                <ol>
-                {% for section in proposal_sections %}
-                 <li><b>{{section.name}}</b> - {{section.description}}</li>
+            <div class="col-md-7">
+                <h4>Proposal Sections</h4>
+                <ol style="padding-left: 1.1em">
+                {% for item in proposal_sections %}
+                 <li><b>{{item.name}}</b>{% if item.description %} - <span class="text-muted">{{item.description}}</span></li>{% endif %}
                 {% endfor %}
                 </ol>
-                <hr>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs -12 col-sm-12 ">
-                <h2>Proposal Types</h2>
-                <ol>
-                {% for types in proposal_types %}
-                 <li><b>{{types.name}}</b> - {{types.description}}</li>
+            <div class="col-md-5">
+                <h4>Proposal Types</h4>
+                <ol style="padding-left: 1em">
+                {% for item in proposal_types %}
+                 <li><b>{{item.name}}</b>{% if item.description %} - <span class="text-muted">{{item.description}}</span></li>{% endif %}
                 {% endfor %}
                 </ol>
-            <hr>
             </div>
         </div>
+        <hr>
 
         {% if user.is_authenticated %}
             <a class='btn btn-primary' href="{% url 'profiles:dashboard' %}">My Proposals</a>
