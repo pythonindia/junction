@@ -19,6 +19,7 @@ It is advised to install all the requirements inside [virtualenv], use [virtuale
 [virtualenvwrapper]: https://virtualenvwrapper.readthedocs.org/en/latest/
 
 ```
+sudo apt-get install libpq-dev python-dev
 pip install -r requirements-dev.txt
 cp settings/dev.py.sample settings/dev.py
 python manage.py migrate --noinput
