@@ -4,9 +4,6 @@ from __future__ import absolute_import, unicode_literals
 from .models import Conference, ConferenceVenue, Room
 from .serializers import ConferenceSerializer, RoomSerializer, VenueSerializer
 
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import HttpResponse, RequestContext, render
-from junction.conferences.models import ConferenceModerator
 from rest_framework import filters, viewsets
 
 

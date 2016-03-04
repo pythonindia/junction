@@ -24,7 +24,7 @@ class Command(BaseCommand):
         conference_admins, created = Group.objects.get_or_create(name='Conference Admins')
 
         models = [ConferenceProposalReviewer, TextFeedbackQuestion, ChoiceFeedbackQuestion,
-                  ChoiceFeedbackQuestionValue, ScheduleItemChoiceFeedback,]
+                  ChoiceFeedbackQuestionValue, ScheduleItemChoiceFeedback]
 
         for model in models:
             ct = ContentType.objects.get_for_model(model)
