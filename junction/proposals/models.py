@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+# Standard Library
 from datetime import datetime
-from simple_history.models import HistoricalRecords
 
 # Third Party Stuff
 from django.contrib.auth.models import User
@@ -10,14 +10,10 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
+from simple_history.models import HistoricalRecords
 
 # Junction Stuff
-from junction.base.constants import (
-    ProposalReviewStatus,
-    ProposalStatus,
-    ProposalTargetAudience,
-    ProposalUserVoteRole
-)
+from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 

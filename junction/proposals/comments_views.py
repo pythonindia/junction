@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
-from django.shortcuts import Http404, get_object_or_404
-from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import Http404, get_object_or_404
+from django.views.decorators.http import require_http_methods
 
+# Junction Stuff
 from junction.conferences.models import Conference
 
-from .models import Proposal, ProposalComment
-
-from .forms import ProposalCommentForm
-from .services import send_mail_for_new_comment
-
 from . import permissions
+from .forms import ProposalCommentForm
+from .models import Proposal, ProposalComment
+from .services import send_mail_for_new_comment
 
 
 @login_required

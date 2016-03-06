@@ -15,10 +15,10 @@ from junction.proposals.models import (
     ProposalCommentVote,
     ProposalSection,
     ProposalSectionReviewer,
-    ProposalType,
-    ProposalVote,
     ProposalSectionReviewerVote,
-    ProposalSectionReviewerVoteValue
+    ProposalSectionReviewerVoteValue,
+    ProposalType,
+    ProposalVote
 )
 
 

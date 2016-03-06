@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 # Third Party Stuff
 from django.conf.urls import include, patterns, url
 
-from . import (views, votes_views, comments_views)
+from . import comments_views, views, votes_views
 
 comment_urls = patterns(
     '',

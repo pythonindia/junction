@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from django.db import models
-
-from junction.base.models import AuditModel
-from junction.base.constants import ProposalReviewStatus
-from junction.proposals.models import Proposal
-from junction.conferences.models import Conference, Room
-
+from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.reverse import reverse
 
-from django.utils.encoding import python_2_unicode_compatible
+# Junction Stuff
+from junction.base.constants import ProposalReviewStatus
+from junction.base.models import AuditModel
+from junction.conferences.models import Conference, Room
+from junction.proposals.models import Proposal
 
 
 @python_2_unicode_compatible

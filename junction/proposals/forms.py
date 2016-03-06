@@ -9,18 +9,14 @@ from pagedown.widgets import PagedownWidget
 
 # Junction Stuff
 from junction.base.constants import (
+    ConferenceSettingConstants,
+    ProposalReviewerComment,
     ProposalReviewStatus,
     ProposalStatus,
     ProposalTargetAudience,
-    ProposalReviewerComment,
-    ProposalVotesFilter,
-    ConferenceSettingConstants
+    ProposalVotesFilter
 )
-from junction.proposals.models import (
-    ProposalSection,
-    ProposalType,
-    ProposalSectionReviewerVoteValue
-)
+from junction.proposals.models import ProposalSection, ProposalSectionReviewerVoteValue, ProposalType
 
 
 def _get_proposal_section_choices(conference, action="edit"):

@@ -9,12 +9,7 @@ import re
 from django import template
 
 # Junction Stuff
-from junction.proposals.models import (
-    ProposalComment,
-    ProposalSectionReviewer,
-    ProposalSectionReviewerVote,
-)
-
+from junction.proposals.models import ProposalComment, ProposalSectionReviewer, ProposalSectionReviewerVote
 
 register = template.Library()
 

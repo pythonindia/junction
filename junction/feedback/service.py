@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
+# Standard Library
 from collections import defaultdict
 
-from django.db.models import Count
-from django.db import transaction, IntegrityError
+# Third Party Stuff
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError, transaction
+from django.db.models import Count
 
+# Junction Stuff
 from junction.devices.models import Device
-
 from junction.schedule.models import ScheduleItem, ScheduleItemType
-from .models import (TextFeedbackQuestion, ChoiceFeedbackQuestion,
-                     ScheduleItemTextFeedback, ScheduleItemChoiceFeedback,
-                     ChoiceFeedbackQuestionValue)
 
+from .models import (
+    ChoiceFeedbackQuestion,
+    ChoiceFeedbackQuestionValue,
+    ScheduleItemChoiceFeedback,
+    ScheduleItemTextFeedback,
+    TextFeedbackQuestion
+)
 
 COLORS = ["#46BFBD", "#FDB45C", "#F7464A"]
 

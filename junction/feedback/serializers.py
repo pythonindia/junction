@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from rest_framework import serializers
 
-from .models import (TextFeedbackQuestion, ChoiceFeedbackQuestion,
-                     ChoiceFeedbackQuestionValue)
+from .models import ChoiceFeedbackQuestion, ChoiceFeedbackQuestionValue, TextFeedbackQuestion
 
 
 def object_exists(model, pk):

@@ -7,7 +7,6 @@ from django.core.management import call_command
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-# Junction Stuff
 from .forms import SyncDataForm
 
 

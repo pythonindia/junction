@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+# Third Party Stuff
 from django.conf import settings
-
+from django.db import migrations, models
 
 SCHEDULE_ITEM_TYPES = ['Talk', 'Lunch', 'Break', 'Workshop',
                        'Poster', 'Open Space']

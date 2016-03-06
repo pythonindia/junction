@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
+# Standard Library
 import uuid
 
+# Third Party Stuff
 from rest_framework import permissions
 
-from junction.devices.models import Device
+# Junction Stuff
 from junction.conferences.permissions import is_reviewer
+from junction.devices.models import Device
 
 
 def get_authorization_header(request):

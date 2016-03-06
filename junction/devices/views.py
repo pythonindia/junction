@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 
+# Standard Library
 import os
 import random
 import uuid
 
+# Third Party Stuff
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-
-from rest_framework import views, status
+from rest_framework import status, views
 from rest_framework.response import Response
+from six.moves import range
 
 from .models import Device
-from .serializers import (DeviceRegistrationSerializer,
-                          DeviceConfirmationSerializer)
-from six.moves import range
+from .serializers import DeviceConfirmationSerializer, DeviceRegistrationSerializer
+
+
 # Create your views here.
 
 

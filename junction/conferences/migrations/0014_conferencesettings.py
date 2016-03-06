@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+# Third Party Stuff
 from django.conf import settings
+from django.db import migrations, models
 
-
+# Junction Stuff
 from junction.base.constants import ConferenceSettingConstants
 
 

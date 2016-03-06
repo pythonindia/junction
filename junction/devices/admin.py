@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from junction.base.admin import TimeAuditAdmin
+# Third Party Stuff
 from django.contrib import admin
+
+# Junction Stuff
+from junction.base.admin import TimeAuditAdmin
 
 from .models import Device
 

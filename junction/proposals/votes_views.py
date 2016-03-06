@@ -1,28 +1,29 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseForbidden
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.http import HttpResponseForbidden
 
-from junction.base.constants import ProposalUserVoteRole, ConferenceSettingConstants
+# Junction Stuff
+from junction.base.constants import ConferenceSettingConstants, ProposalUserVoteRole
 from junction.conferences.models import Conference
 
+from . import permissions
 from .forms import ProposalReviewerVoteForm
-
 from .models import (
     Proposal,
-    ProposalVote,
     ProposalComment,
     ProposalCommentVote,
-    ProposalSectionReviewerVote,
     ProposalSectionReviewer,
-    ProposalSectionReviewerVoteValue)
-
-from . import permissions
+    ProposalSectionReviewerVote,
+    ProposalSectionReviewerVoteValue,
+    ProposalVote
+)
 
 
 @login_required
