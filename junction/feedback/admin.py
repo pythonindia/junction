@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
+# Third Party Stuff
 from django.contrib import admin
 
+# Junction Stuff
 from junction.base.admin import TimeAuditAdmin
-from .models import (TextFeedbackQuestion,
-                     ChoiceFeedbackQuestion,
-                     ChoiceFeedbackQuestionValue,
-                     ScheduleItemTextFeedback,
-                     ScheduleItemChoiceFeedback)
+
+from .models import (
+    ChoiceFeedbackQuestion,
+    ChoiceFeedbackQuestionValue,
+    ScheduleItemChoiceFeedback,
+    ScheduleItemTextFeedback,
+    TextFeedbackQuestion
+)
+
 
 # Register your models here.
 

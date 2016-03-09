@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# Standard Library
 import datetime
 
+# Third Party Stuff
 from django.db import models
+from uuidfield import UUIDField
 
+# Junction Stuff
 from junction.base.models import TimeAuditModel
 
-from uuidfield import UUIDField
 
 # Create your models here.
 

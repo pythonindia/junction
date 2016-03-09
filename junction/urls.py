@@ -7,15 +7,14 @@ from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
-
 from rest_framework import routers
-from junction.schedule import views as schedule_views
-from junction.conferences import views as conference_views
-from junction.devices.views import DeviceListApiView, DeviceDetailApiView
-from junction.feedback.views import (FeedbackQuestionListApiView,
-                                     FeedbackListApiView, view_feedback)
-from junction.schedule.views import non_proposal_schedule_item_view
 
+# Junction Stuff
+from junction.conferences import views as conference_views
+from junction.devices.views import DeviceDetailApiView, DeviceListApiView
+from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApiView, view_feedback
+from junction.schedule import views as schedule_views
+from junction.schedule.views import non_proposal_schedule_item_view
 
 router = routers.DefaultRouter()
 

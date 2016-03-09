@@ -15,10 +15,10 @@ from junction.proposals.models import (
     ProposalCommentVote,
     ProposalSection,
     ProposalSectionReviewer,
-    ProposalType,
-    ProposalVote,
     ProposalSectionReviewerVote,
-    ProposalSectionReviewerVoteValue
+    ProposalSectionReviewerVoteValue,
+    ProposalType,
+    ProposalVote
 )
 
 
@@ -36,12 +36,24 @@ class ProposalTypeAdmin(AuditAdmin):
 
 
 class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
-    list_display = ('title', 'conference', 'proposal_section', 'proposal_type', 'author',
-                    'status', 'review_status') + TimeAuditAdmin.list_display
-    list_filter = ['proposal_section__name', 'proposal_type', 'target_audience', 'conference', 'status']
+    list_display = ('proposal_info', 'author_info', 'author_email', 'conference',
+                    'status', 'review_status', )
+    list_filter = ['proposal_section__name', 'proposal_type',
+                   'target_audience', 'conference', 'status', 'review_status']
     formfield_overrides = {
         models.TextField: {'widget': AdminPagedownWidget},
     }
+
+    def proposal_info(self, obj):
+        return '%s (%s)' % (obj.title, obj.proposal_type)
+
+    def author_email(self, obj):
+        if obj.author:
+            return obj.author.email
+
+    def author_info(self, obj):
+        if obj.author:
+            return "%s (%s)" % (obj.author.get_full_name(), obj.author.username)
 
 
 class ProposalVoteAdmin(TimeAuditAdmin):

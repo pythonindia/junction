@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+# Standard Library
 import collections
 
+# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+from xlsxwriter.workbook import Workbook
 
-try:
-    import cStringIO as StringIO
-except ImportError:
-    from io import StringIO
+# Junction Stuff
 from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
 from junction.conferences.models import Conference, ConferenceProposalReviewer
-from xlsxwriter.workbook import Workbook
 
 from .forms import ProposalVotesFilterForm
 from .models import (
@@ -23,13 +22,16 @@ from .models import (
     ProposalComment,
     ProposalSection,
     ProposalSectionReviewer,
-    ProposalSectionReviewerVoteValue,
+    ProposalSectionReviewerVoteValue
 )
 
+try:
+    import cStringIO as StringIO
+except ImportError:
+    from io import StringIO
 
-# Standard Library
-# Third Party Stuff
-# Junction Stuff
+
+
 @login_required
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):

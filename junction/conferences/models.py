@@ -15,7 +15,7 @@ from slugify import slugify
 from uuid_upload_path import upload_to
 
 # Junction Stuff
-from junction.base.constants import ConferenceStatus, ConferenceSettingConstants
+from junction.base.constants import ConferenceSettingConstants, ConferenceStatus
 from junction.base.models import AuditModel
 
 

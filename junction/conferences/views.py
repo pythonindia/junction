@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+# Third Party Stuff
+from rest_framework import filters, viewsets
+
 from .models import Conference, ConferenceVenue, Room
 from .serializers import ConferenceSerializer, RoomSerializer, VenueSerializer
-
-from rest_framework import filters, viewsets
 
 
 class ConferenceView(viewsets.ReadOnlyModelViewSet):

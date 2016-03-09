@@ -2,15 +2,19 @@
 
 from __future__ import absolute_import, unicode_literals
 
+# Third Party Stuff
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-# Create your models here.
-
+# Junction Stuff
 from junction.base.models import TimeAuditModel
 from junction.conferences.models import Conference
 from junction.devices.models import Device
-from junction.schedule.models import ScheduleItemType, ScheduleItem
+from junction.schedule.models import ScheduleItem, ScheduleItemType
+
+
+# Create your models here.
+
 
 
 class BaseSessionQuestionMixin(models.Model):

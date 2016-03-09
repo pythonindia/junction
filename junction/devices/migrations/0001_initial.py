@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+# Third Party Stuff
 import uuidfield.fields
+from django.db import migrations, models
+
+# Junction Stuff
 import junction.devices.models
 
 

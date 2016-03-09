@@ -15,33 +15,14 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 # Junction Stuff
-
-from junction.base.constants import (ProposalReviewStatus,
-                                     ProposalStatus,
-                                     ConferenceStatus,
-                                     ConferenceSettingConstants)
+from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus
 from junction.conferences.models import Conference
-
 from junction.feedback import permissions as feedback_permission
 
-from .forms import (
-    ProposalCommentForm,
-    ProposalForm,
-    ProposalReviewForm,
-    ProposalsToReviewForm
-)
-from .models import (
-    Proposal,
-    ProposalComment,
-    ProposalSectionReviewer,
-    ProposalVote
-)
-from .services import (
-    send_mail_for_new_proposal,
-    send_mail_for_proposal_content,
-)
-
 from . import permissions
+from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm, ProposalsToReviewForm
+from .models import Proposal, ProposalComment, ProposalSectionReviewer, ProposalVote
+from .services import send_mail_for_new_proposal, send_mail_for_proposal_content
 
 
 @require_http_methods(['GET'])

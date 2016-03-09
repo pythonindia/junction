@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict, OrderedDict
+# Standard Library
+from collections import OrderedDict, defaultdict
 
-from django.http import HttpResponse
-from django.template.loader import render_to_string
+# Third Party Stuff
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import Http404, render
-
-from rest_framework import viewsets, filters
+from django.template.loader import render_to_string
+from rest_framework import filters, viewsets
 from rest_framework.response import Response
 
 from .models import ScheduleItem

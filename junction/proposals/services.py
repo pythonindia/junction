@@ -8,7 +8,6 @@ import logging
 from django.conf import settings
 from markdown2 import markdown
 
-
 # Junction Stuff
 from junction.base.emailer import send_email
 

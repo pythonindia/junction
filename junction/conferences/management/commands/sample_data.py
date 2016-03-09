@@ -6,6 +6,7 @@ import datetime
 import random
 
 # Third Party Stuff
+import six
 from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -22,11 +23,10 @@ from junction.proposals.models import (
     Proposal,
     ProposalComment,
     ProposalSection,
-    ProposalType,
-    ProposalSectionReviewerVoteValue
+    ProposalSectionReviewerVoteValue,
+    ProposalType
 )
 from junction.schedule.models import ScheduleItem
-import six
 
 NUM_USERS = getattr(settings, "NUM_USERS", 10)
 NUM_CONFERENCES = getattr(settings, "NUM_CONFERENCES", 4)
