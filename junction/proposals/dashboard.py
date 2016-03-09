@@ -31,7 +31,6 @@ except ImportError:
     from io import StringIO
 
 
-
 @login_required
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):
