@@ -14,5 +14,5 @@ register = template.Library()
 @register.filter(name='is_conference_admin')
 def is_conference_admin(user):
     authenticated = user.is_authenticated()
-    is_reviewer = ConferenceModerator.objects.filter(moderator=user.id, active=True).exists()
-    return authenticated and is_reviewer
+    is_moderator = ConferenceModerator.objects.filter(moderator=user.id, active=True).exists()
+    return authenticated and is_moderator

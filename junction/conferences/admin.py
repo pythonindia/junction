@@ -3,11 +3,11 @@ from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.contrib import admin
+from django.shortcuts import get_object_or_404
 from simple_history.admin import SimpleHistoryAdmin
 
 # Junction Stuff
 from junction.base.admin import AuditAdmin
-
 from . import models
 
 
@@ -22,6 +22,13 @@ class ConferenceModeratorAdmin(AuditAdmin):
 
 
 class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
+    def queryset(self, request):
+        qs = super(ConferenceProposallReviewerAdmin, self).queryset(request)
+        moderator = get_object_or_404(models.ConferenceModerator, moderator=request.user.id)
+
+        if moderator:
+            qs = qs.filter(conference=moderator.conference)
+        return qs
     list_display = ('conference', 'reviewer', 'active') + AuditAdmin.list_display
     list_filter = ('conference',)
 
