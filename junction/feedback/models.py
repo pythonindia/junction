@@ -13,10 +13,6 @@ from junction.devices.models import Device
 from junction.schedule.models import ScheduleItem, ScheduleItemType
 
 
-# Create your models here.
-
-
-
 class BaseSessionQuestionMixin(models.Model):
     schedule_item_type = models.ForeignKey(ScheduleItemType)
     is_required = models.BooleanField(default=True)
