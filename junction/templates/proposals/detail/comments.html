@@ -16,7 +16,7 @@
         <div class="comment-vote-panel text-center">
             <div class="text-center">
                 <div>
-                    <a href="#" class="js-proposal-comment-upvote text-muted
+                    <a href="#" data-url="{{ comment.get_up_vote_url }}" class="js-proposal-comment-upvote text-muted
                         {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == True %}
                             btn-vote active
@@ -30,7 +30,7 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="js-proposal-comment-downvote text-muted
+                    <a href="#" data-url="{{ comment.get_down_vote_url }}" class="js-proposal-comment-downvote text-muted
                         {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == False %}
                             btn-vote active
