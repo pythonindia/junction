@@ -15,7 +15,7 @@
     <div class="panel-body">
         <div class="comment-vote-panel text-center">
             <div class="text-center">
-                <a href="#" data-url="{{ comment.get_up_vote_url }}" class="js-proposal-comment-upvote text-muted
+                <a href="#" data-url="{{ comment.get_up_vote_url }}" class="btn-vote js-proposal-comment-upvote text-muted
                     {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == True %}
                             btn-vote active
@@ -26,7 +26,7 @@
                 <h5 class="text-muted clear-margin">
                     {{ comment.get_votes_count }}
                 </h5>
-                <a href="#" data-url="{{ comment.get_down_vote_url }}" class="js-proposal-comment-downvote text-muted
+                <a href="#" data-url="{{ comment.get_down_vote_url }}" class="btn-vote js-proposal-comment-downvote text-muted
                     {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == False %}
                             btn-vote active
