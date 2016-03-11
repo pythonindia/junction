@@ -123,15 +123,7 @@
         return false;
     });
     {% endif %}
-    $('.js-proposal-comment-upvote').click(function(){
-        var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');
-        form.submit();
-    });
-    $('.js-proposal-comment-downvote').click(function(){
-        var form = $(this).parent().parent().parent().find('#js-proposal-comment-downvote');
-        form.submit();
-    });
-
+    
     $( 'body' ).on( 'click', '.js-add-comment', function(e) {
         e.preventDefault();
 
