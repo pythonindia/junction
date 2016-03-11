@@ -109,11 +109,11 @@
             return
         }
         var url = _that.attr('data-url');
-        $('.vote-count').html("...");
+        $(_that).siblings('.vote-count').html("...");
         $.post(url, {}, function(result){
-            $('.btn-vote').removeClass('active');
+            $(_that).siblings('.btn-vote').removeClass('active');
             $(_that).addClass('active');
-            $('.vote-count').html(result);
+            $(_that).siblings('.vote-count').html(result);
         });
     });
     {% else %}
