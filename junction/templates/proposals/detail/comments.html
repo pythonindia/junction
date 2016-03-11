@@ -40,12 +40,6 @@
                 </div>
             </div>
 
-            <form id="js-proposal-comment-upvote" method="POST" action="{{ comment.get_up_vote_url }}">
-                {% csrf_token %} {{ proposal_comment_vote_form }}
-            </form>
-            <form id="js-proposal-comment-downvote" method="POST" action="{{ comment.get_down_vote_url }}">
-                {% csrf_token %} {{ proposal_comment_vote_form }}
-            </form>
         </div>
 
         <div class="comment-description" id="comment-{{comment.id}}">
