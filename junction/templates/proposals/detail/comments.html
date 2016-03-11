@@ -15,37 +15,27 @@
     <div class="panel-body">
         <div class="comment-vote-panel text-center">
             <div class="text-center">
-                <div>
-                    <a href="#" class="js-proposal-comment-upvote text-muted
-                        {% if request.user.is_authenticated %}
+                <a href="#" data-url="{{ comment.get_up_vote_url }}" class="btn-vote js-proposal-comment-upvote text-muted
+                    {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == True %}
                             btn-vote active
-                        {% endif %}{% endif %}">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-                <div>
-                    <h5 class="text-muted clear-margin">
-                        {{ comment.get_votes_count }}
-                    </h5>
-                </div>
-                <div>
-                    <a href="#" class="js-proposal-comment-downvote text-muted
-                        {% if request.user.is_authenticated %}
+                        {% endif %}
+                    {% endif %}">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <h5 class="text-muted clear-margin vote-count">
+                    {{ comment.get_votes_count }}
+                </h5>
+                <a href="#" data-url="{{ comment.get_down_vote_url }}" class="btn-vote js-proposal-comment-downvote text-muted
+                    {% if request.user.is_authenticated %}
                         {% if comment|has_upvoted_comment:request.user == False %}
                             btn-vote active
-                        {% endif %}{% endif %}">
-                        <i class="fa fa-chevron-down"></i>
-                    </a>
-                </div>
+                        {% endif %}
+                    {% endif %}">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
             </div>
 
-            <form id="js-proposal-comment-upvote" method="POST" action="{{ comment.get_up_vote_url }}">
-                {% csrf_token %} {{ proposal_comment_vote_form }}
-            </form>
-            <form id="js-proposal-comment-downvote" method="POST" action="{{ comment.get_down_vote_url }}">
-                {% csrf_token %} {{ proposal_comment_vote_form }}
-            </form>
         </div>
 
         <div class="comment-description" id="comment-{{comment.id}}">
@@ -112,36 +102,28 @@
 {% block script_extra %}
  <script>
     {% if user.is_authenticated %}
-    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+    $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
         e.preventDefault();
         var _that = $(this);
         if (_that.hasClass('active')){
             return
         }
         var url = _that.attr('data-url');
-        $('.proposal-vote-count').html("...");
+        $(_that).siblings('.vote-count').html("...");
         $.post(url, {}, function(result){
-            $('.btn-vote').removeClass('active');
+            $(_that).siblings('.btn-vote').removeClass('active');
             $(_that).addClass('active');
-            $('.proposal-vote-count').html(result);
+            $(_that).siblings('.vote-count').html(result);
         });
     });
     {% else %}
-    $('.js-proposal-upvote, .js-proposal-downvote').click(function(e){
+    $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
         e.preventDefault();
         window.location = "{% url 'account_login' %}?next={{request.path}}";
         return false;
     });
     {% endif %}
-    $('.js-proposal-comment-upvote').click(function(){
-        var form = $(this).parent().parent().parent().find('#js-proposal-comment-upvote');
-        form.submit();
-    });
-    $('.js-proposal-comment-downvote').click(function(){
-        var form = $(this).parent().parent().parent().find('#js-proposal-comment-downvote');
-        form.submit();
-    });
-
+    
     $( 'body' ).on( 'click', '.js-add-comment', function(e) {
         e.preventDefault();
 
