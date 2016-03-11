@@ -109,11 +109,11 @@
             return
         }
         var url = _that.attr('data-url');
-        $('.proposal-vote-count').html("...");
+        $('.vote-count').html("...");
         $.post(url, {}, function(result){
             $('.btn-vote').removeClass('active');
             $(_that).addClass('active');
-            $('.proposal-vote-count').html(result);
+            $('.vote-count').html(result);
         });
     });
     {% else %}
