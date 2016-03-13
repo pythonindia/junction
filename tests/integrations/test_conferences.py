@@ -10,4 +10,4 @@ def test_conferences(client, db):
     conference.deleted = True
     conference.save()
     response = client.get('/')
-    assert conference.name not in response.content
+    assert str(conference.name) not in str(response.content)
