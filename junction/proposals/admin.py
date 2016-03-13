@@ -9,6 +9,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 # Junction Stuff
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
+from junction.conferences import service
 from junction.proposals.models import (
     Proposal,
     ProposalComment,
@@ -29,6 +30,16 @@ class ProposalSectionAdmin(AuditAdmin):
 class ProposalSectionReviewerAdmin(AuditAdmin):
     list_display = ('conference_reviewer', 'proposal_section') + AuditAdmin.list_display
     list_filter = ['proposal_section']
+
+    def get_queryset(self, request):
+        qs = super(ProposalSectionReviewerAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(
+            conference_reviewer__conference__in=[m.conference
+                                                 for m in moderators])
 
 
 class ProposalTypeAdmin(AuditAdmin):
@@ -55,10 +66,28 @@ class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
         if obj.author:
             return "%s (%s)" % (obj.author.get_full_name(), obj.author.username)
 
+    def get_queryset(self, request):
+        qs = super(ProposalAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(conference__in=[m.conference
+                                         for m in moderators])
+
 
 class ProposalVoteAdmin(TimeAuditAdmin):
     list_display = ('proposal', 'voter', 'role', 'up_vote') + \
         TimeAuditAdmin.list_display
+
+    def get_queryset(self, request):
+        qs = super(ProposalVoteAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(proposal__conference__in=[m.conference
+                                         for m in moderators])
 
 
 class ProposalSectionReviewerVoteValueAdmin(AuditAdmin):
@@ -70,17 +99,43 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
     list_display = ('proposal', 'voter', 'role', 'vote_value') + \
         TimeAuditAdmin.list_display
 
+    def get_queryset(self, request):
+        qs = super(ProposalSectionReviewerVoteAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(proposal__conference__in=[m.conference
+                                                   for m in moderators])
+
 
 class ProposalCommentAdmin(TimeAuditAdmin):
     list_display = (
         'proposal', 'commenter', 'private', 'comment') + TimeAuditAdmin.list_display
     list_filter = ['private', 'reviewer']
 
+    def get_queryset(self, request):
+        qs = super(ProposalCommentAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(proposal__conference__in=[m.conference
+                                                   for m in moderators])
+
 
 class ProposalCommentVoteAdmin(TimeAuditAdmin):
     list_display = ('proposal_comment', 'voter', 'up_vote') + \
         TimeAuditAdmin.list_display
 
+    def get_queryset(self, request):
+        qs = super(ProposalCommentVoteAdmin, self).get_queryset(
+            request)
+        if request.user.is_superuser:
+            return qs
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(proposal_comment__proposal__conference__in=[
+            m.conference for m in moderators])
 
 admin.site.register(ProposalSection, ProposalSectionAdmin)
 admin.site.register(ProposalType, ProposalTypeAdmin)
