@@ -16,9 +16,6 @@ from .serializers import FeedbackQueryParamsSerializer, FeedbackSerializer
 
 # from django.http import Http403
 
-
-
-
 # Create your views here.
 
 

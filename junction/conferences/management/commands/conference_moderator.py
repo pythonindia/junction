@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 
 
