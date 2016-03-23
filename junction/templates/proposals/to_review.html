@@ -45,9 +45,9 @@
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         {% buttons %}
-                        <a class="btn-clear-filter" href="./" style='display: none; margin-left: 1em;'>
-                            clear filters
-                        </a>
+                        <button type="submit" class="btn btn-primary" style='margin-left: 1em;'>
+                            Submit
+                        </button>
                        {% endbuttons %}
                     </form>
                 </div>
@@ -64,36 +64,4 @@
             {% endif %}
         </div>
     </section>
-{% endblock %}
-
-{% block script_extra %}
-    <script>
-    $.each($('#filter select'), function(val, text) {
-        $(this).prepend( new Option('All', 'All') );
-        $(this).val('All').change();
-    });
-
-    $('#filter select').change(function(e){
-        e.preventDefault();
-        var filter = false;
-        var p_section = $( "#id_proposal_section option:selected" ).text(),
-            p_type = $( "#id_proposal_type option:selected" ).text(),
-            r_comment = $( "#id_reviewer_comment" ).val();
-
-        if (p_section != 'All') {
-            $( ".proposal-section" ).show().not( '[id~="' + p_section + '"]' ).hide();
-        }
-        if (p_type != 'All') {
-            $( ".proposal" ).show().not( '[data-type~="' + p_type + '"]' ).hide();
-        }
-        if (r_comment != 'All') {
-            $( ".proposal" ).show().not( '[data-comment~="' + r_comment + '"]' ).hide();
-        }
-        if ( r_comment == 'All' && p_section == 'All' && p_type == 'All') {
-            $('.btn-clear-filter').hide()
-        } else {
-            $('.btn-clear-filter').show()
-        }
-    });
-    </script>
 {% endblock %}

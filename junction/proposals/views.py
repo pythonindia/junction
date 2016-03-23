@@ -246,30 +246,67 @@ def proposals_to_review(request, conference_slug):
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
-
     psr = ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=request.user)
     proposal_reviewer_sections = [p.proposal_section for p in psr]
-    proposals_to_review = []
+    proposal_sections = conference.proposal_sections.all()
+    proposal_types = conference.proposal_types.all()
+
     s_items = collections.namedtuple('section_items', 'section proposals')
+
+    if request.method == 'GET':
+        proposals_to_review = []
+        for section in proposal_reviewer_sections:
+            section_proposals = [p for p in proposals_qs
+                                 if p.proposal_section == section]
+            proposals_to_review.append(s_items(section, section_proposals))
+
+        form = ProposalsToReviewForm(conference=conference)
+
+        context = {
+            'proposals_to_review': proposals_to_review,
+            'proposal_sections': proposal_sections,
+            'proposal_types': proposal_types,
+            'conference': conference,
+            'form': form,
+        }
+
+        return render(request, 'proposals/to_review.html', context)
+
+    # POST Workflow
+    form = ProposalsToReviewForm(data=request.POST, conference=conference)
+    if not form.is_valid():
+        context['errors'] = form.errors
+        return render(request, 'proposals/to_review.html', context)
+
+    # Valid Form
+    p_section = form.cleaned_data['proposal_section']
+    p_type = form.cleaned_data['proposal_type']
+    r_comment = form.cleaned_data['reviewer_comment']
+
+    if p_section != 'all':
+        proposals_qs = proposals_qs.filter(proposal_section__id__in=p_section)
+    if p_type != 'all':
+        proposals_qs = proposals_qs.filter(proposal_type__id__in=p_type)
+    if r_comment == 'True':
+        proposals_qs = [p for p in proposals_qs if p.get_reviews_comments_count() > 0]
+
+    proposals_to_review = []
     for section in proposal_reviewer_sections:
         section_proposals = [p for p in proposals_qs
                              if p.proposal_section == section]
         proposals_to_review.append(s_items(section, section_proposals))
 
-    proposal_sections = conference.proposal_sections.all()
-    proposal_types = conference.proposal_types.all()
-    form = ProposalsToReviewForm(conference=conference)
-
-    ctx = {
+    context = {
         'proposals_to_review': proposals_to_review,
         'proposal_sections': proposal_sections,
         'proposal_types': proposal_types,
         'conference': conference,
         'form': form,
     }
+    print(context)
+    return render(request, 'proposals/to_review.html', context)
 
-    return render(request, 'proposals/to_review.html', ctx)
 
 
 @login_required
