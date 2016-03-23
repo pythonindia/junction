@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 # Standard Library
+import datetime
 import os
 from os.path import dirname, join
 
@@ -27,12 +28,13 @@ SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
 
 # General project information
 # These are available in the template as SITE_INFO.<title>
+dt = datetime.datetime.now()
 SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'Junction'),
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
-    'footer': 'Copyright &copy; 2015. Python Software Society of India.',
+    'footer': 'Copyright &copy; {}. Python Software Society of India.'.format(dt.year),
     'facebook_app_id': os.environ.get('FACEBOOK_APP_ID', None),  # Enables Facebook sharing of proposals
 }
 
