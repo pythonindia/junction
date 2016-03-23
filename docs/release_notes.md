@@ -2,7 +2,7 @@
 
 ## [0.4.0][0.4.0]
 
--
+- Fix filters on the proposal review form #418 (@ChillarAnand)
 
 ## [0.3.0][0.3.0]
 

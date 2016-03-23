@@ -196,6 +196,9 @@ class ProposalsToReviewForm(ProposalTypesChoices):
         super(ProposalsToReviewForm, self).__init__(conference, *args, **kwargs)
         self.fields['reviewer_comment'].choices = ProposalReviewerComment.CHOICES
 
+        for name, field in list(self.fields.items()):
+            field.choices.insert(0, ('all', 'All'))
+
 
 class ProposalVotesFilterForm(ProposalTypesChoices):
     """
