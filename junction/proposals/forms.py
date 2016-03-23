@@ -199,6 +199,7 @@ class ProposalsToReviewForm(ProposalTypesChoices):
         for name, field in list(self.fields.items()):
             field.choices.insert(0, ('all', 'All'))
 
+
 class ProposalVotesFilterForm(ProposalTypesChoices):
     """
     Form  to filter proposals based on votes and review_status.

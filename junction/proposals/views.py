@@ -304,9 +304,8 @@ def proposals_to_review(request, conference_slug):
         'conference': conference,
         'form': form,
     }
-    print(context)
-    return render(request, 'proposals/to_review.html', context)
 
+    return render(request, 'proposals/to_review.html', context)
 
 
 @login_required
