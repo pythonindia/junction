@@ -14,11 +14,6 @@ from .permissions import CanSubmitFeedBack, can_view_feedback
 from .serializers import FeedbackQueryParamsSerializer, FeedbackSerializer
 
 
-# from django.http import Http403
-
-# Create your views here.
-
-
 class FeedbackQuestionListApiView(views.APIView):
     def get(self, request):
         data = request.query_params
