@@ -211,20 +211,6 @@ class ProposalCommentQuerySet(models.QuerySet):
         return self.filter(reviewer=True, vote=False)
 
 
-class ProposalCommentManager(models.Manager):
-    def get_queryset(self):
-        return ProposalCommentQuerySet(self.model, using=self._db)
-
-    def get_public_comments(self):
-        return self.get_queryset().get_public_comments()
-
-    def get_reviewers_comments(self):
-        return self.get_queryset().get_reviewers_comments()
-
-    def get_reviewers_only_comments(self):
-        return self.get_queryset().get_reviewers_only_comments()
-
-
 @python_2_unicode_compatible
 class ProposalSectionReviewerVoteValue(AuditModel):
     """ Proposal reviewer vote choices. """
@@ -269,7 +255,7 @@ class ProposalComment(TimeAuditModel):
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
 
-    objects = ProposalCommentManager()
+    objects = ProposalCommentQuerySet.as_manager()
 
     def __str__(self):
         return "[{} by {}] {}".format(self.comment,
