@@ -187,26 +187,26 @@ class TestReviewerViews:
         context = response.context
 
         assert response.status_code == 200
-        assert context['proposal_vote_form'].initial['vote_value'] == vote_value
-        assert context['proposal_vote_form'].initial['comment'] == comment
+        assert context['form'].initial['vote_value'] == vote_value
+        assert context['form'].initial['comment'] == comment
 
-    # def test_post_review_proposal_vote_with_invalid_data(self, settings, login,
-    #                                                      conferences,
-    #                                                      create_proposal,
-    #                                                      create_reviewer):
-    #     client = login[0]
-    #     conference = conferences['future']
+    def test_post_review_proposal_vote_with_invalid_data(self, settings, login,
+                                                         conferences,
+                                                         create_proposal,
+                                                         create_reviewer):
+        client = login[0]
+        conference = conferences['future']
 
-    #     proposal = create_proposal
+        proposal = create_proposal
 
-    #     kwargs = {'conference_slug': conference.slug,
-    #               'proposal_slug': proposal.slug}
-    #     url = reverse('proposal-reviewer-vote', kwargs=kwargs)
-    #     data = {'vote_value': 12}
-    #     response = client.post(url, data)
+        kwargs = {'conference_slug': conference.slug,
+                  'proposal_slug': proposal.slug}
+        url = reverse('proposal-reviewer-vote', kwargs=kwargs)
+        data = {'vote_value': 12}
+        response = client.post(url, data)
 
-    #     assert response.status_code == 200
-    #     assert 'vote_value' in response.context['form_errors']
+        assert response.status_code == 200
+        assert 'vote_value' in response.context['form_errors']
 
 
 def test_public_comment(settings, login, conferences,

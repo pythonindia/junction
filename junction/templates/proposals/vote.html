@@ -40,7 +40,7 @@
                     <h4 class="fill-blue text-center">Proposal Voting</h4>
                     <hr class="hr-mini">
                     <form method="POST" action="."> {% csrf_token %}
-                        {% bootstrap_form proposal_vote_form %}
+                        {% bootstrap_form form %}
                         {% buttons %}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">
@@ -55,4 +55,3 @@
         </div>
     </div>
 {% endblock %}
-
