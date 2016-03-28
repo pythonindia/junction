@@ -78,8 +78,7 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,
     proposal_comment_vote.up_vote = up_vote
     proposal_comment_vote.save()
 
-    return HttpResponseRedirect(reverse('proposal-detail',
-                                        args=[conference.slug, proposal.slug]))
+    return HttpResponse(proposal_comment.get_votes_count())
 
 
 @login_required
