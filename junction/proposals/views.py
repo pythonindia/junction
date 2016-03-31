@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+from hashids import Hashids
 
 # Junction Stuff
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus
@@ -133,9 +134,27 @@ def create_proposal(request, conference_slug):
 
 
 @require_http_methods(['GET'])
-def detail_proposal(request, conference_slug, slug):
-    conference = get_object_or_404(Conference, slug=conference_slug)
-    proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+def detail_proposal(request, conference_slug, slug, hashid=None):
+    """Display a proposal detail page.
+    """
+    # Here try to get a proposal by it's hashid. If the slug didn't match because
+    # the title might have changed, redirect to the correct slug.
+    # hashid is optional due to backward compatibility. If the hashid is not present
+    # we still try to get the proposal by old method i.e. using just the slug, but
+    # redirect to the correct url containing hashid.
+    hashids = Hashids(min_length=5)
+    id = hashids.decode(hashid)
+    if id:
+        proposal = get_object_or_404(Proposal, id=id[0])
+        if slug != proposal.get_slug():
+            return HttpResponseRedirect(proposal.get_absolute_url())
+    else:
+        conference = get_object_or_404(Conference, slug=conference_slug)
+        proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
+        return HttpResponseRedirect(proposal.get_absolute_url())
+
+    # Here we have obtained the proposal that we want to display.
+    conference = proposal.conference
     read_private_comment = permissions.is_proposal_author_or_proposal_reviewer(
         request.user, conference, proposal)
     write_private_comment = permissions.is_proposal_author_or_proposal_section_reviewer(
@@ -147,6 +166,7 @@ def detail_proposal(request, conference_slug, slug):
     public_voting_setting = conference.conferencesetting_set.filter(
         name=public_voting['name']).first()
     vote_value, voting, public_voting_setting_value = 0, False, True
+
     if public_voting_setting:
         public_voting_setting_value = public_voting_setting.value
         voting = True if conference.start_date > datetime.now().date() else False

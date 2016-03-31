@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+
 # Standard Library
-import uuid
-import threading
 import datetime
+import uuid
 
 # Third Party Stuff
 import factory
@@ -17,15 +17,6 @@ class Factory(factory.DjangoModelFactory):
         strategy = factory.CREATE_STRATEGY
         model = None
         abstract = True
-
-    _SEQUENCE = 1
-    _SEQUENCE_LOCK = threading.Lock()
-
-    @classmethod
-    def _setup_next_sequence(cls):
-        with cls._SEQUENCE_LOCK:
-            cls._SEQUENCE += 1
-        return cls._SEQUENCE
 
 
 class UserFactory(Factory):
@@ -116,11 +107,10 @@ class ProposalFactory(Factory):
         strategy = factory.CREATE_STRATEGY
 
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
-    proposal_section = factory.SubFactory(
-        "tests.factories.ProposalSectionFactory")
+    proposal_section = factory.SubFactory("tests.factories.ProposalSectionFactory")
     proposal_type = factory.SubFactory('tests.factories.ProposalTypeFactory')
     author = factory.SubFactory("tests.factories.UserFactory")
-    # title
+    title = factory.LazyAttribute(lambda x: "Propsoal %s" % x)
     # slug
     # description
     # target_audience

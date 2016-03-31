@@ -8,8 +8,10 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
+from hashids import Hashids
 from simple_history.models import HistoricalRecords
 
 # Junction Stuff
@@ -96,9 +98,16 @@ class Proposal(TimeAuditModel):
         # TODO: Fix with proper enum
         return self.status == 2
 
+    def get_slug(self):
+        return slugify(self.title)
+
+    def get_hashid(self):
+        hashids = Hashids(min_length=5)
+        return hashids.encode(self.id)
+
     def get_absolute_url(self):
         return reverse('proposal-detail',
-                       args=[self.conference.slug, self.slug])
+                       args=[self.conference.slug, self.get_slug(), self.get_hashid()])
 
     def get_update_url(self):
         return reverse('proposal-update',

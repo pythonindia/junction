@@ -9,8 +9,6 @@ pytestmark = pytest.mark.django_db
 
 
 #  Proposal
-
-
 def test_list_proposals_pass(client, settings):
     conference = f.create_conference()
     url = reverse('proposals-list', kwargs={'conference_slug':
@@ -246,3 +244,20 @@ def test_proposal_filters(settings, login, conferences):
 
     assert response.status_code == 200
     assert response.context['is_filtered'] is True
+
+
+def test_proposal_detail_url_redirects(client):
+    proposal = f.create_proposal()
+    old_url = reverse('proposal-detail', kwargs={'conference_slug': proposal.conference.slug,
+                                                 'slug': proposal.get_slug()})
+    response = client.get(old_url)
+    assert response.status_code == 302
+    assert proposal.get_absolute_url() in response['Location']
+
+    # should redirect the wrong slug, having correct hashid
+    url = reverse('proposal-detail', kwargs={'conference_slug': proposal.conference.slug,
+                                             'slug': 'bla-bla-bla',
+                                             'hashid': proposal.get_hashid()})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert proposal.get_absolute_url() in response['Location']

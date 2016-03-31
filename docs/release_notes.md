@@ -3,6 +3,8 @@
 ## [0.4.0][0.4.0]
 
 - Fix filters on the proposal review form #418 (@ChillarAnand)
+- Update proposal urls to use hashids. The slug will now update itself when the title of proposal changes.
+- ...
 
 ## [0.3.0][0.3.0]
 
