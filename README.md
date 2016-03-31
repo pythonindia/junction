@@ -6,7 +6,7 @@ junction
 [![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Coverage Status](https://coveralls.io/repos/pythonindia/junction/badge.svg?branch=master)](https://coveralls.io/r/pythonindia/junction?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Requirements Status](https://requires.io/github/pythonindia/junction/requirements.svg?branch=master)](https://requires.io/github/pythonindia/junction/requirements/?branch=master)
 
-**Version**: 0.2.0-dev
+**Version**: 0.3.0
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
@@ -74,7 +74,7 @@ Contributing
 ------------
 
 1. Choose an [issue][issue-list] and ask any doubts in the issue thread.
-2. Report any bugs/feature request as github [new issue][new-issue], if it's already not present.
+2. Report any bugs/feature request as Github [new issue][new-issue], if it's already not present.
 3. If you are starting to work on an issue, please leave a comment saying "I am working on it".
 4. Once you are done with feature/bug fix, send a pull request according to the [guidelines].
 
