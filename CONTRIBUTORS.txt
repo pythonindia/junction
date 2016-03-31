@@ -1,20 +1,29 @@
 Code Contributors
 =================
 
-Sivasubramaniam Arunachalam (gh:sivaa / @sivaa_in)*
 Saurabh Kumar (gh:theskumar / @_theskumar)*
 Kracekumar Ramaraju (gh:kracekumar / @kracetheking)*
 Vijay Bung (gh:vnbang2003 / @vnbang2003) *
-Kishor Bhat (gh:kbhat95)
-Ganeshkumar S (gh:ganeshks)
-Mudassir Ali (gh:mudassir0909)
-Vignesh Sarma K (gh: vigneshsarma)
-Anand Reddy Pandikunta (gh:ChillarAnand)
+Anand Reddy Pandikunta (gh:ChillarAnand)*
+Sivasubramaniam Arunachalam (gh:sivaa / @sivaa_in)*
+Aayush Kasurde (gh: Aayush-Kasurde)
+Abhijeet Kasurde
+Ankesh Anand (gh: ankeshanand)
 Anuvrat Parashar (gh:bhanuvrat/ @bhanuvrat)
-Aayush Kasurde
 Arjoonn Sharma (gh:theSage21)
-Haris Ibrahim K V (gh:harisibrahimkv / @harisibrahimkv)
 dhilipsiva (gh:dhilipsiva / @dhilipsiva)
+Fayaz Yusuf Khan (gh: fayazkhan)
+Ganeshkumar S (gh:ganeshks)
+Haris Ibrahim K V (gh:harisibrahimkv / @harisibrahimkv)
+Imran Ahmed (gh: rekenerd)
+jacob (gh: jklmn13)
+Kishor Bhat (gh:therealkbhat)
+Kumar Anirudha (gh: anistark)
+Mudassir Ali (gh:mudassir0909)
+Nabeel Valapra (gh: nabeelvalapra)
+Parbhat Puri (@Parbhat)
 Parth Oberoi (gh:htrap)
+Sijo Jose
+Vignesh Sarma K (gh: vigneshsarma)
 
 * Possesses commit rights
