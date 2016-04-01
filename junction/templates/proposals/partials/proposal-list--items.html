@@ -10,8 +10,10 @@
             {% if public_voting_setting %}
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
-                        <small class="text-muted"> Votes </small>
+                        {% with proposal.get_votes_count as votes_count %}
+                        <h4 class="clear-margin">{{ votes_count }}</h4>
+                        <small class="text-muted"> Vote{{ votes_count|pluralize }}</small>
+                        {% endwith %}
                     </div>
                 </div>
              {% endif %}
@@ -65,5 +67,4 @@
         </div>
     </div>
 </div>
-<br>
 {% endfor %}

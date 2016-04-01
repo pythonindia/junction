@@ -16,11 +16,7 @@ APP_DIR = join(ROOT_DIR, 'junction')
 
 SITE_ID = 1
 
-ADMINS = (
-    ('Bibhas', 'me@bibhas.in'),
-    ('Kracekumar', 'me@kracekumar.com'),
-    ('Sivabramaniam Arunachalam', 'siva@sivaa.in'),
-)
+ADMINS = ()
 
 # Absolute Url of frontend hosted site. Used to render the urls in templattes,
 # static and media files appropriately. e.g 'https://in.pycon.org/junction'
@@ -34,7 +30,7 @@ SITE_VARIABLES = {
     'site_description': 'Junction is a software to manage proposals, reviews, schedule, feedback during conference.',
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
-    'footer': 'Copyright &copy; {}. Python Software Society of India.'.format(dt.year),
+    'footer': '&copy; {} • Python Software Society of India'.format(dt.year),
     'facebook_app_id': os.environ.get('FACEBOOK_APP_ID', None),  # Enables Facebook sharing of proposals
 }
 

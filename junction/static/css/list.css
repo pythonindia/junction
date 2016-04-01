@@ -27,8 +27,8 @@
     margin-left:5px;
     }
     .proposal-list-content {
-        padding-bottom: 10px;
-        padding-top:10px;
+        padding-bottom: 3px;
+        padding-top:20px;
         border-bottom:1px dotted #ccc;
         display:table;
         width:100%;

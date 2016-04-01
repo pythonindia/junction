@@ -51,7 +51,7 @@
                               {{ proposal.author.username }}
                           {% endif %}
                           </b> |&nbsp;
-                    <i class="fa fa-calendar"></i> <b> {{ proposal.created_at|date:"d M, Y" }} </b>
+                    <i class="fa fa-calendar"></i> <b> <time datetime="{{ proposal.created_at|date:'c' }}" title="Created On">{{ proposal.created_at|date:"d M, Y" }}</time></b>
                 </small>
             </p>
 
@@ -102,9 +102,12 @@
                   <i class="fa fa-chevron-up fa-2x"></i>
                   </span>
                 {% endif %}
+                {% with proposal.get_votes_count as votes_count %}
                 <h1 class="clear-margin text-muted vote-count">
-                    {{ proposal.get_votes_count }}
+                    {{ votes_count }}
                 </h1>
+                <div class="text-muted">Vote{{ votes_count|pluralize }}</div>
+                {% endwith %}
 
                 {% if can_vote %}
                     <a href="#" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
@@ -198,6 +201,12 @@
                     <td class="text-muted text-right"><small>Target Audience:</small></td>
                     <td>
                         {{ proposal.get_target_audience_display }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-muted text-right"><small>Last Updated:</small></td>
+                    <td>
+                        <time datetime="{{ proposal.modified_at|date:'c' }}">{{ proposal.modified_at|date:"d M, Y" }}</time>
                     </td>
                 </tr>
             </table>
