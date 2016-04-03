@@ -127,7 +127,7 @@ class ConferenceProposalReviewer(AuditModel):
         unique_together = ("conference", "reviewer")
 
     def __str__(self):
-        return "{}[{}]".format(self.reviewer.get_full_name(), self.conference)
+        return "{} - {}".format(self.conference, self.reviewer.username)
 
 
 @python_2_unicode_compatible

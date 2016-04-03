@@ -26,7 +26,7 @@ Initial auth data: admin/123123
 
 ### Configuring Django-allauth
 
- - Go to `http://localhost:8000/nimda/sites/site/` 
+ - Go to `http://localhost:8000/nimda/sites/site/`
  - Change the default site's(the one with ID = 1) name and display to `localhost:8000`
  - Go to `Social Applications` in admin panel and add [Github](http://django-allauth.readthedocs.org/en/latest/providers.html#github) and [Google](http://django-allauth.readthedocs.org/en/latest/providers.html#google)'s auth details
 
@@ -47,7 +47,7 @@ $ grunt // This starts a watcher to watch for file changes
 1. Choose an [issue][issue-list] and ask any doubts in the issue thread.
 2. Report any bugs/feature request as github [new issue][new-issue], if it's already not present.
 3. If you are starting to work on an issue, please leave a comment saying "I am working on it".
-4. Once you are done with feature/bug fix, send a pull request according to the [guidelines]. 
+4. Once you are done with feature/bug fix, send a pull request according to the [guidelines].
 
 [issue-list]: https://github.com/pythonindia/junction/issues/
 [new-issue]: https://github.com/pythonindia/junction/issues/new

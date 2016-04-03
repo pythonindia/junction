@@ -8,6 +8,7 @@ repo_url: https://github.com/pythonindia/junction
 pages:
 - ['index.md', 'Home']
 - ['release_notes.md', 'Release Notes']
+- ['conference_reviewers.md', 'Add Reviewers']
 
 copyright: Copyright &copy; 2015, <a href="http://pssi.org.in" title="Python Software Society of India">PSSI</a>.
 
