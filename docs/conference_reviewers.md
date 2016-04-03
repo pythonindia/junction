@@ -10,3 +10,11 @@ First add users to `Proposal Reviewers` model and assign them to `Proposal Secti
 ![List Proposal Section Reviewer](https://raw.githubusercontent.com/pythonindia/junction/master/junction/docs/images/proposal_section_reviewers_list.png)
 ![Add Proposal Section Reviewer](https://raw.githubusercontent.com/pythonindia/junction/master/junction/docs/images/add_proposal_section_reviewers_list.png)
 
+
+# Reviewer Comments
+
+On the proposal page, reviewers can see all `Reviews` and `Reviewers Talk` section.
+
+![Proposal Page](https://raw.githubusercontent.com/pythonindia/junction/master/junction/docs/images/reviewers_proposal_detail.png)
+![Proposal   Review](https://raw.githubusercontent.com/pythonindia/junction/master/junction/docs/images/list_reviews.png)
+![Proposal Reviewer Talk](https://raw.githubusercontent.com/pythonindia/junction/master/junction/docs/images/reviewers_talk.png)
