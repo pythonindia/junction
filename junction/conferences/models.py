@@ -15,6 +15,7 @@ from slugify import slugify
 from uuid_upload_path import upload_to
 
 # Junction Stuff
+from junction.base.utils import get_date_diff_display
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus
 from junction.base.models import AuditModel
 
@@ -53,6 +54,9 @@ class Conference(AuditModel):
     def get_absolute_url(self):
         return reverse("conference-detail", kwargs={'conference_slug':
                                                     self.slug})
+
+    def duration_display(self):
+        return get_date_diff_display(self.start_date, self.end_date)
 
     def clean(self):
         if self.end_date < self.start_date:

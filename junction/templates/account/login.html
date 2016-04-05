@@ -13,16 +13,15 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
+    <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
       <!-- ADD has-error class on form-container in case of error -->
       <div class="form-container space-2-bottom {% if form.errors %} has-error {% endif %}">
         <h2 class="text-center">{% trans "Sign In" %}</h2>
         <div class="pad-2 push-half-top push-2-bottom">
           {% if socialaccount.providers  %}
             <p>
-              {% blocktrans with site.name as site_name %}
-                Sign in with your third party accounts or using an existing account:
-              {% endblocktrans %}</p>
+              {% blocktrans %}Sign in with your third party accounts or using an existing account:{% endblocktrans %}
+            </p>
 
             <div class="socialaccount_ballot">
               <div class="text-center">

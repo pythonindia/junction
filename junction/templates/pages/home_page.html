@@ -44,8 +44,7 @@
                 </h3>
                 <p class="meta text-muted">
                     <span class="align-middle">
-                        <span class="start_date">{{ conference.start_date }}</span> –
-                        <span class="end_date">{{ conference.end_date }}</span>
+                        {{ conference.duration_display }}
                     </span>
                     <span class="status status-{{conference.status}}">
                         {{ conference.get_status_display }}

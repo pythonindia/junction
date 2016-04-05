@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 def test_public_urls(client):
 
     public_urls = [
-        reverse('pages:homepage'),
+        reverse('page-home'),
         '/nimda/login/',
     ]
 

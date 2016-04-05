@@ -16,6 +16,8 @@ from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApi
 from junction.schedule import views as schedule_views
 from junction.schedule.views import non_proposal_schedule_item_view
 
+from .views import HomePageView
+
 router = routers.DefaultRouter()
 
 router.register('conferences', conference_views.ConferenceView)
@@ -33,6 +35,7 @@ reference to them here.
 
 urlpatterns = patterns(
     '',
+    url(r'^$', HomePageView.as_view(), name="page-home"),
 
     # Django Admin
     url(r'^nimda/', include(admin.site.urls)),
@@ -79,8 +82,7 @@ urlpatterns = patterns(
     url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
 
     # Schedule related
-    url(r'^(?P<conference_slug>[\w-]+)/schedule/',
-        include('junction.schedule.urls')),
+    url(r'^(?P<conference_slug>[\w-]+)/schedule/', include('junction.schedule.urls')),
     # Static Pages. TODO: to be refactored
     url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
     url(r'^schedule/$', TemplateView.as_view(template_name='static-content/schedule.html',), name='schedule-static'),
@@ -95,8 +97,6 @@ urlpatterns = patterns(
         RedirectView.as_view(pattern_name="proposals-list"),
         name='conference-detail'),
 
-    # add at the last for minor performance gain
-    url(r'^', include('junction.pages.urls', namespace='pages')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

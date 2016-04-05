@@ -80,7 +80,6 @@ OUR_APPS = (
     'junction.conferences',
     'junction.proposals',
     'junction.schedule',
-    'junction.pages',
     'junction.profiles',
     'junction.devices',
     'junction.tickets',

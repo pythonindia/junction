@@ -4,7 +4,7 @@
 {% load django_bootstrap_breadcrumbs %}
 {% block breadcrumbs %}
     {% clear_breadcrumbs %}
-    {% breadcrumb_safe "<i class='fa fa-home'></i>" "pages:homepage" %}
+    {% breadcrumb_safe "<i class='fa fa-home'></i>" "page-home" %}
 {% endblock %}
 <head>
     <meta charset="utf-8">
@@ -86,7 +86,7 @@
                     </button>
 
                     {% block navbar_logo %}
-                    <a class="navbar-brand" href="{% url 'pages:homepage' %}">
+                    <a class="navbar-brand" href="{% url 'page-home' %}">
                         {{ SITE_INFO.site_name }}
                     </a>
                     {% endblock navbar_logo %}

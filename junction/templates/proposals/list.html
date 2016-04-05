@@ -39,8 +39,7 @@
             <div class="col-xs -12 col-sm-12 ">
                 <p class="meta">
                     <b class="text-muted">
-                        <span class="start_date">{{ conference.start_date }}</span> –
-                        <span class="end_date">{{ conference.end_date }}</span>
+                        {{ conference.duration_display }}
                     </b>
                     {% if is_proposal_reviewer %}
                         <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">

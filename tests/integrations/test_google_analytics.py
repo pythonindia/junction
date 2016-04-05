@@ -6,7 +6,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_google_analytics_rendering(client, settings):
-    url = reverse('pages:homepage')
+    url = reverse('page-home')
 
     response = client.get(url)
     assert b'UA-MY-ID' not in response.content
