@@ -147,7 +147,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="col-xs-12 text-center">
-                    <p class="push-half-top clear-margin">{{ SITE_INFO.footer|safe }}</p>
+                    <p class="push-half-top clear-margin">{{ SITE_INFO.footer|safe }} • Powered by <a href="https://github.com/pythonindia/junction">Junction</a></p>
                 </div>
             </div><!-- /.row -->
         </div>
@@ -157,8 +157,7 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    {% block script_extra %} {% endblock %}
-    {% block footerscripts %}{% endblock %}
+    {% block script_extra %}{% endblock %}
 
     {# -- Google Analytics -- #}
     {% if SITE_INFO.google_analytics_id %}

@@ -83,13 +83,12 @@
             </div>
         </div>
         <hr>
-
+        <a name="proposals"></a>
+        <div class="row">
         {% if user.is_authenticated %}
             <a class='btn btn-primary' href="{% url 'profiles:dashboard' %}">My Proposals</a>
         {% endif %}
 
-        <a name="proposals"></a>
-        <div class="row">
         {% if is_filtered %}
             <a class='btn btn-info pull-left' href="./"> <i class="fa fa-list"></i> View all proposals <i class="fa fa-close"></i></a>
         {% endif %}
