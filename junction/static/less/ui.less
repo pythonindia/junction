@@ -14,9 +14,12 @@ input#id_remember {
     font-size: 1.2em;
     cursor: pointer;
 
-    &.active {
+    &.active{
         color: @junction-color-1;
-        cursor: default;
+
+        &:not(.can-remove-vote){
+          cursor: default;
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 - Fix filters on the proposal review form #418 (@ChillarAnand)
 - Update proposal urls to use hashids. The slug will now update itself when the title of proposal changes.
 - Conference duration is displayed in a short form.
+- Add ability to remove a casted vote on a proposal.
 - ...
 
 ## [0.3.0][0.3.0]

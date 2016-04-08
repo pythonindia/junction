@@ -31,13 +31,16 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
     public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
-    public_voting_setting = conference.conferencesetting_set.filter(
-        name=public_voting['name']).first()
+    public_voting_setting = conference.conferencesetting_set.filter(name=public_voting['name']).first()
     if public_voting_setting and not public_voting_setting.value:
         return HttpResponseForbidden()
 
-    proposal = get_object_or_404(
-        Proposal, slug=proposal_slug, conference=conference)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+
+    if up_vote is None:
+        # Remove any vote casted and return
+        ProposalVote.objects.filter(proposal=proposal, voter=request.user).delete()
+        return HttpResponse(proposal.get_votes_count())
 
     proposal_vote, created = ProposalVote.objects.get_or_create(
         proposal=proposal, voter=request.user)  # @UnusedVariable
@@ -64,6 +67,12 @@ def proposal_vote_up(request, conference_slug, proposal_slug):
 @require_http_methods(['POST'])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
+
+
+@login_required
+@require_http_methods(['POST'])
+def proposal_vote_remove(request, conference_slug, proposal_slug):
+    return proposal_vote(request, conference_slug, proposal_slug, None)
 
 
 def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id,

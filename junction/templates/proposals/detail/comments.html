@@ -5,9 +5,7 @@
 {% load proposal_filters %}
 
 {% if not comments %}
-    <p class="text-muted lead">
-        No comments added so far.
-    </p>
+    <p class="text-muted lead">No comments added so far.</p>
 {% endif %}
 
 {% for comment in comments %}
@@ -105,14 +103,18 @@
     $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
         e.preventDefault();
         var _that = $(this);
+        var url = _that.attr('data-url'),
+            remove_vote_url = _that.attr('data-remove-vote-url');
         if (_that.hasClass('active')){
-            return
+            if (!remove_vote_url){
+                return
+             }
+             url = remove_vote_url
         }
-        var url = _that.attr('data-url');
         $(_that).siblings('.vote-count').html("...");
         $.post(url, {}, function(result){
             $(_that).siblings('.btn-vote').removeClass('active');
-            $(_that).addClass('active');
+            $(_that).toggleClass('active');
             $(_that).siblings('.vote-count').html(result);
         });
     });
@@ -123,7 +125,7 @@
         return false;
     });
     {% endif %}
-    
+
     $( 'body' ).on( 'click', '.js-add-comment', function(e) {
         e.preventDefault();
 
