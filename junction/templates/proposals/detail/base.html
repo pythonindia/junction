@@ -94,7 +94,7 @@
          <div class="col-sm-1 section--voting ">
             <div class="text-center">
                 {% if can_vote %}
-                  <a href="#" data-url="{{ proposal.get_up_vote_url }}" class="btn-vote js-proposal-upvote text-muted {% if vote_value == 1 %} active {% endif %}">
+                  <a href="#" title="Up Vote" data-url="{{ proposal.get_up_vote_url }}" class="btn-vote js-proposal-upvote can-remove-vote text-muted {% if vote_value == 1 %} active{% endif %}" data-remove-vote-url="{{ proposal.get_remove_vote_url }}">
                     <i class="fa fa-chevron-up fa-2x"></i>
                   </a>
                 {% else %}
@@ -110,7 +110,7 @@
                 {% endwith %}
 
                 {% if can_vote %}
-                    <a href="#" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active {% endif %}">
+                    <a href="#" title="Down Vote" data-url="{{ proposal.get_down_vote_url }}" class="btn-vote can-remove-vote js-proposal-downvote text-muted {% if vote_value == -1 %} active{% endif %}" data-remove-vote-url="{{ proposal.get_remove_vote_url }}">
                     <i class="fa fa-chevron-down fa-2x"></i>
                     </a>
                 {% else %}

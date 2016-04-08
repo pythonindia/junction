@@ -8428,6 +8428,8 @@ input#id_remember {
 }
 .btn-vote.active {
   color: #f85441;
+}
+.btn-vote.active:not(.can-remove-vote) {
   cursor: default;
 }
 .status {

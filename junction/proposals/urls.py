@@ -33,10 +33,8 @@ urlpatterns = patterns(
     url(r'^comment/', include(comment_urls)),
 
     # Voting
-    url(r'^(?P<proposal_slug>[\w-]+)/vote/$',
-        votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
-    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$',
-        votes_views.proposal_vote_down, name='proposal-vote-down'),
-    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$',
-        votes_views.proposal_vote_up, name='proposal-vote-up'),
+    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
+    url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$', votes_views.proposal_vote_down, name='proposal-vote-down'),
+    url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$', votes_views.proposal_vote_up, name='proposal-vote-up'),
+    url(r'^(?P<proposal_slug>[\w-]+)/remove-vote/$', votes_views.proposal_vote_remove, name='proposal-vote-remove'),
 )
