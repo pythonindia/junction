@@ -31,7 +31,8 @@ SITE_VARIABLES = {
     'google_analytics_id': os.environ.get('GOOGLE_ANALYTICS_ID', None),
     'site_url': SITE_URL,
     'footer': '&copy; {} • Python Software Society of India'.format(dt.year),
-    'facebook_app_id': os.environ.get('FACEBOOK_APP_ID', None),  # Enables Facebook sharing of proposals
+    # Enables Facebook sharing of proposals
+    'facebook_app_id': os.environ.get('FACEBOOK_APP_ID', None),
 }
 
 MIDDLEWARE_CLASSES = (
@@ -204,7 +205,9 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
 
 DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
@@ -219,7 +222,8 @@ MARKDOWN_EXTENSIONS = ['linkify']
 TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', None)
 TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', None)
 TWITTER_ACCESS_TOKEN_KEY = os.environ.get('TWITTER_ACCESS_TOKEN_KEY', None)
-TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None)
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get(
+    'TWITTER_ACCESS_TOKEN_SECRET', None)
 
 # Add connection life time
 # Make sure DB request held on for minimim 5 minutes
@@ -228,3 +232,7 @@ CONN_MAX_AGE = 300
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+
+EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
+
+QR_CODES_DIR = ROOT_DIR + '/qr_files'
