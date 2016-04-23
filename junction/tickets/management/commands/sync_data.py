@@ -20,6 +20,8 @@ class Command(BaseCommand):
     """
     @transaction.atomic
     def handle(self, *args, **options):
+        # to improve the testability of the class these object need to be initialized outside
+        # Write setters for it as well
         api_token = settings.EXPLARA_API_TOKEN
         e = Explara(api_token)
         events = e.get_events()
@@ -27,7 +29,7 @@ class Command(BaseCommand):
 
         for order in orders:
             for attendee in order.get('attendee'):
-                ticket_no = attendee.get('ticketNo')
+                ticket_no = attendee.get('ticketId')
                 defaults = {
                     'order_no': order.get('orderNo'),
                     'order_cost': order.get('orderCost'),
