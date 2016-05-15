@@ -11,6 +11,7 @@ from django.db import transaction
 from junction.tickets.models import Ticket
 
 from .explara import Explara
+import os
 
 
 class Command(BaseCommand):
@@ -18,17 +19,20 @@ class Command(BaseCommand):
     Sync tickets info from explara and
     generate QR codes for each ticket.
     """
-    @transaction.atomic
-    def handle(self, *args, **options):
-        # to improve the testability of the class these object need to be initialized outside
-        # Write setters for it as well
-        api_token = settings.EXPLARA_API_TOKEN
-        e = Explara(api_token)
-        events = e.get_events()
-        orders = e.get_orders(events[0]['eventId'])
 
+    def __init__(self, api_token=settings.EXPLARA_API_TOKEN):
+        self.explara = Explara(api_token)
+
+    def set_explara(self, explara):
+        self.explara = explara
+
+    def handle(self, *args, **options):
+        events = self.explara.get_events()
+        orders = self.explara.get_orders(events[0]['eventId'])
+        if not os.path.isdir(settings.QR_CODES_DIR):
+            os.makedirs(settings.QR_CODES_DIR)
         for order in orders:
-            for attendee in order.get('attendee'):
+            for attendee in order.get('attendee', []):
                 ticket_no = attendee.get('ticketId')
                 defaults = {
                     'order_no': order.get('orderNo'),
@@ -41,13 +45,14 @@ class Command(BaseCommand):
                     'status': attendee.get('status'),
                     'others': order,
                 }
-
-                ticket, created = Ticket.objects.update_or_create(
-                    ticket_no=ticket_no,
-                    defaults=defaults
-                )
+                with transaction.atomic():
+                    ticket, created = Ticket.objects.update_or_create(
+                        ticket_no=ticket_no,
+                        defaults=defaults
+                    )
 
                 if created:
                     qr_code = qrcode.make(ticket_no)
                     file_name = attendee.get('name') + '_' + ticket_no
-                    qr_code.save('{}/{}.png'.format(settings.QR_CODES_DIR, file_name))
+                    qr_code.save(
+                        '{}/{}.png'.format(settings.QR_CODES_DIR, file_name))
