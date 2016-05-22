@@ -1,6 +1,6 @@
 {% extends "account/base.html" %}
 {% load i18n %}
-{% load account %}
+{% load account socialaccount %}
 {% load django_bootstrap_breadcrumbs %}
 {% load url from future %}
 
@@ -12,13 +12,14 @@
 {% endblock %}
 
 {% block content %}
+  {% get_providers as socialaccount_providers %}
   <div class="row">
     <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
       <!-- ADD has-error class on form-container in case of error -->
       <div class="form-container space-2-bottom {% if form.errors %} has-error {% endif %}">
         <h2 class="text-center">{% trans "Sign In" %}</h2>
         <div class="pad-2 push-half-top push-2-bottom">
-          {% if socialaccount.providers  %}
+          {% if socialaccount_providers  %}
             <p>
               {% blocktrans %}Sign in with your third party accounts or using an existing account:{% endblocktrans %}
             </p>
