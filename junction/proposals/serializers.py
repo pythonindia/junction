@@ -1,7 +1,7 @@
 # Third Party Stuff
 from rest_framework import serializers
 
-from .models import Proposal
+from .models import Proposal, ProposalSection, ProposalType
 
 
 class ProposalSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,3 +26,8 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
                   'slug', 'description', 'target_audience',
                   'prerequisites', 'content_urls', 'speaker_info',
                   'speaker_links')
+
+
+class ProposalFilterSerializer(serializers.Serializer):
+    proposal_section = serializers.PrimaryKeyRelatedField(queryset=ProposalSection.objects.all(), required=False)
+    proposal_type = serializers.PrimaryKeyRelatedField(queryset=ProposalType.objects.all(), required=False)
