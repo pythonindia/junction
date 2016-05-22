@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.utils.six import StringIO
 from django.views.decorators.http import require_http_methods
 from xlsxwriter.workbook import Workbook
 
@@ -25,11 +26,6 @@ from .models import (
     ProposalSectionReviewer,
     ProposalSectionReviewerVoteValue
 )
-
-try:
-    import cStringIO as StringIO
-except ImportError:
-    from io import StringIO
 
 
 @login_required

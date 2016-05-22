@@ -23,8 +23,7 @@ class CanSubmitFeedBack(permissions.BasePermission):
             device_uuid = token.split()[-1]
             view.device_uuid = uuid.UUID(device_uuid)
             if device_uuid:
-                return Device.objects.filter(
-                    uuid=view.device_uuid).exists()
+                return Device.objects.filter(uuid=view.device_uuid).exists()
             return False
         return False
 
