@@ -92,6 +92,8 @@ INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.contrib.auth.context_processors.auth",
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
     "junction.base.context_processors.site_info",
 )
 
