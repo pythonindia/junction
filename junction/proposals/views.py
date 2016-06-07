@@ -43,12 +43,19 @@ def _filter_proposals(request, proposals_qs):
     is_filtered = False
 
     if proposal_section_filter:
-        proposals_qs = proposals_qs.filter(proposal_section=proposal_section_filter)
-        is_filtered = True
+        try:
+            proposals_qs = proposals_qs.filter(proposal_section__id__in=proposal_section_filter)
+            is_filtered = True
+        except (TypeError, ValueError):
+            pass
 
     if proposal_type_filter:
-        proposals_qs = proposals_qs.filter(proposal_type=proposal_type_filter)
-        is_filtered = True
+        try:
+            proposals_qs = proposals_qs.filter(proposal_type__id__in=proposal_type_filter)
+            is_filtered = True
+        except (TypeError, ValueError):
+            pass
+
     return is_filtered, proposals_qs
 
 
