@@ -30,7 +30,7 @@ class ProposalSection(AuditModel):
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
     def __str__(self):
-        return "{} - {}".format(self.name, self.conferences)
+        return "{} - {}".format(self.name, self.conferences[0])
 
 
 @python_2_unicode_compatible
