@@ -30,7 +30,7 @@ class ProposalSection(AuditModel):
     conferences = models.ManyToManyField(to=Conference, related_name='proposal_sections')
 
     def __str__(self):
-        return "{} - {}".format(self.name, self.conferences_set.all())
+        return self.name
 
 
 @python_2_unicode_compatible
@@ -118,19 +118,20 @@ class Proposal(TimeAuditModel):
                        args=[self.conference.slug, self.slug])
 
     def get_vote_url(self):
-        return reverse('proposal-reviewer-vote', args=[self.conference.slug, self.slug])
+        return reverse('proposal-reviewer-vote',
+                       args=[self.conference.slug, self.slug])
 
     def get_delete_url(self):
-        return reverse('proposal-delete', args=[self.conference.slug, self.slug])
+        return reverse('proposal-delete',
+                       args=[self.conference.slug, self.slug])
 
     def get_up_vote_url(self):
-        return reverse('proposal-vote-up', args=[self.conference.slug, self.slug])
+        return reverse('proposal-vote-up',
+                       args=[self.conference.slug, self.slug])
 
     def get_down_vote_url(self):
-        return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
-
-    def get_remove_vote_url(self):
-        return reverse('proposal-vote-remove', args=[self.conference.slug, self.slug])
+        return reverse('proposal-vote-down',
+                       args=[self.conference.slug, self.slug])
 
     def get_comments_count(self):
         """ Show only public comments count """
