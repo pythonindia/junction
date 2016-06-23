@@ -25,7 +25,7 @@ class Command(BaseCommand):
         ticket_nums = [line.rstrip('\n') for line in open(in_file).readlines()]
 
         fh = open(out_file, 'w')
-        header = ('Ticket Number', 'Name', 'Email', 'Gender', 'Designation',  'Company', 'City', 'Address')
+        header = ('Ticket Number', 'Name', 'Email', 'Gender', 'Designation', 'Company', 'City', 'Address')
         fh.write(','.join(header) + '\n')
 
         for ticket_num in ticket_nums:
