@@ -172,84 +172,56 @@
              width: 100%;
          }
 
-         /** blockquote styles **/
-         .bq2 {
-             overflow: hidden;
-             border: 1px solid #dde5ed;
-             background: #f8fafd; color: #758fa3;
-         }
-
         </style>
     </head>
 
     <body bgcolor="#f6f6f6">
+        <div class="content" bgcolor="#f6f6f6">
+            <table>
+                <tr>
+                    <h2>{{proposal.conference.name}}</h2>
+                </tr>
+                <hr />
+                <tr>
+                    <h4>{{proposal.name}}</h4>
+                </tr>
+                <br />
+                <tr>
+                    <p>
+                        There is a new comment on "<a href="{{host}}{{proposal.get_absolute_url}}">
+                        {{proposal.title}}
+                        {% if comment.private %}
+                            {% if by_author %}
+                        </a>" by <b>by Author.</b>:
+                            {% else %}
+                        </a>" by <b>by {{comment.get_reviewer_nick}}.</b>:
+                            {% endif  %}
+                        {% else %}
+                        </a>" by <b>{{comment.commenter}}</b>:
+                        {% endif  %}
+                    </p>
+                    <br/>
+                    <i>"{{comment.comment | safe}}"</i>
+                    <br />
+                    <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td>
+                                <a href="{{host}}{{login_url}}">
+                                    Click here to login and leave a comment
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
 
-        <!-- body -->
-        <table class="body-wrap" bgcolor="#f6f6f6">
-            <tr>
-                <td></td>
-                <td class="container" bgcolor="#FFFFFF">
+                    <hr/>
+                    PS: Please, don't reply to the email.
+                </tr>
+            </table>
+        </div>
+        <!-- /content -->
 
-                    <!-- content -->
-                    <div class="content">
-                        <table>
-                            <tr>
-                                <h2>{{proposal.conference.name}}</h2>
-                            </tr>
-                            <hr />
-                            <tr>
-                                <h4>{{proposal.name}}</h4>
-                            </tr>
-                            <tr>
-                                <p>
-                                There is a new comment on "<a href="{{host}}{{proposal.get_absolute_url}}">
-                                {{proposal.title}}
-                                {% if comment.private %}
-                                    {% if by_author %}
-                                </a>" by <b>by Author.</b>:
-                                    {% else %}
-                                </a>" by <b>by {{comment.get_reviewer_nick}}.</b>:
-                                    {% endif  %}
-                                {% else %}
-                                </a>" by <b>{{comment.commenter}}</b>:
-                                {% endif  %}
-                                </p>
-
-                                <br/>
-                                <br/>
-
-                                <blockquote class="bq2">
-                                    <i>
-                                        {{comment.comment | safe}}
-                                    </i>
-                                </blockquote>
-
-                                <br />
-
-                                <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
-                                    <tr>
-                                        <td>
-                                            <a href="{{host}}{{login_url}}">
-                                                Click here to login and leave a comment
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                                <hr/>
-                                PS: Please, don't reply to the email.
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- /content -->
-
-                </td>
-                <td></td>
-            </tr>
-        </table>
+        <td></td>
         <!-- /body -->
 
     </body>
 </html>
-
-
