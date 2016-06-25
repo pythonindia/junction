@@ -6,20 +6,17 @@ django-filter==0.10.0
 # Persistent Store
 # -------------------------------------------------
 psycopg2==2.6.1
-redis==2.10.3
-dj-database-url==0.3.*
+redis==2.10.5
+dj-database-url==0.4.1
 
 # Extensions
 # -------------------------------------------------
 django-extensions==1.5.5
-Werkzeug==0.10.4
-ipython==3.2.0
-pyreadline==2.0
 six==1.9.0
 django-sampledatahelper==0.3
 unicode-slugify==0.1.3
 XlsxWriter==0.7.3
-arrow==0.7.0
+arrow==0.8.0
 hashids==1.1.0
 
 # Django Model Helpers
@@ -42,16 +39,16 @@ django_simple_history==1.6.3
 # Frontend Helpers
 # -------------------------------------------------
 django-bootstrap3==6.1.0
-django-bootstrap-breadcrumbs==0.7.1
-django-flat-theme==0.9.5
+django-bootstrap-breadcrumbs==0.7.3
+django-flat-theme==1.1.3
 
 # Markdown Editor
 # -------------------------------------------------
 django-markdown==0.8.4
 django-pagedown==0.1.0
 mdx-linkify==0.6
-Markdown==2.6.2
-markdown2==2.3.0
+Markdown==2.6.6
+markdown2==2.3.1
 
 # Server
 # ------------------------------------------------

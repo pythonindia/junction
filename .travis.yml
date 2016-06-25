@@ -19,7 +19,7 @@ env:
 
 script:
 - flake8
-- coverage run --source=junction --omit='*tests*,*commands*,*migrations*,*admin*,*wsgi*' -m py.test -v --tb=native
+- py.test --cov -v --tb=native
 - coverage report -m
 
 after_success:
