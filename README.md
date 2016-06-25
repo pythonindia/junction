@@ -109,37 +109,40 @@ Contributing
 * Saurabh Kumar ([@theskumar])
 * Sivasubramaniam Arunachalam ([@sivaa])
 * [@sjose1x]
+* Sumit Chahal ([@smtchahal])
 * Vignesh Sarma K ([@vigneshsarma])
 * Vijay ([@vnbang2003])
 
+[@Aayush-Kasurde]: https://github.com/Aayush-Kasurde
+[@Akasurde]: https://github.com/Akasurde
+[@anandology]: https://github.com/anandology
+[@anistark]: https://github.com/anistark
+[@ankeshanand]: https://github.com/ankeshanand
+[@bhanuvrat]: https://github.com/bhanuvrat
+[@ChillarAnand]: https://github.com/ChillarAnand
+[@dhilipsiva]: https://github.com/dhilipsiva
+[@fayazkhan]: https://github.com/fayazkhan
+[@ganeshks]: https://github.com/ganeshks
+[@gitter-badger]: https://github.com/gitter-badger
+[@harisibrahimkv]: https://github.com/harisibrahimkv
+[@hTrap]: https://github.com/hTrap
+[@jklmn13]: https://github.com/jklmn13
+[@kracekumar]: https://github.com/kracekumar
+[@mudassir0909]: https://github.com/mudassir0909
+[@nabeelvalapra]: https://github.com/nabeelvalapra
+[@Parbhat]: https://github.com/Parbhat
 [@pythonhacker]: https://github.com/pythonhacker
 [@raun]: https://github.com/raun
-[@fayazkhan]: https://github.com/fayazkhan
-[@therealkbhat]: https://github.com/therealkbhat
-[@theskumar]: https://github.com/theskumar
-[@kracekumar]: https://github.com/kracekumar
-[@vigneshsarma]: https://github.com/vigneshsarma
-[@jklmn13]: https://github.com/jklmn13
-[@dhilipsiva]: https://github.com/dhilipsiva
-[@anistark]: https://github.com/anistark
 [@rekenerd]: https://github.com/rekenerd
 [@sivaa]: https://github.com/sivaa
-[@mudassir0909]: https://github.com/mudassir0909
 [@sjose1x]: https://github.com/sjose1x
-[@gitter-badger]: https://github.com/gitter-badger
-[@Aayush-Kasurde]: https://github.com/Aayush-Kasurde
-[@vnbang2003]: https://github.com/vnbang2003
+[@smtchahal]: https://github.com/smtchahal
+[@therealkbhat]: https://github.com/therealkbhat
 [@theSage21]: https://github.com/theSage21
-[@Akasurde]: https://github.com/Akasurde
-[@Parbhat]: https://github.com/Parbhat
-[@nabeelvalapra]: https://github.com/nabeelvalapra
-[@ChillarAnand]: https://github.com/ChillarAnand
-[@bhanuvrat]: https://github.com/bhanuvrat
-[@harisibrahimkv]: https://github.com/harisibrahimkv
-[@ganeshks]: https://github.com/ganeshks
-[@anandology]: https://github.com/anandology
-[@ankeshanand]: https://github.com/ankeshanand
-[@hTrap]: https://github.com/hTrap
+[@theskumar]: https://github.com/theskumar
+[@vigneshsarma]: https://github.com/vigneshsarma
+[@vnbang2003]: https://github.com/vnbang2003
+
 
 License
 -------
