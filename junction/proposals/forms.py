@@ -158,7 +158,7 @@ class ProposalReviewerVoteForm(forms.Form):
     """
     vote_value = forms.ChoiceField(widget=forms.RadioSelect())
     comment = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'minlength': '30'}),
         help_text="Leave a comment justifying your vote.",
     )
 
