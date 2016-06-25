@@ -113,7 +113,7 @@
                                         <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
                                     {% endif %}
                                     <li class="divider"></li>
-                                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                                    <li><a href="{% url 'account_logout' %}?next={{request.path}}">Logout</a></li>
                             </ul>
                             {% else %}
                             <a href="{% url 'account_login' %}?next={{request.path}}">Login / Register</a>
