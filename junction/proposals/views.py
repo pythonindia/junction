@@ -53,9 +53,6 @@ def _filter_proposals(request, proposals_qs):
         is_filtered = True
         filter_name = proposal_type_filter
 
-    if not filter_name:
-        filter_name = 'List of Proposals'
-
     return is_filtered, filter_name, proposals_qs
 
 

@@ -103,7 +103,13 @@
         {% endif %}
 
         {% if public_proposals_list %}
-            {% include 'proposals/partials/proposal-list--items.html' with proposals=public_proposals_list title=filter_name display_status=False %}
+
+            {% if filter_name %}
+                {% include 'proposals/partials/proposal-list--items.html' with proposals=public_proposals_list title=filter_name display_status=False %}
+            {% else %}
+                {% include 'proposals/partials/proposal-list--items.html' with proposals=public_proposals_list title='List of Proposals' display_status=False %}
+            {% endif %}
+
         {% else %}
             <hr>
             <h2>List of Proposals</h2>
