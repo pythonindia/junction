@@ -55,7 +55,9 @@
                 <hr>
                 <div id="#proposals">
                     {% for section_items in proposals_to_review  %}
-                        {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                        {% if section_items.proposals %}
+                            {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                        {% endif %}
                     {% endfor %}
                 </div>
 

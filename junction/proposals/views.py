@@ -278,7 +278,7 @@ def proposals_to_review(request, conference_slug):
                                  if p.proposal_section == section]
             proposals_to_review.append(s_items(section, section_proposals))
 
-        form = ProposalsToReviewForm(conference=conference)
+        form = ProposalsToReviewForm(conference=conference, proposal_sections=proposal_reviewer_sections)
 
         context = {
             'proposals_to_review': proposals_to_review,
@@ -291,7 +291,8 @@ def proposals_to_review(request, conference_slug):
         return render(request, 'proposals/to_review.html', context)
 
     # POST Workflow
-    form = ProposalsToReviewForm(data=request.POST, conference=conference)
+    form = ProposalsToReviewForm(data=request.POST, conference=conference,
+                                 proposal_sections=proposal_reviewer_sections)
     if not form.is_valid():
         context['errors'] = form.errors
         return render(request, 'proposals/to_review.html', context)
