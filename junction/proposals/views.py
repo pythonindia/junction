@@ -41,15 +41,19 @@ def _filter_proposals(request, proposals_qs):
     proposal_section_filter = serializer.validated_data.get('proposal_section', None)
     proposal_type_filter = serializer.validated_data.get('proposal_type', None)
     is_filtered = False
+    filter_name = False
 
     if proposal_section_filter:
         proposals_qs = proposals_qs.filter(proposal_section=proposal_section_filter)
         is_filtered = True
+        filter_name = proposal_section_filter
 
     if proposal_type_filter:
         proposals_qs = proposals_qs.filter(proposal_type=proposal_type_filter)
         is_filtered = True
-    return is_filtered, proposals_qs
+        filter_name = proposal_type_filter
+
+    return is_filtered, filter_name, proposals_qs
 
 
 @require_http_methods(['GET'])
@@ -63,7 +67,7 @@ def list_proposals(request, conference_slug):
         'proposal_type', 'proposal_section', 'conference', 'author',
     )
 
-    is_filtered, proposals_qs = _filter_proposals(request, proposals_qs)
+    is_filtered, filter_name, proposals_qs = _filter_proposals(request, proposals_qs)
 
     # make sure it's after the tag filtering is applied
     selected_proposals_list = proposals_qs.filter(review_status=ProposalReviewStatus.SELECTED)
@@ -83,6 +87,7 @@ def list_proposals(request, conference_slug):
                    'proposal_sections': conference.proposal_sections.all(),
                    'proposal_types': conference.proposal_types.all(),
                    'is_filtered': is_filtered,
+                   'filter_name': filter_name,
                    'is_reviewer': permissions.is_proposal_reviewer(user=request.user, conference=conference),
                    'conference': conference,
                    'ConferenceStatus': ConferenceStatus,
