@@ -80,64 +80,58 @@ Contributing
 
 ## Contributors
 
-* Aayush ([@Aayush-Kasurde])
-* Abhijeet ([@Akasurde])
-* Anand B Pillai ([@pythonhacker])
-* Anand Chitipothu ([@anandology])
-* Anand Pandikunta ([@ChillarAnand])
-* Ankesh Anand ([@ankeshanand])
-* Anshul Sharma ([@raun])
-* Anuvrat Parashar ([@bhanuvrat])
-* arjoonn sharma ([@theSage21])
-* dhilipsiva ([@dhilipsiva])
-* Fayaz Yusuf Khan ([@fayazkhan])
-* Ganeshkumar S ([@ganeshks])
-* Haris Ibrahim K. V. ([@harisibrahimkv])
-* Imran Ahmed ([@rekenerd])
-* jaocb  ([@jklmn13])
-* Kishor Bhat ([@therealkbhat])
-* Kracekumar Ramaraj ([@kracekumar])
-* Kumar Anirudha ([@anistark])
-* Mudassir ([@mudassir0909])
-* Nabeel Valapra ([@nabeelvalapra])
-* Parbhat Puri ([@Parbhat])
-* Parth Oberoi ([@hTrap])
-* Saurabh Kumar ([@theskumar])
-* Sivasubramaniam Arunachalam ([@sivaa])
-* [@sjose1x]
-* Sumit Chahal ([@smtchahal])
-* Vignesh Sarma K ([@vigneshsarma])
-* Vijay ([@vnbang2003])
-
-[@Aayush-Kasurde]: https://github.com/Aayush-Kasurde
-[@Akasurde]: https://github.com/Akasurde
-[@anandology]: https://github.com/anandology
-[@anistark]: https://github.com/anistark
-[@ankeshanand]: https://github.com/ankeshanand
-[@bhanuvrat]: https://github.com/bhanuvrat
-[@ChillarAnand]: https://github.com/ChillarAnand
-[@dhilipsiva]: https://github.com/dhilipsiva
-[@fayazkhan]: https://github.com/fayazkhan
-[@ganeshks]: https://github.com/ganeshks
-[@gitter-badger]: https://github.com/gitter-badger
-[@harisibrahimkv]: https://github.com/harisibrahimkv
-[@hTrap]: https://github.com/hTrap
-[@jklmn13]: https://github.com/jklmn13
-[@kracekumar]: https://github.com/kracekumar
-[@mudassir0909]: https://github.com/mudassir0909
-[@nabeelvalapra]: https://github.com/nabeelvalapra
-[@Parbhat]: https://github.com/Parbhat
-[@pythonhacker]: https://github.com/pythonhacker
-[@raun]: https://github.com/raun
-[@rekenerd]: https://github.com/rekenerd
-[@sivaa]: https://github.com/sivaa
-[@sjose1x]: https://github.com/sjose1x
-[@smtchahal]: https://github.com/smtchahal
-[@therealkbhat]: https://github.com/therealkbhat
-[@theSage21]: https://github.com/theSage21
-[@theskumar]: https://github.com/theskumar
-[@vigneshsarma]: https://github.com/vigneshsarma
-[@vnbang2003]: https://github.com/vnbang2003
+0. Aayush ([@Aayush-Kasurde](https://github.com/Aayush-Kasurde))
+0. Abhijeet ([@Akasurde](https://github.com/Akasurde))
+0. AMiT Kumar ([@aktech](https://github.com/aktech))
+0. Anand B Pillai ([@pythonhacker](https://github.com/pythonhacker))
+0. Anand Chitipothu ([@anandology](https://github.com/anandology))
+0. Anand Pandikunta ([@ChillarAnand](https://github.com/ChillarAnand))
+0. Anirudh ([@animenon](https://github.com/animenon))
+0. Ankesh Anand ([@ankeshanand](https://github.com/ankeshanand))
+0. Anshul Sharma ([@raun](https://github.com/raun))
+0. Anuvrat Parashar ([@bhanuvrat](https://github.com/bhanuvrat))
+0. arjoonn sharma ([@theSage21](https://github.com/theSage21))
+0. Deep Sukhwani ([@ProProgrammer](https://github.com/ProProgrammer))
+0. dhilipsiva ([@dhilipsiva](https://github.com/dhilipsiva))
+0. Fayaz Yusuf Khan ([@fayazkhan](https://github.com/fayazkhan))
+0. Ganeshkumar S ([@ganeshks](https://github.com/ganeshks))
+0. [@gangadharmgithub](https://github.com/gangadharmgithub)
+0. Geetanjali  ([@geetanjaligg](https://github.com/geetanjaligg))
+0. Hari ([@haridjango123](https://github.com/haridjango123))
+0. Haris Ibrahim K. V. ([@harisibrahimkv](https://github.com/harisibrahimkv))
+0. Imran Ahmed ([@rekenerd](https://github.com/rekenerd))
+0. Indradhanush Gupta ([@indradhanush](https://github.com/indradhanush))
+0. jaocb  ([@jklmn13](https://github.com/jklmn13))
+0. Karanveer Singh ([@kvsingh](https://github.com/kvsingh))
+0. Kenith Aiyappa ([@K-7](https://github.com/K-7))
+0. Kishor Bhat ([@therealkbhat](https://github.com/therealkbhat))
+0. Kracekumar Ramaraj ([@kracekumar](https://github.com/kracekumar))
+0. Kumar Anirudha ([@anistark](https://github.com/anistark))
+0. Mudassir ([@mudassir0909](https://github.com/mudassir0909))
+0. Nabeel Valapra ([@nabeelvalapra](https://github.com/nabeelvalapra))
+0. Navaneethan ([@nava45](https://github.com/nava45))
+0. Noufal Ibrahim ([@nibrahim](https://github.com/nibrahim))
+0. Parbhat Puri ([@Parbhat](https://github.com/Parbhat))
+0. Parth Oberoi ([@hTrap](https://github.com/hTrap))
+0. Peeyush Aggarwal ([@PeeyushAgg](https://github.com/PeeyushAgg))
+0. Puneeth Chaganti ([@punchagan](https://github.com/punchagan))
+0. [@rahulrb0509](https://github.com/rahulrb0509)
+0. Sai Krishna ([@psykrsna](https://github.com/psykrsna))
+0. Saurabh ([@saurabh-fueled](https://github.com/saurabh-fueled))
+0. Saurabh Kumar ([@theskumar](https://github.com/theskumar))
+0. Shrayas Rajagopal ([@shrayasr](https://github.com/shrayasr))
+0. Sivasubramaniam Arunachalam ([@sivaa](https://github.com/sivaa))
+0. [@sjose1x](https://github.com/sjose1x)
+0. Sumit Chahal ([@smtchahal](https://github.com/smtchahal))
+0. Suraj Jayakumar ([@sjayakum](https://github.com/sjayakum))
+0. Suresh R. ([@umulingu](https://github.com/umulingu))
+0. Tapasweni Pathak ([@tapasweni-pathak](https://github.com/tapasweni-pathak))
+0. The Gitter Badger ([@gitter-badger](https://github.com/gitter-badger))
+0. [@vanishan](https://github.com/vanishan)
+0. Vignesh Sarma K ([@vigneshsarma](https://github.com/vigneshsarma))
+0. Vijay ([@vnbang2003](https://github.com/vnbang2003))
+0. vinay singh ([@vinay13](https://github.com/vinay13))
+0. VoidspaceXYZ ([@ramaseshan](https://github.com/ramaseshan))
 
 [![Throughput Graph](https://graphs.waffle.io/pythonindia/junction/throughput.svg)](https://waffle.io/pythonindia/junction/metrics/throughput)
 
