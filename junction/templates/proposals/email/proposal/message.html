@@ -1,12 +1,61 @@
-There is a new proposal for <b>{{proposal.conference}}</b><br /><br />
+{% extends 'proposals/email/base.html' %}
 
-<b>Title:</b> {{proposal.title}}<br />
-<b>Link:</b> {{host}}{{proposal_url}}<br />
-<b>Section:</b> {{proposal_section}}<br />
-<b>Author:</b> {{proposal.author}}<br />
-<b>Author Info:</b><br />
-"{{proposal.speaker_info}}"<br />
+{% block body %}
 
-<hr/>
+
+    <td style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+        <h1 style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;color:#111111;font-family:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;font-weight:200;line-height:1.2em;margin-top:40px;margin-bottom:10px;margin-right:0;margin-left:0;font-size:36px;" >{{ proposal.conference.name }}</h1>
+        <hr style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+        <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+
+        <p style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;line-height:1.6em;margin-top:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;font-size:14px;font-weight:normal;margin-bottom:10px;" >Hi,</p>
+        <p style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;line-height:1.6em;margin-top:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;font-size:14px;font-weight:normal;margin-bottom:10px;" >
+            There is a new proposal for
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+                {{proposal.conference}}
+            </b>.
+
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >Title:</b>
+            {{proposal.title}}
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >Link:</b>
+            {{host}}{{proposal_url}}
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >Section:</b>
+            {{proposal_section}}
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >Speaker:</b>
+            {{proposal.author}}
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <b style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >Speaker Info:</b>
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+            "{{proposal.speaker_info}}"
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+
+            <!-- button -->
+            <table class="btn-primary" cellpadding="0" cellspacing="0" border="0" style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;Margin-bottom:10px;width:auto !important;" >
+                <tr style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+                    <td style="line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-color:#348eda;border-radius:25px;font-family:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;font-size:14px;text-align:center;vertical-align:top;" >
+                        <a href="{{host}}{{login_url}}" style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-color:#348eda;border-width:10px 20px;border-style:solid;border-color:#348eda;border-radius:25px;display:inline-block;color:#ffffff;cursor:pointer;font-weight:bold;line-height:2;text-decoration:none;" >Click here to leave a comment</a>
+                    </td>
+                </tr>
+            </table>
+            <!-- /button -->
+            <br style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+            <hr style="font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;font-size:100%;line-height:1.6em;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" />
+    </td>
+
+{% endblock %}
+
+
 
 PS: Please, don't reply to the email.  You can <a href="{{host}}{{login_url}}"> login</a> to review the proposal.
