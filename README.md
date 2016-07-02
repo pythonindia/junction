@@ -6,13 +6,9 @@ Junction | [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
-<p align=center>
-  <a href="https://waffle.io/pythonindia/junction/metrics/throughput" title="Throughput Graph"> 
-   <img src=https://graphs.waffle.io/pythonindia/junction/throughput.svg />
-  </a>
-</p>
+---
 
-
+[![Throughput Graph](https://graphs.waffle.io/pythonindia/junction/throughput.svg)](https://waffle.io/pythonindia/junction/metrics/throughput)
 
 Setup
 =====
