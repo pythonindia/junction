@@ -272,7 +272,7 @@ def export_reviewer_votes(request, conference_slug):
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
         tuple(vote_values_desc) + ('Public votes count', 'Vote Comments')
-    output = StringIO.StringIO()
+    output = StringIO()
 
     with Workbook(output) as book:
         for section in proposal_sections:
