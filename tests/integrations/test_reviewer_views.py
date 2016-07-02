@@ -208,6 +208,17 @@ class TestReviewerViews:
         assert response.status_code == 200
         assert 'vote_value' in response.context['form_errors']
 
+    def test_get_proposal_votes_dashboard(self, client, conferences, create_superuser):
+        username, password, user = create_superuser
+        client.login(username=username, password=password)
+
+        conference = conferences['future']
+        kwargs = {'conference_slug': conference.slug}
+        url = reverse('export-reviewer-votes', kwargs=kwargs)
+        response = client.get(url)
+
+        assert response.status_code == 200
+
 
 def test_public_comment(settings, login, conferences,
                         create_proposal):

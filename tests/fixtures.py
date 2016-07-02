@@ -102,6 +102,16 @@ def create_user():
 
 
 @pytest.fixture
+def create_superuser(create_user):
+    user = create_user['user']
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+    create_user['user'] = user
+    return create_user
+
+
+@pytest.fixture
 def login(create_user, client):
     username, password = create_user['username'], create_user['password']
     client.login(username=username, password=password)
