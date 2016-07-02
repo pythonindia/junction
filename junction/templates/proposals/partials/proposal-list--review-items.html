@@ -10,7 +10,7 @@
     {% for proposal in proposals %}
         <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
             <div class="col-xs-12" >
-                <div class="proposal-list-content">
+              <div class="proposal-list-content {% if proposal|reviewer_comments:request.user %}success{% endif %}">
                     <div class="col-sm-1 hidden-xs proposal-stats">
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -47,13 +47,17 @@
                                 <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
                                 <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
                                 {% if proposal|reviewer_comments:request.user %}
-                                <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="Left a review comment">
-                                        <i class="fa fa-comments-o"></i>
+                                <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="You left a review comment">
+                                  <i class="fa fa-comments green"></i>
                                     </a>
                                 {% endif %}
+                                <i class="fa fa-comments" data-toggle="tooltip" data-original-title="Public comments">
+                                      {{proposal.get_comments_count}}</i>
+                                <i class="fa fa-comments" data-toggle="tooltip" data-original-title="Reviewers comments">
+                                      {{proposal.get_reviews_comments_count}}</i>
                                 {% if proposal|is_reviewer_voted:request.user %}
                                     <a class='tag tag__proposal_section label label-proposal-type inline-block'  data-toggle="tooltip" data-placement="bottom" data-original-title="You have casted the vote">
-                                        <i class="fa fa-check"></i>
+                                        <i class="fa fa-check green"></i>
                                     </a>
                                 {% endif %}
 
@@ -67,6 +71,7 @@
                             </a>
                                     {% endif %}
                                 {% endfor %}
+
                              </div>
 
                             <small class="pull-right">
