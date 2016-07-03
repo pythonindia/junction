@@ -4,13 +4,13 @@ from __future__ import absolute_import, unicode_literals
 # Standard Library
 import collections
 import uuid
+import io
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.utils.six import StringIO
 from django.views.decorators.http import require_http_methods
 from xlsxwriter.workbook import Workbook
 
@@ -272,7 +272,7 @@ def export_reviewer_votes(request, conference_slug):
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
         tuple(vote_values_desc) + ('Public votes count', 'Vote Comments')
-    output = StringIO()
+    output = io.BytesIO()
 
     with Workbook(output) as book:
         for section in proposal_sections:
