@@ -292,6 +292,15 @@ class ProposalComment(TimeAuditModel):
                                                           reviewer_id=self.commenter_id)
         return reviewer.nick
 
+    def get_comment_type(self):
+        if self.vote:
+            return 'Vote'
+        if self.private:
+            return 'Review'
+        if self.reviewer:
+            return 'Reviewer Only'
+        return 'Public'
+
 
 @python_2_unicode_compatible
 class ProposalCommentVote(TimeAuditModel):
