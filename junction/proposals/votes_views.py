@@ -37,6 +37,9 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
 
     proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
 
+    if not permissions.is_proposal_voting_allowed(proposal):
+        return HttpResponseForbidden()
+
     if up_vote is None:
         # Remove any vote casted and return
         ProposalVote.objects.filter(proposal=proposal, voter=request.user).delete()
@@ -113,8 +116,9 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
 
-    if not permissions.is_proposal_section_reviewer(request.user,
-                                                    conference, proposal):
+    if (not permissions.is_proposal_section_reviewer(request.user,
+                                                     conference, proposal) or not
+            permissions.is_proposal_voting_allowed(proposal)):
         raise PermissionDenied
 
     vote_value = None
