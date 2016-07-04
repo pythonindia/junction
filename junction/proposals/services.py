@@ -30,6 +30,7 @@ def send_mail_for_new_comment(proposal_comment, host):
     login_url = '{}?next={}'.format(settings.LOGIN_URL, proposal.get_absolute_url())
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
+    comment_type = proposal_comment.get_comment_type()
     proposal_comment.comment = markdown_to_html(proposal_comment.comment)
     for to in send_to:
         if to == proposal_comment.commenter:
@@ -42,7 +43,8 @@ def send_mail_for_new_comment(proposal_comment, host):
                             'proposal': proposal,
                             'comment': proposal_comment,
                             'commenter': commenter,
-                            'by_author': commenter == proposal.author})
+                            'by_author': commenter == proposal.author,
+                            'comment_type': comment_type})
 
 
 def comment_recipients(proposal_comment):
