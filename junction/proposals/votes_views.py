@@ -116,8 +116,8 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
 
-    if (not permissions.is_proposal_section_reviewer(request.user,
-                                                     conference, proposal) or not
+    if not (permissions.is_proposal_section_reviewer(request.user,
+                                                     conference, proposal) and
             permissions.is_proposal_voting_allowed(proposal)):
         raise PermissionDenied
 
