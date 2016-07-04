@@ -208,9 +208,8 @@ class TestReviewerViews:
         assert response.status_code == 200
         assert 'vote_value' in response.context['form_errors']
 
-    def test_get_proposal_votes_dashboard(self, client, conferences, create_superuser):
-        username, password, user = create_superuser
-        client.login(username=username, password=password)
+    def test_get_proposal_votes_dashboard(self, login, conferences, create_superuser):
+        client = login[0]
 
         conference = conferences['future']
         kwargs = {'conference_slug': conference.slug}
