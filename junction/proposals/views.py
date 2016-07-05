@@ -14,6 +14,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from hashids import Hashids
+from rest_framework import generics
 
 # Junction Stuff
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus
@@ -409,3 +410,15 @@ def delete_proposal(request, conference_slug, slug):
     elif request.method == 'POST':
         proposal.delete()
         return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
+
+
+class ProposalListApiView(generics.ListAPIView):
+
+    serializer_class = serializers.ProposalSerializer
+
+    def get_queryset(self):
+        queryset = Proposal.objects.all()
+        conference = self.request.query_params.get('conference', None)
+        if conference:
+            queryset = queryset.filter(conference__slug=conference)
+        return queryset
