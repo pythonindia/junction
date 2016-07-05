@@ -3,7 +3,6 @@ from __future__ import absolute_import, unicode_literals
 
 # Standard Library
 import collections
-from datetime import datetime
 
 # Third Party Stuff
 from django.conf import settings
@@ -170,11 +169,10 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
     public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
     public_voting_setting = conference.conferencesetting_set.filter(
         name=public_voting['name']).first()
-    vote_value, voting, public_voting_setting_value = 0, False, True
+    vote_value, public_voting_setting_value = 0, True
 
     if public_voting_setting:
         public_voting_setting_value = public_voting_setting.value
-        voting = True if conference.start_date > datetime.now().date() else False
         try:
             if request.user.is_authenticated():
                 proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
@@ -192,7 +190,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         'is_reviewer': is_reviewer,
         'is_section_reviewer': is_section_reviewer,
         'can_view_feedback': False,
-        'can_vote': voting,
+        'can_vote': permissions.is_proposal_voting_allowed(proposal),
         'public_voting_setting': public_voting_setting_value
     }
 

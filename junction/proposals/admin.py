@@ -102,7 +102,7 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
 
 @admin.register(models.ProposalComment)
 class ProposalCommentAdmin(TimeAuditAdmin):
-    list_display = ('proposal', 'commenter', 'private', 'comment') + TimeAuditAdmin.list_display
+    list_display = ('comment', 'proposal', 'commenter', 'private', 'reviewer') + TimeAuditAdmin.list_display
     list_filter = ['private', 'reviewer']
 
     def get_queryset(self, request):
