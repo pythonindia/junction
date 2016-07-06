@@ -410,15 +410,3 @@ def delete_proposal(request, conference_slug, slug):
     elif request.method == 'POST':
         proposal.delete()
         return HttpResponseRedirect(reverse('proposals-list', args=[conference.slug]))
-
-
-class ProposalListApiView(generics.ListAPIView):
-
-    serializer_class = serializers.ProposalSerializer
-
-    def get_queryset(self):
-        queryset = Proposal.objects.all()
-        conference = self.request.query_params.get('conference', None)
-        if conference:
-            queryset = queryset.filter(conference__slug=conference)
-        return queryset

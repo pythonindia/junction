@@ -13,7 +13,7 @@ from rest_framework import routers
 from junction.conferences import views as conference_views
 from junction.devices.views import DeviceDetailApiView, DeviceListApiView
 from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApiView, view_feedback
-from junction.proposals.views import ProposalListApiView
+from junction.proposals.api import ProposalListApiView
 from junction.schedule import views as schedule_views
 from junction.schedule.views import non_proposal_schedule_item_view
 

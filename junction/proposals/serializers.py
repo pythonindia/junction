@@ -1,7 +1,6 @@
-# Third Party Stuff
 from rest_framework import serializers
 
-from .models import Proposal, ProposalSection, ProposalType
+from .models import Proposal, ProposalSection, ProposalType, ProposalComment
 
 
 class ProposalSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,10 +21,37 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Proposal
-        fields = ('title', 'section', 'type', 'author',
+        fields = ('id', 'title', 'section', 'type', 'author',
                   'slug', 'description', 'target_audience',
                   'prerequisites', 'content_urls', 'speaker_info',
                   'speaker_links')
+
+
+class ProposalCommentSerializer(serializers.ModelSerializer):
+
+    commenter = serializers.SerializerMethodField()
+
+    def get_commenter(self, comment):
+        return comment.proposal.author.username
+
+    class Meta:
+        model = ProposalComment
+        fields = ('commenter', 'comment')
+
+
+class ProposalListSerializer(serializers.ModelSerializer):
+
+    comments = ProposalCommentSerializer(read_only=True, many=True, source='proposalcomment_set')
+    print(comments)
+    # def get_author(self, proposal):
+    #     return proposal.author.username
+
+    class Meta:
+        model = Proposal
+        fields = ('id', 'title', 'author',
+                  'slug', 'description', 'target_audience',
+                  'prerequisites', 'content_urls', 'speaker_info',
+                  'speaker_links', 'comments')
 
 
 class ProposalFilterSerializer(serializers.Serializer):
