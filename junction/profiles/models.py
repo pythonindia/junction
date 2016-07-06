@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-	''' 
-	It stores the City/Phone Details of the User.
+	'''
+    It stores the City/Phone Details of the User.
 	'''
 	user = models.OneToOneField(User)
 	city = models.CharField(max_length=100, blank=False, null=False)
