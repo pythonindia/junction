@@ -92,7 +92,7 @@ urlpatterns = patterns(
     url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(), name='device-detail'),
     url(r'^api/v1/feedback_questions/$', FeedbackQuestionListApiView.as_view(), name='feedback-questions-list'),
     url(r'^api/v1/feedback/$', FeedbackListApiView.as_view(), name='feedback-list'),
-    url(r'^api/v1/proposals/$', ProposalListApiView.as_view(), name='proposal-list'),
+    url(r'^api/v1/proposals/$', ProposalListApiView.as_view(), name='proposals-list-api'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
