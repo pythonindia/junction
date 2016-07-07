@@ -14,7 +14,6 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from hashids import Hashids
-from rest_framework import generics
 
 # Junction Stuff
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus

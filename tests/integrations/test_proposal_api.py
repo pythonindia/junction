@@ -2,7 +2,6 @@
 
 import pytest
 from django.core.urlresolvers import reverse
-from rest_framework.test import APITestCase
 from rest_framework import status
 
 
