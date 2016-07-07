@@ -21,10 +21,8 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Proposal
-        fields = ('id', 'title', 'section', 'type', 'author',
-                  'slug', 'description', 'target_audience',
-                  'prerequisites', 'content_urls', 'speaker_info',
-                  'speaker_links')
+        fields = ('title', 'section', 'type', 'author', 'slug', 'description', 'target_audience',
+                  'prerequisites', 'content_urls', 'speaker_info', 'speaker_links')
 
 
 class ProposalCommentSerializer(serializers.ModelSerializer):
@@ -41,17 +39,20 @@ class ProposalCommentSerializer(serializers.ModelSerializer):
 
 class ProposalListSerializer(serializers.ModelSerializer):
 
-    comments = ProposalCommentSerializer(read_only=True, many=True, source='proposalcomment_set')
-    print(comments)
-    # def get_author(self, proposal):
-    #     return proposal.author.username
+    comments = serializers.SerializerMethodField()
+
+    def get_comments(self, proposal):
+        qset = ProposalComment.objects.filter(proposal=proposal, private=False, reviewer=False)
+        s_comments = ProposalCommentSerializer(qset, many=True)
+        return s_comments.data
+
+    def get_author(self, proposal):
+        return proposal.author.username
 
     class Meta:
         model = Proposal
-        fields = ('id', 'title', 'author',
-                  'slug', 'description', 'target_audience',
-                  'prerequisites', 'content_urls', 'speaker_info',
-                  'speaker_links', 'comments')
+        fields = ('id', 'title', 'author', 'slug', 'description', 'target_audience',
+                  'prerequisites', 'content_urls', 'speaker_info', 'speaker_links', 'comments')
 
 
 class ProposalFilterSerializer(serializers.Serializer):
