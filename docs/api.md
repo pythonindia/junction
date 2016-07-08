@@ -1,17 +1,20 @@
 ### API
 
 
-Junction provides API to access information about the conference, schedules, and feedback. The API is for mobile clients to assist conference attendees. All the response format is `application/json`.
+Junction provides API to access information about the conference, schedule, and feedback. The API is for mobile clients to assist conference attendees. All the request and response format is `application/json`.
+
+- Demo site: `http://junctiondemo.herokuapp.com/`
+
 
 ### Conference - List
 
-- Endpoint: /api/v1/conferences/
+- Endpoint: `/api/v1/conferences/`
 
 - Allowed Method: `GET`.
 
-- Endpoint yields all conferences available in the system. There is no pagination.
+- Returns all conferences. There is no pagination.
 
-- Sample:
+- Sample Response:
 
 ```
 
@@ -23,13 +26,13 @@ Junction provides API to access information about the conference, schedules, and
 
 ### Venue - List
 
-- `Endpoint: api/v1/venues/`
+- Endpoint: `/api/v1/venues/`
 
 - Allowed Methods: `GET`
 
-- List all the venues in the system.
+- List all the venues.
 
-- Sample
+- Sample Response:
 
 ```
 
@@ -43,9 +46,9 @@ Junction provides API to access information about the conference, schedules, and
 
 - Allowed Method: `GET`
 
-- Get specific venue details
+- Return specific venue details.
 
-- Sample
+- Sample Response:
 
 ```
 
@@ -59,9 +62,9 @@ Junction provides API to access information about the conference, schedules, and
 
 - Allowed Method: `GET`
 
-- List all rooms in for all venues in the system.
+- List all rooms of all venues..
 
-- Sample
+- Sample Response:
 
 ```
 
@@ -77,7 +80,7 @@ Junction provides API to access information about the conference, schedules, and
 
 - Allowed Method: `GET`
 
-- Sample
+- Sample Response:
 
 ```
 
@@ -93,7 +96,7 @@ Junction provides API to access information about the conference, schedules, and
 
 - All the schedule items of all conferences.
 
-- Sample
+- Sample Response:
 
 ```
 
@@ -101,9 +104,9 @@ Junction provides API to access information about the conference, schedules, and
 
 ```
 
-- Response data keys are conference day date and it's schedule grouped by time.
+- Response data keys are conference day date and its schedule grouped by time.
 
-- `2015-10-04` - Conference day date
+- `2015-10-04` - Conference day date.
 
 - `08:30:00 - 09:15:00` - Start of the session - End of the session.
 
@@ -121,7 +124,7 @@ Junction provides API to access information about the conference, schedules, and
 
 - All the schedule items of the conference.
 
-- Sample
+- Sample Response:
 
 ```
 
