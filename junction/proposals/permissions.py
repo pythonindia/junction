@@ -5,8 +5,13 @@ from django.core.exceptions import PermissionDenied
 
 # Junction Stuff
 from junction.conferences.models import ConferenceProposalReviewer
+from junction.base.constants import ConferenceStatus
 
 from .models import ProposalSectionReviewer
+
+
+def is_proposal_voting_allowed(proposal):
+    return proposal.conference.status != ConferenceStatus.SCHEDULE_PUBLISHED
 
 
 def is_proposal_author(user, proposal):
