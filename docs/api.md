@@ -128,7 +128,7 @@ Junction provides API to access information about the conference, schedule, and 
 
 ```
 
-{ "2015-10-04": { "08:30:00 - 09:15:00": [ { "conference": "http://in.pycon.org/cfp/api/v1/conferences/1/", "session": { "description": "" }, "room_id": 4, "end_time": "09:15:00", "event_date": "2015-10-04", "start_time": "08:30:00", "type": "Break", "id": 37, "name": "Registration & Breakfast" } ], "09:30:00 - 10:15:00": [ { "conference": "http://in.pycon.org/cfp/api/v1/conferences/1/", "session": { "description": "" }, "room_id": 1, "end_time": "10:15:00", "event_date": "2015-10-04", "start_time": "09:30:00", "type": "Talk", "id": 38, "name": "Keynote - Nicholas H.Tollervey" } ],
+{ "2015-10-04": { "08:30:00 - 09:15:00": [ { "conference": "http://in.pycon.org/cfp/api/v1/conferences/1/", "session": { "description": "" }, "room_id": 4, "end_time": "09:15:00", "event_date": "2015-10-04", "start_time": "08:30:00", "type": "Break", "id": 37, "name": "Registration & Breakfast" } ], "09:30:00 - 10:15:00": [ { "conference": "http://in.pycon.org/cfp/api/v1/conferences/1/", "session": { "description": "" }, "room_id": 1, "end_time": "10:15:00", "event_date": "2015-10-04", "start_time": "09:30:00", "type": "Talk", "id": 38, "name": "Keynote - Nicholas H.Tollervey" } ],}
 
 ```
 
