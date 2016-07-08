@@ -39,7 +39,7 @@
         <div class="comment-description" id="comment-{{comment.id}}">
             <span>{{ comment.comment|markdown }}</span>
             <b>
-              {% if comment.private %}
+              {% if comment.private or comment.reviewer %}
                   {% if comment.commenter == proposal.author %}
                   Comment by proposer.
                   {% else %}
