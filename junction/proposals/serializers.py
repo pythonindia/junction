@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Proposal, ProposalSection, ProposalType, ProposalComment
 
 
-class ProposalSerializer(serializers.HyperlinkedModelSerializer):
+class BaseProposalSerializer(serializers.HyperlinkedModelSerializer):
     section = serializers.SerializerMethodField()
     type = serializers.SerializerMethodField()
     author = serializers.SerializerMethodField()
@@ -25,6 +25,10 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
                   'prerequisites', 'content_urls', 'speaker_info', 'speaker_links')
 
 
+class ProposalSerializer(BaseProposalSerializer):
+    pass
+
+
 class ProposalCommentSerializer(serializers.ModelSerializer):
 
     commenter = serializers.SerializerMethodField()
@@ -37,7 +41,7 @@ class ProposalCommentSerializer(serializers.ModelSerializer):
         fields = ('commenter', 'comment')
 
 
-class ProposalListSerializer(serializers.ModelSerializer):
+class ProposalListSerializer(BaseProposalSerializer):
 
     comments = serializers.SerializerMethodField()
 
