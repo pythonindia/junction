@@ -1,5 +1,6 @@
 There is a new comment on {{host}}{{proposal.get_absolute_url}} by {% if comment.private %}one of the reviewer{% else %}*{{comment.commenter}}*{% endif %}:
 
 "{{comment.comment}}"
+
 -------------------------------------------------------------------------------
 PS: Please, don't reply to the email. You can login({{host}}{{login_url}})to and leave a comment

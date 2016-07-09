@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import Http404, render
 from django.template.loader import render_to_string
+
 from rest_framework import filters, viewsets
 from rest_framework.response import Response
 
@@ -25,7 +26,7 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
         data = super(ScheduleView, self).get_queryset().prefetch_related(
             'session', 'session__proposal_type', 'session__proposal_section',
             'session__author').order_by('event_date', 'start_time')
-        return data
+        return self.filter_queryset(data)
 
     def list(self, request):
         data = self.get_queryset()
