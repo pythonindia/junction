@@ -7,7 +7,7 @@ import datetime
 import mock
 import pytest
 
-from junction.base.constants import ConferenceStatus
+from junction.base.constants import ConferenceStatus, ProposalStatus
 from junction.conferences.models import ConferenceProposalReviewer
 from junction.proposals.models import ProposalSectionReviewer
 
@@ -140,5 +140,6 @@ def create_proposal(conferences, create_user):
     proposal = factories.create_proposal(conference=conference,
                                          proposal_section=section,
                                          proposal_type=proposal_type,
-                                         author=user)
+                                         author=user,
+                                         status=ProposalStatus.PUBLIC)
     return proposal
