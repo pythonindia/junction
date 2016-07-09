@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import absolute_import, unicode_literals
 
 # Standard Library
@@ -19,6 +20,8 @@ from junction.base.constants import ProposalReviewVote, ProposalStatus, Proposal
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalVotesFilterForm
+from .permissions import is_conference_moderator
+
 from .models import (
     Proposal,
     ProposalComment,
@@ -33,7 +36,7 @@ from .models import (
 def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not (request.user.is_superuser or request.user in conference.moderators.all()):
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
     proposals_qs = Proposal.objects.filter(
