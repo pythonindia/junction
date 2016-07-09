@@ -57,4 +57,3 @@ def is_conference_moderator(user, conference):
 
     users = [mod.moderator for mod in conference.moderators.all()]
     return user in users
-
