@@ -33,7 +33,7 @@ from .models import (
 def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not (request.user.is_superuser or request.user in conference.moderators):
+    if not (request.user.is_superuser or request.user in conference.moderators.all()):
         raise PermissionDenied
 
     proposals_qs = Proposal.objects.filter(
