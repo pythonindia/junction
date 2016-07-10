@@ -103,7 +103,7 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
 @admin.register(models.ProposalComment)
 class ProposalCommentAdmin(TimeAuditAdmin):
     list_display = ('comment', 'proposal', 'commenter', 'private', 'reviewer') + TimeAuditAdmin.list_display
-    list_filter = ['private', 'reviewer']
+    list_filter = ['private', 'reviewer', 'commenter']
 
     def get_queryset(self, request):
         qs = super(ProposalCommentAdmin, self).get_queryset(request)
