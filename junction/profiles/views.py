@@ -22,3 +22,8 @@ def dashboard(request):
                 conf_proposals[conf.name] = [proposal]
     return render(request, 'profiles/dashboard.html',
                   {'conf_proposals': conf_proposals})
+
+
+@login_required
+def profile(request):
+	return render(request, 'profiles/userprofile.html')
