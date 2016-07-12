@@ -5,10 +5,10 @@
 {% load django_bootstrap_breadcrumbs %}
 {% load proposal_filters %}
 
-{% block head_title %} Dashboard {% endblock %}
-{% block og_title %} Dashboard {% endblock %}
-{% block og_description %} Dashboard {% endblock %}
-{% block page_description %} Dashboard {% endblock %}
+{% block head_title %} Profile {% endblock %}
+{% block og_title %} Profile {% endblock %}
+{% block og_description %} Profile {% endblock %}
+{% block page_description %} Profile {% endblock %}
 
 {% block endhead %}
     <!-- Custom CSS -->
@@ -25,90 +25,22 @@
         <a href="#" class="navbar-brand">Junction</a>
 {% endblock navbar_logo %}
 
-
 {% block content %}
-<section class="content custom-container proposal-list">
-    <div class="push-4-bottom push-1-top">
-        <div class="row">
-            <h1>Your Proposals</h1>
-            <hr>
-            <br>
-            {% if conf_proposals %}
-                {% for conference,proposals in conf_proposals.items %}
-                <h3><a href="{% url 'proposals-list' conference|slugify %}">{{ conference }}</a></h3>
-                {% for proposal in proposals %}
-        <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
-            <div class="col-xs-12" >
-                <div class="proposal-list-content">
-                    <div class="col-sm-1 hidden-xs proposal-stats">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4 class="clear-margin">{{ proposal.get_votes_count }}</h4>
-                                <small class="text-muted"> Votes </small>
-                            </div>
-                        </div>
-                        <div class="text-center space-on-top">
-                            <i class="fa fa-comments-o"></i>
-                            <span class="align-middle">
-                                {{ proposal.get_comments_count }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-sm-11 col-xs-12">
-                        <p class="col-xs-12  visible-xs">
-                            <span class="pull-left">
-                                <i class="fa fa-comments"></i>{{ proposal.get_comments_count }}
-                            </span>
-                            <span class="pull-right">
-                                <i class="fa fa-thumbs-up"></i>{{ proposal.get_votes_count }}
-                            </span>
-                        </p>
-                        <h3 class="proposal--title">
-                            <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title|capfirst }}</a>
-                        </h3>
-                        <div class="clearfix">
-                            <div class="pull-left">
-                                {% if display_status %}
-                                    <span class="label label-proposal-type inline-block">
-                                        {{ proposal.get_status_display }}
-                                    </span>
-                                {% endif %}
-                                <a class='tag tag__proposal_type label label-proposal-type inline-block'>{{ proposal.proposal_type }}</a>
-                                <a class='tag tag__proposal_section label label-proposal-type inline-block'>{{ proposal.proposal_section }}</a>
-                                {% for url in proposal|get_content_urls %}
-                                    {% if url %}
-                                    <a href='{{ url }}' class='tag tag__proposal_section label label-proposal-type inline-block'
-                                    data-toggle="tooltip"
-                                    data-original-title="Content URL
-                                    available" >
-                                        <i class="fa fa-external-link"></i>
-                            </a>
-                                    {% endif %}
-                                {% endfor %}
-                             </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="form-container space-2-bottom {% if form.errors %} has-error {% endif %}">
+               <h2 class="text-center">Edit Profile</h2>
+                <div class="pad-2 push-half-top push-2-bottom">
+                    <p> {% block trans %} Add Your City and Contact Number:{% endblock %} </p>
+                    <form class="form-horizontal login-form" method="POST">
+                        {% csrf_token %}
+                    </form>
 
-                            <small class="pull-right">
-                                <i class="fa fa-user"></i> <b>
-                                    {% if proposal.author.get_full_name %}
-                                        {{ proposal.author.get_full_name }} (~{{ proposal.author.username }})
-                                    {% else %}
-                                        {{ proposal.author.username }}
-                                    {% endif %}
-                                </b> |&nbsp;
-                                <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
-                            </small>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
-        <br>
-    {% endfor %}
-    {% endfor %}
-    {% else %}
-            <p>No proposals. </p>
-    {% endif %}
-        </div>
     </div>
-</section>
+</div>
+
+
 {% endblock %}
