@@ -184,11 +184,11 @@ def reviewer_comments_dashboard(request, conference_slug):
 
 @require_http_methods(['GET', 'POST'])
 def reviewer_votes_dashboard(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not request.user.is_superuser:
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
-    conference = get_object_or_404(Conference, slug=conference_slug)
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
@@ -259,10 +259,11 @@ def export_reviewer_votes(request, conference_slug):
     """
     Write reviewer votes to a spreadsheet.
     """
-    if not request.user.is_superuser:
+    conference = get_object_or_404(Conference, slug=conference_slug)
+
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
-    conference = get_object_or_404(Conference, slug=conference_slug)
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
