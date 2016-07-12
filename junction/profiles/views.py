@@ -5,9 +5,13 @@ from collections import OrderedDict
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.http import HttpResponseRedirect
 
 # Junction Stuff
 from junction.conferences.models import Conference
+
+#Profile Stuff
+from .models import Profile
 
 
 @login_required
@@ -26,4 +30,10 @@ def dashboard(request):
 
 @login_required
 def profile(request):
-	return render(request, 'profiles/userprofile.html')
+    if request.method=="POST":
+        city = request.POST['city']
+        contact_no = request.POST['contact_no']
+        Profile.objects.create(user=request.user, city=city, contact_no=contact_no)
+        return HttpResponseRedirect("/profile")  
+    elif request.method=="GET":
+	   return render(request, 'profiles/userprofile.html')
