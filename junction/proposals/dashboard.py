@@ -131,7 +131,7 @@ def proposals_dashboard(request, conference_slug):
 def reviewer_comments_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not request.user.is_superuser:
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
     conference_reviewers = ConferenceProposalReviewer.objects.filter(
         conference=conference, active=True)
