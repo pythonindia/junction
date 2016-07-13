@@ -145,7 +145,9 @@ def reviewer_comments_dashboard(request, conference_slug):
         by_conference.setdefault(id, [reviewers.reviewer, 0])
         by_conference[id][1] = ProposalComment.objects.filter(
             commenter=reviewers.reviewer,
-            deleted=False, private=True).count()
+            deleted=False, private=True,
+            proposal__status=ProposalStatus.PUBLIC, 
+            proposal__conference=conference).count()
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
