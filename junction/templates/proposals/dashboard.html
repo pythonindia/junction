@@ -88,17 +88,17 @@
                             <tr>
                                 <th>Type Name</th>
                                 <th>Total</th>
-                                <th><a href="{% url 'proposal-state' conference.slug%}?q='reviewed' %}">
-                                  Reviewed</a></th>
-                                <th><a href="{% url 'proposal-state' conference.slug%}?q='unreviewed' %}">
-                                  UnReviewed</a></th>
+                                <th>Reviewed</th>
+                                <th>UnReviewed</th>
                             </tr>
                             {% for group,count in group_by_type.items %}
                             <tr>
                                 <td>{{count.3}}</td>
                                 <td><a href="{% url 'proposals-list' conference.slug%}?proposal_type={{group}}"> {{count.0}}</a></td>
-                                <td>{{count.1}}</td>
-                                <td>{{count.2}}</td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=reviewed">
+                                  {{count.1}}</a></td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=unreviewed">
+                                  {{count.2}}</a></td>
                             </tr>
                             {% endfor %}
                         </table>
