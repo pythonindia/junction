@@ -52,26 +52,28 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-xs -6 col-sm-6 ">
-      <div class="panel panel-primary">
-        <div class="panel-heading"> {{ state }} proposals</div>
-        <div class="panel-body">
-          {% for section, proposal_list in proposals.items %}
-          <h3 class="section-title">{{ section }}</h3>
-          {% for proposal in proposal_list %}
-          <h4 class="proposal--title">
-            <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title|capfirst }}</a>
-            - {{ proposal.proposal_type }}
-          </h4>
-          {% endfor %}
+  <section class="content custom-container proposal-list">
+    <div class="push-4-bottom push-1-top">
+      <div class="row">
+        <div class="col-xs -12 col-sm-12 ">
+          <p class="meta">
+            <h2 class="panel-heading">{{ state }} proposals</h2>
+          </p>
           <hr>
-          {% endfor %}
+          <div class="#proposals" class="row"">
+            {% for section, proposal_list in proposals.items %}
+            <h3 class="section-title">{{ section }}</h3>
+            {% for proposal in proposal_list %}
+            <h4 class="proposal--title">
+              <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title|capfirst }}</a>
+              - {{ proposal.proposal_type }}
+            </h4>
+            {% endfor %}
+            <hr>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  </div>
 </section>
 {% endblock %}
