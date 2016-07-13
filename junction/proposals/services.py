@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import absolute_import, unicode_literals
 
 # Standard Library
 import logging
+import collections
 
 # Third Party Stuff
 from django.conf import settings
@@ -10,6 +12,7 @@ from markdown2 import markdown
 
 # Junction Stuff
 from junction.base.emailer import send_email
+from junction.base.constants import ProposalStatus
 
 from .models import ProposalSection, ProposalSectionReviewer
 
@@ -111,4 +114,30 @@ def send_mail_for_proposal_content(conference, proposal, host):
         'proposal': proposal,
         'author_name': author_name,
     }
-    return send_email(to=author, template_dir='proposals/email/upload_content', context=context)
+    return send_email(to=author, template_dir='proposals/email/upload_content',
+                      context=context)
+
+
+def group_proposals_by_reveiew_state(conf, state='reviewed'):
+    reviewed_qs = conf.proposal_set.filter(
+        status=ProposalStatus.PUBLIC).select_related(
+            'proposal_type', 'proposal_section',
+            'proposalsection').filter(proposalcomment__private=True,
+                                      proposalcomment__deleted=False)
+    if state == 'reviewed':
+        proposal_qs = reviewed_qs.distinct()
+        return _arrange_proposals_by_section(proposal_qs)
+    else:
+        ids = reviewed_qs.values_list('id').distinct()
+        qs = conf.proposal_set.filter(
+            status=ProposalStatus.PUBLIC).select_related(
+                'proposal_type', 'proposal_section',
+                'proposalsection').exclude(pk__in=ids)
+        return _arrange_proposals_by_section(qs)
+
+
+def _arrange_proposals_by_section(proposal_qs):
+    res = collections.defaultdict(list)
+    for proposal in proposal_qs:
+        res[proposal.proposal_section.name].append(proposal)
+    return res
