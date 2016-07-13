@@ -341,8 +341,7 @@ def proposal_state(request, conference_slug):
 
     state = request.GET.get('q', 'unreviewed')
     proposals = services.group_proposals_by_reveiew_state(conf=conf, state=state)
-
     return render(request, 'proposals/review_state.html',
                   {'conference': conf,
-                   'proposals': proposals,
+                   'proposals': dict(proposals),
                    'state': state.title()})

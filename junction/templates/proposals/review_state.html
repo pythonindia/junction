@@ -58,13 +58,14 @@
         <div class="panel-heading"> {{ state }} proposals</div>
         <div class="panel-body">
           {% for section, proposal_list in proposals.items %}
-          <h2 class="section-title">{{ section }}</h2>
+          <h3 class="section-title">{{ section }}</h3>
           {% for proposal in proposal_list %}
-          <h3 class="proposal--title">
+          <h4 class="proposal--title">
             <a href='{{ proposal.get_absolute_url }}'>{{ forloop.counter}}. {{ proposal.title|capfirst }}</a>
             - {{ proposal.proposal_type }}
-          </h3>
+          </h4>
           {% endfor %}
+          <hr>
           {% endfor %}
         </div>
       </div>
