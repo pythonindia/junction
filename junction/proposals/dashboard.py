@@ -16,7 +16,11 @@ from django.views.decorators.http import require_http_methods
 from xlsxwriter.workbook import Workbook
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
+from junction.base.constants import (
+    ProposalReviewVote,
+    ProposalStatus,
+    ProposalVotesFilter
+)
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalVotesFilterForm
@@ -146,8 +150,8 @@ def reviewer_comments_dashboard(request, conference_slug):
         by_conference[id][1] = ProposalComment.objects.filter(
             commenter=reviewers.reviewer,
             deleted=False, private=True,
-            proposal__status=ProposalStatus.PUBLIC, 
-            proposal__conference=conference).count()
+            proposal__status=ProposalStatus.PUBLIC,
+            proposal__conference=conference).distinct('proposal').count()
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
@@ -243,7 +247,8 @@ def reviewer_votes_dashboard(request, conference_slug):
             p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
     elif votes == ProposalVotesFilter.SORT:
         proposals_qs = sorted(
-            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
+            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
+            reverse=True)
 
     for section in proposal_sections:
         section_proposals = [
@@ -299,10 +304,12 @@ def export_reviewer_votes(request, conference_slug):
                        p.get_reviewer_votes_count(),) + \
                     vote_details + (p.get_votes_count(), vote_comment,)
                 if p.get_reviewer_votes_count_by_value(
-                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
+                        ProposalSectionReviewerVoteValue.objects.get(
+                            vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
                     cell_format = book.add_format({'bg_color': 'red'})
                 elif p.get_reviewer_votes_count_by_value(
-                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
+                        ProposalSectionReviewerVoteValue.objects.get(
+                            vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
                     cell_format = book.add_format({'bg_color': 'green'})
                 elif p.get_reviewer_votes_count() < 2:
                     cell_format = book.add_format({'bg_color': 'yellow'})
