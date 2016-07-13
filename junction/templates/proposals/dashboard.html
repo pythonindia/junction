@@ -88,8 +88,10 @@
                             <tr>
                                 <th>Type Name</th>
                                 <th>Total</th>
-                                <th>Reviewed</th>
-                                <th>UnReviewed</th>
+                                <th><a href="{% url 'proposal-state' conference.slug%}?q='reviewed' %}">
+                                  Reviewed</a></th>
+                                <th><a href="{% url 'proposal-state' conference.slug%}?q='unreviewed' %}">
+                                  UnReviewed</a></th>
                             </tr>
                             {% for group,count in group_by_type.items %}
                             <tr>

@@ -34,6 +34,8 @@ from .models import (
     ProposalSectionReviewerVoteValue
 )
 
+from . import services
+
 
 @login_required
 @require_http_methods(['GET'])
@@ -327,3 +329,20 @@ def export_reviewer_votes(request, conference_slug):
     response['Content-Disposition'] = "attachment; filename=junction-{}.xlsx".format(file_name)
 
     return response
+
+
+@login_required
+@require_http_methods(['GET'])
+def proposal_state(request, conference_slug):
+    conf = get_object_or_404(Conference, slug=conference_slug)
+
+    if not is_conference_moderator(user=request.user, conference=conf):
+        raise PermissionDenied
+
+    state = request.GET.get('q', 'unreviewed')
+    proposals = services.group_proposals_by_reveiew_state(conf=conf, state=state)
+
+    return render(request, 'proposals/review_state.html',
+                  {'conference': conf,
+                   'proposals': proposals,
+                   'state': state.title()})
