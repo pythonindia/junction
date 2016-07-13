@@ -72,8 +72,10 @@
                             <tr>
                                 <td></td>
                                 <td>{{total}}</td>
-                                <td>{{reviewed}}</td>
-                                <td>{{unreviewed}}</td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=reviewed">
+                                  {{reviewed}}</a></td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=unreviewed">
+                                  {{unreviewed}}</a></td>
                             </tr>
                         </table>
                     </div>
@@ -95,10 +97,8 @@
                             <tr>
                                 <td>{{count.3}}</td>
                                 <td><a href="{% url 'proposals-list' conference.slug%}?proposal_type={{group}}"> {{count.0}}</a></td>
-                                <td><a href="{% url 'proposal-state' conference.slug%}?q=reviewed">
-                                  {{count.1}}</a></td>
-                                <td><a href="{% url 'proposal-state' conference.slug%}?q=unreviewed">
-                                  {{count.2}}</a></td>
+                                <td>{{count.1}}</td>
+                                <td>{{count.2}}</td>
                             </tr>
                             {% endfor %}
                         </table>
