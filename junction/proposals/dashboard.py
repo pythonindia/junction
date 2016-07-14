@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import absolute_import, unicode_literals
 
 # Standard Library
@@ -15,10 +16,16 @@ from django.views.decorators.http import require_http_methods
 from xlsxwriter.workbook import Workbook
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewVote, ProposalStatus, ProposalVotesFilter
+from junction.base.constants import (
+    ProposalReviewVote,
+    ProposalStatus,
+    ProposalVotesFilter
+)
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalVotesFilterForm
+from .permissions import is_conference_moderator
+
 from .models import (
     Proposal,
     ProposalComment,
@@ -27,13 +34,15 @@ from .models import (
     ProposalSectionReviewerVoteValue
 )
 
+from . import services
+
 
 @login_required
 @require_http_methods(['GET'])
 def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not request.user.is_superuser:
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
     proposals_qs = Proposal.objects.filter(
@@ -128,7 +137,7 @@ def proposals_dashboard(request, conference_slug):
 def reviewer_comments_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not request.user.is_superuser:
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
     conference_reviewers = ConferenceProposalReviewer.objects.filter(
         conference=conference, active=True)
@@ -142,7 +151,9 @@ def reviewer_comments_dashboard(request, conference_slug):
         by_conference.setdefault(id, [reviewers.reviewer, 0])
         by_conference[id][1] = ProposalComment.objects.filter(
             commenter=reviewers.reviewer,
-            deleted=False, private=True).count()
+            deleted=False, private=True,
+            proposal__status=ProposalStatus.PUBLIC,
+            proposal__conference=conference).distinct('proposal').count()
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
@@ -181,11 +192,11 @@ def reviewer_comments_dashboard(request, conference_slug):
 
 @require_http_methods(['GET', 'POST'])
 def reviewer_votes_dashboard(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
 
-    if not request.user.is_superuser:
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
-    conference = get_object_or_404(Conference, slug=conference_slug)
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
@@ -238,7 +249,8 @@ def reviewer_votes_dashboard(request, conference_slug):
             p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
     elif votes == ProposalVotesFilter.SORT:
         proposals_qs = sorted(
-            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
+            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
+            reverse=True)
 
     for section in proposal_sections:
         section_proposals = [
@@ -256,10 +268,11 @@ def export_reviewer_votes(request, conference_slug):
     """
     Write reviewer votes to a spreadsheet.
     """
-    if not request.user.is_superuser:
+    conference = get_object_or_404(Conference, slug=conference_slug)
+
+    if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
-    conference = get_object_or_404(Conference, slug=conference_slug)
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
@@ -293,10 +306,12 @@ def export_reviewer_votes(request, conference_slug):
                        p.get_reviewer_votes_count(),) + \
                     vote_details + (p.get_votes_count(), vote_comment,)
                 if p.get_reviewer_votes_count_by_value(
-                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
+                        ProposalSectionReviewerVoteValue.objects.get(
+                            vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
                     cell_format = book.add_format({'bg_color': 'red'})
                 elif p.get_reviewer_votes_count_by_value(
-                        ProposalSectionReviewerVoteValue.objects.get(vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
+                        ProposalSectionReviewerVoteValue.objects.get(
+                            vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
                     cell_format = book.add_format({'bg_color': 'green'})
                 elif p.get_reviewer_votes_count() < 2:
                     cell_format = book.add_format({'bg_color': 'yellow'})
@@ -314,3 +329,19 @@ def export_reviewer_votes(request, conference_slug):
     response['Content-Disposition'] = "attachment; filename=junction-{}.xlsx".format(file_name)
 
     return response
+
+
+@login_required
+@require_http_methods(['GET'])
+def proposal_state(request, conference_slug):
+    conf = get_object_or_404(Conference, slug=conference_slug)
+
+    if not is_conference_moderator(user=request.user, conference=conf):
+        raise PermissionDenied
+
+    state = request.GET.get('q', 'unreviewed')
+    proposals = services.group_proposals_by_reveiew_state(conf=conf, state=state)
+    return render(request, 'proposals/review_state.html',
+                  {'conference': conf,
+                   'proposals': dict(proposals),
+                   'state': state.title()})

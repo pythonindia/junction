@@ -78,6 +78,11 @@ Contributing
 [new-issue]: https://github.com/pythonindia/junction/issues/new
 [guidelines]: https://github.com/pythonindia/junction/blob/master/CONTRIBUTING.md
 
+### API
+
+- HTTP API documentation is [here](https://github.com/pythonindia/junction/blob/master/docs/api.md).
+- Python Client for junction is [here](https://github.com/pythonindia/junction-client).
+
 ## Contributors
 
 <table>

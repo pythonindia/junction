@@ -72,8 +72,10 @@
                             <tr>
                                 <td></td>
                                 <td>{{total}}</td>
-                                <td>{{reviewed}}</td>
-                                <td>{{unreviewed}}</td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=reviewed">
+                                  {{reviewed}}</a></td>
+                                <td><a href="{% url 'proposal-state' conference.slug%}?q=unreviewed">
+                                  {{unreviewed}}</a></td>
                             </tr>
                         </table>
                     </div>

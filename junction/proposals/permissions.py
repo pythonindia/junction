@@ -49,3 +49,11 @@ def is_proposal_author_or_permisson_denied(user, proposal):
     if is_proposal_author(user, proposal):
         return True
     raise PermissionDenied
+
+
+def is_conference_moderator(user, conference):
+    if user.is_superuser:
+        return True
+
+    users = [mod.moderator for mod in conference.moderators.all()]
+    return user in users
