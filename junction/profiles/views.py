@@ -36,5 +36,5 @@ def profile(request):
         Profile.objects.create(user=request.user, city=city, contact_no=contact_no)
         return HttpResponseRedirect("/profiles")
 
-    elif request.method=="GET":
+    elif request.method == "GET":
         return render(request, 'profiles/userprofile.html')
