@@ -34,6 +34,7 @@ def profile(request):
         city = request.POST['city']
         contact_no = request.POST['contact_no']
         Profile.objects.create(user=request.user, city=city, contact_no=contact_no)
-        return HttpResponseRedirect("/profile")  
+        return HttpResponseRedirect("/profiles")
+
     elif request.method=="GET":
 	   return render(request, 'profiles/userprofile.html')

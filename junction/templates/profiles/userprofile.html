@@ -42,20 +42,13 @@
                     <div class="form-group">
                         <label for="contact" class="col-lg-4 control-label"> Contact :</label>
                     <div class="col-lg-8">
-                        <input autofocus="autofocus" name="contact_no" placeholder="Enter Your Contact No:" type="text">
+                        <input autofocus="autofocus" name="contact_no" placeholder="Enter Your Contact No:" type="text" pattern="/(7|8|9)\d{9}/">
                     </div>
                     </div>
                     <div class="form-group">
                         <div class="col-lg-8 col-lg-offset-4">
                             <button class="btn btn-primary" type="submit">
                             Submit
-                            </button>
-                    </form>
-                    <form method="PUT">
-                    {% csrf_token %}        
-                            &nbsp;
-                            <button class="btn btn-primary" type="submit">
-                            Update
                             </button>
                         </div>
                     </div>
