@@ -187,6 +187,16 @@ class Proposal(TimeAuditModel):
         sum_of_votes = sum((v.vote_value.vote_value for v in votes))
         return sum_of_votes
 
+    def get_reviewer_vote_value(self, reviewer):
+        try:
+            vote = ProposalSectionReviewerVote.objects.get(
+                proposal=self, voter__conference_reviewer__reviewer=reviewer,
+            )
+            return vote.vote_value.vote_value
+        except ProposalSectionReviewerVote.DoesNotExist as e:
+            print('{}'.format(e))
+            return 0
+
     def get_reviewers_count(self):
         """ Count of reviewers for given proposal section """
         return ProposalSectionReviewer.objects.filter(

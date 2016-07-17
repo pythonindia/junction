@@ -247,10 +247,16 @@ def reviewer_votes_dashboard(request, conference_slug):
     elif votes == ProposalVotesFilter.MIN_ONE_VOTE:
         proposals_qs = [
             p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
-    elif votes == ProposalVotesFilter.SORT:
+    elif votes == ProposalVotesFilter.SORT_BY_SUM:
         proposals_qs = sorted(
             proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
             reverse=True)
+    elif votes == ProposalVotesFilter.SORT_BY_REVIEWER:
+        proposals_qs = sorted(
+            proposals_qs,
+            key=lambda x: x.get_reviewer_vote_value(reviewer=request.user),
+            reverse=True,
+        )
 
     for section in proposal_sections:
         section_proposals = [
