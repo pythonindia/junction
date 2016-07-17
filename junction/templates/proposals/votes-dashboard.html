@@ -30,15 +30,15 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <br /><br />
-                </form>
-                    {% buttons %}
+                {% buttons %}
                 <span class="pull-right"></span>
                 <div class="col-sm-offset-5 col-sm-2 text-center">
                     <button type="submit" class="btn btn-primary">
                         Submit
                     </button>
                 </div>
-                    {% endbuttons %}
+                {% endbuttons %}
+                </form>
             </div>
             <br />
             <div id="#proposals" class="row">
