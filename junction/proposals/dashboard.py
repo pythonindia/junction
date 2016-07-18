@@ -247,21 +247,22 @@ def reviewer_votes_dashboard(request, conference_slug):
     elif votes == ProposalVotesFilter.MIN_ONE_VOTE:
         proposals_qs = [
             p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
-    elif votes == ProposalVotesFilter.SORT_BY_SUM:
-        proposals_qs = sorted(
-            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
-            reverse=True)
     elif votes == ProposalVotesFilter.SORT_BY_REVIEWER:
         proposals_qs = sorted(
             proposals_qs,
             key=lambda x: x.get_reviewer_vote_value(reviewer=request.user),
             reverse=True,
         )
+    elif votes == ProposalVotesFilter.SORT_BY_SUM:
+        proposals_qs = sorted(
+            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
+            reverse=True)
+        proposals = [s_items('', proposals_qs)]
 
-    for section in proposal_sections:
-        section_proposals = [
-            p for p in proposals_qs if p.proposal_section == section]
-        proposals.append(s_items(section, section_proposals))
+    if votes != ProposalVotesFilter.SORT_BY_SUM:
+        for section in proposal_sections:
+            section_proposals = [p for p in proposals_qs if p.proposal_section == section]
+            proposals.append(s_items(section, section_proposals))
 
     return render(request, 'proposals/votes-dashboard.html',
                   {'conference': conference,
