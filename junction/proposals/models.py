@@ -193,8 +193,7 @@ class Proposal(TimeAuditModel):
                 proposal=self, voter__conference_reviewer__reviewer=reviewer,
             )
             return vote.vote_value.vote_value
-        except ProposalSectionReviewerVote.DoesNotExist as e:
-            print('{}'.format(e))
+        except ProposalSectionReviewerVote.DoesNotExist:
             return 0
 
     def get_reviewers_count(self):
