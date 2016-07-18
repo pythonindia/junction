@@ -31,8 +31,8 @@ def dashboard(request):
 @login_required
 def profile(request):
     if request.method == "POST":
-        city = request.POST['city']
-        contact_no = request.POST['contact_no']
+        city = request.POST.get('city')
+        contact_no = request.POST.get('contact_no')
         Profile.objects.create(user=request.user, city=city, contact_no=contact_no)
         return HttpResponseRedirect("/profiles")
 
