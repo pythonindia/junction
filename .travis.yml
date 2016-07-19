@@ -11,7 +11,8 @@ cache:
   - $HOME/.pip-cache/
 
 install:
-  - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
+  - pip install pip==8.1.2
+  - pip install -r requirements-dev.txt --allow-all-external
   - pip install coveralls
 
 env:
