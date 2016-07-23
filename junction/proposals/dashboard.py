@@ -19,7 +19,6 @@ from xlsxwriter.workbook import Workbook
 from junction.base.constants import (
     ProposalReviewVote,
     ProposalStatus,
-    ProposalVotesFilter
 )
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -29,7 +28,6 @@ from .utils import _sort_proposals_for_dashboard
 from .models import (
     Proposal,
     ProposalComment,
-    ProposalSection,
     ProposalSectionReviewer,
     ProposalSectionReviewerVoteValue
 )

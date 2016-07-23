@@ -80,13 +80,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
                   p not in batches]
         proposals.append(s_items('Batch 4', batch4))
 
-        # proposals = selected + batch1 + batch2 + batch3 + batch4
-        # unique_proposals = set()
-        # proposals = [x for x in proposals if not (x in unique_proposals or unique_proposals.add(x))]
-        # proposals = [s_items('', set(proposals))]
-
     if votes not in (ProposalVotesFilter.SORT_BY_SUM, ProposalVotesFilter.SORT_BY_SELECTION):
-        print('f')
         for section in proposal_sections:
             section_proposals = [p for p in proposals_qs if p.proposal_section == section]
             proposals.append(s_items(section, section_proposals))
