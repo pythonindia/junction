@@ -56,7 +56,7 @@ def get_choice_feedback_questions(conference_id):
     schedule item type.
     """
     qs = ChoiceFeedbackQuestion.objects.filter(
-        conference_id=conference_id).prefetch_related('allowed_values')
+        conference_id=conference_id).select_related('allowed_values')
     return _get_question_oragnized_by_type(qs)
 
 
