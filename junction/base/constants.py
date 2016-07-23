@@ -82,6 +82,7 @@ class ProposalVotesFilter:
     _MIN_ONE_VOTE = [1, "Minimum 1 vote"]
     _SORT_BY_SUM = [2, "Sort by total votes"]
     _SORT_BY_REVIEWER = [3, "Sort by your votes"]
+    _SORT_BY_SELECTION = [4, "Sort by selection"]
 
 
 class ConferenceSettingConstants:
