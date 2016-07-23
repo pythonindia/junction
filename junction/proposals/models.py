@@ -15,7 +15,8 @@ from hashids import Hashids
 from simple_history.models import HistoricalRecords
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole
+from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole, \
+    ProposalReviewVote
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -201,6 +202,12 @@ class Proposal(TimeAuditModel):
         return ProposalSectionReviewer.objects.filter(
             proposal_section=self.proposal_section
         ).count()
+
+    def has_negative_votes(self):
+        """ Show sum of reviewer votes for given vote value. """
+        return ProposalSectionReviewerVote.objects.filter(
+            proposal=self, vote_value__vote_value=ProposalReviewVote.NOT_ALLOWED,
+        ).count() > 0
 
     class Meta:
         unique_together = ("conference", "slug")
