@@ -2,7 +2,7 @@ language: python
 sudo: false
 python:
 - '2.7'
-- '3.5'
+- '3.4'
 addons:
   postgresql: "9.3"
 
@@ -11,8 +11,7 @@ cache:
   - $HOME/.pip-cache/
 
 install:
-  - pip install pip==8.1.2
-  - pip install -r requirements-dev.txt --allow-all-external
+  - pip install -r requirements-dev.txt --allow-all-external --download-cache $HOME/.pip-cache
   - pip install coveralls
 
 env:
