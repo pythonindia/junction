@@ -55,7 +55,7 @@ class ProposalListSerializer(BaseProposalSerializer):
 
     class Meta:
         model = Proposal
-        fields = ('id', 'title', 'author', 'slug', 'description', 'target_audience',
+        fields = ('id', 'title', 'author', 'slug', 'section', 'type', 'description', 'target_audience',
                   'prerequisites', 'content_urls', 'speaker_info', 'speaker_links', 'comments')
 
 
