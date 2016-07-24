@@ -50,34 +50,28 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
         proposals_qs = [p for p in proposals_qs if not p.has_negative_votes()]
         proposals_qs = sorted(proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
 
-        selected = [p for p in proposals_qs if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 1]
+        selected = [p for p in proposals_qs if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) >= 2]
         proposals.append(s_items('Selected', selected))
 
-        batches = []
-
         batch1 = [p for p in proposals_qs
-                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 0 and
-                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 1]
+                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) == 1 and
+                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 2]
         proposals.append(s_items('1 Must Have & 2+ Good Votes', batch1))
-        batches += batch1
 
         batch2 = [p for p in proposals_qs
-                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 0 and
-                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 0 and
-                  p not in batches]
+                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) == 1 and
+                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) == 1]
         proposals.append(s_items('1 Must Have & 1 Good Vote', batch2))
-        batches += batch2
 
         batch3 = [p for p in proposals_qs
-                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 1 and
-                  p not in batches]
+                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 2 and
+                  p not in batch1]
         proposals.append(s_items('2+ Good Votes', batch3))
-        batches += batch3
 
         batch4 = [p for p in proposals_qs
-                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 0 and
-                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_BAD) > 1 and
-                  p not in batches]
+                  if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) == 1 and
+                  p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_BAD) > 2 and
+                  p not in batch2]
         proposals.append(s_items('1 Good & 2+ Not Bad votes', batch4))
 
     if votes not in (ProposalVotesFilter.SORT_BY_SUM, ProposalVotesFilter.SORT_BY_SELECTION):
