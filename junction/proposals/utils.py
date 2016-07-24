@@ -58,27 +58,27 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
         batch1 = [p for p in proposals_qs
                   if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 0 and
                   p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 1]
-        proposals.append(s_items('Batch 1', batch1))
+        proposals.append(s_items('1 Must Have & 2+ Good Votes', batch1))
         batches += batch1
 
         batch2 = [p for p in proposals_qs
                   if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) > 0 and
                   p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 0 and
                   p not in batches]
-        proposals.append(s_items('Batch 2', batch2))
+        proposals.append(s_items('1 Must Have & 1 Good Vote', batch2))
         batches += batch2
 
         batch3 = [p for p in proposals_qs
                   if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 1 and
                   p not in batches]
-        proposals.append(s_items('Batch 3', batch3))
+        proposals.append(s_items('2+ Good Votes', batch3))
         batches += batch3
 
         batch4 = [p for p in proposals_qs
                   if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 0 and
                   p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_BAD) > 1 and
                   p not in batches]
-        proposals.append(s_items('Batch 4', batch4))
+        proposals.append(s_items('1 Good & 2+ Not Bad votes', batch4))
 
     if votes not in (ProposalVotesFilter.SORT_BY_SUM, ProposalVotesFilter.SORT_BY_SELECTION):
         for section in proposal_sections:
