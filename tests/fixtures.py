@@ -143,3 +143,11 @@ def create_proposal(conferences, create_user):
                                          author=user,
                                          status=ProposalStatus.PUBLIC)
     return proposal
+
+
+@pytest.fixture
+def create_proposals(conferences, create_user):
+    conference, user = conferences['future'], create_user['user']
+    proposals = [factories.create_proposal(author=user, status=ProposalStatus.PUBLIC, conference=conference)
+                 for i in range(30)]
+    return proposals
