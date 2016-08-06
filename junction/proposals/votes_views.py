@@ -1,31 +1,21 @@
 # -*- coding: utf-8 -*-
-
-# Third Party Stuff
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-# Junction Stuff
-from junction.base.constants import ConferenceSettingConstants, ProposalUserVoteRole
+from junction.base.constants import ConferenceSettingConstants, \
+    ProposalUserVoteRole
 from junction.conferences.models import Conference
 
 from . import permissions
+from . import utils
 from .forms import ProposalReviewerVoteForm
-from .models import (
-    Proposal,
-    ProposalComment,
-    ProposalCommentType,
-    ProposalCommentVote,
-    ProposalSectionReviewer,
-    ProposalSectionReviewerVote,
-    ProposalSectionReviewerVoteValue,
-    ProposalVote,
-    PSRVotePhase,
-)
+from .models import PSRVotePhase, Proposal, ProposalComment, \
+    ProposalCommentVote, ProposalSectionReviewer, ProposalSectionReviewerVote, \
+    ProposalSectionReviewerVoteValue, ProposalVote
 
 
 @login_required
@@ -113,62 +103,30 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def proposal_reviewer_vote(request, conference_slug, proposal_slug, vote_phase=None):
-    if not vote_phase:
-        vote_phase = PSRVotePhase.PRIMARY
-        comment_type = ProposalCommentType.GENERAL
-    elif vote_phase == PSRVotePhase.SECONDARY:
-        print('aaaaaaaaaaaaaaaaaaaaa')
-        comment_type = ProposalCommentType.SECONDARY_VOTING
-
+def proposal_reviewer_vote(request, conference_slug, proposal_slug):
+    user = request.user
+    vote_phase = PSRVotePhase.PRIMARY
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
 
-    if not (permissions.is_proposal_section_reviewer(request.user,
-                                                     conference, proposal) and
-            permissions.is_proposal_voting_allowed(proposal)):
-        raise PermissionDenied
+    psr_vote, p_comment = utils.get_reviewer_vote_info(user, conference, proposal, vote_phase)
 
-    vote_value = None
-
-    try:
-        vote = ProposalSectionReviewerVote.objects.get(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
-                conference_reviewer__reviewer=request.user,
-                conference_reviewer__conference=conference,
-                proposal_section=proposal.proposal_section),
-            phase=vote_phase,
-        )
-        vote_value = vote.vote_value.vote_value
-    except ProposalSectionReviewerVote.DoesNotExist:
-        vote = None
-
-    try:
-        vote_comment = ProposalComment.objects.get(
-            proposal=proposal,
-            commenter=request.user,
-            vote=True,
-            deleted=False,
-            comment_type=comment_type,
-        )
-    except:
-        vote_comment = None
     if request.method == 'GET':
-        if vote_comment:
+        if psr_vote and p_comment:
             proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value,
-                         'comment': vote_comment.comment},
-                conference=conference)
+                conference=conference,
+                initial={
+                    'vote_value': psr_vote.vote_value.vote_value,
+                    'comment': p_comment.comment
+                },
+            )
         else:
-            proposal_vote_form = ProposalReviewerVoteForm(
-                initial={'vote_value': vote_value},
-                conference=conference)
+            proposal_vote_form = ProposalReviewerVoteForm(conference=conference)
         ctx = {
             'proposal': proposal,
             'form': proposal_vote_form,
-            'vote': vote,
+            'vote': psr_vote,
         }
 
         return render(request, 'proposals/vote.html', ctx)
@@ -184,36 +142,54 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug, vote_phase=N
     # Valid Form
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
-    if not vote:
-        vote = ProposalSectionReviewerVote.objects.create(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.filter(
-                conference_reviewer__reviewer=request.user,
-                conference_reviewer__conference=conference,
-                proposal_section=proposal.proposal_section)[0],
-            vote_value=ProposalSectionReviewerVoteValue.objects.filter(
-                vote_value=vote_value)[0],
-            phase=vote_phase,
-        )
-    else:
-        vote.vote_value = ProposalSectionReviewerVoteValue.objects.filter(
-            vote_value=vote_value)[0]
-        vote.save()
-    if not vote_comment:
-        vote_comment = ProposalComment.objects.create(
-            proposal=proposal,
-            commenter=request.user,
-            comment=comment,
-            vote=True,
-            comment_type=comment_type,
-        )
-    else:
-        vote_comment.comment = comment
-        vote_comment.save()
+    print(comment)
+    utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
     vote_phase = PSRVotePhase.SECONDARY
-    return proposal_reviewer_vote(request, conference_slug, proposal_slug, vote_phase=vote_phase)
+    user = request.user
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug,
+                                 conference=conference)
+
+    psr_vote, p_comment = utils.get_reviewer_vote_info(user, conference, proposal, vote_phase)
+
+    if request.method == 'GET':
+        if psr_vote and p_comment:
+            proposal_vote_form = ProposalReviewerVoteForm(
+                conference=conference,
+                initial={
+                    'vote_value': psr_vote.vote_value.vote_value,
+                    'comment': p_comment.comment
+                },
+            )
+        else:
+            proposal_vote_form = ProposalReviewerVoteForm(conference=conference)
+        ctx = {
+            'proposal': proposal,
+            'form': proposal_vote_form,
+            'vote': psr_vote,
+        }
+
+        return render(request, 'proposals/vote.html', ctx)
+
+    # POST Workflow
+    form = ProposalReviewerVoteForm(data=request.POST, conference=conference)
+    if not form.is_valid():
+        ctx = {'form': form,
+               'proposal': proposal,
+               'form_errors': form.errors}
+        return render(request, 'proposals/vote.html', ctx)
+
+    # Valid Form
+    vote_value = form.cleaned_data['vote_value']
+    comment = form.cleaned_data['comment']
+    print(comment)
+    utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
+    return HttpResponseRedirect(reverse('proposals-to-review',
+                                        args=[conference.slug]))
