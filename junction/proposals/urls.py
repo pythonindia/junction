@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 # Third Party Stuff
 from django.conf.urls import include, patterns, url
 
-from . import comments_views, views, votes_views
+from . import comments_views, views, votes_views, dashboard
 
 comment_urls = patterns(
     '',
@@ -22,6 +22,7 @@ urlpatterns = patterns(
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
     url(r'^to_review/$', views.proposals_to_review, name='proposals-to-review'),
+    url(r'^second_phase_voting/$', dashboard.second_phase_voting, name='second-phase-voting'),
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)~(?P<hashid>.*)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)/delete/$', views.delete_proposal, name='proposal-delete'),

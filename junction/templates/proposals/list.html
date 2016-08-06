@@ -54,6 +54,7 @@
                 <p class="text-left">{{ conference.description|markdown }}</p>
                 {% if is_reviewer %}
                     <a class='btn btn-primary' href="{% url 'proposals-to-review' conference.slug %}">Proposals To Review</a>
+                    <a class='btn btn-primary' href="{% url 'second-phase-voting' conference.slug %}">Second Phase Voting</a>
                 {% endif %}
                 {% if user.is_superuser or user.is_stuff %}
                     <a class='btn btn-primary' href="{% url 'proposal-reviewer-votes-dashboard' conference.slug %}">
