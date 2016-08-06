@@ -262,7 +262,6 @@ class ProposalSectionReviewerVote(TimeAuditModel):
         return "[{}] {}".format(self.vote_value, self.proposal)
 
     class Meta:
-        unique_together = ("proposal", "voter")
         verbose_name = 'ProposalSectionReviewerVote'
 
 
