@@ -285,6 +285,7 @@ def proposals_to_review(request, conference_slug):
 
         context = {
             'proposals_to_review': proposals_to_review,
+            'proposal_reviewer_sections': proposal_reviewer_sections,
             'proposal_sections': proposal_sections,
             'proposal_types': proposal_types,
             'conference': conference,

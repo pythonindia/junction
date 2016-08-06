@@ -15,7 +15,8 @@ from hashids import Hashids
 from simple_history.models import HistoricalRecords
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole
+from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, \
+    ProposalUserVoteRole, ProposalReviewVote
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -177,7 +178,7 @@ class Proposal(TimeAuditModel):
     def get_reviewer_votes_count_by_value(self, vote_value):
         """ Show sum of reviewer votes for given vote value. """
         return ProposalSectionReviewerVote.objects.filter(
-            proposal=self, vote_value=vote_value
+            proposal=self, vote_value__vote_value=vote_value
         ).count()
 
     def get_reviewer_votes_sum(self):
@@ -187,11 +188,26 @@ class Proposal(TimeAuditModel):
         sum_of_votes = sum((v.vote_value.vote_value for v in votes))
         return sum_of_votes
 
+    def get_reviewer_vote_value(self, reviewer):
+        try:
+            vote = ProposalSectionReviewerVote.objects.get(
+                proposal=self, voter__conference_reviewer__reviewer=reviewer,
+            )
+            return vote.vote_value.vote_value
+        except ProposalSectionReviewerVote.DoesNotExist:
+            return 0
+
     def get_reviewers_count(self):
         """ Count of reviewers for given proposal section """
         return ProposalSectionReviewer.objects.filter(
             proposal_section=self.proposal_section
         ).count()
+
+    def has_negative_votes(self):
+        """ Show sum of reviewer votes for given vote value. """
+        return ProposalSectionReviewerVote.objects.filter(
+            proposal=self, vote_value__vote_value=ProposalReviewVote.NOT_ALLOWED,
+        ).count() > 0
 
     class Meta:
         unique_together = ("conference", "slug")

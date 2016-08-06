@@ -26,11 +26,10 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalVotesFilterForm
 from .permissions import is_conference_moderator
-
+from .utils import _sort_proposals_for_dashboard
 from .models import (
     Proposal,
     ProposalComment,
-    ProposalSection,
     ProposalSectionReviewer,
     ProposalSectionReviewerVoteValue
 )
@@ -194,7 +193,7 @@ def reviewer_comments_dashboard(request, conference_slug):
 @require_http_methods(['GET', 'POST'])
 def reviewer_votes_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
-
+    user = request.user
     if not is_conference_moderator(user=request.user, conference=conference):
         raise PermissionDenied
 
@@ -227,36 +226,8 @@ def reviewer_votes_dashboard(request, conference_slug):
                        'errors': form.errors})
 
     # Valid form
-    cps = form.cleaned_data['proposal_section']
-    cpt = form.cleaned_data['proposal_type']
-    votes = form.cleaned_data['votes']
-    review_status = form.cleaned_data['review_status']
-    proposal_sections = conference.proposal_sections.all()
 
-    if cps != 'all':
-        proposal_sections = ProposalSection.objects.filter(pk=cps)
-    if cpt != 'all':
-        proposals_qs = proposals_qs.filter(proposal_type__id__in=cpt)
-    if votes != 'all':
-        votes = int(votes)
-    if review_status != 'all':
-        proposals_qs = proposals_qs.filter(review_status=review_status)
-
-    if votes == ProposalVotesFilter.NO_VOTES:
-        proposals_qs = [
-            p for p in proposals_qs if p.get_reviewer_votes_count() == votes]
-    elif votes == ProposalVotesFilter.MIN_ONE_VOTE:
-        proposals_qs = [
-            p for p in proposals_qs if p.get_reviewer_votes_count() >= votes]
-    elif votes == ProposalVotesFilter.SORT:
-        proposals_qs = sorted(
-            proposals_qs, key=lambda x: x.get_reviewer_votes_sum(),
-            reverse=True)
-
-    for section in proposal_sections:
-        section_proposals = [
-            p for p in proposals_qs if p.proposal_section == section]
-        proposals.append(s_items(section, section_proposals))
+    proposals = _sort_proposals_for_dashboard(conference, proposals_qs, user, form)
 
     return render(request, 'proposals/votes-dashboard.html',
                   {'conference': conference,

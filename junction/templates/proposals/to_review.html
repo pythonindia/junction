@@ -40,6 +40,12 @@
             {% if proposals_to_review %}
                 <h2>Proposals To Review</h2>
                 <hr>
+                <p>Your sections to review are</p>
+                {% for section in proposal_reviewer_sections %}
+                    <b>{{ section.name }}</b><br/>
+                {% endfor %}
+                <br/>
+                <br/>
                 <div id="filter">
                     <form method="POST" action="" class="form-inline">
                         {% csrf_token %}
