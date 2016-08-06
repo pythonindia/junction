@@ -79,7 +79,7 @@ def get_reviewers_vote_details(proposal, user):
 
         vc_qs = ProposalComment.objects.filter(
             proposal=proposal,
-            commenter=reviewer,
+            commenter=reviewer.conference_reviewer.reviewer,
             vote=True)
         if vc_qs:
             vote_comment = vc_qs[0].comment

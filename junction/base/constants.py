@@ -80,7 +80,9 @@ class ProposalReviewerComment:
 class ProposalVotesFilter:
     _NO_VOTES = [0, "No votes"]
     _MIN_ONE_VOTE = [1, "Minimum 1 vote"]
-    _SORT = [2, "Sort by vote value"]
+    _SORT_BY_SUM = [2, "Sort by total votes"]
+    _SORT_BY_REVIEWER = [3, "Sort by your votes"]
+    _SORT_BY_SELECTION = [4, "Sort by selection"]
 
 
 class ConferenceSettingConstants:
