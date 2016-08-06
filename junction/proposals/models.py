@@ -15,7 +15,10 @@ from hashids import Hashids
 from simple_history.models import HistoricalRecords
 
 # Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole
+from junction.base.constants import (
+    ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, ProposalUserVoteRole,
+    ProposalCommentType
+)
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -268,7 +271,7 @@ class ProposalComment(TimeAuditModel):
     vote = models.BooleanField(default=False, verbose_name="What is the reason?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
-
+    type = models.PositiveSmallIntegerField(choices=ProposalCommentType.CHOICES, default=ProposalCommentType.GENERAL)
     objects = ProposalCommentQuerySet.as_manager()
 
     def __str__(self):
