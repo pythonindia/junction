@@ -18,11 +18,13 @@ from .forms import ProposalReviewerVoteForm
 from .models import (
     Proposal,
     ProposalComment,
+    ProposalCommentType,
     ProposalCommentVote,
     ProposalSectionReviewer,
     ProposalSectionReviewerVote,
     ProposalSectionReviewerVoteValue,
-    ProposalVote
+    ProposalVote,
+    PSRVotePhase,
 )
 
 
@@ -111,7 +113,14 @@ def proposal_comment_down_vote(request, conference_slug, proposal_slug,
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def proposal_reviewer_vote(request, conference_slug, proposal_slug):
+def proposal_reviewer_vote(request, conference_slug, proposal_slug, vote_phase=None):
+    if not vote_phase:
+        vote_phase = PSRVotePhase.PRIMARY
+        comment_type = ProposalCommentType.GENERAL
+    elif vote_phase == PSRVotePhase.SECONDARY:
+        print('aaaaaaaaaaaaaaaaaaaaa')
+        comment_type = ProposalCommentType.SECONDARY_VOTING
+
     conference = get_object_or_404(Conference, slug=conference_slug)
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
@@ -130,6 +139,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                 conference_reviewer__reviewer=request.user,
                 conference_reviewer__conference=conference,
                 proposal_section=proposal.proposal_section),
+            phase=vote_phase,
         )
         vote_value = vote.vote_value.vote_value
     except ProposalSectionReviewerVote.DoesNotExist:
@@ -141,6 +151,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
             commenter=request.user,
             vote=True,
             deleted=False,
+            comment_type=comment_type,
         )
     except:
         vote_comment = None
@@ -182,6 +193,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
                 proposal_section=proposal.proposal_section)[0],
             vote_value=ProposalSectionReviewerVoteValue.objects.filter(
                 vote_value=vote_value)[0],
+            phase=vote_phase,
         )
     else:
         vote.vote_value = ProposalSectionReviewerVoteValue.objects.filter(
@@ -193,9 +205,15 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
             commenter=request.user,
             comment=comment,
             vote=True,
+            comment_type=comment_type,
         )
     else:
         vote_comment.comment = comment
         vote_comment.save()
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))
+
+
+def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
+    vote_phase = PSRVotePhase.SECONDARY
+    return proposal_reviewer_vote(request, conference_slug, proposal_slug, vote_phase=vote_phase)

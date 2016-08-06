@@ -99,6 +99,12 @@ class ConferenceSettingConstants:
 
 
 @choices
+class PSRVotePhase:
+    _PRIMARY = [0, 'Initial voting']
+    _SECONDARY = [1, 'Second phase voting']
+
+
+@choices
 class ProposalCommentType:
-    _GENERAL = [0, 'Unclassified']
-    _SECOND_PHASE_VOTING = [1, 'Second phase voting']
+    _GENERAL = [0, 'All general comments']
+    _SECONDARY_VOTING = [1, 'Second phase voting']
