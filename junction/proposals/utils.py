@@ -74,8 +74,6 @@ def update_reviewer_vote_info(user, psr_vote, vote_value, comment, phase, propos
 
 
 def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
-    """
-    """
     cps = form.cleaned_data['proposal_section']
     cpt = form.cleaned_data['proposal_type']
     votes = form.cleaned_data['votes']

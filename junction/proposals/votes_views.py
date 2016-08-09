@@ -142,7 +142,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     # Valid Form
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
-    print(comment)
+
     utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))
@@ -189,7 +189,7 @@ def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
     # Valid Form
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
-    print(comment)
+
     utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))
