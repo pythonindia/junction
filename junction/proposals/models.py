@@ -276,7 +276,7 @@ class ProposalSectionReviewerVote(TimeAuditModel):
         verbose_name = 'ProposalSectionReviewerVote'
 
 
-#FIXME: Need to move private, reviewer, vote to type
+# FIXME: Need to move private, reviewer, vote to type
 @python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 

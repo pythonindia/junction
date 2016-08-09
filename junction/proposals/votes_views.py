@@ -10,12 +10,10 @@ from junction.base.constants import ConferenceSettingConstants, \
     ProposalUserVoteRole
 from junction.conferences.models import Conference
 
-from . import permissions
-from . import utils
+from . import permissions, utils
 from .forms import ProposalReviewerVoteForm
 from .models import PSRVotePhase, Proposal, ProposalComment, \
-    ProposalCommentVote, ProposalSectionReviewer, ProposalSectionReviewerVote, \
-    ProposalSectionReviewerVoteValue, ProposalVote
+    ProposalCommentVote, ProposalVote
 
 
 @login_required
