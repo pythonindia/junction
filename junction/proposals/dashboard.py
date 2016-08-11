@@ -34,6 +34,7 @@ from .models import (
 )
 
 from . import services
+from . import permissions
 
 
 @login_required
@@ -239,7 +240,7 @@ def second_phase_voting(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     user = request.user
 
-    if not is_conference_moderator(user=request.user, conference=conference):
+    if not permissions.is_proposal_reviewer(request.user, conference):
         raise PermissionDenied
 
     proposal_sections = conference.proposal_sections.all()
