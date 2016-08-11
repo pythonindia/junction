@@ -19,6 +19,7 @@ from xlsxwriter.workbook import Workbook
 from junction.base.constants import (
     ProposalReviewVote,
     ProposalStatus,
+    ProposalReviewStatus,
 )
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -228,6 +229,54 @@ def reviewer_votes_dashboard(request, conference_slug):
     proposals = _sort_proposals_for_dashboard(conference, proposals_qs, user, form)
 
     return render(request, 'proposals/votes-dashboard.html',
+                  {'conference': conference,
+                   'proposals': proposals,
+                   'form': form})
+
+
+@require_http_methods(['GET', 'POST'])
+def second_phase_voting(request, conference_slug):
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    user = request.user
+
+    if not is_conference_moderator(user=request.user, conference=conference):
+        raise PermissionDenied
+
+    proposal_sections = conference.proposal_sections.all()
+    proposals_qs = Proposal.objects.select_related(
+        'proposal_type', 'proposal_section', 'conference', 'author',
+    ).filter(
+        conference=conference,
+        review_status=ProposalReviewStatus.SELECTED
+    )
+
+    proposals = []
+    s_items = collections.namedtuple('section_items', 'section proposals')
+    form = ProposalVotesFilterForm(conference=conference)
+
+    if request.method == 'GET':
+        for section in proposal_sections:
+            section_proposals = [
+                p for p in proposals_qs if p.proposal_section == section]
+            proposals.append(s_items(section, section_proposals))
+
+        return render(request, 'proposals/second_phase_voting.html',
+                      {'conference': conference,
+                       'proposals': proposals,
+                       'form': form})
+
+    form = ProposalVotesFilterForm(conference=conference, data=request.POST)
+
+    if not form.is_valid():
+        return render(request, 'proposals/votes-dashboard.html',
+                      {'form': form,
+                       'conference': conference,
+                       'errors': form.errors})
+
+    # Valid form
+    proposals = _sort_proposals_for_dashboard(conference, proposals_qs, user, form)
+
+    return render(request, 'proposals/second_phase_voting.html',
                   {'conference': conference,
                    'proposals': proposals,
                    'form': form})

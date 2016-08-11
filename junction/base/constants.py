@@ -98,3 +98,15 @@ class ConferenceSettingConstants:
     ALLOW_PLUS_ZERO_REVIEWER_VOTE = {"name": "allow_plus_zero_reviewer_vote",
                                      "value": True,
                                      "description": "Allow +0 vote in reviewer votes"}
+
+
+@choices
+class PSRVotePhase:
+    _PRIMARY = [0, 'Initial voting']
+    _SECONDARY = [1, 'Second phase voting']
+
+
+@choices
+class ProposalCommentType:
+    _GENERAL = [0, 'All general comments']
+    _SECONDARY_VOTING = [1, 'Second phase voting']

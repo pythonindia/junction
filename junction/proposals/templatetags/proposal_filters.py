@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import collections
 import re
 
-# Third Party Stuff
 from django import template
+from junction.base.constants import PSRVotePhase
+from junction.proposals.models import ProposalComment, ProposalSectionReviewer, \
+    ProposalSectionReviewerVote
 
-# Junction Stuff
-from junction.proposals.models import ProposalComment, ProposalSectionReviewer, ProposalSectionReviewerVote
 
 register = template.Library()
 
@@ -20,7 +19,9 @@ def reviewer_comments(proposal, user):
 
 
 @register.filter(name='is_reviewer_voted')
-def is_reviewer_voted(proposal, user):
+def is_reviewer_voted(proposal, user, phase=None):
+    if not phase:
+        phase = PSRVotePhase.PRIMARY
     try:
         vote = ProposalSectionReviewerVote.objects.get(
             proposal=proposal,
@@ -28,6 +29,7 @@ def is_reviewer_voted(proposal, user):
                 conference_reviewer__reviewer=user,
                 conference_reviewer__conference=proposal.conference,
                 proposal_section=proposal.proposal_section),
+            phase=phase,
         )
     except ProposalSectionReviewerVote.DoesNotExist:
         vote = None

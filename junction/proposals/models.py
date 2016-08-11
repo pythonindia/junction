@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 from datetime import datetime
 
-# Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -14,9 +12,9 @@ from django_extensions.db.fields import AutoSlugField
 from hashids import Hashids
 from simple_history.models import HistoricalRecords
 
-# Junction Stuff
-from junction.base.constants import ProposalReviewStatus, ProposalStatus, ProposalTargetAudience, \
-    ProposalUserVoteRole, ProposalReviewVote
+from junction.base.constants import PSRVotePhase, ProposalCommentType, \
+    ProposalReviewStatus, ProposalReviewVote, ProposalStatus, \
+    ProposalTargetAudience, ProposalUserVoteRole
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
@@ -120,6 +118,10 @@ class Proposal(TimeAuditModel):
 
     def get_vote_url(self):
         return reverse('proposal-reviewer-vote',
+                       args=[self.conference.slug, self.slug])
+
+    def get_secondary_vote_url(self):
+        return reverse('proposal-reviewer-secondary-vote',
                        args=[self.conference.slug, self.slug])
 
     def get_delete_url(self):
@@ -263,16 +265,18 @@ class ProposalSectionReviewerVote(TimeAuditModel):
     role = models.PositiveSmallIntegerField(
         choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.REVIEWER)
     vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
+    phase = models.PositiveSmallIntegerField(choices=PSRVotePhase.CHOICES, default=PSRVotePhase.PRIMARY)
+
     history = HistoricalRecords()
 
     def __str__(self):
         return "[{}] {}".format(self.vote_value, self.proposal)
 
     class Meta:
-        unique_together = ("proposal", "voter")
         verbose_name = 'ProposalSectionReviewerVote'
 
 
+# FIXME: Need to move private, reviewer, vote to type
 @python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 
@@ -284,7 +288,8 @@ class ProposalComment(TimeAuditModel):
     vote = models.BooleanField(default=False, verbose_name="What is the reason?")
     comment = models.TextField()
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
-
+    comment_type = models.PositiveSmallIntegerField(
+        choices=ProposalCommentType.CHOICES, default=ProposalCommentType.GENERAL)
     objects = ProposalCommentQuerySet.as_manager()
 
     def __str__(self):
