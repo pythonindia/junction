@@ -320,8 +320,6 @@ def proposals_to_review(request, conference_slug):
     elif r_vote == 'False':
         proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() == 0]
 
-
-
     proposals_to_review = []
     for section in proposal_reviewer_sections:
         section_proposals = [p for p in proposals_qs
