@@ -75,6 +75,11 @@ class ProposalReviewerComment:
     _COMMENTED = ['True', 'Yes']
     _NOT_COMMENTED = ['False', 'No']
 
+@choices
+class ProposalReviewerVote:
+    _VOTED = ['True', 'Yes']
+    _NOT_VOTED = ['False', 'No']
+
 
 @choices
 class ProposalVotesFilter:
