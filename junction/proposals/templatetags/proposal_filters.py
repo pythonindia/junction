@@ -22,16 +22,15 @@ def reviewer_comments(proposal, user):
 def is_reviewer_voted(proposal, user, phase=None):
     if not phase:
         phase = PSRVotePhase.PRIMARY
+
     try:
-        vote = ProposalSectionReviewerVote.objects.get(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
-                conference_reviewer__reviewer=user,
-                conference_reviewer__conference=proposal.conference,
-                proposal_section=proposal.proposal_section),
-            phase=phase,
+        voter = ProposalSectionReviewer.objects.get(
+            conference_reviewer__reviewer=user,
+            conference_reviewer__conference=proposal.conference,
+            proposal_section=proposal.proposal_section
         )
-    except ProposalSectionReviewerVote.DoesNotExist:
+        vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=voter, phase=phase)
+    except (ProposalSectionReviewer.DoesNotExist, ProposalSectionReviewerVote.DoesNotExist):
         vote = None
 
     return vote
