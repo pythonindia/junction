@@ -10,7 +10,7 @@ from junction.base.constants import ConferenceSettingConstants, \
     ProposalUserVoteRole
 from junction.conferences.models import Conference
 
-from . import permissions, utils
+from . import permissions, services
 from .forms import ProposalReviewerVoteForm
 from .models import PSRVotePhase, Proposal, ProposalComment, \
     ProposalCommentVote, ProposalVote
@@ -108,7 +108,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
 
-    psr_vote, p_comment = utils.get_reviewer_vote_info(user, conference, proposal, vote_phase)
+    psr_vote, p_comment = services.get_reviewer_vote_info(user, conference, proposal, vote_phase)
 
     if request.method == 'GET':
         if psr_vote and p_comment:
@@ -141,7 +141,7 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
 
-    utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
+    services.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))
 
@@ -155,7 +155,7 @@ def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
     proposal = get_object_or_404(Proposal, slug=proposal_slug,
                                  conference=conference)
 
-    psr_vote, p_comment = utils.get_reviewer_vote_info(user, conference, proposal, vote_phase)
+    psr_vote, p_comment = services.get_reviewer_vote_info(user, conference, proposal, vote_phase)
 
     if request.method == 'GET':
         if psr_vote and p_comment:
@@ -188,6 +188,6 @@ def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
     vote_value = form.cleaned_data['vote_value']
     comment = form.cleaned_data['comment']
 
-    utils.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
+    services.update_reviewer_vote_info(user, psr_vote, vote_value, comment, vote_phase, proposal, conference)
     return HttpResponseRedirect(reverse('proposals-to-review',
                                         args=[conference.slug]))

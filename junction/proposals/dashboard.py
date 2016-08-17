@@ -25,7 +25,7 @@ from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 from .forms import ProposalVotesFilterForm
 from .permissions import is_conference_moderator
-from .utils import _sort_proposals_for_dashboard
+from .services import _sort_proposals_for_dashboard
 from .models import (
     Proposal,
     ProposalComment,
