@@ -292,6 +292,9 @@ class ProposalComment(TimeAuditModel):
         choices=ProposalCommentType.CHOICES, default=ProposalCommentType.GENERAL)
     objects = ProposalCommentQuerySet.as_manager()
 
+    class Meta:
+        ordering = ('created_at', )
+
     def __str__(self):
         return "[{} by {}] {}".format(self.comment,
                                       self.commenter.get_full_name(),
