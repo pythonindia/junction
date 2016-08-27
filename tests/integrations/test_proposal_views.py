@@ -263,7 +263,7 @@ def test_proposals_to_review_filters(settings, login, conferences,
     response = client.post(url, {'proposal_section': section.id,
                                  'proposal_type': proposal_type.id,
                                  'reviewer_comment': 'all',
-                                 'reviewer_vote': 'all' })
+                                 'reviewer_vote': 'all'})
 
     assert response.status_code == 200
     assert response.context['is_filtered'] is True
