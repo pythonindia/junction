@@ -5,8 +5,8 @@
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
 
-{% block head_title %} {{ conference.name }} proposals to review {% endblock %}
-{% block og_title %} {{ conference.name }} proposals to review {% endblock %}
+{% block head_title %} {{ conference.name }} Second phase voting {% endblock %}
+{% block og_title %} {{ conference.name }} Second phase voting {% endblock %}
 {% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
 {% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
 
@@ -18,7 +18,7 @@
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb conference.name "conference-detail" conference.slug %}
-    {% breadcrumb "Proposals To Review" "proposals-to-review" conference.slug %}
+    {% breadcrumb "Second phase voting" "proposals-to-review" conference.slug %}
 {% endblock %}
 
 {% block navbar_logo %}
@@ -37,30 +37,12 @@
     <section class="content custom-container proposal-list">
         <div class="push-4-bottom push-1-top">
             <a name="proposals"></a>
-            {% if proposals_to_review %}
-                <h2>Proposals To Review</h2>
+            {% if proposals %}
+                <h2>Second Phase Voting</h2>
                 <hr>
-                <p>Your sections to review are</p>
-                {% for section in proposal_reviewer_sections %}
-                    <b>{{ section.name }}</b><br/>
-                {% endfor %}
-                <br/>
-                <br/>
-                <div id="filter">
-                    <form method="POST" action="" class="form-inline">
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        {% buttons %}
-                        <button type="submit" class="btn btn-primary" style='margin-left: 1em;'>
-                            Submit
-                        </button>
-                       {% endbuttons %}
-                    </form>
-                </div>
 
-                <hr>
                 <div id="#proposals">
-                    {% for section_items in proposals_to_review  %}
+                    {% for section_items in proposals %}
                         {% if section_items.proposals %}
                             {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
                         {% endif %}
@@ -68,7 +50,7 @@
                 </div>
 
             {% else %}
-                <p>No proposals to review. </p>
+                <p>No proposals to vote.</p>
             {% endif %}
         </div>
     </section>

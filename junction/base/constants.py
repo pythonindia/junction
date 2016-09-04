@@ -80,7 +80,9 @@ class ProposalReviewerComment:
 class ProposalVotesFilter:
     _NO_VOTES = [0, "No votes"]
     _MIN_ONE_VOTE = [1, "Minimum 1 vote"]
-    _SORT = [2, "Sort by vote value"]
+    _SORT_BY_SUM = [2, "Sort by total votes"]
+    _SORT_BY_REVIEWER = [3, "Sort by your votes"]
+    _SORT_BY_SELECTION = [4, "Sort by selection"]
 
 
 class ConferenceSettingConstants:
@@ -96,3 +98,15 @@ class ConferenceSettingConstants:
     ALLOW_PLUS_ZERO_REVIEWER_VOTE = {"name": "allow_plus_zero_reviewer_vote",
                                      "value": True,
                                      "description": "Allow +0 vote in reviewer votes"}
+
+
+@choices
+class PSRVotePhase:
+    _PRIMARY = [0, 'Initial voting']
+    _SECONDARY = [1, 'Second phase voting']
+
+
+@choices
+class ProposalCommentType:
+    _GENERAL = [0, 'All general comments']
+    _SECONDARY_VOTING = [1, 'Second phase voting']

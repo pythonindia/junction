@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 # Third Party Stuff
 from django.conf.urls import include, patterns, url
 
-from . import comments_views, views, votes_views
+from . import comments_views, views, votes_views, dashboard
 
 comment_urls = patterns(
     '',
@@ -22,6 +22,7 @@ urlpatterns = patterns(
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
     url(r'^to_review/$', views.proposals_to_review, name='proposals-to-review'),
+    url(r'^second_phase_voting/$', dashboard.second_phase_voting, name='second-phase-voting'),
     url(r'^(?P<slug>[\w-]+)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)~(?P<hashid>.*)/$', views.detail_proposal, name='proposal-detail'),
     url(r'^(?P<slug>[\w-]+)/delete/$', views.delete_proposal, name='proposal-delete'),
@@ -33,8 +34,10 @@ urlpatterns = patterns(
     url(r'^comment/', include(comment_urls)),
 
     # Voting
-    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/down-vote/$', votes_views.proposal_vote_down, name='proposal-vote-down'),
     url(r'^(?P<proposal_slug>[\w-]+)/up-vote/$', votes_views.proposal_vote_up, name='proposal-vote-up'),
     url(r'^(?P<proposal_slug>[\w-]+)/remove-vote/$', votes_views.proposal_vote_remove, name='proposal-vote-remove'),
+    url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
+    url(r'^(?P<proposal_slug>[\w-]+)/second-vote/$', votes_views.proposal_reviewer_secondary_vote,
+        name='proposal-reviewer-secondary-vote'),
 )

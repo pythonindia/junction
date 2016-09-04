@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import collections
 import re
 
-# Third Party Stuff
 from django import template
+from junction.base.constants import PSRVotePhase
+from junction.proposals.models import ProposalComment, ProposalSectionReviewer, \
+    ProposalSectionReviewerVote
 
-# Junction Stuff
-from junction.proposals.models import ProposalComment, ProposalSectionReviewer, ProposalSectionReviewerVote
 
 register = template.Library()
 
@@ -20,16 +19,18 @@ def reviewer_comments(proposal, user):
 
 
 @register.filter(name='is_reviewer_voted')
-def is_reviewer_voted(proposal, user):
+def is_reviewer_voted(proposal, user, phase=None):
+    if not phase:
+        phase = PSRVotePhase.PRIMARY
+
     try:
-        vote = ProposalSectionReviewerVote.objects.get(
-            proposal=proposal,
-            voter=ProposalSectionReviewer.objects.get(
-                conference_reviewer__reviewer=user,
-                conference_reviewer__conference=proposal.conference,
-                proposal_section=proposal.proposal_section),
+        voter = ProposalSectionReviewer.objects.get(
+            conference_reviewer__reviewer=user,
+            conference_reviewer__conference=proposal.conference,
+            proposal_section=proposal.proposal_section
         )
-    except ProposalSectionReviewerVote.DoesNotExist:
+        vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=voter, phase=phase)
+    except (ProposalSectionReviewer.DoesNotExist, ProposalSectionReviewerVote.DoesNotExist):
         vote = None
 
     return vote
@@ -77,7 +78,7 @@ def get_reviewers_vote_details(proposal, user):
 
         vc_qs = ProposalComment.objects.filter(
             proposal=proposal,
-            commenter=reviewer,
+            commenter=reviewer.conference_reviewer.reviewer,
             vote=True)
         if vc_qs:
             vote_comment = vc_qs[0].comment
