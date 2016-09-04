@@ -12,6 +12,7 @@ from junction.conferences.models import Conference
 
 # Profile Stuff
 from .models import Profile
+from .forms import ProfileForm
 
 
 @login_required
@@ -30,11 +31,15 @@ def dashboard(request):
 
 @login_required
 def profile(request):
+    form = ProfileForm()
+    user = request.user
     if request.method == "POST":
-        city = request.POST.get('city')
-        contact_no = request.POST.get('contact_no')
-        Profile.objects.create(user=request.user, city=city, contact_no=contact_no)
-        return HttpResponseRedirect("/profiles")
-
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = user
+            form.save()
+            print "form saved"
+            return HttpResponseRedirect("/profiles")
     elif request.method == "GET":
         return render(request, 'profiles/userprofile.html')
