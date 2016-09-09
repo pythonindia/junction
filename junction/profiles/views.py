@@ -3,9 +3,11 @@ from collections import OrderedDict
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 # Junction Stuff
 from junction.conferences.models import Conference
@@ -31,15 +33,22 @@ def dashboard(request):
 
 @login_required
 def profile(request):
-    form = ProfileForm()
-    user = request.user
-    if request.method == "POST":
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.user = user
-            form.save()
-            print "form saved"
-            return HttpResponseRedirect("/profiles")
+    username = request.user
+    detail = None
+
+    if request.method == "POST" and username == request.user:
+        user = get_object_or_404(User, pk=username.id)
+        detail = get_object_or_404(Profile, user=user)
+        detail_form = ProfileForm(request.POST, instance=detail)
+
+        if detail_form.is_valid():
+            detail = detail_form.save()
+            return HttpResponseRedirect(reverse('profiles:dashboard'))
+
     elif request.method == "GET":
-        return render(request, 'profiles/userprofile.html')
+        user = get_object_or_404(User, pk=username.id)
+        detail = get_object_or_404(Profile, user=user)
+        if detail:
+            return render(request, 'profiles/userprofile.html', {'detail':detail})
+        else:
+            return render(request, 'profiles/userprofile.html')
