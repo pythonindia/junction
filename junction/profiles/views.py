@@ -3,7 +3,7 @@ from collections import OrderedDict
 
 # Third Party Stuff
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -49,6 +49,6 @@ def profile(request):
         user = get_object_or_404(User, pk=username.id)
         detail = get_object_or_404(Profile, user=user)
         if detail:
-            return render(request, 'profiles/userprofile.html', {'detail':detail})
+            return render(request, 'profiles/userprofile.html', {'detail': detail})
         else:
             return render(request, 'profiles/userprofile.html')
