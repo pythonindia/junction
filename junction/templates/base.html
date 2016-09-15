@@ -3,174 +3,173 @@
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
 {% block breadcrumbs %}
-		{% clear_breadcrumbs %}
-		{% breadcrumb_safe "<i class='fa fa-home'></i>" "page-home" %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb_safe "<i class='fa fa-home'></i>" "page-home" %}
 {% endblock %}
 <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<meta name="HandheldFriendly" content="True">
-		<meta name="format-detection" content="telephone=no">
-		<meta http-equiv="cleartype" content="on">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-		{# Place icon files in the root if possible (let browsers look for them where they expect them to be) #}
-		<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'apple-touch-icon-144x144-precomposed.png' %}">
-		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'apple-touch-icon-114x114-precomposed.png' %}">
-		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'apple-touch-icon-72x72-precomposed.png' %}">
-		<link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-precomposed.png' %}">
-		<link rel="apple-touch-icon" href="{% static 'apple-touch-icon-precomposed.png' %}">
+    {# Place icon files in the root if possible (let browsers look for them where they expect them to be) #}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'apple-touch-icon-144x144-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'apple-touch-icon-114x114-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'apple-touch-icon-72x72-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-precomposed.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon-precomposed.png' %}">
 
-		{# Tile icon for Win8 (144x144 + tile color) #}
-		<meta name="msapplication-TileImage" content="{% static 'metro-icon-144x144-precomposed.png' %}"><!-- white shape -->
-		<meta name="msapplication-TileColor" content="#3673a5"><!-- python blue -->
-		<meta name="msapplication-navbutton-color" content="#3673a5">
+    {# Tile icon for Win8 (144x144 + tile color) #}
+    <meta name="msapplication-TileImage" content="{% static 'metro-icon-144x144-precomposed.png' %}"><!-- white shape -->
+    <meta name="msapplication-TileColor" content="#3673a5"><!-- python blue -->
+    <meta name="msapplication-navbutton-color" content="#3673a5">
 
-		{# Theme color on android #}
-		<meta name="theme-color" content="#3673a5">
+    {# Theme color on android #}
+    <meta name="theme-color" content="#3673a5">
 
-		<title>{% block head_title %}{{ SITE_INFO.site_name }}{% endblock head_title %}</title>
-		<meta property="og:title" content="{% block og_title %}{{ SITE_INFO.site_name }}{% endblock %}">
+    <title>{% block head_title %}{{ SITE_INFO.site_name }}{% endblock head_title %}</title>
+    <meta property="og:title" content="{% block og_title %}{{ SITE_INFO.site_name }}{% endblock %}">
 
-		{# SEO and OpenGraph data - Needs to be fed dynamically according to the content of the page #}
-		<meta name="description" content="{% block page_description %}{{ SITE_INFO.site_description }}{% endblock %}">
-		<meta property="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
-		<meta name="keywords" content="{% block page-keywords %}{% endblock %}">
-		<meta property="og:tag" content="{% block og_keywords %}{% endblock %}">
-		<meta property="og:published_time" content="{% block og_publishedtime %}{% endblock %}">
-		<meta property="og:modified_time" content="{% block og_modifiedtime %}{% endblock %}">
-		<meta property="og:author" content="{% block og_author %}{% endblock %}">
-		<meta property="og:section" content="{% block og_section %}{% endblock %}"> {# A high-level section name. E.g. Technology #}
-		<meta property="og:url" content="{% block og_url %}{{ get_absolute_url }}{% endblock %}">{# permalink to the curent page #}
-		<meta property="og:image" content="{% block og_image %}{% endblock %}">{# A path to an image used on the page. Helpful for telling crawlers what image to use for a page preview. Can be an array, meaning, there can be more than one of these tags (duplicate the WHOLE tag). #}
-		<meta property="og:video" content="{% block og_video %}{% endblock %}">
-		<link href="{% static 'css/app.css' %}" rel="stylesheet">
+    {# SEO and OpenGraph data - Needs to be fed dynamically according to the content of the page #}
+    <meta name="description" content="{% block page_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ SITE_INFO.site_description }}{% endblock %}">
+    <meta name="keywords" content="{% block page-keywords %}{% endblock %}">
+    <meta property="og:tag" content="{% block og_keywords %}{% endblock %}">
+    <meta property="og:published_time" content="{% block og_publishedtime %}{% endblock %}">
+    <meta property="og:modified_time" content="{% block og_modifiedtime %}{% endblock %}">
+    <meta property="og:author" content="{% block og_author %}{% endblock %}">
+    <meta property="og:section" content="{% block og_section %}{% endblock %}"> {# A high-level section name. E.g. Technology #}
+    <meta property="og:url" content="{% block og_url %}{{ get_absolute_url }}{% endblock %}">{# permalink to the curent page #}
+    <meta property="og:image" content="{% block og_image %}{% endblock %}">{# A path to an image used on the page. Helpful for telling crawlers what image to use for a page preview. Can be an array, meaning, there can be more than one of these tags (duplicate the WHOLE tag). #}
+    <meta property="og:video" content="{% block og_video %}{% endblock %}">
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
 
-		<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-		<link href='//fonts.googleapis.com/css?family=Josefin+Slab:400,700' rel='stylesheet' type='text/css'>
-		{% block style_extra %} {% endblock %}
+    <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Josefin+Slab:400,700' rel='stylesheet' type='text/css'>
+    {% block style_extra %} {% endblock %}
 
-		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-				<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-				<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-		<!-- jQuery Version 1.11.0 -->
-		<script src="{% static 'js/jquery-1.11.0.js' %}"></script>
-		<script src="{% static 'js/Chart.min.js' %}"></script>
+    <!-- jQuery Version 1.11.0 -->
+    <script src="{% static 'js/jquery-1.11.0.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
 
-		{% block endhead %}
-		{% endblock %}
+    {% block endhead %}
+    {% endblock %}
 
 </head>
 
 <body class="{% block page_classes %}page {% endblock page_classes %}">
 
-		<!-- Navigation -->
-		<div class="navbar-wrapper">
-				<nav class="navbar navbar-default" role="navigation">
-						<div class="container-fluid">
-								<!-- Brand and toggle get grouped for better mobile display -->
-								<div class="navbar-header">
-										<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-												<span class="sr-only">Toggle navigation</span>
-												<span class="icon-bar"></span>
-												<span class="icon-bar"></span>
-												<span class="icon-bar"></span>
-										</button>
+    <!-- Navigation -->
+    <div class="navbar-wrapper">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-										{% block navbar_logo %}
-										<a class="navbar-brand" href="{% url 'page-home' %}">
-												{{ SITE_INFO.site_name }}
-										</a>
-										{% endblock navbar_logo %}
+                    {% block navbar_logo %}
+                    <a class="navbar-brand" href="{% url 'page-home' %}">
+                        {{ SITE_INFO.site_name }}
+                    </a>
+                    {% endblock navbar_logo %}
 
-								</div>
-								<!-- Collect the nav links, forms, and other content for toggling -->
-								<div class="collapse navbar-collapse" id="navbar-collapse-1">
-										<ul class="nav navbar-nav navbar-right">
-												<!-- <li class="active"><a href="{% url 'speakers-static' %}">Speakers</a></li>
-												<li><a href="{% url 'schedule-static' %}">Schedule</a></li>
-												<li><a href="/test-conference/proposals/">Proposals</a></li>
-												<li><a href="{% url 'venue-static' %}">Venue</a></li>
-												<li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
-												<li><a href="{% url 'blog-archive' %}">Blog</a></li>
-												<li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
-												<li><a href="{% url 'faq-static' %}">FAQ</a></li> -->
-												<li class="dropdown">
-														{% if user.is_authenticated %}
-														<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="">{{ user.get_full_name|default:user.username }}</span> <span class="caret"></span></a>
-														<ul class="dropdown-menu" role="menu">
-																		<li><a href="{% url 'profiles:dashboard' %}">Dashboard</a></li>
-																		<li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
-                  <li><a href="{% url 'profiles:profile' %}">Profile</a></li>
-																		{% if user.is_staff %}
-																				<li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
-																		{% endif %}
-																		<li class="divider"></li>
-																		<li><a href="{% url 'account_logout' %}?next={{request.path}}">Logout</a></li>
-														</ul>
-														{% else %}
-														<a href="{% url 'account_login' %}?next={{request.path}}">Login / Register</a>
-														{% endif %}
-												</li>
-										</ul>
-								</div>
-								<!-- /.navbar-collapse -->
-						</div>
-						<!-- /.container -->
-				</nav>
-		</div>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li class="active"><a href="{% url 'speakers-static' %}">Speakers</a></li>
+                        <li><a href="{% url 'schedule-static' %}">Schedule</a></li>
+                        <li><a href="/test-conference/proposals/">Proposals</a></li>
+                        <li><a href="{% url 'venue-static' %}">Venue</a></li>
+                        <li><a href="{% url 'sponsors-static' %}">Sponsors</a></li>
+                        <li><a href="{% url 'blog-archive' %}">Blog</a></li>
+                        <li><a href="{% url 'coc-static' %}">Code of Conduct</a></li>
+                        <li><a href="{% url 'faq-static' %}">FAQ</a></li> -->
+                        <li class="dropdown">
+                            {% if user.is_authenticated %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="">{{ user.get_full_name|default:user.username }}</span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{% url 'profiles:dashboard' %}">Dashboard</a></li>
+                                    <li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
+                                    {% if user.is_staff %}
+                                        <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
+                                    {% endif %}
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'account_logout' %}?next={{request.path}}">Logout</a></li>
+                            </ul>
+                            {% else %}
+                            <a href="{% url 'account_login' %}?next={{request.path}}">Login / Register</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+    </div>
 
-		{% block header %}
-		{% endblock %}
+    {% block header %}
+    {% endblock %}
 
-		{% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
 
-		<!-- Page Content -->
-		<div class="container-fluid" role="main">
-				<div class="row-fluid clearfix">
-						<div class="col-md-10 col-md-offset-1">
-								{% block content %}
-								{% endblock %}
-						</div>
-				</div>
-		</div>
+    <!-- Page Content -->
+    <div class="container-fluid" role="main">
+        <div class="row-fluid clearfix">
+            <div class="col-md-10 col-md-offset-1">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 
-		<!-- Footer -->
-		<footer>
-				<div class="container-fluid">
-						<div class="row-fluid">
-								<div class="col-xs-12 text-center">
-										<p class="push-half-top clear-margin">{{ SITE_INFO.footer|safe }} • Powered by <a href="https://github.com/pythonindia/junction">Junction</a></p>
-								</div>
-						</div><!-- /.row -->
-				</div>
-		</footer>
-		<!-- /.container -->
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="col-xs-12 text-center">
+                    <p class="push-half-top clear-margin">{{ SITE_INFO.footer|safe }} • Powered by <a href="https://github.com/pythonindia/junction">Junction</a></p>
+                </div>
+            </div><!-- /.row -->
+        </div>
+    </footer>
+    <!-- /.container -->
 
-		<!-- Bootstrap Core JavaScript -->
-		<script src="{% static 'js/bootstrap.min.js' %}"></script>
-		<script src="{% static 'js/main.js' %}"></script>
-		{% block script_extra %}{% endblock %}
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block script_extra %}{% endblock %}
 
-		{# -- Google Analytics -- #}
-		{% if SITE_INFO.google_analytics_id %}
-		<script>
-				(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-				function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-				e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-				e.src='//www.google-analytics.com/analytics.js';
-				r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-				ga('create','{{ SITE_INFO.google_analytics_id }}','auto');ga('send','pageview');
-		</script>
-		{% endif %}
+    {# -- Google Analytics -- #}
+    {% if SITE_INFO.google_analytics_id %}
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','{{ SITE_INFO.google_analytics_id }}','auto');ga('send','pageview');
+    </script>
+    {% endif %}
 
 </body>
 </html>

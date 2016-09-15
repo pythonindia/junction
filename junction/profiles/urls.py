@@ -5,5 +5,4 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard'),
-    url(r'edit/$', views.profile, name='profile')
 ]
