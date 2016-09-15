@@ -29,7 +29,6 @@ def dashboard(request):
                 conf_proposals[conf.name] = [proposal]
     return render(request, 'profiles/dashboard.html',
                   {'conf_proposals': conf_proposals})
-<<<<<<< HEAD
 
 
 @login_required
@@ -53,5 +52,3 @@ def profile(request):
             return render(request, 'profiles/userprofile.html', {'detail': detail})
         else:
             return render(request, 'profiles/userprofile.html')
-=======
->>>>>>> parent of 13c807e... Template Added
