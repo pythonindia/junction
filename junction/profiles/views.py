@@ -46,8 +46,8 @@ def profile(request):
             return HttpResponseRedirect(reverse('profiles:dashboard'))
 
     elif request.method == "GET":
-        user = get_object_or_404(User, pk=username.id)
-        detail = get_object_or_404(Profile, user=user)
+        user = User.objects.get(pk=username.id)
+        detail = Profile.objects.filter(user=user).exists()
         if detail:
             return render(request, 'profiles/userprofile.html', {'detail': detail})
         else:
