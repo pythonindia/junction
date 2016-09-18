@@ -37,18 +37,28 @@ def profile(request):
     detail = None
 
     if request.method == "POST" and username == request.user:
-        user = get_object_or_404(User, pk=username.id)
-        detail = get_object_or_404(Profile, user=user)
-        detail_form = ProfileForm(request.POST, instance=detail)
-
-        if detail_form.is_valid():
-            detail = detail_form.save()
-            return HttpResponseRedirect(reverse('profiles:dashboard'))
+        user = User.objects.get(pk=username.id)
+        detail = Profile.objects.filter(user=user).exists()
+        if detail:
+            detail = Profile.objects.get(user=user)
+            detail_form = ProfileForm(request.POST, instance=detail)
+            if detail_form.is_valid():
+                detail = detail_form.save()
+                return HttpResponseRedirect(reverse('profiles:dashboard'))
+        else:
+            user = User.objects.get(pk=username.id)
+            detail_form = ProfileForm(request.POST)
+            if detail_form.is_valid():
+                detail_form = detail_form.save(commit=False)
+                detail_form.user = user
+                detail_form.save()
+                return HttpResponseRedirect(reverse('profiles:dashboard'))
 
     elif request.method == "GET":
         user = User.objects.get(pk=username.id)
         detail = Profile.objects.filter(user=user).exists()
         if detail:
+            detail = Profile.objects.get(user=user)
             return render(request, 'profiles/userprofile.html', {'detail': detail})
         else:
             return render(request, 'profiles/userprofile.html')
