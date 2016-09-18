@@ -13,16 +13,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profiles',
+            name='Profile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('city', models.CharField(max_length=100)),
-                ('contact_no', models.CharField(max_length=10)),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name=b'Created', null=True)),
-                ('modified', models.DateTimeField(auto_now=True, verbose_name=b'Last Modified', null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
+                ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
+                ('city', models.CharField(max_length=100, null=True, blank=True)),
+                ('contact_no', models.CharField(max_length=15, null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='created_profile_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_profile_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'abstract': False,
             },
             bases=(models.Model,),
         ),
