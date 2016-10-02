@@ -43,20 +43,13 @@ class ProposalCommentSerializer(serializers.ModelSerializer):
 
 class ProposalListSerializer(BaseProposalSerializer):
 
-    comments = serializers.SerializerMethodField()
-
-    def get_comments(self, proposal):
-        qset = ProposalComment.objects.filter(proposal=proposal, private=False, reviewer=False)
-        s_comments = ProposalCommentSerializer(qset, many=True)
-        return s_comments.data
-
     def get_author(self, proposal):
         return proposal.author.username
 
     class Meta:
         model = Proposal
         fields = ('id', 'title', 'author', 'slug', 'section', 'type', 'description', 'target_audience',
-                  'prerequisites', 'content_urls', 'speaker_info', 'speaker_links', 'comments')
+                  'prerequisites', 'content_urls', 'speaker_info', 'speaker_links')
 
 
 class ProposalFilterSerializer(serializers.Serializer):
