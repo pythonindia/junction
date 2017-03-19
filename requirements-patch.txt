@@ -1,3 +1,0 @@
-# Bug fix for issue #520
-html5lib<0.99999999
-bleach<2.0.0
