@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
 from django.conf import settings
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
@@ -33,8 +33,10 @@ You should put the url config in their respective app putting only a
 reference to them here.
 '''
 
-urlpatterns = patterns(
-    '',
+import junction.proposals.dashboard
+
+urlpatterns = [
+
     url(r'^$', HomePageView.as_view(), name="page-home"),
 
     # Django Admin
@@ -50,18 +52,18 @@ urlpatterns = patterns(
     # Proposals related
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
-        'junction.proposals.dashboard.reviewer_comments_dashboard',
+        junction.proposals.dashboard.reviewer_comments_dashboard,
         name='proposal-reviewers-dashboard'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/proposal_state/$',
-        'junction.proposals.dashboard.proposal_state',
+        junction.proposals.dashboard.proposal_state,
         name='proposal-state'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/$',
-        'junction.proposals.dashboard.proposals_dashboard', name='proposal-dashboard'),
+        junction.proposals.dashboard.proposals_dashboard, name='proposal-dashboard'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/$',
-        'junction.proposals.dashboard.reviewer_votes_dashboard',
+        junction.proposals.dashboard.reviewer_votes_dashboard,
         name='proposal-reviewer-votes-dashboard'),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/export/$',
-        'junction.proposals.dashboard.export_reviewer_votes',
+        junction.proposals.dashboard.export_reviewer_votes,
         name='export-reviewer-votes'),
     url(r'^feedback/(?P<schedule_item_id>\d+)/$',
         view_feedback,
@@ -100,12 +102,14 @@ urlpatterns = patterns(
         RedirectView.as_view(pattern_name="proposals-list"),
         name='conference-detail'),
 
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+import django.views.defaults
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-        url(r'^400/$', 'django.views.defaults.bad_request'),  # noqa
-        url(r'^403/$', 'django.views.defaults.permission_denied'),
-        url(r'^404/$', 'django.views.defaults.page_not_found'),
-        url(r'^500/$', 'django.views.defaults.server_error'),
-    )
+    urlpatterns += [
+        url(r'^400/$', django.views.defaults.bad_request),  # noqa
+        url(r'^403/$', django.views.defaults.permission_denied),
+        url(r'^404/$', django.views.defaults.page_not_found),
+        url(r'^500/$', django.views.defaults.server_error),
+    ]

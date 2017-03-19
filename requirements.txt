@@ -1,19 +1,19 @@
-Django==1.8.14
-celery==3.1.18
-djangorestframework==3.1.3
-django-filter==0.10.0
+Django==1.9
+celery==3.1.20
+djangorestframework==3.4
+django-filter==1.0.1
 
 # Persistent Store
 # -------------------------------------------------
-psycopg2==2.6.1
-redis==2.10.5
+psycopg2==2.6.2
+redis==2.10.0
 dj-database-url==0.4.1
 
 # Extensions
 # -------------------------------------------------
-django-extensions==1.5.5
-six==1.9.0
-django-sampledatahelper==0.3
+django-extensions==1.7.5
+six==1.10
+django-sampledatahelper==0.4
 unicode-slugify==0.1.3
 XlsxWriter==0.7.3
 arrow==0.8.0
@@ -26,26 +26,26 @@ Pillow==2.9.0
 
 # Auth
 # -------------------------------------------------
-django-allauth==0.21.0
-oauthlib==0.7.2
+django-allauth==0.24.0
+oauthlib==1.1.2
 python-openid==2.2.5
 requests==2.7.0
 requests-oauthlib==0.5.0
 
 # Admin
 # -------------------------------------------------
-django_simple_history==1.6.3
+django_simple_history==1.8.0
 
 # Frontend Helpers
 # -------------------------------------------------
-django-bootstrap3==6.1.0
+django-bootstrap3==7.1.0
 django-bootstrap-breadcrumbs==0.8
 django-flat-theme==1.1.3
 
 # Markdown Editor
 # -------------------------------------------------
 django-markdown==0.8.4
-django-pagedown==0.1.0
+django-pagedown==0.1.
 mdx-linkify==0.6
 Markdown==2.6.6
 markdown2==2.3.1
