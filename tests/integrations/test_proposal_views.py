@@ -239,8 +239,8 @@ def test_proposal_filters(settings, login, conferences):
     kwargs = {'conference_slug': conference.slug}
     url = reverse('proposals-list', kwargs=kwargs)
 
-    response = client.get(url, {'proposal_section': section.id,
-                                'proposal_type': proposal_type.id})
+    response = client.get(url, {'proposal_section': section.name,
+                                'proposal_type': proposal_type.name})
 
     assert response.status_code == 200
     assert response.context['is_filtered'] is True
