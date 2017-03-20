@@ -67,6 +67,9 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.facebook',
 
     'bootstrap3',
 
@@ -114,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
