@@ -29,5 +29,7 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProposalFilterSerializer(serializers.Serializer):
-    proposal_section = serializers.SlugRelatedField(slug_field='name', queryset=ProposalSection.objects.all(), required=False)
-    proposal_type = serializers.SlugRelatedField(slug_field='name',queryset=ProposalType.objects.all(), required=False)
+    proposal_section = serializers.SlugRelatedField(slug_field='name',
+                                                    queryset=ProposalSection.objects.all(), required=False)
+    proposal_type = serializers.SlugRelatedField(slug_field='name',
+                                                 queryset=ProposalType.objects.all(), required=False)
