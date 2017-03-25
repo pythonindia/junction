@@ -37,8 +37,8 @@ def _filter_proposals(request, proposals_qs):
     if not serializer.is_valid():
         raise Http404()
 
-    proposal_section_filter = serializer.validated_data.get('proposal_section', None)
-    proposal_type_filter = serializer.validated_data.get('proposal_type', None)
+    proposal_section_filter = serializer.validated_data.get('section', None)
+    proposal_type_filter = serializer.validated_data.get('type', None)
     is_filtered = False
     filter_name = False
 
