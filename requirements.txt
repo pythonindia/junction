@@ -39,7 +39,7 @@ django_simple_history==1.6.3
 # Frontend Helpers
 # -------------------------------------------------
 django-bootstrap3==6.1.0
-django-bootstrap-breadcrumbs==0.8
+django-bootstrap-breadcrumbs==0.7.3
 django-flat-theme==1.1.3
 
 # Markdown Editor
