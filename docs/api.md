@@ -88,6 +88,51 @@ Junction provides API to access information about the conference, schedule, and 
 
 ```
 
+### Proposals: List of proposals for the conference
+
+- Endpoint: `/api/v1/proposals/?conference=<conference_slug>`
+
+- Allowed Methods: `GET`
+
+- Returns proposals of the conference.
+
+- Results are paginated. 20 results per page. Includes previous/next urls.
+
+- Sample Response:
+
+```
+{
+    "count": 3,
+    "next": null,
+    "previous": "http://127.0.0.1:8000/api/v1/proposals/?conference=a-porro-conference",
+    "results": [
+        {
+            "id": 25,
+            "title": "A porro - type 0 - section 0 -1",
+            "author": "fsdf",
+            "slug": "sadfaaaaaaaaaaaaaaaaaaaaa-2",
+            "description": "sdf",
+            "target_audience": 3,
+            "prerequisites": "",
+            "content_urls": "",
+            "speaker_info": "",
+            "speaker_links": "",
+            "comments": [
+                {
+                    "commenter": "fpqwe",
+                    "comment": "good "
+                },
+                {
+                    "commenter": "fsdf",
+                    "comment": "very good"
+                }
+            ]
+        }
+    ]
+}
+```
+
+
 ### Schedule: List
 
 - Endpoint: `/api/v1/schedules/`

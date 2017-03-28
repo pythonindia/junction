@@ -13,6 +13,7 @@ from rest_framework import routers
 from junction.conferences import views as conference_views
 from junction.devices.views import DeviceDetailApiView, DeviceListApiView
 from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApiView, view_feedback
+from junction.proposals.api import ProposalListApiView
 from junction.schedule import views as schedule_views
 from junction.schedule.views import non_proposal_schedule_item_view
 
@@ -23,7 +24,6 @@ router = routers.DefaultRouter()
 router.register('conferences', conference_views.ConferenceView)
 router.register('venues', conference_views.VenueView)
 router.register('rooms', conference_views.RoomView)
-
 router.register('schedules', schedule_views.ScheduleView)
 
 '''
@@ -69,18 +69,7 @@ urlpatterns = patterns(
     url(r'^schedule_item/(?P<sch_item_id>\d+)/$',
         non_proposal_schedule_item_view,
         name="schedule-item"),
-    url(r'^api/v1/', include(router.urls)),
-    # Device
-    url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
-    url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(),
-        name='device-detail'),
-    # Feedback
-    url('^api/v1/feedback_questions/$',
-        FeedbackQuestionListApiView.as_view(),
-        name='feedback-questions-list'),
-    url('^api/v1/feedback/$',
-        FeedbackListApiView.as_view(),
-        name='feedback-list'),
+
     # User Dashboard
     url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
 
@@ -100,6 +89,13 @@ urlpatterns = patterns(
         RedirectView.as_view(pattern_name="proposals-list"),
         name='conference-detail'),
 
+    # api
+    url(r'^api/v1/', include(router.urls)),
+    url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
+    url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(), name='device-detail'),
+    url(r'^api/v1/feedback_questions/$', FeedbackQuestionListApiView.as_view(), name='feedback-questions-list'),
+    url(r'^api/v1/feedback/$', FeedbackListApiView.as_view(), name='feedback-list'),
+    url(r'^api/v1/proposals/$', ProposalListApiView.as_view(), name='proposals-list-api'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

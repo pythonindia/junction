@@ -233,7 +233,8 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get(
 CONN_MAX_AGE = 300
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'PAGE_SIZE': 20,
 }
 
 EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
