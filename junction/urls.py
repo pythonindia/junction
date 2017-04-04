@@ -2,8 +2,8 @@
 from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
-from django.conf import settings
 from django.conf.urls import include, patterns, url
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
