@@ -3,7 +3,11 @@
 # Testing
 # -------------------------------------------------
 mock==2.0.0
-factory_boy==2.7.0
+# Fix for travis CI tests failing
+# Ref: https://github.com/FactoryBoy/factory_boy/issues/334#issuecomment-267696136
+fake-factory==0.7.4
+factory-boy==2.7.0
+
 flake8==2.4.1
 pytest-django==2.9.1
 pytest-cov==2.2.1
@@ -19,3 +23,7 @@ bumpversion==0.5.3
 # Debugging
 # --------------------------------------------------
 ipdb==0.9.0
+
+# Patch for html5lib - issue #520
+html5lib<0.99999999
+bleach<2.0.0
