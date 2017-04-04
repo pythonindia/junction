@@ -8480,6 +8480,9 @@ input#id_remember {
   z-index: 90000;
   border-radius: 0;
 }
+.green {
+  color: green;
+}
 .align-bottom {
   vertical-align: bottom;
 }
