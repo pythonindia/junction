@@ -2,7 +2,6 @@
 {% load bootstrap3 %}
 {% load static from staticfiles %}
 {% load django_bootstrap_breadcrumbs %}
-{% load url from future %}
 {% load i18n %}
 
 {% block head_title %} CFP submission is closed | {{ block.super }} {% endblock %}
@@ -20,7 +19,7 @@
             <div class="form-container space-2-bottom">
                 <h2 class="fill-blue text-center">{% trans "CFP submission is closed" %}</h2>
                 <div class="pad-2 push-1-top push-2-bottom text-center">
-    				<p>{% trans "We are no longer accepting proposals. You can prepare a session for open spaces or flash talks." %}</p>
+                    <p>{% trans "We are no longer accepting proposals. You can prepare a session for open spaces or flash talks." %}</p>
                 </div>
             </div>
         </div>
