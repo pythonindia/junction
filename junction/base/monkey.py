@@ -36,7 +36,7 @@ def patch_urlresolvers():
 
     old_reverse = urlresolvers.reverse
 
-    def new_reverse(viewname, urlconf=None, args=None, kwargs=None,current_app=None):
+    def new_reverse(viewname, urlconf=None, args=None, kwargs=None, current_app=None):
         path = old_reverse(viewname, urlconf=urlconf, args=args, kwargs=kwargs,
                            current_app=current_app)
         if is_absolute_url(path):
