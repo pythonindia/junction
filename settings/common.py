@@ -18,7 +18,6 @@ SITE_ID = 1
 
 ADMINS = ()
 
-DEBUG = True
 
 # Absolute Url of frontend hosted site. Used to render the urls in templattes,
 # static and media files appropriately. e.g 'https://in.pycon.org/junction'
