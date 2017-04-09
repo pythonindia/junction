@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import junction.proposals.dashboard
+import django.views.defaults
 
 # Third Party Stuff
-from django.conf import settings
 from django.conf.urls import include, url
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
@@ -33,7 +35,6 @@ You should put the url config in their respective app putting only a
 reference to them here.
 '''
 
-import junction.proposals.dashboard
 
 urlpatterns = [
 
@@ -104,7 +105,6 @@ urlpatterns = [
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-import django.views.defaults
 
 if settings.DEBUG:
     urlpatterns += [
