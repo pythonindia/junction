@@ -2,22 +2,22 @@
 from __future__ import absolute_import, unicode_literals
 
 # Third Party Stuff
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 
 from . import comments_views, views, votes_views, dashboard
 
-comment_urls = patterns(
-    '',
+comment_urls = [
+
     url(r'^(?P<proposal_slug>[\w-]+)/create/$',
         comments_views.create_proposal_comment, name='proposal-comment-create'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/up-vote/$',
         votes_views.proposal_comment_up_vote, name='proposal-comment-up-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/down-vote/$',
         votes_views.proposal_comment_down_vote, name='proposal-comment-down-vote'),
-)
+]
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
+
     # proposal urls
     url(r'^$', views.list_proposals, name='proposals-list'),
     url(r'^create/$', views.create_proposal, name='proposal-create'),
@@ -40,4 +40,4 @@ urlpatterns = patterns(
     url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/second-vote/$', votes_views.proposal_reviewer_secondary_vote,
         name='proposal-reviewer-secondary-vote'),
-)
+]
