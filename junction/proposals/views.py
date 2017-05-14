@@ -131,7 +131,7 @@ def create_proposal(request, conference_slug):
         proposal_type_id=form.cleaned_data['proposal_type'],
         proposal_section_id=form.cleaned_data['proposal_section'])
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META.get('HTTP_HOST'))
-    send_mail_for_new_proposal(proposal, host)
+    send_mail_for_new_proposal.delay(proposal.id, host)
 
     return HttpResponseRedirect(reverse('proposal-detail',
                                         args=[conference.slug, proposal.slug]))
@@ -387,12 +387,9 @@ def proposal_upload_content(request, conference_slug, slug):
         raise PermissionDenied
 
     host = '{}://{}'.format(settings.SITE_PROTOCOL, request.META['HTTP_HOST'])
-    response = send_mail_for_proposal_content(conference, proposal, host)
+    send_mail_for_proposal_content.delay(conference.id, proposal.id, host)
 
-    if response == 1:
-        message = 'Email sent successfully.'
-    else:
-        message = 'There is problem in sending mail. Please contact conference chair.'
+    message = 'Email sent successfully.'
 
     return HttpResponse(message)
 
