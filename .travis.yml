@@ -36,4 +36,4 @@ services:
   - redis-server
 
 before_script:
-  - celery -A junction worker -l info
+  - celery -A junction worker -l info &
