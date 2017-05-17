@@ -2,7 +2,6 @@
 
 # Testing
 # -------------------------------------------------
-mock==2.0.0
 # Fix for travis CI tests failing
 # Ref: https://github.com/FactoryBoy/factory_boy/issues/334#issuecomment-267696136
 fake-factory==0.7.4
