@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load account %}
 {% load django_bootstrap_breadcrumbs %}
+{% load account socialaccount %}
 
 {% block head_title %}{% trans "Sign In" %} · {{ block.super }}{% endblock %}
 
@@ -17,7 +18,8 @@
       <div class="form-container space-2-bottom {% if form.errors %} has-error {% endif %}">
         <h2 class="text-center">{% trans "Sign In" %}</h2>
         <div class="pad-2 push-half-top push-2-bottom">
-          {% if socialaccount.providers  %}
+          {% get_providers as socialaccount_providers %}
+          {% if socialaccount_providers  %}
             <p>
               {% blocktrans %}Sign in with your third party accounts or using an existing account:{% endblocktrans %}
             </p>

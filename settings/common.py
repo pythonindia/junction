@@ -66,9 +66,6 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.linkedin',
-    'allauth.socialaccount.providers.facebook',
 
     'bootstrap3',
 
