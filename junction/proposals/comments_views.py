@@ -41,7 +41,11 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         )
         host = '{}://{}'.format(settings.SITE_PROTOCOL,
                                 request.META.get('HTTP_HOST'))
-        send_mail_for_new_comment(proposal_comment, host)
+
+        if settings.USE_ASYNC_FOR_EMAIL:
+            send_mail_for_new_comment.delay(proposal_comment.id, host)
+        else:
+            send_mail_for_new_comment(proposal_comment.id, host)
 
     redirect_url = reverse('proposal-detail',
                            args=[conference.slug, proposal.slug])

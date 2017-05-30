@@ -31,3 +31,9 @@ notifications:
   email:
     on_success: change  # [always|never|change]
     on_failure: always  # [always|never|change]
+
+services:
+  - redis-server
+
+before_script:
+  - celery -A junction worker -l info &

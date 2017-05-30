@@ -15,11 +15,14 @@ It is advised to install all the requirements inside [virtualenv], use [virtuale
 [virtualenvwrapper]: https://virtualenvwrapper.readthedocs.org/en/latest/
 
 ```
-sudo apt-get install libpq-dev python-dev
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install libpq-dev python-dev build-essential tcl
 pip install -r requirements-dev.txt
 cp settings/dev.py.sample settings/dev.py
 python manage.py migrate --noinput
 python manage.py sample_data
+sudo apt-get -y install redis-server
 ```
 
 Initial auth data: admin/123123
@@ -161,6 +164,7 @@ Contributing
     <td align=center><img width=100 src=https://avatars.githubusercontent.com/u/889999?v=3><br>Vignesh Sarma K (<a href=https://github.com/vigneshsarma>@vigneshsarma</a>)</td>
     <td align=center><img width=100 src=https://avatars.githubusercontent.com/u/316253?v=3><br>Vijay (<a href=https://github.com/vnbang2003>@vnbang2003</a>)</td>
     <td align=center><img width=100 src=https://avatars.githubusercontent.com/u/6693374?v=3><br>Vinay Singh (<a href=https://github.com/vinay13>@vinay13</a>)</td>
+    <td align=center><img width=100 src=https://avatars.githubusercontent.com/u/7351791?v=3><br>Rahul Arora (<a href=https://github.com/rahulxxarora>@rahulxxarora</a>)</td>
   </tr>
 </table>
 
