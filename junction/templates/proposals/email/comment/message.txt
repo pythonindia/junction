@@ -3,4 +3,4 @@ There is a new comment on {{host}}{{proposal.get_absolute_url}} by {% if comment
 "{{comment.comment}}"
 
 -------------------------------------------------------------------------------
-PS: Please, don't reply to the email. You can login({{host}}{{login_url}})to and leave a comment
+PS: Please, don't reply to the email. You can login({{host}}{{login_url}})to and leave a comment or mark the comment as spam.

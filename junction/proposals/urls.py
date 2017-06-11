@@ -14,6 +14,10 @@ comment_urls = [
         votes_views.proposal_comment_up_vote, name='proposal-comment-up-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/down-vote/$',
         votes_views.proposal_comment_down_vote, name='proposal-comment-down-vote'),
+    url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/mark_spam/$',
+        comments_views.mark_comment_as_spam, name='comment_mark_spam'),
+    url(r'^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/unmark_spam/$',
+        comments_views.unmark_comment_as_spam, name='comment_unmark_spam'),
 ]
 
 urlpatterns = [

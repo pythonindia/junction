@@ -291,9 +291,14 @@ class ProposalComment(TimeAuditModel):
     comment_type = models.PositiveSmallIntegerField(
         choices=ProposalCommentType.CHOICES, default=ProposalCommentType.GENERAL)
     objects = ProposalCommentQuerySet.as_manager()
+    is_spam = models.BooleanField(default=False, blank=True)
+    marked_as_spam_by = models.ForeignKey(User, related_name='marked_as_spam_by',
+                                          default=None, null=True, blank=True)
 
     class Meta:
         ordering = ('created_at', )
+        index_together = [['is_spam', 'marked_as_spam_by'],
+                          ['commenter', 'is_spam']]
 
     def __str__(self):
         return "[{} by {}] {}".format(self.comment,
@@ -305,6 +310,14 @@ class ProposalComment(TimeAuditModel):
 
     def get_down_vote_url(self):
         return reverse('proposal-comment-down-vote', args=[self.proposal.conference.slug, self.proposal.slug, self.id])
+
+    def get_mark_spam_url(self):
+        return reverse('comment_mark_spam',
+                       args=[self.proposal.conference.slug, self.proposal.slug, self.id])
+
+    def get_unmark_spam_url(self):
+        return reverse('comment_unmark_spam',
+                       args=[self.proposal.conference.slug, self.proposal.slug, self.id])
 
     def get_votes_count(self):
         up_vote_count = ProposalCommentVote.objects.filter(proposal_comment=self, up_vote=True).count()
