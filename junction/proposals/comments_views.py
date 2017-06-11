@@ -27,7 +27,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
         Proposal, slug=proposal_slug, conference=conference)
     form = ProposalCommentForm(request.POST)
 
-    if request.user.is_active == False:
+    if request.user.is_active is False:
         raise PermissionDenied()
 
     if form.is_valid():
@@ -69,7 +69,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
 @login_required
 @require_http_methods(['POST'])
 def mark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comment_id):
-    if not request.is_ajax() or request.user.is_active == False:
+    if not request.is_ajax() or request.user.is_active is False:
         return HttpResponseForbidden()
 
     conference = get_object_or_404(Conference, slug=conference_slug)
@@ -94,7 +94,7 @@ def mark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comme
 @login_required
 @require_http_methods(['POST'])
 def unmark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comment_id):
-    if not request.is_ajax() or request.user.is_active == False:
+    if not request.is_ajax() or request.user.is_active is False:
         return HttpResponseForbidden()
 
     conference = get_object_or_404(Conference, slug=conference_slug)
