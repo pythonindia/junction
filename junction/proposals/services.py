@@ -8,6 +8,7 @@ import collections
 
 # Third Party Stuff
 from django.conf import settings
+from django.contrib.auth.models import User
 from markdown2 import markdown
 from celery import shared_task
 
@@ -78,6 +79,10 @@ def comment_recipients(proposal_comment):
             for comment in proposal.proposalcomment_set
             .all().select_related('commenter')}
         recipients.add(proposal.author)
+        ADMINS = getattr(settings, 'SPAM_MODERATION_ADMINS', [])
+        if ADMINS:
+            for admin in ADMINS:
+                recipients.add(User.objects.get(email=admin))
 
     return recipients
 
@@ -150,3 +155,17 @@ def send_mail_for_proposal_content(conference_id, proposal_id, host):
     }
     return send_email(to=author, template_dir='proposals/email/upload_content',
                       context=context)
+
+
+def user_action_for_spam(user, threshold):
+    """When a comment is marked as spam, make appropriate status update to user model
+    """
+    total_spam = ProposalComment.objects.filter(commenter=user, is_spam=True).count()
+    if total_spam >= threshold:
+        if user.is_active is True:
+            user.is_active = False
+            user.save()
+    else:
+        if user.is_active is False:
+            user.is_active = True
+            user.save()
