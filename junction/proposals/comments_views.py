@@ -9,6 +9,7 @@ from django.http.response import (HttpResponseRedirect, HttpResponse,
 from django.shortcuts import Http404, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 # Junction Stuff
 from junction.conferences.models import Conference
@@ -67,6 +68,7 @@ def create_proposal_comment(request, conference_slug, proposal_slug):
 
 
 @login_required
+@csrf_exempt
 @require_http_methods(['POST'])
 def mark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comment_id):
     if not request.is_ajax() or request.user.is_active is False:
@@ -92,6 +94,7 @@ def mark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comme
 
 
 @login_required
+@csrf_exempt
 @require_http_methods(['POST'])
 def unmark_comment_as_spam(request, conference_slug, proposal_slug, proposal_comment_id):
     if not request.is_ajax() or request.user.is_active is False:
