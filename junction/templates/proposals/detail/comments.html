@@ -133,10 +133,8 @@
       e.preventDefault();
       var that = $(this);
       var url = that.attr('data-url');
-      $.ajax({
-          method: "POST",
-          url: url})
-          .done(function( msg ){
+      $.post(url, {}, function(result){
+        console.log(result);
               location.reload(true);
           });
   });
