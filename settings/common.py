@@ -103,7 +103,7 @@ TEMPLATES = [
                 "junction.base.context_processors.site_info",
             ],
 
-            'debug': DEBUG,
+            'debug': DEBUG,  # noqa
         },
     },
 ]

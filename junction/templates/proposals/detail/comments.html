@@ -89,7 +89,7 @@
         {% bootstrap_field proposal_comment_form.reviewer %}
 
         {% buttons %}
-        <button type="submit" class="btn btn-primary">
+        <button type="button" id="comment" class="btn btn-primary">
             Add Comment
         </button>
         <button type="button" class="btn btn-default js-hide-comment-form">Cancel</button>
@@ -138,6 +138,23 @@
               location.reload(true);
           });
   });
+  $("textarea").keypress(function(){
+    $(".alert").remove()
+    var text = $("textarea").val();
+    if (text.length<15) {
+      $(this).after("<p class='alert alert-warning'><strong>Remember! </strong>Length should be greater than 15!</p>");
+    }
+  })
+
+  $("#comment").click(function() {
+    $(".alert").remove()
+    var text = $("textarea").val();
+    if (text.length >= 15) {
+      $("form").submit();
+    } else {
+      $("textarea").after("<p class='alert alert-danger'><strong>Oops! </strong>Length should be greater than 15.</p>");
+    }
+  })
 
     {% else %}
     $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
