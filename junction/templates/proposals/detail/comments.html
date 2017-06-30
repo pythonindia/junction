@@ -36,8 +36,19 @@
 
         </div>
 
-        <div class="comment-description" id="comment-{{comment.id}}">
-            <span>{{ comment.comment|markdown }}</span>
+        {% if comment.is_spam %}
+        <div class="comment-description spam" id="comment-{{comment.id}}">
+          <span>The comment is marked as spam.</span>
+          {% if request.user.is_authenticated and request.user == comment.marked_marked_as_spam_by %}
+          <a href="#" data-url="{{ comment.get_unmark_spam_url }}" class="js-unmark-spam">Unmark as spam</a>
+          {% endif %}<br/><br/>
+          {% else %}
+          <div class="comment-description" id="comment-{{comment.id}}">
+          <span>{{ comment.comment|markdown }}</span>
+          {% if request.user.is_authenticated and request.user != comment.commenter %}
+          <a href="#" data-url="{{ comment.get_mark_spam_url }}" class="js-mark-spam">Mark as spam</a><br/><br/>
+          {% endif %}
+          {% endif %}
             <b>
               {% if comment.private or comment.reviewer %}
                   {% if comment.commenter == proposal.author %}
@@ -78,7 +89,7 @@
         {% bootstrap_field proposal_comment_form.reviewer %}
 
         {% buttons %}
-        <button type="submit" class="btn btn-primary">
+        <button type="button" id="comment" class="btn btn-primary">
             Add Comment
         </button>
         <button type="button" class="btn btn-default js-hide-comment-form">Cancel</button>
@@ -118,6 +129,33 @@
             $(_that).siblings('.vote-count').html(result);
         });
     });
+  $('.js-mark-spam').click(function(e){
+      e.preventDefault();
+      var that = $(this);
+      var url = that.attr('data-url');
+      $.post(url, {}, function(result){
+        console.log(result);
+              location.reload(true);
+          });
+  });
+  $("textarea").keypress(function(){
+    $(".alert").remove()
+    var text = $("textarea").val();
+    if (text.length<15) {
+      $(this).after("<p class='alert alert-warning'><strong>Remember! </strong>Length should be greater than 15!</p>");
+    }
+  })
+
+  $("#comment").click(function() {
+    $(".alert").remove()
+    var text = $("textarea").val();
+    if (text.length >= 15) {
+      $("form").submit();
+    } else {
+      $("textarea").after("<p class='alert alert-danger'><strong>Oops! </strong>Length should be greater than 15.</p>");
+    }
+  })
+
     {% else %}
     $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
         e.preventDefault();

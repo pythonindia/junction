@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+{% load proposal_filters %}
+
+{% block head_title %} Profile {% endblock %}
+{% block og_title %} Profile {% endblock %}
+{% block og_description %} Profile {% endblock %}
+{% block page_description %} Profile {% endblock %}
+
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Dashboard" "user-proposals-list" %}
+    {% breadcrumb "Profile" "user-profile"%}
+{% endblock %}
+
+{% block navbar_logo %}
+        <a href="#" class="navbar-brand">Junction</a>
+{% endblock navbar_logo %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="form-container space-2-bottom {% if form.errors %} has-error {% endif %}">
+               <h2 class="text-center">Edit Profile</h2>
+                <div class="pad-2 push-half-top push-2-bottom">
+                    <form class="form-horizontal login-form" method="POST">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <label for="city" class="col-lg-4 control-label"> City :</label>
+                    <div class="col-lg-8">
+                        <input autofocus="autofocus" name="city" placeholder="Enter Your City" type="text" value="{{detail.city}}">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact" class="col-lg-4 control-label"> Contact :</label>
+                    <div class="col-lg-8">
+                        <input autofocus="autofocus" name="contact_no" placeholder="Enter Your Contact No:" type="text" pattern="\d{10}" value="{{detail.contact_no}}" >
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-8 col-lg-offset-4">
+                            <button class="btn btn-primary" type="submit">
+                            Submit
+                            </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

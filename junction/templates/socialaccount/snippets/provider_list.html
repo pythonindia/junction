@@ -1,6 +1,7 @@
 {% load socialaccount %}
+{% get_providers as socialaccount_providers %}
 
-{% for provider in socialaccount.providers %}
+{% for provider in socialaccount_providers %}
     {% if provider.id == "openid" %}
         {% for brand in provider.get_brands %}
             <li>

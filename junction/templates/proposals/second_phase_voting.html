@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% load django_markdown %}
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block head_title %} {{ conference.name }} Second phase voting {% endblock %}
+{% block og_title %} {{ conference.name }} Second phase voting {% endblock %}
+{% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+{% block page_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
+
+{% block endhead %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb conference.name "conference-detail" conference.slug %}
+    {% breadcrumb "Second phase voting" "proposals-to-review" conference.slug %}
+{% endblock %}
+
+{% block navbar_logo %}
+    {% if conference.logo %}
+        <a href="{% url "conference-detail" conference.slug %}">
+            <img src="{{ conference.logo.url }}">
+        </a>
+    {% else %}
+        <a href="#" class="navbar-brand">{{ conference.name }}</a>
+    {% endif %}
+{% endblock navbar_logo %}
+
+{% block page_classes %}{{ block.super}} page-proposals{% endblock page_classes %}
+
+{% block content %}
+    <section class="content custom-container proposal-list">
+        <div class="push-4-bottom push-1-top">
+            <a name="proposals"></a>
+            {% if proposals %}
+                <h2>Second Phase Voting</h2>
+                <hr>
+
+                <div id="#proposals">
+                    {% for section_items in proposals %}
+                        {% if section_items.proposals %}
+                            {% include 'proposals/partials/proposal-list--review-items.html' with proposals=section_items.proposals title=section_items.section display_status=False %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <p>No proposals to vote.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

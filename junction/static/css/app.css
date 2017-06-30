@@ -8480,6 +8480,9 @@ input#id_remember {
   z-index: 90000;
   border-radius: 0;
 }
+.green {
+  color: green;
+}
 .align-bottom {
   vertical-align: bottom;
 }
@@ -8989,4 +8992,7 @@ textarea.review-form select {
 }
 .dropdown {
   margin-left: 10px;
+}
+.spam{
+    background-color: #b3a6a6;
 }

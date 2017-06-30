@@ -109,6 +109,7 @@
                             <ul class="dropdown-menu" role="menu">
                                     <li><a href="{% url 'profiles:dashboard' %}">Dashboard</a></li>
                                     <li><a href="{% url 'socialaccount_connections' %}">Social Accounts</a></li>
+                                    <li><a href="{% url 'profiles:profile' %}">Profile</a></li>
                                     {% if user.is_staff %}
                                         <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
                                     {% endif %}

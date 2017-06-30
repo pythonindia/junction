@@ -18,6 +18,7 @@ SITE_ID = 1
 
 ADMINS = ()
 
+
 # Absolute Url of frontend hosted site. Used to render the urls in templattes,
 # static and media files appropriately. e.g 'https://in.pycon.org/junction'
 SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
@@ -89,19 +90,30 @@ OUR_APPS = (
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.request",
-    "django.contrib.auth.context_processors.auth",
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
-    "junction.base.context_processors.site_info",
-)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(APP_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                "django.contrib.auth.context_processors.auth",
+                "junction.base.context_processors.site_info",
+            ],
+
+            'debug': DEBUG,  # noqa
+        },
+    },
+]
+
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
@@ -190,9 +202,6 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = join(ROOT_DIR, '.media')
 MEDIA_URL = '/m/'
 
-TEMPLATE_DIRS = (
-    os.path.join(APP_DIR, 'templates'),
-)
 
 DATABASES = {
     'default': {
@@ -209,13 +218,12 @@ SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
 
-DEBUG = TEMPLATE_DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = []  # TODO:
 
 SITE_PROTOCOL = 'http'
 
-MARKDOWN_EXTENSIONS = ['linkify']
+# MARKDOWN_EXTENSIONS = ['linkify']
 
 
 # twitter settings
@@ -236,3 +244,9 @@ REST_FRAMEWORK = {
 EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
 
 QR_CODES_DIR = ROOT_DIR + '/qr_files'
+
+USE_ASYNC_FOR_EMAIL = False
+
+USER_SPAM_THRESHOLD = 2
+
+SPAM_MODERATION_ADMINS = []

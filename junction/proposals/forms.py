@@ -152,7 +152,6 @@ class ProposalReviewForm(forms.Form):
 
 
 class ProposalReviewerVoteForm(forms.Form):
-
     """
     Used by ProposalSectionReviewers to vote on proposals.
     """

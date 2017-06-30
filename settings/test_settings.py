@@ -11,16 +11,16 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(ROOT_DIR, 'test.sqlite3'),
+        'NAME': os.path.join(ROOT_DIR, 'test.sqlite3'),  # noqa
     }
 }
 
-TEMPLATE_CONTEXT_PROCESSORS += (
+TEMPLATE_CONTEXT_PROCESSORS += (  # noqa
     "django.core.context_processors.debug",
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-INSTALLED_APPS += ('django_extensions',)
+INSTALLED_APPS += ('django_extensions',)  # noqa
 
 DEVICE_VERIFICATION_CODE = 11111
