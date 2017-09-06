@@ -94,7 +94,7 @@
                                         {{ proposal.author.username }}
                                     {% endif %}
                                 </b> |&nbsp;
-                                <i class="fa fa-calendar"></i> <b>{{ proposal.created_at|date:"d M, Y" }}</b>
+                                <i class="fa fa-calendar"></i> <b title="{{ proposal.created_at|date:'d M Y, H:i' }}">{{ proposal.created_at|date:"d M, Y" }}</b>
                             </small>
                         </div>
                     </div>

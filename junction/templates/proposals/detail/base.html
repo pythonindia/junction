@@ -205,7 +205,7 @@
                 <tr>
                     <td class="text-muted text-right"><small>Last Updated:</small></td>
                     <td>
-                        <time datetime="{{ proposal.modified_at|date:'c' }}">{{ proposal.modified_at|date:"d M, Y" }}</time>
+                        <time datetime="{{ proposal.modified_at|date:'c' }}" title="{{ proposal.modified_at|date:'d M Y, H:i' }}">{{ proposal.modified_at|date:"d M, Y" }}</time>
                     </td>
                 </tr>
             </table>
