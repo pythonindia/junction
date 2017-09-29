@@ -286,7 +286,8 @@ def proposals_to_review(request, conference_slug):
                                  if p.proposal_section == section]
             proposals_to_review.append(s_items(section, section_proposals))
 
-        form = ProposalsToReviewForm(conference=conference, proposal_sections=proposal_reviewer_sections)
+        form = ProposalsToReviewForm(conference=conference,
+                                     proposal_sections=proposal_reviewer_sections)
 
         context = {
             'proposals_to_review': proposals_to_review,

@@ -301,6 +301,7 @@ def export_reviewer_votes(request, conference_slug):
         proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True)
     vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by(
         '-vote_value')
+    vote_values_list = [v.vote_value for v in vote_values_list]
     vote_values_desc = tuple(i.description
                              for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
     header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + \
@@ -327,11 +328,11 @@ def export_reviewer_votes(request, conference_slug):
                     vote_details + (p.get_votes_count(), vote_comment,)
                 if p.get_reviewer_votes_count_by_value(
                         ProposalSectionReviewerVoteValue.objects.get(
-                            vote_value=ProposalReviewVote.NOT_ALLOWED)) > 0:
+                            vote_value=ProposalReviewVote.NOT_ALLOWED).vote_value) > 0:
                     cell_format = book.add_format({'bg_color': 'red'})
                 elif p.get_reviewer_votes_count_by_value(
                         ProposalSectionReviewerVoteValue.objects.get(
-                            vote_value=ProposalReviewVote.MUST_HAVE)) > 2:
+                            vote_value=ProposalReviewVote.MUST_HAVE).vote_value) > 2:
                     cell_format = book.add_format({'bg_color': 'green'})
                 elif p.get_reviewer_votes_count() < 2:
                     cell_format = book.add_format({'bg_color': 'yellow'})
