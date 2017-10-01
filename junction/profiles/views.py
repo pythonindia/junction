@@ -21,7 +21,7 @@ from .forms import ProfileForm
 @require_http_methods(['GET'])
 def dashboard(request):
     conf_proposals = OrderedDict()
-    for conf in Conference.objects.order_by('end_date'):
+    for conf in Conference.objects.order_by('-end_date'):
         for proposal in conf.proposal_set.filter(author=request.user).all():
             if conf.name in conf_proposals:
                 conf_proposals[conf.name].append(proposal)
