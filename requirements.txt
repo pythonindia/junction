@@ -62,3 +62,6 @@ django-uuidfield==0.5.0
 # Ticket
 qrcode==5.1
 jsonfield==1.0.3
+
+# Tabular Dataset
+tablib==0.12.1
