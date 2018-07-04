@@ -2623,7 +2623,7 @@ input[type="search"] {
 .radio,
 .checkbox {
   position: relative;
-  display: block;
+  display: inline;
   margin-top: 10px;
   margin-bottom: 10px;
 }

@@ -39,18 +39,20 @@
                     Sum of Votes: {{ proposal.get_reviewer_votes_sum }}
                     {% for vote in proposal|get_reviewers_vote_details:request.user %}
                         <li>
-                            {{ vote.voter }}:
-                            {{ vote.vote_value }}
+                            {{ vote.voter_nick }}:
+                            <!-- {{ vote.vote_value }} -->
                             {% if vote.vote_comment %}
-                                , "{{ vote.vote_comment }}"
+                                "{{ vote.vote_comment }}"
                             {% endif %}
 
                         </li>
                     {% endfor %}
                     <br />
-                    <a class='btn btn-primary' href="{% url 'proposal-review' conference.slug proposal.slug %}">
-                        Accept/Reject Proposal
-                    </a>
+                    <!-- {% if proposal|proposal_section_reviewer:request.user %}
+                        <a class='btn btn-primary' href="{% url 'proposal-review' conference.slug proposal.slug %}">
+                            Accept/Reject Proposal
+                        </a>
+                    {% endif %} -->
                 </div>
 
 
