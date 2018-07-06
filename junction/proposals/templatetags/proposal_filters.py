@@ -8,7 +8,7 @@ from django import template
 from junction.base.constants import PSRVotePhase
 from junction.proposals.models import ProposalComment, ProposalSectionReviewer, \
     ProposalSectionReviewerVote
-
+from junction.proposals.permissions import is_proposal_section_reviewer
 
 register = template.Library()
 
@@ -53,13 +53,21 @@ def has_upvoted_comment(comment, user):
         return vote[0].up_vote
 
 
+@register.filter(name='proposal_section_reviewer')
+def proposal_section_reviewer(proposal, user):
+    """
+    Checks if the logged in user is a section reviewer
+    """
+    return is_proposal_section_reviewer(user, proposal.conference, proposal)
+
+
 @register.filter(name='get_reviewers_vote_details')
 def get_reviewers_vote_details(proposal, user):
     """
     Get voter name & details for given proposals.
     """
     v_detail = collections.namedtuple('v_detail',
-                                      'voter vote_value vote_comment')
+                                      'voter_nick vote_value vote_comment')
     reviewers = ProposalSectionReviewer.objects.filter(
         proposal_section=proposal.proposal_section,
         conference_reviewer__conference=proposal.conference,
@@ -67,7 +75,7 @@ def get_reviewers_vote_details(proposal, user):
 
     vote_details = []
     for reviewer in reviewers:
-        voter = reviewer.conference_reviewer.reviewer.get_full_name()
+        voter_nick = reviewer.conference_reviewer.nick
         rv_qs = ProposalSectionReviewerVote.objects.filter(
             proposal=proposal,
             voter=reviewer)
@@ -85,6 +93,6 @@ def get_reviewers_vote_details(proposal, user):
         else:
             vote_comment = None
 
-        vote_details.append(v_detail(voter, vote_value, vote_comment))
+        vote_details.append(v_detail(voter_nick, vote_value, vote_comment))
 
     return vote_details

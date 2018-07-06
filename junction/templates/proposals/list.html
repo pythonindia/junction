@@ -56,7 +56,7 @@
                     <a class='btn btn-primary' href="{% url 'proposals-to-review' conference.slug %}">Proposals To Review</a>
                     <a class='btn btn-primary' href="{% url 'second-phase-voting' conference.slug %}">Second Phase Voting</a>
                 {% endif %}
-                {% if user.is_superuser or user.is_stuff %}
+                {% if user.is_superuser or user.is_staff %}
                     <a class='btn btn-primary' href="{% url 'proposal-reviewer-votes-dashboard' conference.slug %}">
                         Reviewer Votes Dashboard
                     </a>

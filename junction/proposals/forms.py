@@ -53,8 +53,7 @@ def _get_proposal_section_reviewer_vote_choices(conference):
     for i in ProposalSectionReviewerVoteValue.objects.all():
         if i.vote_value == 0 and not plus_zero_vote_setting_value:
             continue
-        values.append((i.vote_value, '{} ({})'.format(
-            i.description, i.vote_value)))
+        values.append((i.vote_value, '{}'.format(i.description)))
     return values
 
 
@@ -155,7 +154,10 @@ class ProposalReviewerVoteForm(forms.Form):
     """
     Used by ProposalSectionReviewers to vote on proposals.
     """
-    vote_value = forms.ChoiceField(widget=forms.RadioSelect())
+    vote_value = forms.ChoiceField(
+        widget=forms.RadioSelect(),
+        label="Do you think this proposal will make a good addition to PyCon India 2018?"
+    )
     comment = forms.CharField(
         widget=forms.Textarea(attrs={'minlength': '30'}),
         help_text="Leave a comment justifying your vote.",
