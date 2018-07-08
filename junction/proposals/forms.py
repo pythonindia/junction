@@ -50,7 +50,7 @@ def _get_proposal_section_reviewer_vote_choices(conference):
     else:
         plus_zero_vote_setting_value = True
     values = []
-    for i in ProposalSectionReviewerVoteValue.objects.all():
+    for i in ProposalSectionReviewerVoteValue.objects.all().reverse():
         if i.vote_value == 0 and not plus_zero_vote_setting_value:
             continue
         values.append((i.vote_value, '{}'.format(i.description)))
