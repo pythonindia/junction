@@ -36,7 +36,6 @@
                 </h3>
 
                 <div>
-                    Sum of Votes: {{ proposal.get_reviewer_votes_sum }}
                     {% for vote in proposal|get_reviewers_vote_details:request.user %}
                         <li>
                             {{ vote.voter_nick }}:
