@@ -216,7 +216,7 @@ class Proposal(TimeAuditModel):
         """method will return dict which can be passed to response
         """
         author = u"{} {}".format(self.author.first_name,
-                                self.author.last_name)
+                                 self.author.last_name)
         data = {'id': self.id,
                 'author': author,
                 'title': self.title,
@@ -231,8 +231,8 @@ class Proposal(TimeAuditModel):
                 'speaker_links': self.speaker_links,
                 'content_urls': self.content_urls,
                 'conference': rf_reverse("conference-detail",
-                                      kwargs={'pk': self.conference_id},
-                                      request=request)}
+                                         kwargs={'pk': self.conference_id},
+                                         request=request)}
         return data
 
     class Meta:

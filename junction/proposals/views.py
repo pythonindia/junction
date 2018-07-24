@@ -28,6 +28,7 @@ from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm, Propos
 from .models import Proposal, ProposalComment, ProposalSectionReviewer, ProposalVote
 from .services import send_mail_for_new_proposal, send_mail_for_proposal_content
 
+
 class ProposalView(viewsets.ReadOnlyModelViewSet):
     queryset = Proposal.objects.filter(status=2)
     serializer_class = serializers.ProposalSerializer
@@ -45,6 +46,7 @@ class ProposalView(viewsets.ReadOnlyModelViewSet):
             d = datum.to_response(request=request)
             response['proposals'].append(d)
         return Response(response)
+
 
 # Filtering
 def _filter_proposals(request, proposals_qs):
