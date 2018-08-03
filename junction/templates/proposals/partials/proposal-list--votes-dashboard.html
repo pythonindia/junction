@@ -39,7 +39,7 @@
                     {% for vote in proposal|get_reviewers_vote_details:request.user %}
                         <li>
                             {{ vote.voter_nick }}:
-                            <!-- {{ vote.vote_value }} -->
+                            {{ vote.vote_value }}
                             {% if vote.vote_comment %}
                                 "{{ vote.vote_comment }}"
                             {% endif %}

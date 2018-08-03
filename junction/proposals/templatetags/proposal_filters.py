@@ -80,7 +80,7 @@ def get_reviewers_vote_details(proposal, user):
             proposal=proposal,
             voter=reviewer)
         if rv_qs:
-            vote_value = rv_qs[0].vote_value
+            vote_value = rv_qs[0].vote_value.description
         else:
             vote_value = None
 
