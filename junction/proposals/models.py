@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from hashids import Hashids
 from simple_history.models import HistoricalRecords
+from rest_framework.reverse import reverse as rf_reverse
 
 from junction.base.constants import PSRVotePhase, ProposalCommentType, \
     ProposalReviewStatus, ProposalReviewVote, ProposalStatus, \
@@ -210,6 +211,29 @@ class Proposal(TimeAuditModel):
         return ProposalSectionReviewerVote.objects.filter(
             proposal=self, vote_value__vote_value=ProposalReviewVote.NOT_ALLOWED,
         ).count() > 0
+
+    def to_response(self, request):
+        """method will return dict which can be passed to response
+        """
+        author = u"{} {}".format(self.author.first_name,
+                                 self.author.last_name)
+        data = {'id': self.id,
+                'author': author,
+                'title': self.title,
+                'description': self.description,
+                'target_audience': dict(ProposalTargetAudience.CHOICES)[self.target_audience],
+                'status': dict(ProposalStatus.CHOICES)[self.status],
+                'review_status': dict(ProposalReviewStatus.CHOICES)[self.review_status],
+                'proposal_type': self.proposal_type.name,
+                'proposal_section': self.proposal_section.name,
+                'votes_count': self.get_votes_count(),
+                'speaker_info': self.speaker_info,
+                'speaker_links': self.speaker_links,
+                'content_urls': self.content_urls,
+                'conference': rf_reverse("conference-detail",
+                                         kwargs={'pk': self.conference_id},
+                                         request=request)}
+        return data
 
     class Meta:
         unique_together = ("conference", "slug")
