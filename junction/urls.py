@@ -13,6 +13,7 @@ from rest_framework import routers
 
 # Junction Stuff
 from junction.conferences import views as conference_views
+from junction.proposals import views as proposal_views
 from junction.devices.views import DeviceDetailApiView, DeviceListApiView
 from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApiView, view_feedback
 from junction.schedule import views as schedule_views
@@ -25,6 +26,8 @@ router = routers.DefaultRouter()
 router.register('conferences', conference_views.ConferenceView)
 router.register('venues', conference_views.VenueView)
 router.register('rooms', conference_views.RoomView)
+
+router.register('proposals', proposal_views.ProposalView)
 
 router.register('schedules', schedule_views.ScheduleView)
 

@@ -15,6 +15,9 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from hashids import Hashids
 
+from rest_framework import filters, viewsets
+from rest_framework.response import Response
+
 # Junction Stuff
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus
 from junction.conferences.models import Conference
@@ -24,6 +27,25 @@ from . import permissions, serializers
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm, ProposalsToReviewForm
 from .models import Proposal, ProposalComment, ProposalSectionReviewer, ProposalVote
 from .services import send_mail_for_new_proposal, send_mail_for_proposal_content
+
+
+class ProposalView(viewsets.ReadOnlyModelViewSet):
+    queryset = Proposal.objects.filter(status=2)
+    serializer_class = serializers.ProposalSerializer
+    filter_backend = (filters.DjangoFilterBackend,)
+    filter_fields = ('conference', 'review_status', 'proposal_type', 'proposal_section')
+
+    def get_queryset(self):
+        data = super(ProposalView, self).get_queryset()
+        return self.filter_queryset(data)
+
+    def list(self, request):
+        data = self.get_queryset()
+        response = {'proposals': []}
+        for datum in data:
+            d = datum.to_response(request=request)
+            response['proposals'].append(d)
+        return Response(response)
 
 
 # Filtering
