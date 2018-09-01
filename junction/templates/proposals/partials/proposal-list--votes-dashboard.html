@@ -47,11 +47,11 @@
                         </li>
                     {% endfor %}
                     <br />
-                    <!-- {% if proposal|proposal_section_reviewer:request.user %}
+                    {% if proposal|proposal_section_reviewer:request.user %}
                         <a class='btn btn-primary' href="{% url 'proposal-review' conference.slug proposal.slug %}">
                             Accept/Reject Proposal
                         </a>
-                    {% endif %} -->
+                    {% endif %}
                 </div>
 
 
