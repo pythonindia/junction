@@ -7,6 +7,7 @@ factory-boy==2.11.1
 flake8==2.4.1
 pytest-django==3.4.8
 pytest-flakes==2.0.0
+pytest-cov==2.6.1
 
 coverage==4.5.3
 
