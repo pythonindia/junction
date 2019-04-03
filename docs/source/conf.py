@@ -35,3 +35,17 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# -- Recommonmark/Markdown stuff ---------------------------------------------
+# NOTE: This entire section should be removed once the old/ folder is removed
+#       from the docs/ directory.
+
+from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
+
+
+def setup(app):
+    app.add_config_value('recommonmark_config', {
+        'enable_auto_toc_tree': True,
+    }, True)
+    app.add_transform(AutoStructify)
