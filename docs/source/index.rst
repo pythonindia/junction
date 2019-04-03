@@ -7,6 +7,12 @@ Junction
 
    development/index
 
+.. toctree::
+   :glob:
+   :hidden:
+
+   old/index
+
 Indices and tables
 ------------------
 

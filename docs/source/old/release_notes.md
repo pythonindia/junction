@@ -1,5 +1,8 @@
 # Release Notes
 
+**NOTE: This document and linked sections may be out of date.**
+
+
 ## [0.4.0][0.4.0]
 
 - Fix filters on the proposal review form #418 (@ChillarAnand)
@@ -18,7 +21,7 @@ __Features__
 - Improved conference admin.
 - Basic REST API for accessing conference details and proposals.
 - REST API to submit feedback for a talk/workshop.
-- UI updates  
+- UI updates
 
 __Fixes__
 -  fix the tag filtering for all the proposal sections inside proposal list (#170)
@@ -33,7 +36,7 @@ __Added__
 - add support for fig based development environment (#129)
 - django admin got a new theme based on django-flat-theme
 - setup social sharing on proposal detail pages (#185)
-- add `SITE_URL` settings to support path based root url of site. 
+- add `SITE_URL` settings to support path based root url of site.
 - add docker/fig setup
 - add celery support
 - send mail to reviewers for new proposals
