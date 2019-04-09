@@ -74,11 +74,10 @@ class ProposalForm(forms.Form):
     Used for create/edit
     '''
     title = forms.CharField(min_length=10,
-                            help_text="Title of the proposal, no buzz words!",
+                            help_text="Title of the Proposal",
                             widget=forms.TextInput(attrs={'class': 'charfield'}))
     description = forms.CharField(widget=PagedownWidget(show_preview=True),
-                                  help_text=("Describe your proposal with clear objective in simple sentence."
-                                             " Keep it short and simple."))
+                                  help_text=("Describe your Proposal."))
     target_audience = forms.ChoiceField(
         choices=ProposalTargetAudience.CHOICES,
         widget=forms.Select(attrs={'class': 'dropdown'}))
@@ -86,7 +85,7 @@ class ProposalForm(forms.Form):
         widget=forms.Select(attrs={'class': 'dropdown'}),
         choices=ProposalStatus.CHOICES,
         help_text=("If you choose DRAFT people can't the see the session in the list."
-                   " Make the proposal PUBLIC when you're done with editing the session."))
+                   " Make the proposal PUBLIC when you're done editing."))
     proposal_type = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}))
     proposal_section = forms.ChoiceField(
