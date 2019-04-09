@@ -22,7 +22,7 @@ env:
 
 script:
 - flake8
-- py.test --cov -v --tb=native
+- pytest --cov -v --tb=native
 - coverage report -m
 
 after_success:
