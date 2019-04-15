@@ -44,7 +44,7 @@
           {% endif %}<br/><br/>
           {% else %}
           <div class="comment-description" id="comment-{{comment.id}}">
-          <span>{{ comment.comment|markdown }}</span>
+          <span>{{ comment.comment|markdown_safe }}</span>
           {% if request.user.is_authenticated and request.user != comment.commenter %}
           <a href="#" data-url="{{ comment.get_mark_spam_url }}" class="js-mark-spam">Mark as spam</a><br/><br/>
           {% endif %}
