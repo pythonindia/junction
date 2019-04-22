@@ -55,7 +55,7 @@
         </div>
         {% for value in txt.values %}
         <div class="comment-description">
-            <p>{{ value.text|markdown }}</p>
+            <p>{{ value.text|markdown_safe }}</p>
         </div>
         <hr class="hr-mini">
         {% empty %}
