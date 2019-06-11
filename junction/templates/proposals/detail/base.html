@@ -245,9 +245,12 @@
               </ul>
 
               <div class="tab-content padded">
+                  {% if user.is_authenticated %}
                   <div class="tab-pane active" id="js-comments" role="tabpanel">
-                      {% include "proposals/detail/comments.html"%}
+                      {% include "proposals/detail/comments.html" %}
                   </div>
+                  {% endif %}
+
                   {% if read_private_comment %}
                   <div class="tab-pane" id="js-reviewers" role="tabpanel">
                       <span class="alert-info">We hide reviewers information to prevent biased feedback.</span>
