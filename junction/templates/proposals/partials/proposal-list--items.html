@@ -43,6 +43,7 @@
                             {{ proposal.get_status_display }}
                         </span>
                         {% endif %}
+                        <span>({{ proposal.id }})</span>
                         <a class='tag tag__proposal_type label label-proposal-type inline-block'
                             href="?proposal_type={{proposal.proposal_type.id}}#proposals">{{ proposal.proposal_type }}
                         </a>
