@@ -84,7 +84,7 @@ class ProposalForm(forms.Form):
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}),
         choices=ProposalStatus.CHOICES,
-        help_text=("If you choose DRAFT people can't the see the session in the list."
+        help_text=("If you choose DRAFT people can't see the session in the list."
                    " Make the proposal PUBLIC when you're done editing."))
     proposal_type = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'dropdown'}))
