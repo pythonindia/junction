@@ -1,6 +1,6 @@
 # Contributing
 
-All contributions are much welcome and greatly appreciated! Expect to be credited for you effort.
+All contributions are much welcome and greatly appreciated! Expect to be credited for your effort.
 
 
 ## General
