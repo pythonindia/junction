@@ -8802,7 +8802,7 @@ textarea.form-container input[type=password] {
   display: none;
 }
 .homepage .jumbotron {
-  height: 50%;
+  /* height: 50%;  */
   padding-bottom: 0em;
   margin-top: -80px;
   background-size: cover;
