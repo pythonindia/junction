@@ -2627,6 +2627,13 @@ input[type="search"] {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+form#reviewer-vote .radio {
+  position: inherit;
+  display: block;
+}
+form#reviewer-vote label.control-label{
+  text-align: left;
+}
 .radio label,
 .checkbox label {
   min-height: 20px;

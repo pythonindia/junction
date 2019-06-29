@@ -155,7 +155,7 @@ class ProposalReviewerVoteForm(forms.Form):
     """
     vote_value = forms.ChoiceField(
         widget=forms.RadioSelect(),
-        label="Do you think this proposal will make a good addition to PyCon India 2018?"
+        label="Do you think this proposal will make a good addition to PyCon India ?"
     )
     comment = forms.CharField(
         widget=forms.Textarea(attrs={'minlength': '30'}),
