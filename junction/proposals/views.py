@@ -239,6 +239,9 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
     ctx.update({'comments': comments.get_public_comments(),
                 'proposal_comment_form': ProposalCommentForm()})
 
+    ctx['enable_upload_content'] = settings.ENABLE_UPLOAD_CONTENT
+    ctx['enable_second_phase_voting'] = settings.ENABLE_SECOND_PHASE_VOTING
+
     return render(request, 'proposals/detail/base.html', ctx)
 
 
