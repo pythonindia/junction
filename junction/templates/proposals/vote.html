@@ -39,7 +39,7 @@
                     <hr class="hr-mini">
                     <h4 class="fill-blue text-center">Proposal Voting</h4>
                     <hr class="hr-mini">
-                    <form method="POST" action="."> {% csrf_token %}
+                    <form id='reviewer-vote' method="POST" action="."> {% csrf_token %}
                         {% bootstrap_form form %}
                         {% buttons %}
                         <div class="text-center">
