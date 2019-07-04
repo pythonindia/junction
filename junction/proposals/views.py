@@ -100,7 +100,7 @@ def list_proposals(request, conference_slug):
 
     # Display proposals which are public
     public_proposals_list = proposals_qs.exclude(review_status=ProposalReviewStatus.SELECTED).filter(
-        status=ProposalStatus.PUBLIC).order_by('-created_at')
+        status=ProposalStatus.PUBLIC).order_by('created_at')
 
     return render(request, 'proposals/list.html',
                   {'public_proposals_list': public_proposals_list,
@@ -292,9 +292,10 @@ def proposals_to_review(request, conference_slug):
     if not permissions.is_proposal_reviewer(request.user, conference):
         raise PermissionDenied
 
+
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
-    ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
+    ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC).order_by('created_at')
     psr = ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=request.user,
         conference_reviewer__conference=conference)
