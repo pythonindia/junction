@@ -23,6 +23,7 @@ from junction.base.constants import ConferenceSettingConstants, ConferenceStatus
 from junction.conferences.models import Conference
 from junction.feedback import permissions as feedback_permission
 
+
 from . import permissions, serializers
 from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm, ProposalsToReviewForm
 from .models import Proposal, ProposalComment, ProposalSectionReviewer, ProposalVote
@@ -31,6 +32,7 @@ from .services import send_mail_for_new_proposal, send_mail_for_proposal_content
 
 class ProposalView(viewsets.ReadOnlyModelViewSet):
     queryset = Proposal.objects.filter(status=2)
+
     serializer_class = serializers.ProposalSerializer
     filter_backend = (filters.DjangoFilterBackend,)
     filter_fields = ('conference', 'review_status', 'proposal_type', 'proposal_section')
@@ -201,6 +203,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         public_voting_setting_value = public_voting_setting.value
         try:
             if request.user.is_authenticated():
+
                 proposal_vote = ProposalVote.objects.get(proposal=proposal, voter=request.user)
                 vote_value = 1 if proposal_vote.up_vote else -1
         except ProposalVote.DoesNotExist:
@@ -234,6 +237,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         ctx['reviewers_proposal_comment_form'] = ProposalCommentForm(initial={'private': True})
     if is_reviewer:
         ctx['reviewers_only_proposal_comment_form'] = ProposalCommentForm(initial={'reviewer': True})
+
         ctx['reviewers_only_comments'] = comments.get_reviewers_only_comments()
 
     ctx.update({'comments': comments.get_public_comments(),
@@ -294,6 +298,8 @@ def proposals_to_review(request, conference_slug):
     ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
     psr = ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=request.user,
+
+
         conference_reviewer__conference=conference)
     proposal_reviewer_sections = [p.proposal_section for p in psr]
     proposal_sections = conference.proposal_sections.all()
