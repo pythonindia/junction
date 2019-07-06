@@ -1570,6 +1570,8 @@ pre code {
   overflow-y: scroll;
 }
 .container {
+  position: relative;
+  min-height: 100%;
   margin-right: auto;
   margin-left: auto;
   padding-left: 15px;
@@ -1595,6 +1597,16 @@ pre code {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  min-height: 80%;
+}
+.row-fluid{
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .row {
   margin-left: -15px;
@@ -6487,7 +6499,7 @@ button.close {
 .pager:after,
 .panel-body:after,
 .modal-header:after,
-.modal-footer:after {
+.modal-footer:after{
   clear: both;
 }
 .center-block {
@@ -8684,12 +8696,16 @@ body {
 html,
 body {
   height: 100%;
+  min-height: 100%;
 }
 footer {
   padding: 20px 0;
-  background-color: #FFF7F8;
-  border-top: 1px solid #ffdee2;
-  border-bottom: 1px solid #ffdee2;
+  background-color: rgb(248, 232, 234);
+  border-top: 1px solid rgb(248, 232, 234);
+  border-bottom: 1px solid rgb(248, 232, 234);
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 .navbar-default {
   border-top: none;
