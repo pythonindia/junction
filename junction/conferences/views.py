@@ -8,8 +8,11 @@ from .models import Conference, ConferenceVenue, Room
 from .serializers import ConferenceSerializer, RoomSerializer, VenueSerializer
 
 
+
+
 class ConferenceView(viewsets.ReadOnlyModelViewSet):
     queryset = Conference.objects.all()
+    # conferences = Conference.objects.filter(start_date__contains=queryset[0].start_date.year)
     serializer_class = ConferenceSerializer
 
 

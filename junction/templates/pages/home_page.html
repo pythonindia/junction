@@ -36,9 +36,14 @@
         {% if not conferences %}
             <p> No conferences found. </p>
         {% endif %}
+    {% for year, c in conferences.items %}
+            <h3>
+                    PyCon India {{ year }}
+            </h3>
+            <div style="margin-left:35px">
 
-        {% for conference in conferences %}
-            <div class="conference-item">
+        {% for conference in c %}
+            <div class="conference-item"> 
                 <h3>
                     <a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a>
                 </h3>
@@ -52,6 +57,10 @@
                 </p>
             </div>
         {% endfor %}
+        </div>
+    {% endfor %}
+    
+
     </section>
     <script>
     $(function() {

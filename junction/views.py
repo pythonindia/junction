@@ -11,5 +11,5 @@ class HomePageView(TemplateView):
     template_name = "pages/home_page.html"
 
     def get_context_data(self, **kwargs):
-        kwargs['conferences'] = Conference.objects.filter(deleted=False)
+        kwargs['conferences'] = Conference.get_year_wise()
         return super(HomePageView, self).get_context_data(**kwargs)
