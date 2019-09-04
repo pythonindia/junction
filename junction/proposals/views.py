@@ -292,7 +292,6 @@ def proposals_to_review(request, conference_slug):
     if not permissions.is_proposal_reviewer(request.user, conference):
         raise PermissionDenied
 
-
     proposals_qs = Proposal.objects.select_related(
         'proposal_type', 'proposal_section', 'conference', 'author',
     ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC).order_by('created_at')

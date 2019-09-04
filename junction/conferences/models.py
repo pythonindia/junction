@@ -25,7 +25,7 @@ class Conference(AuditModel):
 
     """ Conference/Event master """
     name = models.CharField(max_length=255, verbose_name="Conference Name")
-    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name',),editable=True)
+    slug = AutoSlugField(max_length=255, unique=True, populate_from=('name', ), editable=True)
     description = models.TextField(default="")
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
@@ -40,7 +40,7 @@ class Conference(AuditModel):
                                 help_text=_("Used in social sharing, use commas to separate to tags, no '#' required."))
 
     deleted = models.BooleanField(default=False, verbose_name="Is Deleted?")
-    
+
     class Meta:
         verbose_name = _('Conference')
         verbose_name_plural = _('Conferences')
@@ -58,30 +58,7 @@ class Conference(AuditModel):
         return get_date_diff_display(self.start_date, self.end_date)
 
     def year_display(self):
-        return self.start_date.year 
-
-
-    # def distinct_years(self, startdate):
-    #     str = ""
-    #     uniqueDates = set() 
-  
-    #     for i in range(len(startdate)): 
-    #         if startdate[i].isdigit(): 
-    #             str += startdate[i] 
-  
-    #     # if we found - then clear the str2 
-    #         if startdate[i] == '-': 
-    #             str = "" 
-  
-    #     # if length of str2 becomes 4 
-    #     # then store it in a set 
-    #         if len(str) == 4: 
-    #             uniqueDates.add(str) 
-    #             str = "" 
-  
-    # # return the size of set 
-    #     return len(uniqueDates)   
-    
+        return self.start_date.year
 
     def clean(self):
         if self.end_date < self.start_date:
@@ -130,10 +107,9 @@ class Conference(AuditModel):
             year = d.start_date.year
             if year not in f_data:
                 f_data[year] = []
-            
             f_data[year].append(d)
-        
         return f_data
+
 
 @python_2_unicode_compatible
 class ConferenceModerator(AuditModel):
@@ -205,4 +181,3 @@ class ConferenceSetting(AuditModel):
 
     def __str__(self):
         return "{}: {}".format(self.name, self.value)
-
