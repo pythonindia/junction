@@ -298,7 +298,6 @@ def proposals_to_review(request, conference_slug):
     ).filter(conference=conference).filter(status=ProposalStatus.PUBLIC)
     psr = ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=request.user,
-
         conference_reviewer__conference=conference)
     proposal_reviewer_sections = [p.proposal_section for p in psr]
     proposal_sections = conference.proposal_sections.all()
