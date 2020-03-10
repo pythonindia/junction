@@ -45,7 +45,7 @@ install:
   - python -m pip install --force-reinstall pip
 
   # Install the CI dependencies
-  - python -m pip install -r requirements.txt
+  - python -m pip install celery==3.1.20  # pin from requirements.txt
   - python -m pip install nox
   - python -m pip install coveralls
 
