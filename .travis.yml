@@ -1,40 +1,63 @@
-language: python
-sudo: false
-python:
-- '2.7'
-- '3.4'
-- '3.5'
+# System information
+os: linux
 addons:
   postgresql: "9.3"
+services:
+  - redis
 
-cache:
-  directories:
-  - $HOME/.pip-cache/
+language: python
+python: 3.5
+cache: pip
+
+# Use a two-stage approach, to minimize CI time on failures.
+stages:
+- primary
+- secondary
+
+env: DJANGO_SETTINGS_MODULE="settings.test_settings"
+
+jobs:
+  include:
+    # Basic Checks
+    - stage: primary
+      env: NOXSESSION=lint-3.5
+    - env: NOXSESSION=test-3.5
+    # - env: NOXSESSION=docs
+
+    - stage: secondary
+      env: NOXSESSION=test-3.6
+      python: 3.6
+    ## Commented out, due to: Pinned psycopg2 not being compatible.
+    # - env: NOXSESSION=test-3.7
+    #   python: 3.7
+    ## Commented out, due to:
+    ## 1. Pinned celery version not being compatible.
+    ## 2. Pinned Django version not being compatible with newer celery.
+    ## 3. Current codebase needing quite a few changes to be compatible
+    ##    with newer Django.
+    # - env: NOXSESSION=test-3.7
+    #   python: 3.7
 
 install:
-  - pip install pip==9.0.1
-  - pip install -r requirements-dev.txt --allow-all-external
-  - pip install coveralls
-  - pip install --upgrade pytest
+  # Get the latest pip
+  - python -m pip install --upgrade pip
+  # Reinstall pip, using the latest pip
+  - python -m pip install --force-reinstall pip
 
-env:
-  - DJANGO_SETTINGS_MODULE="settings.test_settings"
+  # Install the CI dependencies
+  - python -m pip install -r requirements.txt
+  - python -m pip install nox
+  - python -m pip install coveralls
 
+before_script:
+  - celery -A junction worker -l info &
 script:
-- flake8
-- pytest --cov -v --tb=native
-- coverage report -m
-
+  - nox
 after_success:
-  coveralls
+  - coveralls
 
 notifications:
   email:
     on_success: change  # [always|never|change]
     on_failure: always  # [always|never|change]
 
-services:
-  - redis-server
-
-before_script:
-  - celery -A junction worker -l info &
