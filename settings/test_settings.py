@@ -6,7 +6,7 @@ import os
 from .common import *  # noqa
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 DATABASES = {
     'default': {
@@ -15,9 +15,9 @@ DATABASES = {
     }
 }
 
-TEMPLATE_CONTEXT_PROCESSORS += (
+TEMPLATES[0]['OPTIONS']['context_processors'].extend([
     "django.core.context_processors.debug",
-)
+])
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
