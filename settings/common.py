@@ -57,7 +57,6 @@ CORE_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.webdesign',
 )
 
 THIRD_PARTY_APPS = (
