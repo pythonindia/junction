@@ -50,7 +50,7 @@ install:
   - python -m pip install coveralls
 
 before_script:
-  - celery -A junction worker -l info &
+  - celery -A junction worker -l info --detach
 script:
   - nox
 after_success:
@@ -60,4 +60,3 @@ notifications:
   email:
     on_success: change  # [always|never|change]
     on_failure: always  # [always|never|change]
-
