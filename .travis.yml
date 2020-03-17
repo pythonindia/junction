@@ -27,16 +27,8 @@ jobs:
     - stage: secondary
       env: NOXSESSION=test-3.6
       python: 3.6
-    ## Commented out, due to: Pinned psycopg2 not being compatible.
-    # - env: NOXSESSION=test-3.7
-    #   python: 3.7
-    ## Commented out, due to:
-    ## 1. Pinned celery version not being compatible.
-    ## 2. Pinned Django version not being compatible with newer celery.
-    ## 3. Current codebase needing quite a few changes to be compatible
-    ##    with newer Django.
-    # - env: NOXSESSION=test-3.7
-    #   python: 3.7
+    - env: NOXSESSION=test-3.7
+      python: 3.7
 
 install:
   # Get the latest pip
