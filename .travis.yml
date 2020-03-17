@@ -1,7 +1,7 @@
 # System information
 os: linux
 addons:
-  postgresql: "9.3"
+  postgresql: "12.2"
 services:
   - redis
 
