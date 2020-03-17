@@ -5,7 +5,7 @@ django-filter==1.0.1
 
 # Persistent Store
 # -------------------------------------------------
-psycopg2==2.7.3
+psycopg2-binary==2.8.4
 redis==2.10.0
 dj-database-url==0.4.1
 
