@@ -1,5 +1,6 @@
-### API
+# API
 
+**NOTE: This document and linked sections may be out of date.**
 
 Junction provides API to access information about the conference, schedule, and feedback. The API is for mobile clients to assist conference attendees. All the request and response format is `application/json`.
 
@@ -171,7 +172,8 @@ Junction provides API to access information about the conference, schedule, and 
 
 - Sample Payload:
 
-```{'text': [{'text': 'Ok', 'id': 1}], 'schedule_item_id': 1, 'choices': [{'id': 1, 'value_id': 1}]}
+```
+{'text': [{'text': 'Ok', 'id': 1}], 'schedule_item_id': 1, 'choices': [{'id': 1, 'value_id': 1}]}
 
 ```
 

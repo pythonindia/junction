@@ -1,8 +1,14 @@
-# Junction  [![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Junction (old)
+
+[![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/junction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+**NOTE: This document and linked sections may be out of date.**
 
 <style> div.col-md-9 img {display: inline-block; margin: 0; border: none; border-radius: 0; padding: 0; }</style>
 
----
+* [API](../api.md)
+* [Release notes](../release_notes.md)
+* [Conference reviewers](../conference_reviewers.md)
 
 **Version**: 0.2.0-dev
 
