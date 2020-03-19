@@ -5,16 +5,16 @@ Bugs and Features
 -----------------
 
 If you have found any bugs or would like to request a new feature, please do
-check if there is an existing issue already filed for the same, in the
-project's GitHub `issue tracker`_. If not, please file a new issue.
+check in the project's GitHub `issue tracker`_, if there is a similar existing
+issue already filed. If not, please file a new issue.
 
 If you want to help out by fixing bugs, choose an issue from the `issue
 tracker`_ to work on and claim it by posting a comment saying "I would like to
 work on this.". Feel free to ask any doubts in the issue thread.
 
 Once you have implemented the feature to an extent, go ahead and file a pull
-request, following the tips below. File a pull request early to get feedback as
-early as possible.
+request by following the tips below. File a pull request early to get feedback
+as early as possible.
 
 Pull Requests
 -------------
@@ -27,8 +27,8 @@ land a single large feature.
 Checklist:
 
 1. All pull requests *must* be made against the ``master`` branch.
-2. Include tests for any functionality you implement. Any contributions helping
-   improve existing tests is welcome.
+2. Include tests for any functionality you implement. Contributions that
+   improve existing tests are welcome.
 3. Update documentation as necessary and provide documentation for any new
    functionality.
 4. In case of UI changes, please include screenshots.
