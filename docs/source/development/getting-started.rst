@@ -1,3 +1,4 @@
+===============
 Getting Started
 ===============
 
@@ -8,44 +9,31 @@ guide and reference to the the development setup. If you face any issues during
 this process, please `open an issue`_ about it on the issue tracker.
 
 
-Development environment setup
-*****************************
+Initial Setup
+=============
 
-You should create a virtual environment to isolate your development environment
-from the system, when developing Junction. This is usually done by creating
-`virtualenv`_.
+Junction's development workflow is automated using `nox`_. Thus, you need
+the ``nox`` command to be installed on your system. We recommend using ``pipx``
+to install ``nox`` in its own isolated environment.
 
-.. Update this section when we do adopt ``pipenv`` for our environment
-   management needs.
+.. code-block:: console
+
+   $ python -m pip install pipx
+   $ pipx install nox
 
 You will need to have a working Redis server on your system. You may
 additionally need PostgreSQL and TCL as well.
 
 .. note::
+
    On Debian based systems, these can be installed using:
 
    .. code-block:: console
 
       $ sudo apt-get install redis-server libpq-dev tcl
 
-Create a virtual environment, to isolate the development environment from the
-system. This can be done by using `virtualenv`_:
-
-.. code-block:: console
-
-      $ python -m virtualenv env
-
-After activating a virtual environment, install all packages required for
-development. They are listed in ``requirements-dev.txt`` and can be installed
-using:
-
-.. code-block:: console
-
-   $ pip install -r requirements-dev.txt
-
-
-Backend Development
-*******************
+Backend
+-------
 
 Create a "settings" file for local development with Django.
 
@@ -53,23 +41,22 @@ Create a "settings" file for local development with Django.
 
    $ cp settings/dev.py.sample settings/dev.py
 
-With the virtualenv activated, create the database structure and populate it
-with sample data.
+Create the database structure and populate it with sample data.
 
 .. code-block:: console
 
-   $ python manage.py migrate --noinput
-   $ python manage.py sample_data
+   $ nox -- migrate --noinput
+   $ nox -- sample_data
 
-Local Admin Access
-------------------
+Admin Access
+^^^^^^^^^^^^
 
-When sample data is generated with ``manage.py sample_data``, a superuser is
+When sample data is generated with ``nox -- sample_data``, a superuser is
 created with the username ``admin`` and password ``123123``.
 
 
-Frontend development
-********************
+Frontend
+--------
 
 Working on Junction's frontend requires `NodeJS`_ to be installed on your
 system. The frontend is built using `bower`_ and `grunt`_. To setup the working
@@ -81,26 +68,63 @@ environment, run the following:
    $ npm install
    $ bower install
 
-Once setup, a build watcher is available, that rebuilds the frontend, every time
-a change is made to the frontend code. This can be run using:
+Development workflow
+====================
+
+Frontend Autobuilding
+---------------------
+
+Junction has a Grunt configuration that is useful when working on the frontend.
+The following command starts a build watcher which rebuilds the frontend on
+every file change.
 
 .. code-block:: console
 
    $ grunt
 
+Invoking ``manage.py``
+----------------------
+
+Junction's ``nox`` configuration is set up to invoke manage.py when no other
+session (i.e. ``-s ...``) is specified. This also automatically sets up an
+isolated environment that contains the dependencies of Junction.
+
+.. code-block:: console
+
+   $ nox  # equivalent to 'python manage.py'
+   $ nox -- runserver  # equivalent to 'python manage.py runserver'
+   $ nox -- migrate  # equivalent to 'python manage.py migrate'
+
+Running tests
+-------------
+
+For running the tests, run:
+
+.. code-block:: console
+
+   $ nox -s tests
+
+Running linters
+---------------
+
+For running the linters, run:
+
+.. code-block:: console
+
+   $ nox -s lint
 
 Building documentation
-**********************
+----------------------
 
 For building the documentation, run:
 
 .. code-block:: console
 
-   $ cd docs
-   $ make html
+   $ nox -s docs
 
 .. _`open an issue`: https://github.com/pythonindia/junction/issues
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _`virtualenv`: https://virtualenv.pypa.io/en/stable/
+.. _`nox`: https://nox.readthedocs.io/en/stable/
 .. _`NodeJS`: https://nodejs.org/
 .. _`bower`: https://bower.io/
 .. _`grunt`: https://gruntjs.com/
