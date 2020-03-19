@@ -3,6 +3,17 @@
 
 import nox
 
+nox.options.sessions = ["dev"]
+nox.options.reuse_existing_virtualenvs = True
+nox.options.error_on_external_run = True
+
+
+@nox.session(python="3.5")
+def dev(session):
+    session.install("-r", "requirements.txt")
+
+    session.run("python", "manage.py", *session.posargs)
+
 
 @nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def test(session):
@@ -35,11 +46,10 @@ def docs(session):
         return [
             "sphinx-build",
             "-W",
-            "-c", "docs/",  # see note above
             "-d", "docs/build/_doctrees/" + kind,
             "-b", kind,
-            "docs/" + kind,
-            "docs/_build/" + kind,
+            "docs/source",
+            "docs/build/" + kind,
         ]
 
     session.run(*get_sphinx_build_command("html"))
