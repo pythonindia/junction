@@ -214,7 +214,7 @@ class Command(BaseCommand):
             "is_superuser": kwargs.get('is_superuser', False),
             "is_staff": kwargs.get('is_staff', kwargs.get('is_superuser', self.sd.boolean())),
         }
-        user = get_user_model().objects.create(**params)
+        user, _ = get_user_model().objects.get_or_create(**params)
         password = '123123'
 
         user.set_password(password)
