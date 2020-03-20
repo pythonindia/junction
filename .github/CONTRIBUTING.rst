@@ -23,16 +23,20 @@ Pull Requests should be small to facilitate easier review. Keep them
 self-contained, and limited in scope. Studies have shown that review quality
 falls off as patch size grows. Sometimes this will result in many small PRs to
 land a single large feature.
-
 Checklist:
 
-1. All pull requests *must* be made against the ``master`` branch.
-2. Include tests for any functionality you implement. Contributions that
+1. Always create a new branch to work on a new issue::
+
+    $ git checkout -b <branch-name>
+
+2. Make sure your branch is up-to-date with upstream master before you file
+   a pull request.
+3. All pull requests *must* be made against the ``master`` branch.
+4. Include tests for any functionality you implement. Contributions that
    improve existing tests are welcome.
-3. Update documentation as necessary and provide documentation for any new
+5. Update documentation as necessary and provide documentation for any new
    functionality.
-4. In case of UI changes, please include screenshots.
-5. Add yourself to ``CONTRIBUTORS.txt`` if you're not there already. :)
+6. In case of UI changes, please include screenshots.
 
 If you do make any changes to models (modification or addition), make sure to
 run ``python manage.py makemigrations`` to enable the server to migrate existing
