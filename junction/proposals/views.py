@@ -332,20 +332,37 @@ def proposals_to_review(request, conference_slug):
     form = ProposalsToReviewForm(data=request.POST, conference=conference,
                                  proposal_sections=proposal_reviewer_sections)
     if not form.is_valid():
-        context['errors'] = form.errors
+        context = {
+            'errors': form.errors
+        }
         return render(request, 'proposals/to_review.html', context)
+
+    is_filtered = False
 
     # Valid Form
     p_section = form.cleaned_data['proposal_section']
     p_type = form.cleaned_data['proposal_type']
     r_comment = form.cleaned_data['reviewer_comment']
+    r_vote = form.cleaned_data['reviewer_vote']
 
     if p_section != 'all':
         proposals_qs = proposals_qs.filter(proposal_section__id__in=p_section)
+        is_filtered = True
     if p_type != 'all':
         proposals_qs = proposals_qs.filter(proposal_type__id__in=p_type)
+        is_filtered = True
     if r_comment == 'True':
         proposals_qs = [p for p in proposals_qs if p.get_reviews_comments_count() > 0]
+        is_filtered = True
+    elif r_comment == 'False':
+        proposals_qs = [p for p in proposals_qs if p.get_reviews_comments_count() == 0]
+        is_filtered = True
+    if r_vote == 'True':
+        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() > 0]
+        is_filtered = True
+    elif r_vote == 'False':
+        proposals_qs = [p for p in proposals_qs if p.get_reviewer_votes_count() == 0]
+        is_filtered = True
 
     proposals_to_review = []
     for section in proposal_reviewer_sections:
@@ -359,6 +376,7 @@ def proposals_to_review(request, conference_slug):
         'proposal_types': proposal_types,
         'conference': conference,
         'form': form,
+        'is_filtered': is_filtered,
     }
 
     return render(request, 'proposals/to_review.html', context)

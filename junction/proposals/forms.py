@@ -11,6 +11,7 @@ from pagedown.widgets import PagedownWidget
 from junction.base.constants import (
     ConferenceSettingConstants,
     ProposalReviewerComment,
+    ProposalReviewerVote,
     ProposalReviewStatus,
     ProposalStatus,
     ProposalTargetAudience,
@@ -191,12 +192,15 @@ class ProposalsToReviewForm(ProposalTypesChoices):
     Used to filter proposals
     """
     reviewer_comment = forms.ChoiceField(widget=forms.Select(attrs={'class': 'dropdown'}))
+    reviewer_vote = forms.ChoiceField(widget=forms.Select(
+        attrs={'class': 'dropdown'}))
 
     def __init__(self, conference, proposal_sections, *args, **kwargs):
         super(ProposalsToReviewForm, self).__init__(conference, *args, **kwargs)
         ps_choices = [(str(ps.id), ps.name) for ps in proposal_sections]
         self.fields['reviewer_comment'].choices = ProposalReviewerComment.CHOICES
         self.fields['proposal_section'].choices = ps_choices
+        self.fields['reviewer_vote'].choices = ProposalReviewerVote.CHOICES
 
         for name, field in list(self.fields.items()):
             field.choices.insert(0, ('all', 'All'))

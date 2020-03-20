@@ -246,6 +246,29 @@ def test_proposal_filters(settings, login, conferences):
     assert response.context['is_filtered'] is True
 
 
+def test_proposals_to_review_filters(settings, login, conferences,
+                                     create_reviewer):
+    client = login[0]
+    user = create_reviewer
+    conference = conferences['future']
+    section = conference.proposal_sections.all()[1]
+    proposal_type = conference.proposal_types.all()[1]
+    f.create_proposal(conference=conference,
+                      proposal_section=section,
+                      proposal_type=proposal_type,
+                      author=user)
+    kwargs = {'conference_slug': conference.slug}
+    url = reverse('proposals-to-review', kwargs=kwargs)
+
+    response = client.post(url, {'proposal_section': section.id,
+                                 'proposal_type': proposal_type.id,
+                                 'reviewer_comment': 'all',
+                                 'reviewer_vote': 'all'})
+
+    assert response.status_code == 200
+    assert response.context['is_filtered'] is True
+
+
 def test_proposal_detail_url_redirects(client):
     proposal = f.create_proposal()
     old_url = reverse('proposal-detail', kwargs={'conference_slug': proposal.conference.slug,
