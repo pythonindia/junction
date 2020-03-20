@@ -22,7 +22,7 @@ to install ``nox`` in its own isolated environment.
    $ pipx install nox
 
 You will need to have a working Redis server on your system. You may
-additionally need PostgreSQL and TCL as well.
+additionally want to install Postgres, although it is optional.
 
 .. note::
 
@@ -30,7 +30,7 @@ additionally need PostgreSQL and TCL as well.
 
    .. code-block:: console
 
-      $ sudo apt-get install redis-server libpq-dev tcl
+      $ sudo apt install redis-server postgres
 
 Backend
 -------
