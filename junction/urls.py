@@ -54,6 +54,9 @@ urlpatterns = [
     url(r'^tickets/', include('junction.tickets.urls')),
 
     # Proposals related
+    url(r'^(?P<conference_slug>[\w-]+)/$',
+        RedirectView.as_view(pattern_name="proposals-list"),
+        name='conference-index'),
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
         junction.proposals.dashboard.reviewer_comments_dashboard,
