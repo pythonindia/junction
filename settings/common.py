@@ -245,7 +245,7 @@ EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
 
 QR_CODES_DIR = ROOT_DIR + '/qr_files'
 
-USE_ASYNC_FOR_EMAIL = False
+USE_ASYNC_FOR_EMAIL = os.environ.get('USE_ASYNC_FOR_EMAIL', False)
 
 USER_SPAM_THRESHOLD = 2
 
