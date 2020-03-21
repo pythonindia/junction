@@ -53,14 +53,14 @@ def _filter_proposals(request, proposals_qs):
     """Filters a proposal queryset based on the values present in the request's
     query strings.
 
-    Supported query strings are `proposal_section` and `proposal_type`.
+    Supported query strings are `section` and `type`.
     """
     serializer = serializers.ProposalFilterSerializer(data=request.GET)
     if not serializer.is_valid():
         raise Http404()
 
-    proposal_section_filter = serializer.validated_data.get('proposal_section', None)
-    proposal_type_filter = serializer.validated_data.get('proposal_type', None)
+    proposal_section_filter = serializer.validated_data.get('section', None)
+    proposal_type_filter = serializer.validated_data.get('type', None)
     is_filtered = False
     filter_name = False
 

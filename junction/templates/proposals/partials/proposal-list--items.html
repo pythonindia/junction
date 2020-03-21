@@ -45,11 +45,11 @@
                         {% endif %}
                         <span>({{ proposal.id }})</span>
                         <a class='tag tag__proposal_type label label-proposal-type inline-block'
-                            href="?proposal_type={{proposal.proposal_type.id}}#proposals">{{ proposal.proposal_type }}
+                            href="?type={{proposal.proposal_type.name}}#proposals">{{ proposal.proposal_type }}
                         </a>
 
                         <a class='tag tag__proposal_section label label-proposal-type inline-block'
-                            href="?proposal_section={{proposal.proposal_section.id}}#proposals">{{ proposal.proposal_section }}
+                            href="?section={{proposal.proposal_section.name}}#proposals">{{ proposal.proposal_section }}
                         </a>
                     </div>
 
