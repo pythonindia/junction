@@ -22,7 +22,7 @@ class TestReviewerViews:
         data = {'comment': 'Test', 'private': True}
 
         response = client.post(url, data)
-
+        print(response.url)
         assert response.status_code == 302
         assert response.url.endswith('#js-reviewers')
 
