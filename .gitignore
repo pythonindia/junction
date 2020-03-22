@@ -87,4 +87,7 @@ qr_files/
 # mypy cache
 **/.mypy_cache
 
+#VSCode
+.vscode/
+
 tmp/
