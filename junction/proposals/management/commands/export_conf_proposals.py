@@ -61,4 +61,4 @@ class Command(BaseCommand):
 
         df.to_csv(csv_file_location, sep='\t')
 
-        self.stdout.write("Successfully created the excel file")
+        self.stdout.write("Successfully created the csv file")
