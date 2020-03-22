@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 from junction.base.constants import ConferenceSettingConstants
 
@@ -58,9 +59,9 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100, db_index=True)),
                 ('value', models.BooleanField(default=False)),
                 ('description', models.CharField(max_length=255)),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
-                ('created_by', models.ForeignKey(related_name='created_conferencesetting_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_conferencesetting_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('conference', models.ForeignKey(to='conferences.Conference', on_delete=django.db.models.deletion.CASCADE)),
+                ('created_by', models.ForeignKey(related_name='created_conferencesetting_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_conferencesetting_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,

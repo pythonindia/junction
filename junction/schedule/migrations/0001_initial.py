@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -25,11 +26,11 @@ class Migration(migrations.Migration):
                 ('end_time', models.TimeField()),
                 ('alt_name', models.CharField(max_length=100, blank=True)),
                 ('type', models.CharField(default=b'TALK', max_length=20, choices=[(b'TALK', b'Talk'), (b'LUNCH', b'Lunch'), (b'BREAK', b'Break')])),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
-                ('created_by', models.ForeignKey(related_name='created_scheduleitem_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_scheduleitem_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('room', models.ForeignKey(to='conferences.Room', null=True)),
-                ('session', models.ForeignKey(to='proposals.Proposal', null=True)),
+                ('conference', models.ForeignKey(to='conferences.Conference', on_delete=django.db.models.deletion.CASCADE)),
+                ('created_by', models.ForeignKey(related_name='created_scheduleitem_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_scheduleitem_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('room', models.ForeignKey(to='conferences.Room', null=True, on_delete=django.db.models.deletion.CASCADE)),
+                ('session', models.ForeignKey(to='proposals.Proposal', null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },

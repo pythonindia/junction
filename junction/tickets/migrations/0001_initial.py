@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import jsonfield.fields
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -29,8 +30,8 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(max_length=255, null=True, blank=True)),
                 ('status', models.CharField(max_length=255)),
                 ('others', jsonfield.fields.JSONField()),
-                ('created_by', models.ForeignKey(related_name='created_ticket_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_ticket_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_ticket_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_ticket_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,

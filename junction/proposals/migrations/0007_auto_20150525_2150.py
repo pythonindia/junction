@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -19,8 +20,8 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('role', models.PositiveSmallIntegerField(default=2, choices=[(1, 'Public'), (2, 'Reviewer')])),
                 ('up_vote', models.BooleanField(default=True)),
-                ('proposal', models.ForeignKey(to='proposals.Proposal')),
-                ('voter', models.ForeignKey(to='proposals.ProposalSectionReviewer')),
+                ('proposal', models.ForeignKey(to='proposals.Proposal', on_delete=django.db.models.deletion.CASCADE)),
+                ('voter', models.ForeignKey(to='proposals.ProposalSectionReviewer', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
