@@ -1,15 +1,13 @@
 from django.contrib.auth.models import User
-from django.db import models
-
 from junction.base.models import AuditModel
+from django.db import models
 
 
 class Profile(AuditModel):
-    """
+    '''
     It stores the City/Phone Details of the User.
-    """
-
-    user = models.OneToOneField(User)
+    '''
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=100, blank=True, null=True)
     contact_no = models.CharField(max_length=15, blank=True, null=True)
 

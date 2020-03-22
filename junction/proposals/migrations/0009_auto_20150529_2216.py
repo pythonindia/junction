@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -21,8 +22,8 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('vote_value', models.SmallIntegerField()),
                 ('description', models.CharField(max_length=255)),
-                ('created_by', models.ForeignKey(related_name='created_proposalsectionreviewervotevalue_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_proposalsectionreviewervotevalue_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_proposalsectionreviewervotevalue_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_proposalsectionreviewervotevalue_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -32,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='proposalsectionreviewervote',
             name='vote_value',
-            field=models.ForeignKey(to='proposals.ProposalSectionReviewerVoteValue'),
+            field=models.ForeignKey(to='proposals.ProposalSectionReviewerVoteValue', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

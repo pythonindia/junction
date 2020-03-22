@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -23,8 +24,8 @@ class Migration(migrations.Migration):
                 ('address', models.TextField()),
                 ('latitude', models.DecimalField(max_digits=17, decimal_places=15)),
                 ('longitudes', models.DecimalField(max_digits=19, decimal_places=16)),
-                ('created_by', models.ForeignKey(related_name='created_conferencevenue_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_conferencevenue_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_conferencevenue_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_conferencevenue_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -39,9 +40,9 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('name', models.CharField(max_length=100)),
                 ('note', models.CharField(max_length=255)),
-                ('created_by', models.ForeignKey(related_name='created_room_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_room_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('venue', models.ForeignKey(to='conferences.ConferenceVenue')),
+                ('created_by', models.ForeignKey(related_name='created_room_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_room_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('venue', models.ForeignKey(to='conferences.ConferenceVenue', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -51,7 +52,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='conference',
             name='venue',
-            field=models.ForeignKey(to='conferences.ConferenceVenue', null=True),
+            field=models.ForeignKey(to='conferences.ConferenceVenue', null=True, on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

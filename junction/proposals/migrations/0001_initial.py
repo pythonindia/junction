@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import django_extensions.db.fields
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -21,9 +22,9 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('active', models.BooleanField(default=True, verbose_name='Is Active?')),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
-                ('created_by', models.ForeignKey(related_name='created_conferenceproposalsection_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_conferenceproposalsection_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('conference', models.ForeignKey(to='conferences.Conference', on_delete=django.db.models.deletion.CASCADE)),
+                ('created_by', models.ForeignKey(related_name='created_conferenceproposalsection_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_conferenceproposalsection_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
             },
@@ -36,9 +37,9 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('active', models.BooleanField(default=True, verbose_name='Is Active?')),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
-                ('created_by', models.ForeignKey(related_name='created_conferenceproposaltype_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_conferenceproposaltype_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('conference', models.ForeignKey(to='conferences.Conference', on_delete=django.db.models.deletion.CASCADE)),
+                ('created_by', models.ForeignKey(related_name='created_conferenceproposaltype_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_conferenceproposaltype_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
             },
@@ -61,8 +62,8 @@ class Migration(migrations.Migration):
                 ('status', models.PositiveSmallIntegerField(default=1, choices=[(1, b'Draft'), (2, b'Public'), (3, b'Cancelled')])),
                 ('review_status', models.PositiveSmallIntegerField(default=1, verbose_name='Review Status', choices=[(1, b'Yet to be reviewed'), (2, b'Selected'), (3, b'Rejected'), (4, b' On hold'), (5, b'Wait-listed')])),
                 ('deleted', models.BooleanField(default=False, verbose_name='Is Deleted?')),
-                ('author', models.ForeignKey(verbose_name='Primary Speaker', to=settings.AUTH_USER_MODEL)),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
+                ('author', models.ForeignKey(verbose_name='Primary Speaker', to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
+                ('conference', models.ForeignKey(to='conferences.Conference', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -77,8 +78,8 @@ class Migration(migrations.Migration):
                 ('private', models.BooleanField(default=False, verbose_name='Is Private?')),
                 ('comment', models.TextField()),
                 ('deleted', models.BooleanField(default=False, verbose_name='Is Deleted?')),
-                ('commenter', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('proposal', models.ForeignKey(to='proposals.Proposal')),
+                ('commenter', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
+                ('proposal', models.ForeignKey(to='proposals.Proposal', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -92,8 +93,8 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('up_vote', models.BooleanField(default=True)),
-                ('proposal_comment', models.ForeignKey(to='proposals.ProposalComment')),
-                ('voter', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('proposal_comment', models.ForeignKey(to='proposals.ProposalComment', on_delete=django.db.models.deletion.CASCADE)),
+                ('voter', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -108,8 +109,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255, verbose_name='Proposal Section Name')),
                 ('description', models.TextField(default='')),
                 ('active', models.BooleanField(default=True, verbose_name='Is Active?')),
-                ('created_by', models.ForeignKey(related_name='created_proposalsection_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_proposalsection_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_proposalsection_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_proposalsection_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -125,8 +126,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255, verbose_name='Proposal Type Name')),
                 ('description', models.TextField(default='')),
                 ('active', models.BooleanField(default=True, verbose_name='Is Active?')),
-                ('created_by', models.ForeignKey(related_name='created_proposaltype_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_proposaltype_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_proposaltype_set', verbose_name='Created By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='updated_proposaltype_set', verbose_name='Modified By', blank=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -141,8 +142,8 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
                 ('role', models.PositiveSmallIntegerField(default=1, choices=[(1, b'Public'), (2, b'Reviewer')])),
                 ('up_vote', models.BooleanField(default=True)),
-                ('proposal', models.ForeignKey(to='proposals.Proposal')),
-                ('voter', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('proposal', models.ForeignKey(to='proposals.Proposal', on_delete=django.db.models.deletion.CASCADE)),
+                ('voter', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -159,13 +160,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='proposal',
             name='proposal_section',
-            field=models.ForeignKey(verbose_name='Proposal Section', to='proposals.ProposalSection'),
+            field=models.ForeignKey(verbose_name='Proposal Section', to='proposals.ProposalSection', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='proposal',
             name='proposal_type',
-            field=models.ForeignKey(verbose_name='Proposal Type', to='proposals.ProposalType'),
+            field=models.ForeignKey(verbose_name='Proposal Type', to='proposals.ProposalType', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -175,7 +176,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='conferenceproposaltype',
             name='proposal_type',
-            field=models.ForeignKey(verbose_name='Proposal Type', to='proposals.ProposalType'),
+            field=models.ForeignKey(verbose_name='Proposal Type', to='proposals.ProposalType', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -185,7 +186,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='conferenceproposalsection',
             name='proposal_section',
-            field=models.ForeignKey(verbose_name='Proposal Section', to='proposals.ProposalSection'),
+            field=models.ForeignKey(verbose_name='Proposal Section', to='proposals.ProposalSection', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
