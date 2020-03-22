@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from xlsxwriter.workbook import Workbook
 
 from junction.conferences.models import Conference
 from junction.proposals.models import (
