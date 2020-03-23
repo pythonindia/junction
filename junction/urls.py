@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^$', HomePageView.as_view(), name="page-home"),
 
     # Django Admin
-    url(r'^nimda/', include(admin.site.urls)),
+    url(r'^nimda/', admin.site.urls),
 
     # Third Party Stuff
     url(r'^accounts/', include('allauth.urls')),
