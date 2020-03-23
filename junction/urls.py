@@ -53,10 +53,57 @@ urlpatterns = [
     # Tickets
     url(r'^tickets/', include('junction.tickets.urls')),
 
+
+    url(r'^feedback/(?P<schedule_item_id>\d+)/$',
+        view_feedback,
+        name='feedback-detail'),
+    url(r'^schedule_item/(?P<sch_item_id>\d+)/$',
+        non_proposal_schedule_item_view,
+        name="schedule-item"),
+
+    url(r'^api/v1/', include(router.urls)),
+    # Device
+    url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
+    url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(),
+        name='device-detail'),
+    # Feedback
+    url('^api/v1/feedback_questions/$',
+        FeedbackQuestionListApiView.as_view(),
+        name='feedback-questions-list'),
+    url('^api/v1/feedback/$',
+        FeedbackListApiView.as_view(),
+        name='feedback-list'),
+
+    # User Dashboard
+    url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
+
+    # Static Pages. TODO: to be refactored
+    url(r'^speakers/$',
+        TemplateView.as_view(template_name='static-content/speakers.html',),
+        name='speakers-static'),
+    url(r'^schedule/$',
+        TemplateView.as_view(template_name='static-content/schedule.html',),
+        name='schedule-static'),
+    url(r'^venue/$',
+        TemplateView.as_view(template_name='static-content/venue.html',),
+        name='venue-static'),
+    url(r'^sponsors/$',
+        TemplateView.as_view(template_name='static-content/sponsors.html',),
+        name='sponsors-static'),
+    url(r'^blog/$',
+        TemplateView.as_view(template_name='static-content/blog-archive.html',),
+        name='blog-archive'),
+    url(r'^coc/$',
+        TemplateView.as_view(template_name='static-content/coc.html',),
+        name='coc-static'),
+    url(r'^faq/$',
+        TemplateView.as_view(template_name='static-content/faq.html',),
+        name='faq-static'),
+
+    # Conference Pages
+    url(r'^(?P<conference_slug>[\w-]+)/', include('junction.conferences.urls')),
+
     # Proposals related
-    url(r'^(?P<conference_slug>[\w-]+)/$',
-        RedirectView.as_view(pattern_name="proposals-list"),
-        name='conference-index'),
     url(r'^(?P<conference_slug>[\w-]+)/proposals/', include('junction.proposals.urls')),
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/reviewers/',
         junction.proposals.dashboard.reviewer_comments_dashboard,
@@ -72,37 +119,9 @@ urlpatterns = [
     url(r'^(?P<conference_slug>[\w-]+)/dashboard/votes/export/$',
         junction.proposals.dashboard.export_reviewer_votes,
         name='export-reviewer-votes'),
-    url(r'^feedback/(?P<schedule_item_id>\d+)/$',
-        view_feedback,
-        name='feedback-detail'),
-    url(r'^schedule_item/(?P<sch_item_id>\d+)/$',
-        non_proposal_schedule_item_view,
-        name="schedule-item"),
-    url(r'^api/v1/', include(router.urls)),
-    # Device
-    url(r'^api/v1/devices/$', DeviceListApiView.as_view(), name='device-list'),
-    url(r'^api/v1/devices/(?P<_uuid>[\w-]+)/$', DeviceDetailApiView.as_view(),
-        name='device-detail'),
-    # Feedback
-    url('^api/v1/feedback_questions/$',
-        FeedbackQuestionListApiView.as_view(),
-        name='feedback-questions-list'),
-    url('^api/v1/feedback/$',
-        FeedbackListApiView.as_view(),
-        name='feedback-list'),
-    # User Dashboard
-    url(r'^profiles/', include('junction.profiles.urls', namespace="profiles")),
 
     # Schedule related
     url(r'^(?P<conference_slug>[\w-]+)/schedule/', include('junction.schedule.urls')),
-    # Static Pages. TODO: to be refactored
-    url(r'^speakers/$', TemplateView.as_view(template_name='static-content/speakers.html',), name='speakers-static'),
-    url(r'^schedule/$', TemplateView.as_view(template_name='static-content/schedule.html',), name='schedule-static'),
-    url(r'^venue/$', TemplateView.as_view(template_name='static-content/venue.html',), name='venue-static'),
-    url(r'^sponsors/$', TemplateView.as_view(template_name='static-content/sponsors.html',), name='sponsors-static'),
-    url(r'^blog/$', TemplateView.as_view(template_name='static-content/blog-archive.html',), name='blog-archive'),
-    url(r'^coc/$', TemplateView.as_view(template_name='static-content/coc.html',), name='coc-static'),
-    url(r'^faq/$', TemplateView.as_view(template_name='static-content/faq.html',), name='faq-static'),
 
     # Proposals as conference home page. TODO: Needs to be enhanced
     url(r'^(?P<conference_slug>[\w-]+)--/',
