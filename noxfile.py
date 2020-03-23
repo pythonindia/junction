@@ -32,7 +32,7 @@ def lint(session):
         "--max-complexity=24",
         "--statistics",
         "--benchmark",
-        "--ignore=E5,F4",
+        "--ignore=E5,F4,W503",
         "junction/",
     )
     # TODO: Add tests/ to the arguments above.
