@@ -10,8 +10,8 @@ from rest_framework.test import APITestCase
 
 class TestDeviceListApiView(APITestCase):
     def test_register(self):
-        data = {'uuid': str(uuid.uuid1())}
-        res = self.client.post('/api/v1/devices/', data, format='json')
+        data = {"uuid": str(uuid.uuid1())}
+        res = self.client.post("/api/v1/devices/", data, format="json")
 
         assert res.status_code == status.HTTP_201_CREATED
         assert res.data == data

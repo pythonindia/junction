@@ -33,7 +33,7 @@ def lint(session):
         "--statistics",
         "--benchmark",
         "--ignore=E5,F4",
-        "junction/"
+        "junction/",
     )
     # TODO: Add tests/ to the arguments above.
 
@@ -46,8 +46,10 @@ def docs(session):
         return [
             "sphinx-build",
             "-W",
-            "-d", "docs/build/_doctrees/" + kind,
-            "-b", kind,
+            "-d",
+            "docs/build/_doctrees/" + kind,
+            "-b",
+            kind,
             "docs/source",
             "docs/build/" + kind,
         ]

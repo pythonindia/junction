@@ -8,12 +8,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('proposals', '0010_merge'),
+        ("proposals", "0010_merge"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='proposalsectionreviewervotevalue',
-            options={'ordering': ('-vote_value',)},
+            name="proposalsectionreviewervotevalue",
+            options={"ordering": ("-vote_value",)},
         ),
     ]

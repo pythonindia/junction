@@ -20,20 +20,23 @@ def add_default_values(apps, schema_editor):
     Conference = apps.get_model("conferences", "Conference")
     for conf in Conference.objects.all():
         ConferenceSetting.objects.create(
-            name=public_voting['name'],
-            value=public_voting['value'],
-            description=public_voting['description'],
-            conference=conf)
+            name=public_voting["name"],
+            value=public_voting["value"],
+            description=public_voting["description"],
+            conference=conf,
+        )
         ConferenceSetting.objects.create(
-            name=display_propsals['name'],
-            value=display_propsals['value'],
-            description=display_propsals['description'],
-            conference=conf)
+            name=display_propsals["name"],
+            value=display_propsals["value"],
+            description=display_propsals["description"],
+            conference=conf,
+        )
         ConferenceSetting.objects.create(
-            name=allow_plus_zero_vote['name'],
-            value=allow_plus_zero_vote['value'],
-            description=allow_plus_zero_vote['description'],
-            conference=conf)
+            name=allow_plus_zero_vote["name"],
+            value=allow_plus_zero_vote["value"],
+            description=allow_plus_zero_vote["description"],
+            conference=conf,
+        )
 
 
 def remove_default_values(apps, schema_editor):
@@ -47,27 +50,59 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('conferences', '0013_auto_20160131_1954'),
+        ("conferences", "0013_auto_20160131_1954"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ConferenceSetting',
+            name="ConferenceSetting",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
-                ('name', models.CharField(max_length=100, db_index=True)),
-                ('value', models.BooleanField(default=False)),
-                ('description', models.CharField(max_length=255)),
-                ('conference', models.ForeignKey(to='conferences.Conference')),
-                ('created_by', models.ForeignKey(related_name='created_conferencesetting_set', verbose_name='Created By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('modified_by', models.ForeignKey(related_name='updated_conferencesetting_set', verbose_name='Modified By', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "modified_at",
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Last Modified At"
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, db_index=True)),
+                ("value", models.BooleanField(default=False)),
+                ("description", models.CharField(max_length=255)),
+                ("conference", models.ForeignKey(to="conferences.Conference")),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        related_name="created_conferencesetting_set",
+                        verbose_name="Created By",
+                        blank=True,
+                        to=settings.AUTH_USER_MODEL,
+                        null=True,
+                    ),
+                ),
+                (
+                    "modified_by",
+                    models.ForeignKey(
+                        related_name="updated_conferencesetting_set",
+                        verbose_name="Modified By",
+                        blank=True,
+                        to=settings.AUTH_USER_MODEL,
+                        null=True,
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
             bases=(models.Model,),
         ),
-        migrations.RunPython(add_default_values, remove_default_values)
+        migrations.RunPython(add_default_values, remove_default_values),
     ]

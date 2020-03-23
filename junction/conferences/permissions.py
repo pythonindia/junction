@@ -9,6 +9,7 @@ def is_reviewer(user, conference):
     if not user.is_authenticated():
         return False
 
-    qs = ConferenceProposalReviewer.objects.filter(reviewer=user, conference=conference,
-                                                   active=True)
+    qs = ConferenceProposalReviewer.objects.filter(
+        reviewer=user, conference=conference, active=True
+    )
     return qs.exists()

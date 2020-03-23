@@ -7,6 +7,5 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-
-    url(r'^sync_data/$', views.sync_data, name='sync_data'),
+    url(r"^sync_data/$", views.sync_data, name="sync_data"),
 ]

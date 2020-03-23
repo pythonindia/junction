@@ -11,7 +11,8 @@ def none_events():
 def single_event():
     list_of_event = list()
     list_of_event.append(
-        {"eventId": "EKDJHH", "eventTitle ": "My Demo Event", })
+        {"eventId": "EKDJHH", "eventTitle ": "My Demo Event",}
+    )
     return list_of_event
 
 
@@ -37,14 +38,18 @@ def single_order():
     order["address"] = "address"
     order["zipcode"] = "411027"
     order["phoneNo"] = "22222"
-    order["attendee"] = [{"ticketName": "Free Visit",
-                          "ticketId": "TKEFAJC",
-                          "name": "Pankaj Kumar",
-                          "email": "dummy@mydummydomain.com",
-                          "checkin": "no",
-                          "ticketNo": "E4CACB-694",
-                          "status": "attending",
-                          "details": {"Date": ""}}]
+    order["attendee"] = [
+        {
+            "ticketName": "Free Visit",
+            "ticketId": "TKEFAJC",
+            "name": "Pankaj Kumar",
+            "email": "dummy@mydummydomain.com",
+            "checkin": "no",
+            "ticketNo": "E4CACB-694",
+            "status": "attending",
+            "details": {"Date": ""},
+        }
+    ]
     list_of_order = list()
     list_of_order.append(order)
     return list_of_order
@@ -59,14 +64,14 @@ def single_order_no_ticketId():
 
 def single_order_no_attendee():
     order = single_order()
-    if 'attendee' in order[0]:
-        del order[0]['attendee']
+    if "attendee" in order[0]:
+        del order[0]["attendee"]
     return order
 
 
 def command_case(get_event_method, get_order_method):
     c = Command()
-    e = Explara('ahjbladjsbfafdkjsldkl')
+    e = Explara("ahjbladjsbfafdkjsldkl")
     e.get_events = MagicMock(return_value=get_event_method())
     e.get_orders = MagicMock(return_value=get_order_method())
     c.set_explara(e)

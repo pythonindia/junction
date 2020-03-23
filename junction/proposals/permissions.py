@@ -21,16 +21,21 @@ def is_proposal_author(user, proposal):
 def is_proposal_reviewer(user, conference):
     authenticated = user.is_authenticated()
     is_reviewer = ConferenceProposalReviewer.objects.filter(
-        reviewer=user.id, conference=conference, active=True).exists()
+        reviewer=user.id, conference=conference, active=True
+    ).exists()
     return authenticated and is_reviewer
 
 
 def is_proposal_section_reviewer(user, conference, proposal):
-    return user.is_authenticated() and ProposalSectionReviewer.objects.filter(
-        conference_reviewer__reviewer=user,
-        conference_reviewer__conference=conference,
-        proposal_section=proposal.proposal_section,
-        active=True).exists()
+    return (
+        user.is_authenticated()
+        and ProposalSectionReviewer.objects.filter(
+            conference_reviewer__reviewer=user,
+            conference_reviewer__conference=conference,
+            proposal_section=proposal.proposal_section,
+            active=True,
+        ).exists()
+    )
 
 
 def is_proposal_author_or_proposal_reviewer(user, conference, proposal):
@@ -39,10 +44,10 @@ def is_proposal_author_or_proposal_reviewer(user, conference, proposal):
     return reviewer or author
 
 
-def is_proposal_author_or_proposal_section_reviewer(user,
-                                                    conference, proposal):
-    return is_proposal_author(user, proposal) or \
-        is_proposal_section_reviewer(user, conference, proposal)
+def is_proposal_author_or_proposal_section_reviewer(user, conference, proposal):
+    return is_proposal_author(user, proposal) or is_proposal_section_reviewer(
+        user, conference, proposal
+    )
 
 
 def is_proposal_author_or_permisson_denied(user, proposal):

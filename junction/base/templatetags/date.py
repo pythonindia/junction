@@ -17,7 +17,9 @@ def fromnow(value):
     A wrapper around arrow.humanize(), returns natural time which is less precise than
     django's naturaltime filter. It doesn't display weeks and combination of days & hours.
     """
-    if not (isinstance(value, date) or isinstance(value, arrow.Arrow)):  # datetime is a subclass of date
+    if not (
+        isinstance(value, date) or isinstance(value, arrow.Arrow)
+    ):  # datetime is a subclass of date
         return value
 
     return arrow.get(value).humanize()

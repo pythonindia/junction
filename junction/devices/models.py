@@ -23,11 +23,11 @@ class Device(TimeAuditModel):
     is_verified = models.BooleanField(default=False)
     verification_code = models.IntegerField()
     verification_code_sent_at = models.DateTimeField(
-        auto_now_add=True, verbose_name="Verification Code Sent At")
+        auto_now_add=True, verbose_name="Verification Code Sent At"
+    )
     verification_code_expires_at = models.DateTimeField(
-        verbose_name="Verification Code Expires At",
-        default=expiry_time)
+        verbose_name="Verification Code Expires At", default=expiry_time
+    )
 
     def __unicode__(self):
-        return u"uuid: {}, is_verified: {}".format(self.uuid,
-                                                   self.is_verified)
+        return u"uuid: {}, is_verified: {}".format(self.uuid, self.is_verified)

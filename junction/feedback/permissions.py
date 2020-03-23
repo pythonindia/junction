@@ -12,7 +12,7 @@ from junction.devices.models import Device
 
 
 def get_authorization_header(request):
-    auth = request.META.get('HTTP_AUTHORIZATION')
+    auth = request.META.get("HTTP_AUTHORIZATION")
     return auth
 
 

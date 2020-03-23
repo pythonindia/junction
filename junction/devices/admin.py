@@ -13,8 +13,11 @@ from .models import Device
 
 
 class DeviceAdmin(TimeAuditAdmin):
-    list_display = ('uuid', 'verification_code',
-                    'verification_code_sent_at') + TimeAuditAdmin.list_display
+    list_display = (
+        "uuid",
+        "verification_code",
+        "verification_code_sent_at",
+    ) + TimeAuditAdmin.list_display
 
 
 admin.site.register(Device, DeviceAdmin)

@@ -11,35 +11,55 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('proposals', '0021_auto_20160905_0044'),
+        ("proposals", "0021_auto_20160905_0044"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SpamComment',
+            name="SpamComment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "modified_at",
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Last Modified At"
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='proposalcomment',
-            name='is_spam',
+            model_name="proposalcomment",
+            name="is_spam",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='spamcomment',
-            name='comment',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='proposals.ProposalComment'),
+            model_name="spamcomment",
+            name="comment",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="proposals.ProposalComment",
+            ),
         ),
         migrations.AddField(
-            model_name='spamcomment',
-            name='marked_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="spamcomment",
+            name="marked_by",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='spamcomment',
-            unique_together=set([('comment', 'marked_by')]),
+            name="spamcomment", unique_together=set([("comment", "marked_by")]),
         ),
     ]

@@ -8,5 +8,5 @@ from . import views
 
 urlpatterns = [
     # schedule urls
-    url(r'^dummy_schedule/$', views.dummy_schedule, name='dummy_schedule'),
+    url(r"^dummy_schedule/$", views.dummy_schedule, name="dummy_schedule"),
 ]

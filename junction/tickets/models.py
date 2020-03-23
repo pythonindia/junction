@@ -13,6 +13,7 @@ class Ticket(AuditModel):
     """
     Conference ticket details
     """
+
     order_no = models.CharField(max_length=255)
     order_cost = models.FloatField()
     ticket_no = models.CharField(max_length=255)
