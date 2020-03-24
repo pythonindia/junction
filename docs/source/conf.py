@@ -40,8 +40,7 @@ html_static_path = ['_static']
 # NOTE: This entire section should be removed once the old/ folder is removed
 #       from the docs/ directory.
 
-from recommonmark.parser import CommonMarkParser
-from recommonmark.transform import AutoStructify
+from recommonmark.transform import AutoStructify  # noqa: E402
 
 
 def setup(app):

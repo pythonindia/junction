@@ -40,7 +40,7 @@ def get_reviewer_vote_info(user, conference, proposal, vote_phase):
             deleted=False,
             comment_type=comment_type,
         )
-    except:
+    except Exception:
         vote_comment = None
 
     return psr_vote, vote_comment
