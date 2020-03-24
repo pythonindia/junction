@@ -28,17 +28,17 @@ class TextFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
     title = models.CharField(max_length=255, verbose_name="Text Feedback Title")
 
     def __str__(self):
-        return u"title: {}, schedule_item_type: {}, conference: {}".format(
+        return "title: {}, schedule_item_type: {}, conference: {}".format(
             self.title, self.schedule_item_type, self.conference
         )
 
     def to_response(self):
         return {
-            'title': self.title,
-            'id': self.id,
-            'type': 'text',
-            'schedule_item_type': self.schedule_item_type.title,
-            'is_required': self.is_required,
+            "title": self.title,
+            "id": self.id,
+            "type": "text",
+            "schedule_item_type": self.schedule_item_type.title,
+            "is_required": self.is_required,
         }
 
 
@@ -50,22 +50,22 @@ class ChoiceFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
     title = models.CharField(max_length=255, verbose_name="Choice Feedback Title")
 
     def __str__(self):
-        return u"title: {}, schedule_item_type: {}, conference: {}".format(
+        return "title: {}, schedule_item_type: {}, conference: {}".format(
             self.title, self.schedule_item_type, self.conference
         )
 
     def to_response(self):
         allowed_choices = [
-            {'title': obj.title, 'value': obj.value, 'id': obj.id}
+            {"title": obj.title, "value": obj.value, "id": obj.id}
             for obj in self.allowed_values.all()
         ]
         return {
-            'title': self.title,
-            'id': self.id,
-            'type': 'choice',
-            'allowed_choices': allowed_choices,
-            'schedule_item_type': self.schedule_item_type.title,
-            'is_required': self.is_required,
+            "title": self.title,
+            "id": self.id,
+            "type": "choice",
+            "allowed_choices": allowed_choices,
+            "schedule_item_type": self.schedule_item_type.title,
+            "is_required": self.is_required,
         }
 
 
@@ -79,7 +79,7 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
     value = models.SmallIntegerField(db_index=True)
 
     def __str__(self):
-        return u"question: {}, title: {}, value: {}".format(
+        return "question: {}, title: {}, value: {}".format(
             self.question, self.title, self.value
         )
 
@@ -95,7 +95,7 @@ class ScheduleItemTextFeedback(TimeAuditModel):
         index_together = [["device", "schedule_item"]]
 
     def __str__(self):
-        return u"schedule_item: {}, question: {}, text: {}, device: {}".format(
+        return "schedule_item: {}, question: {}, text: {}, device: {}".format(
             self.schedule_item, self.question, self.text[:100], self.device
         )
 
@@ -111,6 +111,6 @@ class ScheduleItemChoiceFeedback(TimeAuditModel):
         index_together = [["device", "schedule_item"], ["schedule_item", "value"]]
 
     def __str__(self):
-        return u"schedule_item: {}, question: {}, value: {}, device: {}".format(
+        return "schedule_item: {}, question: {}, value: {}, device: {}".format(
             self.schedule_item, self.question, self.value, self.device
         )

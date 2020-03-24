@@ -44,7 +44,7 @@ def client():
             if user is None:
                 return super(_Client, self).login(**credentials)
 
-            with mock.patch('django.contrib.auth.authenticate') as authenticate:
+            with mock.patch("django.contrib.auth.authenticate") as authenticate:
                 user.backend = backend
                 authenticate.return_value = user
                 return super(_Client, self).login(**credentials)
@@ -89,7 +89,7 @@ def conferences():
     future = factories.create_conference(
         name="Future", start_date=today, end_date=tomo, status=open_status
     )
-    return {'past': past, 'future': future}
+    return {"past": past, "future": future}
 
 
 @pytest.fixture
@@ -101,30 +101,30 @@ def create_user():
     user.set_password(password)
     user.is_active = True
     user.save()
-    return {'username': username, 'password': password, 'user': user}
+    return {"username": username, "password": password, "user": user}
 
 
 @pytest.fixture
 def create_superuser(create_user):
-    user = create_user['user']
+    user = create_user["user"]
     user.is_staff = True
     user.is_superuser = True
     user.save()
-    create_user['user'] = user
+    create_user["user"] = user
     return create_user
 
 
 @pytest.fixture
 def login(create_user, client):
-    username, password = create_user['username'], create_user['password']
+    username, password = create_user["username"], create_user["password"]
     client.login(username=username, password=password)
-    return client, create_user['user']
+    return client, create_user["user"]
 
 
 @pytest.fixture
 def create_reviewer(create_user, conferences):
-    user = create_user['user']
-    conference = conferences['future']
+    user = create_user["user"]
+    conference = conferences["future"]
     conference_reviewer = ConferenceProposalReviewer.objects.create(
         conference=conference, reviewer=user
     )
@@ -137,7 +137,7 @@ def create_reviewer(create_user, conferences):
 
 @pytest.fixture
 def create_proposal(conferences, create_user):
-    conference, user = conferences['future'], create_user['user']
+    conference, user = conferences["future"], create_user["user"]
     section = conference.proposal_sections.all()[0]
     proposal_type = conference.proposal_types.all()[0]
     proposal = factories.create_proposal(

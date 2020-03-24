@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 from .forms import SyncDataForm
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def sync_data(request):
     """
     View to call sync_data management command.
@@ -19,8 +19,8 @@ def sync_data(request):
 
     form = SyncDataForm()
 
-    if request.method == 'GET':
-        return render(request, 'sync_data.html', {'form': form})
+    if request.method == "GET":
+        return render(request, "sync_data.html", {"form": form})
 
-    call_command('sync_data')
-    return render(request, 'sync_data.html', {'form': form, 'message': 'Data synced'})
+    call_command("sync_data")
+    return render(request, "sync_data.html", {"form": form, "message": "Data synced"})

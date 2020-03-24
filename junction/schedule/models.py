@@ -19,23 +19,23 @@ class ScheduleItemType(AuditModel):
 
 
 class ScheduleItem(AuditModel):
-    INTROUDCTION = 'Introduction'
-    TALK = 'Talk'
-    LUNCH = 'Lunch'
-    BREAK = 'Break'
-    WORKSHOP = 'Workshop'
-    POSTER = 'Poster'
+    INTROUDCTION = "Introduction"
+    TALK = "Talk"
+    LUNCH = "Lunch"
+    BREAK = "Break"
+    WORKSHOP = "Workshop"
+    POSTER = "Poster"
     OPEN_SPACE = "Open Space"
     LIGHTNING_TALK = "Lightning Talk"
     SCHEDULE_ITEM_TYPE = (
-        (TALK, 'Talk'),
-        (LUNCH, 'Lunch'),
-        (BREAK, 'Break'),
-        (WORKSHOP, 'Workshop'),
-        (POSTER, 'Poster'),
-        (OPEN_SPACE, 'Open Space'),
-        (INTROUDCTION, 'Introduction'),
-        (LIGHTNING_TALK, 'Lightning Talk'),
+        (TALK, "Talk"),
+        (LUNCH, "Lunch"),
+        (BREAK, "Break"),
+        (WORKSHOP, "Workshop"),
+        (POSTER, "Poster"),
+        (OPEN_SPACE, "Open Space"),
+        (INTROUDCTION, "Introduction"),
+        (LIGHTNING_TALK, "Lightning Talk"),
     )
     room = models.ForeignKey(Room, null=True)
     # if a session is not present, venue can be null Ex: break
@@ -44,7 +44,7 @@ class ScheduleItem(AuditModel):
     end_time = models.TimeField()
     alt_name = models.CharField(max_length=255, blank=True)
     alt_description = models.TextField(blank=True)
-    limit_choices = {'review_status': ProposalReviewStatus.SELECTED}
+    limit_choices = {"review_status": ProposalReviewStatus.SELECTED}
     session = models.ForeignKey(
         Proposal, null=True, blank=True, limit_choices_to=limit_choices
     )
@@ -67,21 +67,21 @@ class ScheduleItem(AuditModel):
         return self.alt_name or self.session.title
 
     class Meta:
-        index_together = [('event_date', 'start_time')]
+        index_together = [("event_date", "start_time")]
 
     def to_response(self, request):
         """method will return dict which can be passed to response
         """
         data = {
-            'id': self.id,
-            'room_id': getattr(self.room, 'id', None),
-            'event_date': self.event_date.strftime("%Y-%m-%d"),
-            'start_time': self.start_time.strftime("%H:%M:%S"),
-            'end_time': self.end_time.strftime("%H:%M:%S"),
-            'name': self.name,
-            'type': self.type,
-            'conference': reverse(
-                "conference-detail", kwargs={'pk': self.conference_id}, request=request
+            "id": self.id,
+            "room_id": getattr(self.room, "id", None),
+            "event_date": self.event_date.strftime("%Y-%m-%d"),
+            "start_time": self.start_time.strftime("%H:%M:%S"),
+            "end_time": self.end_time.strftime("%H:%M:%S"),
+            "name": self.name,
+            "type": self.type,
+            "conference": reverse(
+                "conference-detail", kwargs={"pk": self.conference_id}, request=request
             ),
         }
         if self.session:
@@ -89,18 +89,18 @@ class ScheduleItem(AuditModel):
             author = u"{} {}".format(
                 session.author.first_name, session.author.last_name
             )
-            data['session'] = {
-                'id': session.id,
-                'title': session.title,
-                'section': session.proposal_section.name,
-                'author': author,
-                'description': session.description,
-                'target_audience': session.target_audience,
-                'prerequisites': session.prerequisites,
-                'content_urls': session.content_urls,
-                'speaker_links': session.speaker_links,
-                'speaker_info': session.speaker_info,
+            data["session"] = {
+                "id": session.id,
+                "title": session.title,
+                "section": session.proposal_section.name,
+                "author": author,
+                "description": session.description,
+                "target_audience": session.target_audience,
+                "prerequisites": session.prerequisites,
+                "content_urls": session.content_urls,
+                "speaker_links": session.speaker_links,
+                "speaker_info": session.speaker_info,
             }
         else:
-            data['session'] = {'description': self.alt_description}
+            data["session"] = {"description": self.alt_description}
         return data

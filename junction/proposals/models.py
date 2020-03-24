@@ -35,7 +35,7 @@ class ProposalSection(AuditModel):
     description = models.TextField(default="", blank=True)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     conferences = models.ManyToManyField(
-        to=Conference, related_name='proposal_sections'
+        to=Conference, related_name="proposal_sections"
     )
 
     def __str__(self):
@@ -48,7 +48,7 @@ class ProposalSectionReviewer(AuditModel):
     """ List of Proposal Section Reviewers"""
 
     conference_reviewer = models.ForeignKey(
-        'conferences.ConferenceProposalReviewer',
+        "conferences.ConferenceProposalReviewer",
         verbose_name="Conference Proposal Reviewers",
     )
     proposal_section = models.ForeignKey(
@@ -68,7 +68,7 @@ class ProposalType(AuditModel):
     name = models.CharField(max_length=255, verbose_name="Proposal Type Name")
     description = models.TextField(default="", blank=True)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
-    conferences = models.ManyToManyField(to=Conference, related_name='proposal_types')
+    conferences = models.ManyToManyField(to=Conference, related_name="proposal_types")
     start_date = models.DateField(default=datetime.now, verbose_name="Start Date")
     end_date = models.DateField(default=datetime.now, verbose_name="End Date")
 
@@ -88,7 +88,7 @@ class Proposal(TimeAuditModel):
     proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
     author = models.ForeignKey(User, verbose_name="Primary Speaker")
     title = models.CharField(max_length=255)
-    slug = AutoSlugField(max_length=255, populate_from=('title',))
+    slug = AutoSlugField(max_length=255, populate_from=("title",))
     description = models.TextField(default="")
     target_audience = models.PositiveSmallIntegerField(
         choices=ProposalTargetAudience.CHOICES,
@@ -126,35 +126,35 @@ class Proposal(TimeAuditModel):
 
     def get_absolute_url(self):
         return reverse(
-            'proposal-detail',
+            "proposal-detail",
             args=[self.conference.slug, self.get_slug(), self.get_hashid()],
         )
 
     def get_update_url(self):
-        return reverse('proposal-update', args=[self.conference.slug, self.slug])
+        return reverse("proposal-update", args=[self.conference.slug, self.slug])
 
     def get_review_url(self):
-        return reverse('proposal-review', args=[self.conference.slug, self.slug])
+        return reverse("proposal-review", args=[self.conference.slug, self.slug])
 
     def get_vote_url(self):
-        return reverse('proposal-reviewer-vote', args=[self.conference.slug, self.slug])
+        return reverse("proposal-reviewer-vote", args=[self.conference.slug, self.slug])
 
     def get_secondary_vote_url(self):
         return reverse(
-            'proposal-reviewer-secondary-vote', args=[self.conference.slug, self.slug]
+            "proposal-reviewer-secondary-vote", args=[self.conference.slug, self.slug]
         )
 
     def get_delete_url(self):
-        return reverse('proposal-delete', args=[self.conference.slug, self.slug])
+        return reverse("proposal-delete", args=[self.conference.slug, self.slug])
 
     def get_up_vote_url(self):
-        return reverse('proposal-vote-up', args=[self.conference.slug, self.slug])
+        return reverse("proposal-vote-up", args=[self.conference.slug, self.slug])
 
     def get_down_vote_url(self):
-        return reverse('proposal-vote-down', args=[self.conference.slug, self.slug])
+        return reverse("proposal-vote-down", args=[self.conference.slug, self.slug])
 
     def get_remove_vote_url(self):
-        return reverse('proposal-vote-remove', args=[self.conference.slug, self.slug])
+        return reverse("proposal-vote-remove", args=[self.conference.slug, self.slug])
 
     def get_comments_count(self):
         """ Show only public comments count """
@@ -178,10 +178,10 @@ class Proposal(TimeAuditModel):
         """ Show only the public comment count """
         votes = (
             ProposalVote.objects.filter(proposal=self)
-            .values('up_vote')
-            .annotate(counts=models.Count('up_vote'))
+            .values("up_vote")
+            .annotate(counts=models.Count("up_vote"))
         )
-        votes = {item['up_vote']: item['counts'] for item in votes}
+        votes = {item["up_vote"]: item["counts"] for item in votes}
         up_vote_count = votes.get(True, 0)
         down_vote_count = votes.get(False, 0)
         return up_vote_count - down_vote_count
@@ -228,25 +228,25 @@ class Proposal(TimeAuditModel):
     def to_response(self, request):
         """method will return dict which can be passed to response
         """
-        author = u"{} {}".format(self.author.first_name, self.author.last_name)
+        author = "{} {}".format(self.author.first_name, self.author.last_name)
         data = {
-            'id': self.id,
-            'author': author,
-            'title': self.title,
-            'description': self.description,
-            'target_audience': dict(ProposalTargetAudience.CHOICES)[
+            "id": self.id,
+            "author": author,
+            "title": self.title,
+            "description": self.description,
+            "target_audience": dict(ProposalTargetAudience.CHOICES)[
                 self.target_audience
             ],
-            'status': dict(ProposalStatus.CHOICES)[self.status],
-            'review_status': dict(ProposalReviewStatus.CHOICES)[self.review_status],
-            'proposal_type': self.proposal_type.name,
-            'proposal_section': self.proposal_section.name,
-            'votes_count': self.get_votes_count(),
-            'speaker_info': self.speaker_info,
-            'speaker_links': self.speaker_links,
-            'content_urls': self.content_urls,
-            'conference': rf_reverse(
-                "conference-detail", kwargs={'pk': self.conference_id}, request=request
+            "status": dict(ProposalStatus.CHOICES)[self.status],
+            "review_status": dict(ProposalReviewStatus.CHOICES)[self.review_status],
+            "proposal_type": self.proposal_type.name,
+            "proposal_section": self.proposal_section.name,
+            "votes_count": self.get_votes_count(),
+            "speaker_info": self.speaker_info,
+            "speaker_links": self.speaker_links,
+            "content_urls": self.content_urls,
+            "conference": rf_reverse(
+                "conference-detail", kwargs={"pk": self.conference_id}, request=request
             ),
         }
         return data
@@ -296,7 +296,7 @@ class ProposalSectionReviewerVoteValue(AuditModel):
         return "{} ({})".format(self.description, self.vote_value)
 
     class Meta:
-        ordering = ('-vote_value',)
+        ordering = ("-vote_value",)
 
 
 @python_2_unicode_compatible
@@ -320,7 +320,7 @@ class ProposalSectionReviewerVote(TimeAuditModel):
         return "[{}] {}".format(self.vote_value, self.proposal)
 
     class Meta:
-        verbose_name = 'ProposalSectionReviewerVote'
+        verbose_name = "ProposalSectionReviewerVote"
 
 
 # FIXME: Need to move private, reviewer, vote to type
@@ -342,12 +342,12 @@ class ProposalComment(TimeAuditModel):
     objects = ProposalCommentQuerySet.as_manager()
     is_spam = models.BooleanField(default=False, blank=True)
     marked_as_spam_by = models.ForeignKey(
-        User, related_name='marked_as_spam_by', default=None, null=True, blank=True
+        User, related_name="marked_as_spam_by", default=None, null=True, blank=True
     )
 
     class Meta:
-        ordering = ('created_at',)
-        index_together = [['is_spam', 'marked_as_spam_by'], ['commenter', 'is_spam']]
+        ordering = ("created_at",)
+        index_together = [["is_spam", "marked_as_spam_by"], ["commenter", "is_spam"]]
 
     def __str__(self):
         return "[{} by {}] {}".format(
@@ -356,25 +356,25 @@ class ProposalComment(TimeAuditModel):
 
     def get_up_vote_url(self):
         return reverse(
-            'proposal-comment-up-vote',
+            "proposal-comment-up-vote",
             args=[self.proposal.conference.slug, self.proposal.slug, self.id],
         )
 
     def get_down_vote_url(self):
         return reverse(
-            'proposal-comment-down-vote',
+            "proposal-comment-down-vote",
             args=[self.proposal.conference.slug, self.proposal.slug, self.id],
         )
 
     def get_mark_spam_url(self):
         return reverse(
-            'comment_mark_spam',
+            "comment_mark_spam",
             args=[self.proposal.conference.slug, self.proposal.slug, self.id],
         )
 
     def get_unmark_spam_url(self):
         return reverse(
-            'comment_unmark_spam',
+            "comment_unmark_spam",
             args=[self.proposal.conference.slug, self.proposal.slug, self.id],
         )
 
@@ -395,15 +395,15 @@ class ProposalComment(TimeAuditModel):
 
     def get_comment_type(self):
         if self.deleted:
-            return 'Deleted'
+            return "Deleted"
         elif self.vote:
-            return 'Vote'
+            return "Vote"
         elif self.reviewer:
-            return 'Reviewer Only'
+            return "Reviewer Only"
         elif self.private:
-            return 'Review'
+            return "Review"
         else:
-            return 'Public'
+            return "Public"
 
 
 @python_2_unicode_compatible

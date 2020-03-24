@@ -6,21 +6,21 @@ import os
 from .common import *  # noqa
 
 DEBUG = True
-TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(ROOT_DIR, 'test.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
     }
 }
 
-TEMPLATES[0]['OPTIONS']['context_processors'].extend(
+TEMPLATES[0]["OPTIONS"]["context_processors"].extend(
     ["django.core.context_processors.debug",]
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-INSTALLED_APPS += ('django_extensions',)
+INSTALLED_APPS += ("django_extensions",)
 
 DEVICE_VERIFICATION_CODE = 11111

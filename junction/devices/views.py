@@ -19,24 +19,24 @@ from .serializers import DeviceConfirmationSerializer, DeviceRegistrationSeriali
 
 class DeviceListApiView(views.APIView):
     def _create_device(self, data):
-        if os.environ.get('TESTING'):
+        if os.environ.get("TESTING"):
             code = settings.DEVICE_VERIFICATION_CODE
         else:
             code = random.choice(list(range(10000, 99999)))
-        device = Device.objects.create(uuid=data['uuid'], verification_code=code)
+        device = Device.objects.create(uuid=data["uuid"], verification_code=code)
         return device
 
     def post(self, request):
         obj = DeviceRegistrationSerializer(data=request.data)
         if obj.is_valid():
-            if Device.objects.filter(uuid=obj.data['uuid']).exists():
+            if Device.objects.filter(uuid=obj.data["uuid"]).exists():
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
-                    data={'uuid': 'Already registered'},
+                    data={"uuid": "Already registered"},
                 )
             else:
                 device = self._create_device(data=obj.data)
-                data = {'uuid': str(device.uuid)}
+                data = {"uuid": str(device.uuid)}
                 return Response(status=status.HTTP_201_CREATED, data=data)
         return Response(status=status.HTTP_400_BAD_REQUEST, data=obj.errors)
 
@@ -54,7 +54,7 @@ class DeviceDetailApiView(views.APIView):
             device.save()
             return Response(status=status.HTTP_200_OK)
         return Response(
-            status=status.HTTP_400_BAD_REQUEST, data={'code': 'Incorrect code'}
+            status=status.HTTP_400_BAD_REQUEST, data={"code": "Incorrect code"}
         )
 
     def post(self, request, _uuid):
@@ -62,7 +62,7 @@ class DeviceDetailApiView(views.APIView):
         if obj.is_valid():
             try:
                 device = Device.objects.get(uuid=uuid.UUID(_uuid))
-                return self._verify(device=device, code=obj.data['code'])
+                return self._verify(device=device, code=obj.data["code"])
             except ObjectDoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_400_BAD_REQUEST, data=obj.errors)

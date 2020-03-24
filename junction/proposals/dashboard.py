@@ -33,7 +33,7 @@ from .utils import _sort_proposals_for_dashboard
 
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def proposals_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
@@ -71,13 +71,13 @@ def proposals_dashboard(request, conference_slug):
             by_section[section.id][2] = by_section[section.id][2] + 1
     sections = ProposalSectionReviewer.objects.filter(
         conference_reviewer__reviewer=request.user
-    ).distinct('proposal_section__id')
+    ).distinct("proposal_section__id")
     # Hande case if reviewer is added to section twice'
 
     for section in sections:
         proposal_qs = proposals_qs.filter(proposal_section=section.proposal_section)
         # due to space and number issue for key used this
-        key_id = '%s' % section.proposal_section.id
+        key_id = "%s" % section.proposal_section.id
         by_reviewer.setdefault(
             key_id, [proposal_qs.count(), 0, 0, section.proposal_section.name]
         )
@@ -90,7 +90,7 @@ def proposals_dashboard(request, conference_slug):
             else:
                 by_reviewer[key_id][2] = by_reviewer[key_id][2] + 1
 
-    audience_dict = {1: 'Beginner', 2: 'Intermediate', 3: 'Advanced'}
+    audience_dict = {1: "Beginner", 2: "Intermediate", 3: "Advanced"}
 
     for proposal in proposals_qs:
         audience = audience_dict[proposal.target_audience]
@@ -106,20 +106,20 @@ def proposals_dashboard(request, conference_slug):
             by_audience[audience][0] = by_audience[audience][0] + 1
 
     ctx = {
-        'conference': conference,
-        'total': proposals_qs.count(),
-        'reviewed': reviewed_count,
-        'unreviewed': unreviewed_count,
-        'group_by_type': by_type,
-        'group_by_section': by_section,
-        'group_by_reviewer_section': by_reviewer,
-        'by_target_audience': by_audience,
+        "conference": conference,
+        "total": proposals_qs.count(),
+        "reviewed": reviewed_count,
+        "unreviewed": unreviewed_count,
+        "group_by_type": by_type,
+        "group_by_section": by_section,
+        "group_by_reviewer_section": by_reviewer,
+        "by_target_audience": by_audience,
     }
-    return render(request, 'proposals/dashboard.html', ctx)
+    return render(request, "proposals/dashboard.html", ctx)
 
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def reviewer_comments_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
 
@@ -144,13 +144,13 @@ def reviewer_comments_dashboard(request, conference_slug):
                 proposal__status=ProposalStatus.PUBLIC,
                 proposal__conference=conference,
             )
-            .distinct('proposal')
+            .distinct("proposal")
             .count()
         )
         # by_section is dict with
         # find each reviewers section and their comments
         # Need to rework on this code section to make it 1-2 loops
-        by_section.setdefault(id, {'reviewer': reviewers.reviewer, 'interaction': []})
+        by_section.setdefault(id, {"reviewer": reviewers.reviewer, "interaction": []})
         reviewers_section = ProposalSectionReviewer.objects.filter(
             conference_reviewer=reviewers
         )
@@ -169,7 +169,7 @@ def reviewer_comments_dashboard(request, conference_slug):
                     commented = commented + 1
                 else:
                     uncommented = uncommented + 1
-            by_section[id]['interaction'].append(
+            by_section[id]["interaction"].append(
                 [
                     proposal_qs.count(),
                     commented,
@@ -179,16 +179,16 @@ def reviewer_comments_dashboard(request, conference_slug):
             )
 
     ctx = {
-        'conference': conference,
-        'conference_reviewers': conference_reviewers,
-        'by_conference': by_conference,
-        'by_section': by_section,
+        "conference": conference,
+        "conference_reviewers": conference_reviewers,
+        "by_conference": by_conference,
+        "by_section": by_section,
     }
 
-    return render(request, 'proposals/reviewers_dashboard.html', ctx)
+    return render(request, "proposals/reviewers_dashboard.html", ctx)
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def reviewer_votes_dashboard(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     user = request.user
@@ -197,14 +197,14 @@ def reviewer_votes_dashboard(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        'proposal_type', 'proposal_section', 'conference', 'author',
+        "proposal_type", "proposal_section", "conference", "author",
     ).filter(conference=conference, status=ProposalStatus.PUBLIC)
 
     proposals = []
-    s_items = collections.namedtuple('section_items', 'section proposals')
+    s_items = collections.namedtuple("section_items", "section proposals")
     form = ProposalVotesFilterForm(conference=conference)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         for section in proposal_sections:
             section_proposals = [
                 p for p in proposals_qs if p.proposal_section == section
@@ -213,8 +213,8 @@ def reviewer_votes_dashboard(request, conference_slug):
 
         return render(
             request,
-            'proposals/votes-dashboard.html',
-            {'conference': conference, 'proposals': proposals, 'form': form},
+            "proposals/votes-dashboard.html",
+            {"conference": conference, "proposals": proposals, "form": form},
         )
 
     form = ProposalVotesFilterForm(conference=conference, data=request.POST)
@@ -222,8 +222,8 @@ def reviewer_votes_dashboard(request, conference_slug):
     if not form.is_valid():
         return render(
             request,
-            'proposals/votes-dashboard.html',
-            {'form': form, 'conference': conference, 'errors': form.errors},
+            "proposals/votes-dashboard.html",
+            {"form": form, "conference": conference, "errors": form.errors},
         )
 
     # Valid form
@@ -232,12 +232,12 @@ def reviewer_votes_dashboard(request, conference_slug):
 
     return render(
         request,
-        'proposals/votes-dashboard.html',
-        {'conference': conference, 'proposals': proposals, 'form': form},
+        "proposals/votes-dashboard.html",
+        {"conference": conference, "proposals": proposals, "form": form},
     )
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def second_phase_voting(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
     user = request.user
@@ -247,14 +247,14 @@ def second_phase_voting(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        'proposal_type', 'proposal_section', 'conference', 'author',
+        "proposal_type", "proposal_section", "conference", "author",
     ).filter(conference=conference, review_status=ProposalReviewStatus.SELECTED)
 
     proposals = []
-    s_items = collections.namedtuple('section_items', 'section proposals')
+    s_items = collections.namedtuple("section_items", "section proposals")
     form = ProposalVotesFilterForm(conference=conference)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         for section in proposal_sections:
             section_proposals = [
                 p for p in proposals_qs if p.proposal_section == section
@@ -263,8 +263,8 @@ def second_phase_voting(request, conference_slug):
 
         return render(
             request,
-            'proposals/second_phase_voting.html',
-            {'conference': conference, 'proposals': proposals, 'form': form},
+            "proposals/second_phase_voting.html",
+            {"conference": conference, "proposals": proposals, "form": form},
         )
 
     form = ProposalVotesFilterForm(conference=conference, data=request.POST)
@@ -272,8 +272,8 @@ def second_phase_voting(request, conference_slug):
     if not form.is_valid():
         return render(
             request,
-            'proposals/votes-dashboard.html',
-            {'form': form, 'conference': conference, 'errors': form.errors},
+            "proposals/votes-dashboard.html",
+            {"form": form, "conference": conference, "errors": form.errors},
         )
 
     # Valid form
@@ -281,12 +281,12 @@ def second_phase_voting(request, conference_slug):
 
     return render(
         request,
-        'proposals/second_phase_voting.html',
-        {'conference': conference, 'proposals': proposals, 'form': form},
+        "proposals/second_phase_voting.html",
+        {"conference": conference, "proposals": proposals, "form": form},
     )
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def export_reviewer_votes(request, conference_slug):
     """
     Write reviewer votes to a spreadsheet.
@@ -298,28 +298,28 @@ def export_reviewer_votes(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        'proposal_type', 'proposal_section', 'conference', 'author',
+        "proposal_type", "proposal_section", "conference", "author",
     ).filter(conference=conference, status=ProposalStatus.PUBLIC)
     proposals_qs = sorted(
         proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True
     )
-    vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by('-vote_value')
+    vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by("-vote_value")
     vote_values_list = [v.vote_value for v in vote_values_list]
     vote_values_desc = tuple(
         i.description
-        for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value')
+        for i in ProposalSectionReviewerVoteValue.objects.order_by("-vote_value")
     )
     header = (
-        ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes')
+        ("Proposal Type", "Title", "Sum of reviewer votes", "No. of reviewer votes")
         + tuple(vote_values_desc)
-        + ('Public votes count', 'Vote Comments')
+        + ("Public votes count", "Vote Comments")
     )
     output = io.BytesIO()
 
     with Workbook(output) as book:
         for section in proposal_sections:
             sheet = book.add_worksheet(section.name[:30])
-            cell_format = book.add_format({'bold': True})
+            cell_format = book.add_format({"bold": True})
             sheet.write_row(0, 0, header, cell_format)
 
             section_proposals = [
@@ -330,7 +330,7 @@ def export_reviewer_votes(request, conference_slug):
                 vote_details = tuple(
                     p.get_reviewer_votes_count_by_value(v) for v in vote_values_list
                 )
-                vote_comment = '\n'.join(
+                vote_comment = "\n".join(
                     [
                         comment.comment
                         for comment in p.proposalcomment_set.filter(
@@ -356,7 +356,7 @@ def export_reviewer_votes(request, conference_slug):
                     )
                     > 0
                 ):
-                    cell_format = book.add_format({'bg_color': 'red'})
+                    cell_format = book.add_format({"bg_color": "red"})
                 elif (
                     p.get_reviewer_votes_count_by_value(
                         ProposalSectionReviewerVoteValue.objects.get(
@@ -365,9 +365,9 @@ def export_reviewer_votes(request, conference_slug):
                     )
                     > 2
                 ):
-                    cell_format = book.add_format({'bg_color': 'green'})
+                    cell_format = book.add_format({"bg_color": "green"})
                 elif p.get_reviewer_votes_count() < 2:
-                    cell_format = book.add_format({'bg_color': 'yellow'})
+                    cell_format = book.add_format({"bg_color": "yellow"})
                 else:
                     cell_format = None
 
@@ -379,7 +379,7 @@ def export_reviewer_votes(request, conference_slug):
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
     file_name = str(uuid.uuid4())[:8]
-    response['Content-Disposition'] = "attachment; filename=junction-{}.xlsx".format(
+    response["Content-Disposition"] = "attachment; filename=junction-{}.xlsx".format(
         file_name
     )
 
@@ -387,17 +387,17 @@ def export_reviewer_votes(request, conference_slug):
 
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def proposal_state(request, conference_slug):
     conf = get_object_or_404(Conference, slug=conference_slug)
 
     if not is_conference_moderator(user=request.user, conference=conf):
         raise PermissionDenied
 
-    state = request.GET.get('q', 'unreviewed')
+    state = request.GET.get("q", "unreviewed")
     proposals = services.group_proposals_by_reveiew_state(conf=conf, state=state)
     return render(
         request,
-        'proposals/review_state.html',
-        {'conference': conf, 'proposals': dict(proposals), 'state': state.title()},
+        "proposals/review_state.html",
+        {"conference": conf, "proposals": dict(proposals), "state": state.title()},
     )

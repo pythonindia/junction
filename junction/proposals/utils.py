@@ -78,7 +78,7 @@ def update_reviewer_vote_info(
     ]
 
     psr_vote, _ = ProposalSectionReviewerVote.objects.update_or_create(
-        proposal=proposal, voter=voter, phase=phase, defaults={'vote_value': vote_value}
+        proposal=proposal, voter=voter, phase=phase, defaults={"vote_value": vote_value}
     )
 
     p_comment, _ = ProposalComment.objects.update_or_create(
@@ -86,29 +86,29 @@ def update_reviewer_vote_info(
         commenter=user,
         vote=True,
         comment_type=comment_type,
-        defaults={'comment': comment},
+        defaults={"comment": comment},
     )
 
     return psr_vote, p_comment
 
 
 def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
-    cps = form.cleaned_data['proposal_section']
-    cpt = form.cleaned_data['proposal_type']
-    votes = form.cleaned_data['votes']
-    review_status = form.cleaned_data['review_status']
+    cps = form.cleaned_data["proposal_section"]
+    cpt = form.cleaned_data["proposal_type"]
+    votes = form.cleaned_data["votes"]
+    review_status = form.cleaned_data["review_status"]
 
     proposal_sections = conference.proposal_sections.all()
-    s_items = collections.namedtuple('section_items', 'section proposals')
+    s_items = collections.namedtuple("section_items", "section proposals")
     proposals = []
 
-    if cps != 'all':
+    if cps != "all":
         proposal_sections = ProposalSection.objects.filter(pk=cps)
-    if cpt != 'all':
+    if cpt != "all":
         proposals_qs = proposals_qs.filter(proposal_type__id__in=cpt)
-    if votes != 'all':
+    if votes != "all":
         votes = int(votes)
-    if review_status != 'all':
+    if review_status != "all":
         proposals_qs = proposals_qs.filter(review_status=review_status)
 
     if votes == ProposalVotesFilter.NO_VOTES:
@@ -129,7 +129,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
         proposals_qs = sorted(
             proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True
         )
-        proposals = [s_items('', proposals_qs)]
+        proposals = [s_items("", proposals_qs)]
 
     elif votes == ProposalVotesFilter.SORT_BY_SELECTION:
         # Selection of proposal is based on conference guidelines.
@@ -145,7 +145,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
             for p in proposals_qs
             if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) >= 2
         ]
-        proposals.append(s_items('Selected', selected))
+        proposals.append(s_items("Selected", selected))
 
         batch1 = [
             p
@@ -153,7 +153,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
             if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) == 1
             and p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 2
         ]
-        proposals.append(s_items('1 Must Have & 2+ Good Votes', batch1))
+        proposals.append(s_items("1 Must Have & 2+ Good Votes", batch1))
 
         batch2 = [
             p
@@ -161,7 +161,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
             if p.get_reviewer_votes_count_by_value(ProposalReviewVote.MUST_HAVE) == 1
             and p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) == 1
         ]
-        proposals.append(s_items('1 Must Have & 1 Good Vote', batch2))
+        proposals.append(s_items("1 Must Have & 1 Good Vote", batch2))
 
         batch3 = [
             p
@@ -169,7 +169,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
             if p.get_reviewer_votes_count_by_value(ProposalReviewVote.GOOD) > 2
             and p not in batch1
         ]
-        proposals.append(s_items('2+ Good Votes', batch3))
+        proposals.append(s_items("2+ Good Votes", batch3))
 
         batch4 = [
             p
@@ -178,7 +178,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
             and p.get_reviewer_votes_count_by_value(ProposalReviewVote.NOT_BAD) > 2
             and p not in batch2
         ]
-        proposals.append(s_items('1 Good & 2+ Not Bad votes', batch4))
+        proposals.append(s_items("1 Good & 2+ Not Bad votes", batch4))
 
     if votes not in (
         ProposalVotesFilter.SORT_BY_SUM,

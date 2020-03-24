@@ -24,17 +24,17 @@ class ProposalSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Proposal
         fields = (
-            'title',
-            'section',
-            'type',
-            'author',
-            'slug',
-            'description',
-            'target_audience',
-            'prerequisites',
-            'content_urls',
-            'speaker_info',
-            'speaker_links',
+            "title",
+            "section",
+            "type",
+            "author",
+            "slug",
+            "description",
+            "target_audience",
+            "prerequisites",
+            "content_urls",
+            "speaker_info",
+            "speaker_links",
         )
 
 

@@ -5,9 +5,9 @@ from junction.base.models import AuditModel
 
 
 class Profile(AuditModel):
-    '''
+    """
     It stores the City/Phone Details of the User.
-    '''
+    """
 
     user = models.OneToOneField(User)
     city = models.CharField(max_length=100, blank=True, null=True)

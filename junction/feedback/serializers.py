@@ -24,7 +24,7 @@ class TextFeedbackSerializer(serializers.Serializer):
     text = serializers.CharField()
 
     def validate(self, data):
-        if object_exists(TextFeedbackQuestion, pk=data['id']):
+        if object_exists(TextFeedbackQuestion, pk=data["id"]):
             return data
 
 
@@ -33,9 +33,9 @@ class ChoiceFeedbackSerializer(serializers.Serializer):
     value_id = serializers.IntegerField()
 
     def validate(self, data):
-        if object_exists(ChoiceFeedbackQuestion, pk=data['id']):
+        if object_exists(ChoiceFeedbackQuestion, pk=data["id"]):
             if ChoiceFeedbackQuestionValue.objects.filter(
-                question_id=data['id'], pk=data['value_id']
+                question_id=data["id"], pk=data["value_id"]
             ).exists():
                 return data
             raise serializers.ValidationError(

@@ -25,15 +25,15 @@ class RoomView(viewsets.ReadOnlyModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     filter_backend = (filters.DjangoFilterBackend,)
-    filter_fields = ('venue',)
+    filter_fields = ("venue",)
 
 
-@require_http_methods(['GET'])
+@require_http_methods(["GET"])
 def get_conference(request, conference_slug):
     # if the conference does not exist, render 404
     get_object_or_404(Conference, slug=conference_slug)
 
     # redirect to <conference_slug>/proposals else
     return HttpResponseRedirect(
-        reverse('proposals-list', kwargs={'conference_slug': conference_slug})
+        reverse("proposals-list", kwargs={"conference_slug": conference_slug})
     )

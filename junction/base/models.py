@@ -22,14 +22,14 @@ class UserAuditModel(models.Model):
 
     created_by = models.ForeignKey(
         User,
-        related_name='created_%(class)s_set',
+        related_name="created_%(class)s_set",
         null=True,
         blank=True,
         verbose_name="Created By",
     )
     modified_by = models.ForeignKey(
         User,
-        related_name='updated_%(class)s_set',
+        related_name="updated_%(class)s_set",
         null=True,
         blank=True,
         verbose_name="Modified By",

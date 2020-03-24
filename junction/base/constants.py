@@ -5,7 +5,7 @@ import inspect
 
 
 def _user_attributes(cls):
-    defaults = dir(type(str('defaults'), (object,), {}))  # gives all inbuilt attrs
+    defaults = dir(type(str("defaults"), (object,), {}))  # gives all inbuilt attrs
     return [item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
 
 
@@ -18,7 +18,7 @@ def choices(cls):
         val = getattr(cls, attr)
         setattr(cls, attr[1:], val[0])
         _choices.append((val[0], val[1]))
-    setattr(cls, 'CHOICES', tuple(_choices))
+    setattr(cls, "CHOICES", tuple(_choices))
     return cls
 
 
@@ -70,8 +70,8 @@ class ProposalReviewVote:
 # FIXME: `ProposalReviewerComment` should be Boolean
 @choices
 class ProposalReviewerComment:
-    _COMMENTED = ['True', 'Yes']
-    _NOT_COMMENTED = ['False', 'No']
+    _COMMENTED = ["True", "Yes"]
+    _NOT_COMMENTED = ["False", "No"]
 
 
 @choices
@@ -105,11 +105,11 @@ class ConferenceSettingConstants:
 
 @choices
 class PSRVotePhase:
-    _PRIMARY = [0, 'Initial voting']
-    _SECONDARY = [1, 'Second phase voting']
+    _PRIMARY = [0, "Initial voting"]
+    _SECONDARY = [1, "Second phase voting"]
 
 
 @choices
 class ProposalCommentType:
-    _GENERAL = [0, 'All general comments']
-    _SECONDARY_VOTING = [1, 'Second phase voting']
+    _GENERAL = [0, "All general comments"]
+    _SECONDARY_VOTING = [1, "Second phase voting"]

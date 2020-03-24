@@ -23,9 +23,9 @@ class UserFactory(Factory):
         strategy = factory.CREATE_STRATEGY
 
     username = factory.Sequence(lambda n: "user{}".format(n))
-    email = factory.LazyAttribute(lambda obj: '%s@email.com' % obj.username)
+    email = factory.LazyAttribute(lambda obj: "%s@email.com" % obj.username)
     password = factory.PostGeneration(
-        lambda obj, *args, **kwargs: obj.set_password('123123')
+        lambda obj, *args, **kwargs: obj.set_password("123123")
     )
 
 
@@ -104,12 +104,12 @@ class ProposalCommentVoteFactory(Factory):
 
 class ProposalFactory(Factory):
     class Meta:
-        model = 'proposals.Proposal'
+        model = "proposals.Proposal"
         strategy = factory.CREATE_STRATEGY
 
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
     proposal_section = factory.SubFactory("tests.factories.ProposalSectionFactory")
-    proposal_type = factory.SubFactory('tests.factories.ProposalTypeFactory')
+    proposal_type = factory.SubFactory("tests.factories.ProposalTypeFactory")
     author = factory.SubFactory("tests.factories.UserFactory")
     title = factory.LazyAttribute(lambda x: "Propsoal %s" % x)
     # slug
@@ -141,8 +141,8 @@ class ScheduleItemFactory(Factory):
     event_date = fuzzy.FuzzyDate(
         datetime.date.today(), datetime.date.today() + timedelta(days=90)
     ).fuzz()
-    start_time = fuzzy.FuzzyChoice(['9:30.750000',]).fuzz()
-    end_time = fuzzy.FuzzyChoice(['10:15.750000',]).fuzz()
+    start_time = fuzzy.FuzzyChoice(["9:30.750000",]).fuzz()
+    end_time = fuzzy.FuzzyChoice(["10:15.750000",]).fuzz()
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
     session = factory.SubFactory("tests.factories.ProposalFactory")
 
@@ -151,30 +151,30 @@ class ScheduleItemTypeFactory(Factory):
     class Meta:
         model = "schedule.ScheduleItemType"
         strategy = factory.CREATE_STRATEGY
-        django_get_or_create = ('title',)
+        django_get_or_create = ("title",)
 
 
 class TextFeedbackQuestionFactory(Factory):
     class Meta:
-        model = 'feedback.TextFeedbackQuestion'
+        model = "feedback.TextFeedbackQuestion"
         strategy = factory.CREATE_STRATEGY
 
-    schedule_item_type = factory.SubFactory('tests.factories.ScheduleItemTypeFactory')
+    schedule_item_type = factory.SubFactory("tests.factories.ScheduleItemTypeFactory")
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
 
 
 class ChoiceFeedbackQuestionFactory(Factory):
     class Meta:
-        model = 'feedback.ChoiceFeedbackQuestion'
+        model = "feedback.ChoiceFeedbackQuestion"
         strategy = factory.CREATE_STRATEGY
 
-    schedule_item_type = factory.SubFactory('tests.factories.ScheduleItemTypeFactory')
+    schedule_item_type = factory.SubFactory("tests.factories.ScheduleItemTypeFactory")
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
 
 
 class ChoiceFeedbackQuestionValueFactory(Factory):
     class Meta:
-        model = 'feedback.ChoiceFeedbackQuestionValue'
+        model = "feedback.ChoiceFeedbackQuestionValue"
         strategy = factory.CREATE_STRATEGY
 
     question = factory.SubFactory("tests.factories.ChoiceFeedbackQuestionFactory")
@@ -187,8 +187,8 @@ def create_conference(**kwargs):
     ProposalSectionReviewerVoteValueFactory.create(vote_value=1, description="Good")
     ProposalSectionReviewerVoteValueFactory.create(vote_value=2, description="Good")
     conference = ConferenceFactory.create(**kwargs)
-    start_date = kwargs.pop('start_date', None)
-    end_date = kwargs.pop('end_date', None)
+    start_date = kwargs.pop("start_date", None)
+    end_date = kwargs.pop("end_date", None)
     if start_date and end_date:
         workshop = ProposalTypeFactory.create(
             name="Workshop", start_date=start_date, end_date=end_date
@@ -211,7 +211,7 @@ def create_conference(**kwargs):
 def create_user(**kwargs):
     "Create an user along with her dependencies"
     user = UserFactory.create(**kwargs)
-    password = kwargs.pop('password', None)
+    password = kwargs.pop("password", None)
     if password:
         user.set_password(password)
         user.is_active = True
@@ -268,22 +268,22 @@ def create_feedback_questions(
             )
             text.append(obj)
 
-    d = {'conference': conference, 'text': text, 'choices': choices}
+    d = {"conference": conference, "text": text, "choices": choices}
     return d
 
 
 def create_device(**kwargs):
     uuid1 = uuid.uuid1()
-    kwargs['uuid'] = uuid1
-    kwargs['verification_code'] = '2345'
+    kwargs["uuid"] = uuid1
+    kwargs["verification_code"] = "2345"
     return DeviceFactory.create(**kwargs)
 
 
 def create_schedule_items(**kwargs):
     d = []
-    for item_type in kwargs['item_types']:
+    for item_type in kwargs["item_types"]:
         ScheduleItemTypeFactory.create(title=item_type)
         d.append(
-            ScheduleItemFactory.create(type=item_type, conference=kwargs['conference'])
+            ScheduleItemFactory.create(type=item_type, conference=kwargs["conference"])
         )
     return d

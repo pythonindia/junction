@@ -48,31 +48,31 @@ class Command(BaseCommand):
         self.proposals = []
         self.proposal_reviewers = []
 
-        print('  Updating domain to localhost:8000')  # Update site url
+        print("  Updating domain to localhost:8000")  # Update site url
         site = Site.objects.get_current()
-        site.domain, site.name = 'localhost:8000', 'Local'
+        site.domain, site.name = "localhost:8000", "Local"
         site.save()
 
-        print('  Creating Superuser')  # create superuser
+        print("  Creating Superuser")  # create superuser
         super_user = self.create_user(
-            is_superuser=True, username='admin', is_active=True
+            is_superuser=True, username="admin", is_active=True
         )
         EmailAddress.objects.get_or_create(
             user=super_user, verified=True, primary=True, email=super_user.email
         )
 
-        print('  Creating sample Users')  # create users
+        print("  Creating sample Users")  # create users
         for x in range(NUM_USERS):
             self.users.append(self.create_user(counter=x))
 
-        print('  Creating proposal sections')
+        print("  Creating proposal sections")
         self.proposal_sections = self.create_proposal_sections()
 
-        print('  Create proposal types')
+        print("  Create proposal types")
         self.proposal_types = self.create_proposal_types()
 
         # create conferences
-        print('  Creating sample Conferences')
+        print("  Creating sample Conferences")
         for x in range(NUM_CONFERENCES + NUM_EMPTY_CONFERENCES):
             conference = self.create_conference(x)
             self.conferences.append(conference)
@@ -90,7 +90,7 @@ class Command(BaseCommand):
                     conference.proposal_types.add(proposal_type)
 
         # create proposals
-        print('  Creating sample proposals')
+        print("  Creating sample proposals")
         for x in range(NUM_PUBLIC_PROPOSALS):
             self.proposals.append(self.create_proposal(proposal_type="Public"))
 
@@ -100,15 +100,15 @@ class Command(BaseCommand):
         for x in range(NUM_CANCELLED_PROPOSALS):
             self.proposals.append(self.create_proposal(proposal_type="Cancelled"))
 
-        print('  Create sample Schedule')
+        print("  Create sample Schedule")
         for proposal in self.proposals:
-            if not proposal.get_status_display() == 'Public':
+            if not proposal.get_status_display() == "Public":
                 continue
             self.create_scheduled_item(proposal=proposal)
-        self.create_scheduled_item(proposal='Break', conference=self.conferences[0])
+        self.create_scheduled_item(proposal="Break", conference=self.conferences[0])
 
         # create comments
-        print('  Creating sample proposal comments')
+        print("  Creating sample proposal comments")
         for x in range(NUM_PUBLIC_COMMENTS):
             self.create_proposal_comment(users=self.users)
 
@@ -116,7 +116,7 @@ class Command(BaseCommand):
         for x in range(NUM_REVIEWER_COMMENTS):
             self.create_proposal_comment(users=reviewers)
 
-        print(' Creating default choices for proposal reviewer vote values.')
+        print(" Creating default choices for proposal reviewer vote values.")
         for vote in constants.ProposalReviewVote.CHOICES:
             ProposalSectionReviewerVoteValue.objects.create(
                 vote_value=vote[0], description=vote[1]
@@ -128,9 +128,9 @@ class Command(BaseCommand):
             sections.append(
                 ProposalSection.objects.create(
                     **{
-                        'name': "Proposal Section %d" % count,
-                        'description': "Proposal Section %d description" % count,
-                        'active': True,
+                        "name": "Proposal Section %d" % count,
+                        "description": "Proposal Section %d description" % count,
+                        "active": True,
                     }
                 )
             )
@@ -142,9 +142,9 @@ class Command(BaseCommand):
             types.append(
                 ProposalType.objects.create(
                     **{
-                        'name': "Proposal Type %d" % count,
-                        'description': "Proposal Section %d description" % count,
-                        'active': True,
+                        "name": "Proposal Type %d" % count,
+                        "description": "Proposal Section %d description" % count,
+                        "active": True,
                     }
                 )
             )
@@ -172,10 +172,10 @@ class Command(BaseCommand):
 
     def create_scheduled_item(self, proposal, conference=None):
         kwargs = {}
-        kwargs['conference'] = conference if conference else proposal.conference
-        kwargs['event_date'] = kwargs['conference'].start_date
-        kwargs['start_time'] = datetime.datetime.time(datetime.datetime.now())
-        kwargs['end_time'] = datetime.datetime.time(
+        kwargs["conference"] = conference if conference else proposal.conference
+        kwargs["event_date"] = kwargs["conference"].start_date
+        kwargs["start_time"] = datetime.datetime.time(datetime.datetime.now())
+        kwargs["end_time"] = datetime.datetime.time(
             datetime.datetime.now() + datetime.timedelta(minutes=45)
         )
         if isinstance(proposal, six.string_types):
@@ -199,7 +199,7 @@ class Command(BaseCommand):
             )
 
         conference = Conference.objects.create(
-            name='%s Conference' % self.sd.words(1, 2).title(),
+            name="%s Conference" % self.sd.words(1, 2).title(),
             description=self.sd.paragraph(),
             status=self.sd.choices_key(constants.ConferenceStatus.CHOICES),
             start_date=start_date,
@@ -213,25 +213,25 @@ class Command(BaseCommand):
     def create_user(self, counter=None, username=None, email=None, **kwargs):
         counter = counter or self.sd.int()
         params = {
-            "username": username or 'user{0}'.format(counter),
-            "first_name": kwargs.get('first_name', self.sd.name("us", 1)),
-            "last_name": kwargs.get('last_name', self.sd.surname("us", 1)),
+            "username": username or "user{0}".format(counter),
+            "first_name": kwargs.get("first_name", self.sd.name("us", 1)),
+            "last_name": kwargs.get("last_name", self.sd.surname("us", 1)),
             "email": email or self.sd.email(),
-            "is_active": kwargs.get('is_active', self.sd.boolean()),
-            "is_superuser": kwargs.get('is_superuser', False),
+            "is_active": kwargs.get("is_active", self.sd.boolean()),
+            "is_superuser": kwargs.get("is_superuser", False),
             "is_staff": kwargs.get(
-                'is_staff', kwargs.get('is_superuser', self.sd.boolean())
+                "is_staff", kwargs.get("is_superuser", self.sd.boolean())
             ),
         }
         user, _ = get_user_model().objects.get_or_create(**params)
-        password = '123123'
+        password = "123123"
 
         user.set_password(password)
         user.save()
 
         print(
             "User created with username: {username} and password: {password}".format(
-                username=params.get('username'), password=password
+                username=params.get("username"), password=password
             )
         )
 
@@ -248,7 +248,7 @@ class Command(BaseCommand):
             proposal_section=self.sd.choice(self.proposal_sections),
             proposal_type=self.sd.choice(self.proposal_types),
             author=self.sd.choice(self.users),
-            title='%s Proposal' % self.sd.words(1, 2).title(),
+            title="%s Proposal" % self.sd.words(1, 2).title(),
             description=self.sd.paragraph(),
             status=status,
             deleted=self.sd.boolean(),
@@ -263,7 +263,7 @@ class Command(BaseCommand):
         comment = ProposalComment.objects.create(
             proposal=self.sd.choice(self.proposals),
             private=self.sd.boolean(),
-            comment='Comment',
+            comment="Comment",
             commenter=commenter,
         )
 

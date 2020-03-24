@@ -26,7 +26,7 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
 
     public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
     public_voting_setting = conference.conferencesetting_set.filter(
-        name=public_voting['name']
+        name=public_voting["name"]
     ).first()
     if public_voting_setting and not public_voting_setting.value:
         return HttpResponseForbidden()
@@ -58,19 +58,19 @@ def proposal_vote(request, conference_slug, proposal_slug, up_vote):
 
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(["POST"])
 def proposal_vote_up(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, True)
 
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(["POST"])
 def proposal_vote_down(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, False)
 
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(["POST"])
 def proposal_vote_remove(request, conference_slug, proposal_slug):
     return proposal_vote(request, conference_slug, proposal_slug, None)
 
@@ -91,7 +91,7 @@ def proposal_comment_vote(request, conference_slug, proposal_slug, comment_id, u
 
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(["POST"])
 def proposal_comment_up_vote(
     request, conference_slug, proposal_slug, proposal_comment_id
 ):
@@ -101,7 +101,7 @@ def proposal_comment_up_vote(
 
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(["POST"])
 def proposal_comment_down_vote(
     request, conference_slug, proposal_slug, proposal_comment_id
 ):
@@ -111,7 +111,7 @@ def proposal_comment_down_vote(
 
 
 @login_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def proposal_reviewer_vote(request, conference_slug, proposal_slug):
     user = request.user
     vote_phase = PSRVotePhase.PRIMARY
@@ -122,43 +122,43 @@ def proposal_reviewer_vote(request, conference_slug, proposal_slug):
         user, conference, proposal, vote_phase
     )
 
-    if request.method == 'GET':
+    if request.method == "GET":
         if psr_vote and p_comment:
             proposal_vote_form = ProposalReviewerVoteForm(
                 conference=conference,
                 initial={
-                    'vote_value': psr_vote.vote_value.vote_value,
-                    'comment': p_comment.comment,
+                    "vote_value": psr_vote.vote_value.vote_value,
+                    "comment": p_comment.comment,
                 },
             )
         else:
             proposal_vote_form = ProposalReviewerVoteForm(conference=conference)
         ctx = {
-            'proposal': proposal,
-            'form': proposal_vote_form,
-            'vote': psr_vote,
+            "proposal": proposal,
+            "form": proposal_vote_form,
+            "vote": psr_vote,
         }
 
-        return render(request, 'proposals/vote.html', ctx)
+        return render(request, "proposals/vote.html", ctx)
 
     # POST Workflow
     form = ProposalReviewerVoteForm(data=request.POST, conference=conference)
     if not form.is_valid():
-        ctx = {'form': form, 'proposal': proposal, 'form_errors': form.errors}
-        return render(request, 'proposals/vote.html', ctx)
+        ctx = {"form": form, "proposal": proposal, "form_errors": form.errors}
+        return render(request, "proposals/vote.html", ctx)
 
     # Valid Form
-    vote_value = form.cleaned_data['vote_value']
-    comment = form.cleaned_data['comment']
+    vote_value = form.cleaned_data["vote_value"]
+    comment = form.cleaned_data["comment"]
 
     utils.update_reviewer_vote_info(
         user, psr_vote, vote_value, comment, vote_phase, proposal, conference
     )
-    return HttpResponseRedirect(reverse('proposals-to-review', args=[conference.slug]))
+    return HttpResponseRedirect(reverse("proposals-to-review", args=[conference.slug]))
 
 
 @login_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
     vote_phase = PSRVotePhase.SECONDARY
     user = request.user
@@ -169,36 +169,36 @@ def proposal_reviewer_secondary_vote(request, conference_slug, proposal_slug):
         user, conference, proposal, vote_phase
     )
 
-    if request.method == 'GET':
+    if request.method == "GET":
         if psr_vote and p_comment:
             proposal_vote_form = ProposalReviewerVoteForm(
                 conference=conference,
                 initial={
-                    'vote_value': psr_vote.vote_value.vote_value,
-                    'comment': p_comment.comment,
+                    "vote_value": psr_vote.vote_value.vote_value,
+                    "comment": p_comment.comment,
                 },
             )
         else:
             proposal_vote_form = ProposalReviewerVoteForm(conference=conference)
         ctx = {
-            'proposal': proposal,
-            'form': proposal_vote_form,
-            'vote': psr_vote,
+            "proposal": proposal,
+            "form": proposal_vote_form,
+            "vote": psr_vote,
         }
 
-        return render(request, 'proposals/vote.html', ctx)
+        return render(request, "proposals/vote.html", ctx)
 
     # POST Workflow
     form = ProposalReviewerVoteForm(data=request.POST, conference=conference)
     if not form.is_valid():
-        ctx = {'form': form, 'proposal': proposal, 'form_errors': form.errors}
-        return render(request, 'proposals/vote.html', ctx)
+        ctx = {"form": form, "proposal": proposal, "form_errors": form.errors}
+        return render(request, "proposals/vote.html", ctx)
 
     # Valid Form
-    vote_value = form.cleaned_data['vote_value']
-    comment = form.cleaned_data['comment']
+    vote_value = form.cleaned_data["vote_value"]
+    comment = form.cleaned_data["comment"]
 
     utils.update_reviewer_vote_info(
         user, psr_vote, vote_value, comment, vote_phase, proposal, conference
     )
-    return HttpResponseRedirect(reverse('proposals-to-review', args=[conference.slug]))
+    return HttpResponseRedirect(reverse("proposals-to-review", args=[conference.slug]))

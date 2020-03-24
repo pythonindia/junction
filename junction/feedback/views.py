@@ -18,7 +18,7 @@ class FeedbackQuestionListApiView(views.APIView):
         obj = FeedbackQueryParamsSerializer(data=data)
         if obj.is_valid():
             data = feedback_service.get_feedback_questions(
-                conference_id=obj.data['conference_id']
+                conference_id=obj.data["conference_id"]
             )
             return Response(data=data, status=status.HTTP_200_OK)
         return Response(data=obj.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -33,12 +33,12 @@ class FeedbackListApiView(views.APIView):
             data = feedback_service.has_required_fields_data(feedback)
             if data[0] is False:
                 return Response(
-                    status=status.HTTP_400_BAD_REQUEST, data={'error': data[1]}
+                    status=status.HTTP_400_BAD_REQUEST, data={"error": data[1]}
                 )
             if feedback_service.has_submitted(feedback, device_uuid=self.device_uuid):
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
-                    data={'error': 'Feedback already submitted'},
+                    data={"error": "Feedback already submitted"},
                 )
             data = feedback_service.create(
                 feedback=feedback, device_uuid=self.device_uuid
@@ -54,5 +54,5 @@ def view_feedback(request, schedule_item_id):
     if not can_view_feedback(user=request.user, schedule_item=schedule_item):
         return HttpResponseForbidden("Access Denied")
     feedback = feedback_service.get_feedback(schedule_item=schedule_item)
-    context = {'feedback': feedback, 'schedule_item': schedule_item}
+    context = {"feedback": feedback, "schedule_item": schedule_item}
     return render(request, "feedback/detail.html", context)

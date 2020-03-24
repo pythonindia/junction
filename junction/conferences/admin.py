@@ -11,14 +11,14 @@ from . import models, service
 
 class ConferenceAdmin(AuditAdmin):
     list_display = (
-        'name',
-        'slug',
-        'start_date',
-        'end_date',
-        'status',
+        "name",
+        "slug",
+        "start_date",
+        "end_date",
+        "status",
     ) + AuditAdmin.list_display
     prepopulated_fields = {
-        'slug': ('name',),
+        "slug": ("name",),
     }
 
     def get_queryset(self, request):
@@ -29,8 +29,8 @@ class ConferenceAdmin(AuditAdmin):
 
 
 class ConferenceModeratorAdmin(AuditAdmin):
-    list_display = ('conference', 'moderator', 'active') + AuditAdmin.list_display
-    list_filter = ('conference',)
+    list_display = ("conference", "moderator", "active") + AuditAdmin.list_display
+    list_filter = ("conference",)
 
     def get_queryset(self, request):
         qs = super(ConferenceModeratorAdmin, self).get_queryset(request)
@@ -41,8 +41,8 @@ class ConferenceModeratorAdmin(AuditAdmin):
 
 
 class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
-    list_display = ('conference', 'reviewer', 'active') + AuditAdmin.list_display
-    list_filter = ('conference',)
+    list_display = ("conference", "reviewer", "active") + AuditAdmin.list_display
+    list_filter = ("conference",)
 
     def get_queryset(self, request):
         qs = super(ConferenceProposallReviewerAdmin, self).get_queryset(request)
@@ -53,8 +53,8 @@ class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
 
 
 class ConferenceSettingAdmin(AuditAdmin, SimpleHistoryAdmin):
-    list_display = ('conference', 'name', 'value') + AuditAdmin.list_display
-    list_filter = ('conference',)
+    list_display = ("conference", "name", "value") + AuditAdmin.list_display
+    list_filter = ("conference",)
 
     def get_queryset(self, request):
         qs = super(ConferenceSettingAdmin, self).get_queryset(request)

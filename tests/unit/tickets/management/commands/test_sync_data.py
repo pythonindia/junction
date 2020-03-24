@@ -60,14 +60,14 @@ def single_order_no_ticketId():
 
 def single_order_no_attendee():
     order = single_order()
-    if 'attendee' in order[0]:
-        del order[0]['attendee']
+    if "attendee" in order[0]:
+        del order[0]["attendee"]
     return order
 
 
 def command_case(get_event_method, get_order_method):
     c = Command()
-    e = Explara('ahjbladjsbfafdkjsldkl')
+    e = Explara("ahjbladjsbfafdkjsldkl")
     e.get_events = MagicMock(return_value=get_event_method())
     e.get_orders = MagicMock(return_value=get_order_method())
     c.set_explara(e)

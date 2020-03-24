@@ -18,9 +18,9 @@ from .models import (
 
 class TextFeedbackQuestionAdmin(TimeAuditAdmin):
     list_display = (
-        'title',
-        'schedule_item_type',
-        'conference',
+        "title",
+        "schedule_item_type",
+        "conference",
     ) + TimeAuditAdmin.list_display  # noqa
 
     def get_queryset(self, request):
@@ -33,9 +33,9 @@ class TextFeedbackQuestionAdmin(TimeAuditAdmin):
 
 class ChoiceFeedbackQuestionAdmin(TimeAuditAdmin):
     list_display = (
-        'title',
-        'schedule_item_type',
-        'conference',
+        "title",
+        "schedule_item_type",
+        "conference",
     ) + TimeAuditAdmin.list_display  # noqa
 
     def get_queryset(self, request):
@@ -47,7 +47,7 @@ class ChoiceFeedbackQuestionAdmin(TimeAuditAdmin):
 
 
 class ChoiceFeedbackQuestionValueAdmin(TimeAuditAdmin):
-    list_display = ('question', 'title', 'value') + TimeAuditAdmin.list_display  # noqa
+    list_display = ("question", "title", "value") + TimeAuditAdmin.list_display  # noqa
 
     def get_queryset(self, request):
         qs = super(ChoiceFeedbackQuestionValueAdmin, self).get_queryset(request)
@@ -59,12 +59,12 @@ class ChoiceFeedbackQuestionValueAdmin(TimeAuditAdmin):
 
 class ScheduleItemTextFeedbackAdmin(TimeAuditAdmin):
     list_display = (
-        'schedule_item',
-        'question',
-        'text',
-        'device',
+        "schedule_item",
+        "question",
+        "text",
+        "device",
     ) + TimeAuditAdmin.list_display  # noqa
-    list_filter = ['schedule_item']  # noqa
+    list_filter = ["schedule_item"]  # noqa
 
     def get_queryset(self, request):
         qs = super(ScheduleItemTextFeedbackAdmin, self).get_queryset(request)
@@ -76,12 +76,12 @@ class ScheduleItemTextFeedbackAdmin(TimeAuditAdmin):
 
 class ScheduleItemChoiceFeedbackAdmin(TimeAuditAdmin):
     list_display = (
-        'schedule_item',
-        'question',
-        'value',
-        'device',
+        "schedule_item",
+        "question",
+        "value",
+        "device",
     ) + TimeAuditAdmin.list_display  # noqa
-    list_filter = ['schedule_item']  # noqa
+    list_filter = ["schedule_item"]  # noqa
 
     def get_queryset(self, request):
         qs = super(ScheduleItemChoiceFeedbackAdmin, self).get_queryset(request)

@@ -14,13 +14,13 @@ from . import models
 
 @admin.register(models.ProposalSection)
 class ProposalSectionAdmin(AuditAdmin):
-    list_display = ('name', 'active') + AuditAdmin.list_display
+    list_display = ("name", "active") + AuditAdmin.list_display
 
 
 @admin.register(models.ProposalSectionReviewer)
 class ProposalSectionReviewerAdmin(AuditAdmin):
-    list_display = ('conference_reviewer', 'proposal_section') + AuditAdmin.list_display
-    list_filter = ['proposal_section']
+    list_display = ("conference_reviewer", "proposal_section") + AuditAdmin.list_display
+    list_filter = ["proposal_section"]
 
     def get_queryset(self, request):
         qs = super(ProposalSectionReviewerAdmin, self).get_queryset(request)
@@ -35,37 +35,37 @@ class ProposalSectionReviewerAdmin(AuditAdmin):
 @admin.register(models.ProposalType)
 class ProposalTypeAdmin(AuditAdmin):
     list_display = (
-        'name',
-        'active',
-        'start_date',
-        'end_date',
+        "name",
+        "active",
+        "start_date",
+        "end_date",
     ) + AuditAdmin.list_display
 
 
 @admin.register(models.Proposal)
 class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
     list_display = (
-        'proposal_info',
-        'author_info',
-        'author_email',
-        'conference',
-        'status',
-        'review_status',
+        "proposal_info",
+        "author_info",
+        "author_email",
+        "conference",
+        "status",
+        "review_status",
     )
     list_filter = [
-        'proposal_section__name',
-        'proposal_type',
-        'target_audience',
-        'conference',
-        'status',
-        'review_status',
+        "proposal_section__name",
+        "proposal_type",
+        "target_audience",
+        "conference",
+        "status",
+        "review_status",
     ]
     formfield_overrides = {
-        TextField: {'widget': AdminPagedownWidget},
+        TextField: {"widget": AdminPagedownWidget},
     }
 
     def proposal_info(self, obj):
-        return '%s (%s)' % (obj.title, obj.proposal_type)
+        return "%s (%s)" % (obj.title, obj.proposal_type)
 
     def author_email(self, obj):
         if obj.author:
@@ -86,10 +86,10 @@ class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin):
 @admin.register(models.ProposalVote)
 class ProposalVoteAdmin(TimeAuditAdmin):
     list_display = (
-        'proposal',
-        'voter',
-        'role',
-        'up_vote',
+        "proposal",
+        "voter",
+        "role",
+        "up_vote",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):
@@ -102,17 +102,17 @@ class ProposalVoteAdmin(TimeAuditAdmin):
 
 @admin.register(models.ProposalSectionReviewerVoteValue)
 class ProposalSectionReviewerVoteValueAdmin(AuditAdmin):
-    list_display = ('vote_value', 'description') + AuditAdmin.list_display
+    list_display = ("vote_value", "description") + AuditAdmin.list_display
 
 
 @admin.register(models.ProposalSectionReviewerVote)
 class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
-    list_filter = ['vote_value', 'proposal__proposal_type__name']
+    list_filter = ["vote_value", "proposal__proposal_type__name"]
     list_display = (
-        'proposal',
-        'voter',
-        'role',
-        'vote_value',
+        "proposal",
+        "voter",
+        "role",
+        "vote_value",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):
@@ -126,13 +126,13 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
 @admin.register(models.ProposalComment)
 class ProposalCommentAdmin(TimeAuditAdmin):
     list_display = (
-        'comment',
-        'proposal',
-        'commenter',
-        'private',
-        'reviewer',
+        "comment",
+        "proposal",
+        "commenter",
+        "private",
+        "reviewer",
     ) + TimeAuditAdmin.list_display
-    list_filter = ['private', 'reviewer', 'commenter']
+    list_filter = ["private", "reviewer", "commenter"]
 
     def get_queryset(self, request):
         qs = super(ProposalCommentAdmin, self).get_queryset(request)
@@ -145,9 +145,9 @@ class ProposalCommentAdmin(TimeAuditAdmin):
 @admin.register(models.ProposalCommentVote)
 class ProposalCommentVoteAdmin(TimeAuditAdmin):
     list_display = (
-        'proposal_comment',
-        'voter',
-        'up_vote',
+        "proposal_comment",
+        "voter",
+        "up_vote",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):

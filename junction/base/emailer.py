@@ -23,9 +23,9 @@ def send_email(to, context, template_dir):
     def to_str(template_name):
         return render_to_string(path.join(template_dir, template_name), context).strip()
 
-    subject = to_str('subject.txt')
-    text_message = to_str('message.txt')
-    html_message = to_str('message.html')
+    subject = to_str("subject.txt")
+    text_message = to_str("message.txt")
+    html_message = to_str("message.html")
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [_format_email(to)]
 

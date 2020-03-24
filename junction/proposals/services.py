@@ -39,20 +39,20 @@ def _arrange_proposals_by_section(proposal_qs):
     return res
 
 
-def group_proposals_by_reveiew_state(conf, state='reviewed'):
+def group_proposals_by_reveiew_state(conf, state="reviewed"):
     reviewed_qs = (
         conf.proposal_set.filter(status=ProposalStatus.PUBLIC)
-        .select_related('proposal_type', 'proposal_section', 'proposalsection')
+        .select_related("proposal_type", "proposal_section", "proposalsection")
         .filter(proposalcomment__private=True, proposalcomment__deleted=False)
     )
-    if state == 'reviewed':
+    if state == "reviewed":
         proposal_qs = reviewed_qs.distinct()
         return _arrange_proposals_by_section(proposal_qs)
     else:
-        ids = reviewed_qs.values_list('id').distinct()
+        ids = reviewed_qs.values_list("id").distinct()
         qs = (
             conf.proposal_set.filter(status=ProposalStatus.PUBLIC)
-            .select_related('proposal_type', 'proposal_section', 'proposalsection')
+            .select_related("proposal_type", "proposal_section", "proposalsection")
             .exclude(pk__in=ids)
         )
         return _arrange_proposals_by_section(qs)
@@ -78,11 +78,11 @@ def comment_recipients(proposal_comment):
         recipients = {
             comment.commenter
             for comment in proposal.proposalcomment_set.all().select_related(
-                'commenter'
+                "commenter"
             )
         }
         recipients.add(proposal.author)
-        ADMINS = getattr(settings, 'SPAM_MODERATION_ADMINS', [])
+        ADMINS = getattr(settings, "SPAM_MODERATION_ADMINS", [])
         if ADMINS:
             for admin in ADMINS:
                 recipients.add(User.objects.get(email=admin))
@@ -94,7 +94,7 @@ def comment_recipients(proposal_comment):
 def send_mail_for_new_comment(proposal_comment_id, host):
     proposal_comment = ProposalComment.objects.get(id=proposal_comment_id)
     proposal = proposal_comment.proposal
-    login_url = '{}?next={}'.format(settings.LOGIN_URL, proposal.get_absolute_url())
+    login_url = "{}?next={}".format(settings.LOGIN_URL, proposal.get_absolute_url())
     send_to = comment_recipients(proposal_comment)
     commenter = proposal_comment.commenter
     comment_type = proposal_comment.get_comment_type()
@@ -104,17 +104,17 @@ def send_mail_for_new_comment(proposal_comment_id, host):
             continue
         send_email(
             to=to,
-            template_dir='proposals/email/comment',
+            template_dir="proposals/email/comment",
             context={
-                'to': to,
-                'host': host,
-                'login_url': login_url,
-                'proposal': proposal,
-                'comment': proposal_comment,
-                'comment_html': comment_html,
-                'commenter': commenter,
-                'by_author': commenter == proposal.author,
-                'comment_type': comment_type,
+                "to": to,
+                "host": host,
+                "login_url": login_url,
+                "proposal": proposal,
+                "comment": proposal_comment,
+                "comment_html": comment_html,
+                "commenter": commenter,
+                "by_author": commenter == proposal.author,
+                "comment_type": comment_type,
             },
         )
 
@@ -136,14 +136,14 @@ def send_mail_for_new_proposal(proposal_id, host):
             continue
         send_email(
             to=to,
-            template_dir='proposals/email/proposal',
+            template_dir="proposals/email/proposal",
             context={
-                'to': to,
-                'proposal': proposal,
-                'proposal_section': proposal_section,
-                'host': host,
-                'proposal_url': proposal_url,
-                'login_url': login_url,
+                "to": to,
+                "proposal": proposal,
+                "proposal_section": proposal_section,
+                "host": host,
+                "proposal_url": proposal_url,
+                "login_url": login_url,
             },
         )
 
@@ -155,18 +155,18 @@ def send_mail_for_proposal_content(conference_id, proposal_id, host):
     """
     conference = Conference.objects.get(id=conference_id)
     proposal = Proposal.objects.get(id=proposal_id)
-    login_url = '{}?next={}'.format(settings.LOGIN_URL, proposal.get_absolute_url())
+    login_url = "{}?next={}".format(settings.LOGIN_URL, proposal.get_absolute_url())
     author = proposal.author
     author_name = author.get_full_name() or author.username
     context = {
-        'host': host,
-        'login_url': login_url,
-        'conference': conference,
-        'proposal': proposal,
-        'author_name': author_name,
+        "host": host,
+        "login_url": login_url,
+        "conference": conference,
+        "proposal": proposal,
+        "author_name": author_name,
     }
     return send_email(
-        to=author, template_dir='proposals/email/upload_content', context=context
+        to=author, template_dir="proposals/email/upload_content", context=context
     )
 
 
