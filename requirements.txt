@@ -2,7 +2,6 @@ Django==1.9
 celery==3.1.20
 djangorestframework==3.4
 django-filter==1.0.1
-pandas==0.24.2
 
 # Persistent Store
 # -------------------------------------------------
