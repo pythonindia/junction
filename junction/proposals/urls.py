@@ -43,5 +43,5 @@ urlpatterns = [
     url(r'^(?P<proposal_slug>[\w-]+)/remove-vote/$', votes_views.proposal_vote_remove, name='proposal-vote-remove'),
     url(r'^(?P<proposal_slug>[\w-]+)/vote/$', votes_views.proposal_reviewer_vote, name='proposal-reviewer-vote'),
     url(r'^(?P<proposal_slug>[\w-]+)/second-vote/$', votes_views.proposal_reviewer_secondary_vote,
-        name='proposal-reviewer-secondary-vote'),
+        name='proposal-reviewer-secondary-vote')
 ]
