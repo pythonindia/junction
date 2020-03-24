@@ -1,4 +1,5 @@
 repos:
+
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v2.5.0
   hooks:
@@ -28,7 +29,6 @@ repos:
   rev: 4.3.21
   hooks:
   - id: isort
-    additional_dependencies: [toml]
     files: \.py$
 
 - repo: https://github.com/psf/black
