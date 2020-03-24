@@ -7,6 +7,5 @@
                 <button type="submit">
 			Sync data
 		</button>
-	</form>	
+	</form>
 {% endblock %}
-

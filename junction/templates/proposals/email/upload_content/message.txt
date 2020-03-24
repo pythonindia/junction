@@ -6,11 +6,10 @@ We understand that you might feel that its too early to upload the presentation 
 
 If you have proposed a workshop, do share the draft version of the content you are planning to present in ppt or pdf format, code snippets can be added later.
 
-Looking forward to seeing you in {{ conference.name }}. 
+Looking forward to seeing you in {{ conference.name }}.
 
 Thanks,  <br />
 {{ conference.name }} Team  <br /><br />
 
 -------------------------------------------------------------------------------
 PS: Please, don't reply to the email.  You can login ({{host}}{{login_url}}) to add content to proposal.
-
