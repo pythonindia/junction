@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import csv
 from os.path import join
 from settings.common import ROOT_DIR
-import pandas as pd
 
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
@@ -42,9 +42,9 @@ class Command(BaseCommand):
             vote_values_list = ProposalSectionReviewerVoteValue.objects.order_by('-vote_value')
             vote_values_list = [v.vote_value for v in vote_values_list]
             vote_values_desc = tuple(i.description for i in ProposalSectionReviewerVoteValue.objects.order_by('-vote_value'))
-            header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + tuple(vote_values_desc) + ('Public votes count', 'Vote comments')
-            df = pd.DataFrame(columns=header)
-            i = 0
+            header = ('Proposal Type', 'Title', 'Sum of reviewer votes', 'No. of reviewer votes') + ('Public votes count', 'Vote comments')+ tuple(vote_values_desc)
+
+            csv_contents = []
 
             for section in proposal_sections:
                 section_proposals = [p for p in proposals_qs if p.proposal_section == section]
@@ -52,14 +52,26 @@ class Command(BaseCommand):
                 for index, p in enumerate(section_proposals, 1):
                     vote_details = tuple(p.get_reviewer_votes_count_by_value(v) for v in vote_values_list)
                     vote_comment = '\n'.join([comment.comment for comment in p.proposalcomment_set.filter(vote=True, deleted=False)])
-                    row = (p.proposal_type.name, p.title, p.get_reviewer_votes_sum(), p.get_reviewer_votes_count(),) + vote_details + (p.get_voutes_count(), vote_comment,)
-                    df.loc[i] = row
-                    i+=1
+                    row = {header[0]: p.proposal_type.name,
+                           header[1]: p.title,
+                           header[2]: p.get_reviewer_votes_sum(),
+                           header[3]: p.get_reviewer_votes_count(),
+                           header[4]: p.get_voutes_count(),
+                           header[5]: vote_comment}
+                    for i in range(len(tuple(vote_values_desc))):
+                        row[tuple(vote_values_desc)[i]] = vote_details[i]
+
+                    csv_contents.append(row)
 
             csv_file_name = "%s-%s" % (user.name, conference.name)
             csv_file_location = join(ROOT_DIR, 'csvs', csv_file_name)
 
-            df.to_csv(csv_file_location, sep='\t')
+            with open(csv_file_location, 'w') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=header)
+
+                writer.writeheader()
+                for row in csv_contents:
+                    writer.writerow(row)
 
             self.stdout.write("Successfully created the csv file")
         except User.DoesNotExist:
