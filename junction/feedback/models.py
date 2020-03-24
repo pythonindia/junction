@@ -2,11 +2,9 @@
 
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-# Junction Stuff
 from junction.base.models import TimeAuditModel
 from junction.conferences.models import Conference
 from junction.devices.models import Device

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
 from rest_framework import status, views
 from rest_framework.response import Response
 
-# Junction Stuff
 from junction.schedule.models import ScheduleItem
 
 from . import service as feedback_service

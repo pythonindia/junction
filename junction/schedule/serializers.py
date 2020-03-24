@@ -1,7 +1,5 @@
-# Third Party Stuff
 from rest_framework import serializers
 
-# Junction Stuff
 from junction.proposals.serializers import ProposalSerializer
 
 from .models import ScheduleItem

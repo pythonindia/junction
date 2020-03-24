@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.contrib import admin
 
-# Junction Stuff
 from junction.base.admin import TimeAuditAdmin
 from junction.conferences import service
 
@@ -12,9 +10,8 @@ from .models import (
     ChoiceFeedbackQuestionValue,
     ScheduleItemChoiceFeedback,
     ScheduleItemTextFeedback,
-    TextFeedbackQuestion
+    TextFeedbackQuestion,
 )
-
 
 # Register your models here.
 

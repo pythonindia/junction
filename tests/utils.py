@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 import functools
 
-# Third Party Stuff
 from django.conf import settings
 from django.db.models import signals
 

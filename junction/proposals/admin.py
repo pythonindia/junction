@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.contrib import admin
 from django.db.models import TextField
 from pagedown.widgets import AdminPagedownWidget
 from simple_history.admin import SimpleHistoryAdmin
 
-# Junction Stuff
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
 from junction.conferences import service
+
 from . import models
 
 

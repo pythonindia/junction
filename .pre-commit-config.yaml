@@ -23,3 +23,10 @@ repos:
   hooks:
   - id: flake8
     exclude: .*/migrations/.*|settings/.*
+
+- repo: https://github.com/timothycrosley/isort
+  rev: 4.3.21
+  hooks:
+  - id: isort
+    additional_dependencies: [toml]
+    files: \.py$

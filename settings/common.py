@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import datetime
 import os
 from os.path import dirname, join
 
-# Third Party Stuff
 from django.conf.global_settings import *  # noqa
 from django.utils.translation import ugettext_lazy as _
 

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 import datetime
 
-# Third Party Stuff
 from django.db import models
 from django.utils.timezone import now
 from uuidfield import UUIDField
 
-# Junction Stuff
 from junction.base.models import TimeAuditModel
 
 

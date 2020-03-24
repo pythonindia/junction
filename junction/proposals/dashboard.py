@@ -2,12 +2,10 @@
 
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import collections
-import uuid
 import io
+import uuid
 
-# Third Party Stuff
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
@@ -15,26 +13,23 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from xlsxwriter.workbook import Workbook
 
-# Junction Stuff
 from junction.base.constants import (
+    ProposalReviewStatus,
     ProposalReviewVote,
     ProposalStatus,
-    ProposalReviewStatus,
 )
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
+from . import permissions, services
 from .forms import ProposalVotesFilterForm
-from .permissions import is_conference_moderator
-from .utils import _sort_proposals_for_dashboard
 from .models import (
     Proposal,
     ProposalComment,
     ProposalSectionReviewer,
-    ProposalSectionReviewerVoteValue
+    ProposalSectionReviewerVoteValue,
 )
-
-from . import services
-from . import permissions
+from .permissions import is_conference_moderator
+from .utils import _sort_proposals_for_dashboard
 
 
 @login_required

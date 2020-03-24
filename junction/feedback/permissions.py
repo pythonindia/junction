@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 import uuid
 
-# Third Party Stuff
 from rest_framework import permissions
 
-# Junction Stuff
 from junction.conferences.permissions import is_reviewer
 from junction.devices.models import Device
 

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.conf.urls import include, url
 
-from . import comments_views, views, votes_views, dashboard
+from . import comments_views, dashboard, views, votes_views
 
 comment_urls = [
 

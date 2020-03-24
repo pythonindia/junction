@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
-
+from django.core.management.base import BaseCommand, CommandError
 
 from junction.conferences.models import Conference
-
 
 APP_PERMISSIONS = {'conferences': ['change_conferencesetting',
                                    'add_conferencevenue',

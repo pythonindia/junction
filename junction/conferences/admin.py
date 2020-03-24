@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-# Junction Stuff
 from junction.base.admin import AuditAdmin
 
 from . import models, service

@@ -1,7 +1,8 @@
-from junction.tickets.management.commands.sync_data import Command
-from junction.tickets.management.commands.explara import Explara
-from mock import MagicMock
 import pytest
+from mock import MagicMock
+
+from junction.tickets.management.commands.explara import Explara
+from junction.tickets.management.commands.sync_data import Command
 
 
 def none_events():

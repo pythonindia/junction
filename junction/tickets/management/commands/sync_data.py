@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Third Party Stuff
+import os
+
 import qrcode
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-# Junction Stuff
 from junction.tickets.models import Ticket
 
 from .explara import Explara
-import os
 
 
 class Command(BaseCommand):

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.reverse import reverse
 
-# Junction Stuff
 from junction.base.constants import ProposalReviewStatus
 from junction.base.models import AuditModel
 from junction.conferences.models import Conference, Room

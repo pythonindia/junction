@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import os
 
-# Third Party Stuff
 from celery import Celery
 from django.conf import settings
 

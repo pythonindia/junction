@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.core.exceptions import PermissionDenied
 
-# Junction Stuff
-from junction.conferences.models import ConferenceProposalReviewer
 from junction.base.constants import ConferenceStatus
+from junction.conferences.models import ConferenceProposalReviewer
 
 from .models import ProposalSectionReviewer
 

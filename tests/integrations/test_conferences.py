@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .. import factories as f
-
 from django.core.urlresolvers import reverse
+
+from .. import factories as f
 
 
 def test_conferences(client, db):

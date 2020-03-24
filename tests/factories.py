@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 import datetime
-from datetime import timedelta
 import uuid
+from datetime import timedelta
 
-# Third Party Stuff
 import factory
 from factory import fuzzy
 
-# Junction Stuff
 from junction.base.constants import ConferenceStatus
 
 

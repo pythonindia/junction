@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from pagedown.widgets import PagedownWidget
 
-# Junction Stuff
 from junction.base.constants import (
     ConferenceSettingConstants,
     ProposalReviewerComment,
     ProposalReviewStatus,
     ProposalStatus,
     ProposalTargetAudience,
-    ProposalVotesFilter
+    ProposalVotesFilter,
 )
-from junction.proposals.models import ProposalSection, ProposalSectionReviewerVoteValue, ProposalType
+from junction.proposals.models import (
+    ProposalSection,
+    ProposalSectionReviewerVoteValue,
+    ProposalType,
+)
 
 
 def _get_proposal_section_choices(conference, action="edit"):

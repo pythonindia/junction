@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
-from junction.base.models import AuditModel
 from django.db import models
+
+from junction.base.models import AuditModel
 
 
 class Profile(AuditModel):

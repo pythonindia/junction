@@ -2,22 +2,19 @@
 
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
-import logging
 import collections
+import logging
 
-# Third Party Stuff
+from celery import shared_task
 from django.conf import settings
 from django.contrib.auth.models import User
 from markdown2 import markdown
-from celery import shared_task
 
-# Junction Stuff
-from junction.base.emailer import send_email
 from junction.base.constants import ProposalStatus
+from junction.base.emailer import send_email
+from junction.conferences.models import Conference
 
 from .models import Proposal, ProposalComment, ProposalSection, ProposalSectionReviewer
-from junction.conferences.models import Conference
 
 logger = logging.getLogger(__name__)
 

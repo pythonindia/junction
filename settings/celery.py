@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import os
 
-# Third Party Stuff
 from kombu import Queue
 
 from .common import TIME_ZONE as DJANGO_TIME_ZONE

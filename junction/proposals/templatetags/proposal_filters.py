@@ -5,9 +5,13 @@ import collections
 import re
 
 from django import template
+
 from junction.base.constants import PSRVotePhase
-from junction.proposals.models import ProposalComment, ProposalSectionReviewer, \
-    ProposalSectionReviewerVote
+from junction.proposals.models import (
+    ProposalComment,
+    ProposalSectionReviewer,
+    ProposalSectionReviewerVote,
+)
 from junction.proposals.permissions import is_proposal_section_reviewer
 
 register = template.Library()

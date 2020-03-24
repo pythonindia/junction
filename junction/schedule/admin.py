@@ -1,4 +1,3 @@
-# Third Party Stuff
 from django.contrib import admin  # noqa
 
 from junction.conferences import service

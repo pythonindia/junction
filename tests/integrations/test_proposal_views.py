@@ -2,6 +2,7 @@
 
 import pytest
 from django.core.urlresolvers import reverse
+
 from .. import factories as f
 from . import helpers
 

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 from collections import OrderedDict, defaultdict
 
-# Third Party Stuff
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import Http404, render
 from django.template.loader import render_to_string
-
 from rest_framework import filters, viewsets
 from rest_framework.response import Response
 

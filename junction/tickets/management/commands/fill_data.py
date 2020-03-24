@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Third Party Stuff
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-# Junction Stuff
 from junction.tickets.models import Ticket
 
 

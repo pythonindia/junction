@@ -1,4 +1,3 @@
-# Third Party Stuff
 from rest_framework import serializers
 
 from .models import Conference, ConferenceVenue, Room

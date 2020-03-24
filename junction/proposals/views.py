@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import collections
 
-# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -14,17 +12,25 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from hashids import Hashids
-
 from rest_framework import filters, viewsets
 from rest_framework.response import Response
 
-# Junction Stuff
-from junction.base.constants import ConferenceSettingConstants, ConferenceStatus, ProposalReviewStatus, ProposalStatus
+from junction.base.constants import (
+    ConferenceSettingConstants,
+    ConferenceStatus,
+    ProposalReviewStatus,
+    ProposalStatus,
+)
 from junction.conferences.models import Conference
 from junction.feedback import permissions as feedback_permission
 
 from . import permissions, serializers
-from .forms import ProposalCommentForm, ProposalForm, ProposalReviewForm, ProposalsToReviewForm
+from .forms import (
+    ProposalCommentForm,
+    ProposalForm,
+    ProposalReviewForm,
+    ProposalsToReviewForm,
+)
 from .models import Proposal, ProposalComment, ProposalSectionReviewer, ProposalVote
 from .services import send_mail_for_new_proposal, send_mail_for_proposal_content
 

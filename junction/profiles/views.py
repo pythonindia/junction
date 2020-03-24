@@ -1,20 +1,17 @@
-# Standard Library
 from collections import OrderedDict
 
-# Third Party Stuff
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
-# Junction Stuff
 from junction.conferences.models import Conference
 
+from .forms import ProfileForm
 # Profile Stuff
 from .models import Profile
-from .forms import ProfileForm
 
 
 @login_required

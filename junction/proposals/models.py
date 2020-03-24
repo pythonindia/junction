@@ -10,12 +10,18 @@ from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from hashids import Hashids
-from simple_history.models import HistoricalRecords
 from rest_framework.reverse import reverse as rf_reverse
+from simple_history.models import HistoricalRecords
 
-from junction.base.constants import PSRVotePhase, ProposalCommentType, \
-    ProposalReviewStatus, ProposalReviewVote, ProposalStatus, \
-    ProposalTargetAudience, ProposalUserVoteRole
+from junction.base.constants import (
+    ProposalCommentType,
+    ProposalReviewStatus,
+    ProposalReviewVote,
+    ProposalStatus,
+    ProposalTargetAudience,
+    ProposalUserVoteRole,
+    PSRVotePhase,
+)
 from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 

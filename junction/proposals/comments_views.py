@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.http.response import (HttpResponseRedirect, HttpResponse,
-                                  HttpResponseForbidden)
-from django.shortcuts import Http404, get_object_or_404
 from django.core.exceptions import PermissionDenied
-from django.views.decorators.http import require_http_methods
+from django.core.urlresolvers import reverse
+from django.http.response import (
+    HttpResponse,
+    HttpResponseForbidden,
+    HttpResponseRedirect,
+)
+from django.shortcuts import Http404, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
-# Junction Stuff
 from junction.conferences.models import Conference
 
 from . import permissions

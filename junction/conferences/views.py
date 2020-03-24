@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
-from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 from rest_framework import filters, viewsets
 

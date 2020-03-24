@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-# Standard Library
-import functools
 import datetime
+import functools
 
-# Third Party Stuff
 import mock
 import pytest
 

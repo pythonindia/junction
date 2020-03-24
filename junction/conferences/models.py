@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -14,10 +13,9 @@ from simple_history.models import HistoricalRecords
 from slugify import slugify
 from uuid_upload_path import upload_to
 
-# Junction Stuff
-from junction.base.utils import get_date_diff_display
 from junction.base.constants import ConferenceSettingConstants, ConferenceStatus
 from junction.base.models import AuditModel
+from junction.base.utils import get_date_diff_display
 
 
 @python_2_unicode_compatible

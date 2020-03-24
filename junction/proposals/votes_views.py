@@ -6,14 +6,18 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from junction.base.constants import ConferenceSettingConstants, \
-    ProposalUserVoteRole
+from junction.base.constants import ConferenceSettingConstants, ProposalUserVoteRole
 from junction.conferences.models import Conference
 
 from . import permissions, utils
 from .forms import ProposalReviewerVoteForm
-from .models import PSRVotePhase, Proposal, ProposalComment, \
-    ProposalCommentVote, ProposalVote
+from .models import (
+    Proposal,
+    ProposalComment,
+    ProposalCommentVote,
+    ProposalVote,
+    PSRVotePhase,
+)
 
 
 @login_required

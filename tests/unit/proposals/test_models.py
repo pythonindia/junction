@@ -1,4 +1,3 @@
-# Third Party Stuff
 import pytest
 from tests import factories as f
 

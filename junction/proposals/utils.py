@@ -2,12 +2,20 @@ import collections
 
 from django.core.exceptions import PermissionDenied
 
-from junction.base.constants import PSRVotePhase, ProposalCommentType, \
-    ProposalReviewVote, ProposalVotesFilter
+from junction.base.constants import (
+    ProposalCommentType,
+    ProposalReviewVote,
+    ProposalVotesFilter,
+    PSRVotePhase,
+)
 from junction.proposals import permissions
-from junction.proposals.models import ProposalComment, ProposalSection, \
-    ProposalSectionReviewer, ProposalSectionReviewerVote, \
-    ProposalSectionReviewerVoteValue
+from junction.proposals.models import (
+    ProposalComment,
+    ProposalSection,
+    ProposalSectionReviewer,
+    ProposalSectionReviewerVote,
+    ProposalSectionReviewerVoteValue,
+)
 
 
 def get_reviewer_vote_info(user, conference, proposal, vote_phase):

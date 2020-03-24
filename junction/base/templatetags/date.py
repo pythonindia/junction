@@ -1,10 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Standard Library
 from datetime import date
 
-# Third Party Stuff
 import arrow
 from django import template
 

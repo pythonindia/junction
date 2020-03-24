@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Standard Library
 import datetime
 import random
 
-# Third Party Stuff
 import six
 from allauth.account.models import EmailAddress
 from django.conf import settings
@@ -16,7 +14,6 @@ from django.db import transaction
 from django.utils.timezone import now
 from sampledatahelper.helper import SampleDataHelper
 
-# Junction Stuff
 from junction.base import constants
 from junction.conferences.models import Conference
 from junction.proposals.models import (
@@ -24,7 +21,7 @@ from junction.proposals.models import (
     ProposalComment,
     ProposalSection,
     ProposalSectionReviewerVoteValue,
-    ProposalType
+    ProposalType,
 )
 from junction.schedule.models import ScheduleItem
 

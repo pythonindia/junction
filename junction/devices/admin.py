@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Third Party Stuff
 from django.contrib import admin
 
-# Junction Stuff
 from junction.base.admin import TimeAuditAdmin
 
 from .models import Device
-
 
 # Register your models here.
 

@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-import junction.proposals.dashboard
-import django.views.defaults
 
-# Third Party Stuff
-from django.conf.urls import include, url
+import django.views.defaults
 from django.conf import settings
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 from rest_framework import routers
 
-# Junction Stuff
+import junction.proposals.dashboard
 from junction.conferences import views as conference_views
-from junction.proposals import views as proposal_views
 from junction.devices.views import DeviceDetailApiView, DeviceListApiView
-from junction.feedback.views import FeedbackListApiView, FeedbackQuestionListApiView, view_feedback
+from junction.feedback.views import (
+    FeedbackListApiView,
+    FeedbackQuestionListApiView,
+    view_feedback,
+)
+from junction.proposals import views as proposal_views
 from junction.schedule import views as schedule_views
 from junction.schedule.views import non_proposal_schedule_item_view
 
