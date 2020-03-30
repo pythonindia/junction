@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Standard Library
 import sys
 
-# Third Party Stuff
 from django.apps import AppConfig
 
 from . import monkey

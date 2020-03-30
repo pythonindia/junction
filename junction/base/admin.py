@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Third Party Stuff
 from django.contrib import admin
 
 
@@ -17,12 +16,18 @@ def save_model(self, request, obj, form, change):
 
 
 class TimeAuditAdmin(admin.ModelAdmin):
-    list_display = ('created_at', 'modified_at',)
+    list_display = (
+        "created_at",
+        "modified_at",
+    )
 
 
 class AuditAdmin(TimeAuditAdmin):
-    list_display = ('created_by', 'modified_by',) + TimeAuditAdmin.list_display
-    exclude = ('created_by', 'modified_by',)
+    list_display = ("created_by", "modified_by",) + TimeAuditAdmin.list_display
+    exclude = (
+        "created_by",
+        "modified_by",
+    )
 
     def save_model(self, request, obj, form, change):
         save_model(self, request, obj, form, change)

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Third Party Stuff
 import uuid_upload_path.storage
 from django.db import migrations, models
 

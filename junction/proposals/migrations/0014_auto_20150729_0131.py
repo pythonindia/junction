@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Standard Library
 import datetime
 
-# Third Party Stuff
 from django.db import migrations, models
 
 

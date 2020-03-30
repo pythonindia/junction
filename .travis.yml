@@ -31,6 +31,12 @@ jobs:
       python: 3.7
 
 install:
+  # Enable Python 3.6.x, when python: 3.5 (because black is Py3.6+)
+  - |
+    if [ "${TRAVIS_PYTHON_VERSION}" == "3.5" ]; then
+      pyenv shell system:3.6.7
+    fi
+
   # Get the latest pip
   - python -m pip install --upgrade pip
   # Reinstall pip, using the latest pip

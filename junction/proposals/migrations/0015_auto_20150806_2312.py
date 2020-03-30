@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Third Party Stuff
 import django.db.models.deletion
 import django_extensions.db.fields
 from django.conf import settings
