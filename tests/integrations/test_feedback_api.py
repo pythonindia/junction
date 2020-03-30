@@ -28,12 +28,13 @@ class TestFeedbackQuestionListApi(APITestCase):
         objects = factories.create_feedback_questions(
             schedule_item_types=self.schedule_item_types,
             num_text_questions=num_text_questions,
-            num_choice_questions=num_choice_questions)
+            num_choice_questions=num_choice_questions,
+        )
         conference = objects['conference']
 
         res = self.client.get(
-            '/api/v1/feedback_questions/?conference_id={}'.format(
-                conference.id))
+            '/api/v1/feedback_questions/?conference_id={}'.format(conference.id)
+        )
 
         assert res.status_code == status.HTTP_200_OK
         result = res.data
@@ -54,10 +55,11 @@ class TestFeedbackListApi(APITestCase):
         self.objects = factories.create_feedback_questions(
             schedule_item_types=self.schedule_item_types,
             num_text_questions=num_text_questions,
-            num_choice_questions=num_choice_questions)
+            num_choice_questions=num_choice_questions,
+        )
         self.schedule_items = factories.create_schedule_items(
-            conference=self.objects['conference'],
-            item_types=self.schedule_item_types)
+            conference=self.objects['conference'], item_types=self.schedule_item_types
+        )
 
     def test_feedback_without_device_token(self):
         res = self.client.post('/api/v1/feedback/', {}, format='json')
@@ -65,19 +67,28 @@ class TestFeedbackListApi(APITestCase):
         assert res.status_code == status.HTTP_403_FORBIDDEN
 
     def _submit_feedback(self):
-        choice = [x for x in self.objects['choices']
-                  if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        text = [x for x in self.objects['text']
-                if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        schedule_item = [x for x in self.schedule_items
-                         if x.type == self.schedule_item_types[0]][0]
-        data = {'text': [{'id': text.id, 'text': 'Ok'}],
-                'choices': [{'id': choice.id,
-                             'value_id': choice.allowed_values.all()[0].id}],
-                'schedule_item_id': schedule_item.id}
+        choice = [
+            x
+            for x in self.objects['choices']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        text = [
+            x
+            for x in self.objects['text']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        schedule_item = [
+            x for x in self.schedule_items if x.type == self.schedule_item_types[0]
+        ][0]
+        data = {
+            'text': [{'id': text.id, 'text': 'Ok'}],
+            'choices': [
+                {'id': choice.id, 'value_id': choice.allowed_values.all()[0].id}
+            ],
+            'schedule_item_id': schedule_item.id,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
 
         res = self.client.post('/api/v1/feedback/', data, format='json')
         """Data is sent in below format
@@ -96,19 +107,28 @@ class TestFeedbackListApi(APITestCase):
     def test_resubmit_feedback(self):
         self._submit_feedback()
 
-        choice = [x for x in self.objects['choices']
-                  if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        text = [x for x in self.objects['text']
-                if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        schedule_item = [x for x in self.schedule_items
-                         if x.type == self.schedule_item_types[0]][0]
-        data = {'text': [{'id': text.id, 'text': 'Ok'}],
-                'choices': [{'id': choice.id,
-                             'value_id': choice.allowed_values.all()[0].id}],
-                'schedule_item_id': schedule_item.id}
+        choice = [
+            x
+            for x in self.objects['choices']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        text = [
+            x
+            for x in self.objects['text']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        schedule_item = [
+            x for x in self.schedule_items if x.type == self.schedule_item_types[0]
+        ][0]
+        data = {
+            'text': [{'id': text.id, 'text': 'Ok'}],
+            'choices': [
+                {'id': choice.id, 'value_id': choice.allowed_values.all()[0].id}
+            ],
+            'schedule_item_id': schedule_item.id,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
         res = self.client.post('/api/v1/feedback/', data, format='json')
 
         assert res.status_code == status.HTTP_400_BAD_REQUEST
@@ -118,53 +138,70 @@ class TestFeedbackListApi(APITestCase):
         pass
 
     def test_feedback_with_wrong_choice_value(self):
-        choice = [x for x in self.objects['choices']
-                  if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        text = [x for x in self.objects['text']
-                if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        schedule_item = [x for x in self.schedule_items
-                         if x.type == self.schedule_item_types[0]][0]
-        data = {'text': [{'id': text.id, 'text': 'Ok'}],
-                'choices': [{'id': choice.id,
-                             'value_id': 23}],
-                'schedule_item_id': schedule_item.id}
+        choice = [
+            x
+            for x in self.objects['choices']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        text = [
+            x
+            for x in self.objects['text']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        schedule_item = [
+            x for x in self.schedule_items if x.type == self.schedule_item_types[0]
+        ][0]
+        data = {
+            'text': [{'id': text.id, 'text': 'Ok'}],
+            'choices': [{'id': choice.id, 'value_id': 23}],
+            'schedule_item_id': schedule_item.id,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
         res = self.client.post('/api/v1/feedback/', data, format='json')
 
         msg = u"The multiple choice value isn't associated with question"
 
         assert res.status_code == status.HTTP_400_BAD_REQUEST
-        assert res.data == {'choices': [{u'non_field_errors':
-                                         [msg]}]}
+        assert res.data == {'choices': [{u'non_field_errors': [msg]}]}
 
     def test_feedback_with_missing_required_text_data(self):
-        choice = [x for x in self.objects['choices']
-                  if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        schedule_item = [x for x in self.schedule_items
-                         if x.type == self.schedule_item_types[0]][0]
-        data = {'choices': [{'id': choice.id,
-                             'value_id': choice.allowed_values.all()[0].id}],
-                'schedule_item_id': schedule_item.id}
+        choice = [
+            x
+            for x in self.objects['choices']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        schedule_item = [
+            x for x in self.schedule_items if x.type == self.schedule_item_types[0]
+        ][0]
+        data = {
+            'choices': [
+                {'id': choice.id, 'value_id': choice.allowed_values.all()[0].id}
+            ],
+            'schedule_item_id': schedule_item.id,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
         res = self.client.post('/api/v1/feedback/', data, format='json')
 
         assert res.status_code == status.HTTP_400_BAD_REQUEST
         assert res.data == {'error': 'Text Feedback is missing'}
 
     def test_feedback_with_missing_required_choice_data(self):
-        text = [x for x in self.objects['text']
-                if x.schedule_item_type.title == self.schedule_item_types[0]][0]
-        schedule_item = [x for x in self.schedule_items
-                         if x.type == self.schedule_item_types[0]][0]
-        data = {'text': [{'id': text.id, 'text': 'Boom'}],
-                'schedule_item_id': schedule_item.id}
+        text = [
+            x
+            for x in self.objects['text']
+            if x.schedule_item_type.title == self.schedule_item_types[0]
+        ][0]
+        schedule_item = [
+            x for x in self.schedule_items if x.type == self.schedule_item_types[0]
+        ][0]
+        data = {
+            'text': [{'id': text.id, 'text': 'Boom'}],
+            'schedule_item_id': schedule_item.id,
+        }
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.device.uuid))
         res = self.client.post('/api/v1/feedback/', data, format='json')
 
         assert res.status_code == status.HTTP_400_BAD_REQUEST

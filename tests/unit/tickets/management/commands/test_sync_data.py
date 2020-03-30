@@ -44,9 +44,9 @@ def single_order():
                 "checkin": "no",
                 "ticketNo": "E4CACB-694",
                 "status": "attending",
-                "details": {"Date": ""}
+                "details": {"Date": ""},
             }
-        ]
+        ],
     }
     return [order]
 

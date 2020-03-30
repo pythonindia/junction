@@ -10,8 +10,7 @@ class SchduleItemAdmin(admin.ModelAdmin):
     list_filter = ('type', 'room')
 
     def get_queryset(self, request):
-        qs = super(SchduleItemAdmin, self).get_queryset(
-            request)
+        qs = super(SchduleItemAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
         moderators = service.list_conference_moderator(user=request.user)

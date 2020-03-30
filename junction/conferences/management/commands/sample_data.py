@@ -54,12 +54,12 @@ class Command(BaseCommand):
         site.save()
 
         print('  Creating Superuser')  # create superuser
-        super_user = self.create_user(is_superuser=True, username='admin',
-                                      is_active=True)
-        EmailAddress.objects.get_or_create(user=super_user,
-                                           verified=True,
-                                           primary=True,
-                                           email=super_user.email)
+        super_user = self.create_user(
+            is_superuser=True, username='admin', is_active=True
+        )
+        EmailAddress.objects.get_or_create(
+            user=super_user, verified=True, primary=True, email=super_user.email
+        )
 
         print('  Creating sample Users')  # create users
         for x in range(NUM_USERS):
@@ -105,8 +105,7 @@ class Command(BaseCommand):
             if not proposal.get_status_display() == 'Public':
                 continue
             self.create_scheduled_item(proposal=proposal)
-        self.create_scheduled_item(proposal='Break',
-                                   conference=self.conferences[0])
+        self.create_scheduled_item(proposal='Break', conference=self.conferences[0])
 
         # create comments
         print('  Creating sample proposal comments')
@@ -119,75 +118,85 @@ class Command(BaseCommand):
 
         print(' Creating default choices for proposal reviewer vote values.')
         for vote in constants.ProposalReviewVote.CHOICES:
-            ProposalSectionReviewerVoteValue.objects.create(vote_value=vote[0], description=vote[1])
+            ProposalSectionReviewerVoteValue.objects.create(
+                vote_value=vote[0], description=vote[1]
+            )
 
     def create_proposal_sections(self):
         sections = []
         for count in range(NUM_PROPOSAL_SECTIONS):
-            sections.append(ProposalSection.objects.create(**{
-                'name': "Proposal Section %d" % count,
-                'description': "Proposal Section %d description" % count,
-                'active': True
-            }))
+            sections.append(
+                ProposalSection.objects.create(
+                    **{
+                        'name': "Proposal Section %d" % count,
+                        'description': "Proposal Section %d description" % count,
+                        'active': True,
+                    }
+                )
+            )
         return sections
 
     def create_proposal_types(self):
         types = []
         for count in range(NUM_PROPOSAL_TYPES):
-            types.append(ProposalType.objects.create(**{
-                'name': "Proposal Type %d" % count,
-                'description': "Proposal Section %d description" % count,
-                'active': True
-            }))
+            types.append(
+                ProposalType.objects.create(
+                    **{
+                        'name': "Proposal Type %d" % count,
+                        'description': "Proposal Section %d description" % count,
+                        'active': True,
+                    }
+                )
+            )
         return types
 
     def create_moderators(self, conference):
         moderators = []
         count = self.sd.int(1, len(self.users))
         for user in random.sample(self.users, count):
-            moderators.append(conference.moderators.create(
-                moderator=user, active=self.sd.boolean()))
+            moderators.append(
+                conference.moderators.create(moderator=user, active=self.sd.boolean())
+            )
         return moderators
 
     def create_propsoal_reviewers(self, conference):
         proposal_reviewers = []
         count = self.sd.int(1, len(self.users))
         for user in random.sample(self.users, count):
-            proposal_reviewers.append(conference.proposal_reviewers.create(
-                reviewer=user, active=self.sd.boolean()))
+            proposal_reviewers.append(
+                conference.proposal_reviewers.create(
+                    reviewer=user, active=self.sd.boolean()
+                )
+            )
         return proposal_reviewers
 
     def create_scheduled_item(self, proposal, conference=None):
         kwargs = {}
-        kwargs['conference'] = conference if conference \
-            else proposal.conference
+        kwargs['conference'] = conference if conference else proposal.conference
         kwargs['event_date'] = kwargs['conference'].start_date
         kwargs['start_time'] = datetime.datetime.time(datetime.datetime.now())
         kwargs['end_time'] = datetime.datetime.time(
-            datetime.datetime.now() + datetime.timedelta(minutes=45))
+            datetime.datetime.now() + datetime.timedelta(minutes=45)
+        )
         if isinstance(proposal, six.string_types):
-            ScheduleItem.objects.create(
-                alt_name=proposal,
-                **kwargs)
+            ScheduleItem.objects.create(alt_name=proposal, **kwargs)
         else:
-            ScheduleItem.objects.create(
-                session=proposal,
-                **kwargs)
+            ScheduleItem.objects.create(session=proposal, **kwargs)
 
     def create_conference(self, counter, start_date=None, end_date=None):
         if counter == 0:
             min_days_from_creation = 30
 
-            start_date = now() + datetime.timedelta(
-                days=min_days_from_creation)
+            start_date = now() + datetime.timedelta(days=min_days_from_creation)
             # 2 day conference
-            end_date = now() + datetime.timedelta(
-                days=min_days_from_creation + 2)
+            end_date = now() + datetime.timedelta(days=min_days_from_creation + 2)
         else:
             start_date = start_date or now() + datetime.timedelta(
-                random.randrange(-55, 55))
+                random.randrange(-55, 55)
+            )
             end_date = end_date or start_date + datetime.timedelta(
-                random.randrange(1, 4))
+                random.randrange(1, 4)
+            )
 
         conference = Conference.objects.create(
             name='%s Conference' % self.sd.words(1, 2).title(),
@@ -196,7 +205,8 @@ class Command(BaseCommand):
             start_date=start_date,
             end_date=end_date,
             created_by=self.sd.choice(self.users),
-            modified_by=self.sd.choice(self.users))
+            modified_by=self.sd.choice(self.users),
+        )
 
         return conference
 
@@ -209,7 +219,9 @@ class Command(BaseCommand):
             "email": email or self.sd.email(),
             "is_active": kwargs.get('is_active', self.sd.boolean()),
             "is_superuser": kwargs.get('is_superuser', False),
-            "is_staff": kwargs.get('is_staff', kwargs.get('is_superuser', self.sd.boolean())),
+            "is_staff": kwargs.get(
+                'is_staff', kwargs.get('is_superuser', self.sd.boolean())
+            ),
         }
         user, _ = get_user_model().objects.get_or_create(**params)
         password = '123123'
@@ -217,15 +229,19 @@ class Command(BaseCommand):
         user.set_password(password)
         user.save()
 
-        print("User created with username: {username} and password: {password}".format(
-            username=params.get('username'), password=password))
+        print(
+            "User created with username: {username} and password: {password}".format(
+                username=params.get('username'), password=password
+            )
+        )
 
         return user
 
     def create_proposal(self, proposal_type):
 
-        status = next((i[0] for i in constants.ProposalStatus.CHOICES if
-                       i[1] == proposal_type))
+        status = next(
+            (i[0] for i in constants.ProposalStatus.CHOICES if i[1] == proposal_type)
+        )
 
         proposal = Proposal.objects.create(
             conference=self.sd.choice(self.conferences),
@@ -235,7 +251,8 @@ class Command(BaseCommand):
             title='%s Proposal' % self.sd.words(1, 2).title(),
             description=self.sd.paragraph(),
             status=status,
-            deleted=self.sd.boolean())
+            deleted=self.sd.boolean(),
+        )
 
         return proposal
 
@@ -247,6 +264,7 @@ class Command(BaseCommand):
             proposal=self.sd.choice(self.proposals),
             private=self.sd.boolean(),
             comment='Comment',
-            commenter=commenter)
+            commenter=commenter,
+        )
 
         return comment

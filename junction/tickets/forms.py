@@ -8,4 +8,5 @@ class SyncDataForm(forms.Form):
     """
     Form for running sync_data management command.
     """
+
     pass

@@ -13,6 +13,7 @@ class Command(BaseCommand):
     Read a csv file containing ticket numbers and
     fill all the details for it.
     """
+
     @transaction.atomic
     def handle(self, *args, **options):
 
@@ -23,7 +24,16 @@ class Command(BaseCommand):
         ticket_nums = [line.rstrip('\n') for line in open(in_file).readlines()]
 
         fh = open(out_file, 'w')
-        header = ('Ticket Number', 'Name', 'Email', 'Gender', 'Designation', 'Company', 'City', 'Address')
+        header = (
+            'Ticket Number',
+            'Name',
+            'Email',
+            'Gender',
+            'Designation',
+            'Company',
+            'City',
+            'Address',
+        )
         fh.write(','.join(header) + '\n')
 
         for ticket_num in ticket_nums:
@@ -54,5 +64,14 @@ class Command(BaseCommand):
                 designation = attendee['details']['Designation']
                 city = attendee['details']['City']
 
-            data = (ticket_num, ticket.name, attendee['email'], gender, designation, company, city, ticket.address)
+            data = (
+                ticket_num,
+                ticket.name,
+                attendee['email'],
+                gender,
+                designation,
+                company,
+                city,
+                ticket.address,
+            )
             fh.write(','.join(data) + '\n')

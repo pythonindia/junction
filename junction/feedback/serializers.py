@@ -11,8 +11,7 @@ from .models import (
 
 def object_exists(model, pk):
     if not model.objects.filter(pk=pk):
-        raise serializers.ValidationError(
-            "The question doesn't exist")
+        raise serializers.ValidationError("The question doesn't exist")
     return True
 
 
@@ -36,10 +35,12 @@ class ChoiceFeedbackSerializer(serializers.Serializer):
     def validate(self, data):
         if object_exists(ChoiceFeedbackQuestion, pk=data['id']):
             if ChoiceFeedbackQuestionValue.objects.filter(
-                    question_id=data['id'], pk=data['value_id']).exists():
+                question_id=data['id'], pk=data['value_id']
+            ).exists():
                 return data
             raise serializers.ValidationError(
-                "The multiple choice value isn't associated with question")
+                "The multiple choice value isn't associated with question"
+            )
 
 
 class FeedbackSerializer(serializers.Serializer):

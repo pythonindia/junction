@@ -10,6 +10,7 @@ from django.views.decorators.http import require_http_methods
 from junction.conferences.models import Conference
 
 from .forms import ProfileForm
+
 # Profile Stuff
 from .models import Profile
 
@@ -24,8 +25,9 @@ def dashboard(request):
                 conf_proposals[conf.name].append(proposal)
             else:
                 conf_proposals[conf.name] = [proposal]
-    return render(request, 'profiles/dashboard.html',
-                  {'conf_proposals': conf_proposals})
+    return render(
+        request, 'profiles/dashboard.html', {'conf_proposals': conf_proposals}
+    )
 
 
 @login_required

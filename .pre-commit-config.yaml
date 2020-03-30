@@ -30,3 +30,11 @@ repos:
   - id: isort
     additional_dependencies: [toml]
     files: \.py$
+
+- repo: https://github.com/psf/black
+  rev: stable
+  hooks:
+  - id: black
+    language_version: python3.6
+    args: [--skip-string-normalization]
+    exclude: .*/migrations/.*

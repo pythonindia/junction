@@ -6,8 +6,7 @@ import inspect
 
 def _user_attributes(cls):
     defaults = dir(type(str('defaults'), (object,), {}))  # gives all inbuilt attrs
-    return [
-        item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
+    return [item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
 
 
 def choices(cls):
@@ -88,15 +87,20 @@ class ConferenceSettingConstants:
     ALLOW_PUBLIC_VOTING_ON_PROPOSALS = {
         "name": "allow_public_voting_on_proposals",
         "value": True,
-        "description": "Allow public to vote on proposals"}
+        "description": "Allow public to vote on proposals",
+    }
 
-    DISPLAY_PROPOSALS_IN_PUBLIC = {"name": "display_proposals_in_public",
-                                   "value": True,
-                                   "description": "Display proposals in public"}
+    DISPLAY_PROPOSALS_IN_PUBLIC = {
+        "name": "display_proposals_in_public",
+        "value": True,
+        "description": "Display proposals in public",
+    }
 
-    ALLOW_PLUS_ZERO_REVIEWER_VOTE = {"name": "allow_plus_zero_reviewer_vote",
-                                     "value": True,
-                                     "description": "Allow +0 vote in reviewer votes"}
+    ALLOW_PLUS_ZERO_REVIEWER_VOTE = {
+        "name": "allow_plus_zero_reviewer_vote",
+        "value": True,
+        "description": "Allow +0 vote in reviewer votes",
+    }
 
 
 @choices

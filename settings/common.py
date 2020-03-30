@@ -63,13 +63,10 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-
     'bootstrap3',
-
     'pagedown',
     'django_markdown',
     'django_bootstrap_breadcrumbs',
-
     'rest_framework',
     'simple_history',
 )
@@ -99,7 +96,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "junction.base.context_processors.site_info",
             ],
-
             'debug': DEBUG,
         },
     },
@@ -127,8 +123,8 @@ LOGIN_REDIRECT_URL = '/'
 # E-Mail Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.com'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', ''),
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),
+EMAIL_HOST_USER = (os.environ.get('EMAIL_HOST_USER', ''),)
+EMAIL_HOST_PASSWORD = (os.environ.get('EMAIL_HOST_PASSWORD', ''),)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = SITE_VARIABLES['site_name'] + ' <noreply@pssi.org.in>'
@@ -140,44 +136,31 @@ BOOTSTRAP3 = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
+    'filters': {'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'}},
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
         },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
+        'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler',},
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
         },
-
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins', ],
+            'handlers': ['mail_admins',],
             'level': 'ERROR',
             'propagate': True,
         },
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['file', ],
-        },
-    }
+        'django.db.backends': {'level': 'DEBUG', 'handlers': ['file',],},
+    },
 }
 
-LANGUAGES = (
-    ("en", _("English")),
-)
+LANGUAGES = (("en", _("English")),)
 
 
 ROOT_URLCONF = 'junction.urls'
@@ -192,9 +175,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(APP_DIR, 'assets', 'collected-static')
-STATICFILES_DIRS = (
-    os.path.join(APP_DIR, 'static'),
-)
+STATICFILES_DIRS = (os.path.join(APP_DIR, 'static'),)
 
 MEDIA_ROOT = join(ROOT_DIR, '.media')
 MEDIA_URL = '/m/'
@@ -212,8 +193,8 @@ DATABASES = {
 }
 
 SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j')
+    'SECRET_KEY', 'z^bd9lk)o!03n#9e_u87zidd1zt7*^_oc4v6t!@@86vtbu0*&j'
+)
 
 
 ALLOWED_HOSTS = []  # TODO:
@@ -227,8 +208,7 @@ SITE_PROTOCOL = 'http'
 TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', None)
 TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', None)
 TWITTER_ACCESS_TOKEN_KEY = os.environ.get('TWITTER_ACCESS_TOKEN_KEY', None)
-TWITTER_ACCESS_TOKEN_SECRET = os.environ.get(
-    'TWITTER_ACCESS_TOKEN_SECRET', None)
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None)
 
 # Add connection life time
 # Make sure DB request held on for minimim 5 minutes

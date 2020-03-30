@@ -8,8 +8,16 @@ class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Conference
-        fields = ('id', 'name', 'slug', 'description',
-                  'start_date', 'end_date', 'status', 'venue')
+        fields = (
+            'id',
+            'name',
+            'slug',
+            'description',
+            'start_date',
+            'end_date',
+            'status',
+            'venue',
+        )
 
 
 class VenueSerializer(serializers.HyperlinkedModelSerializer):

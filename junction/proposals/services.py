@@ -20,10 +20,15 @@ logger = logging.getLogger(__name__)
 
 
 def _get_proposal_section_reviewers(proposal):
-    proposal_reviewers = set(ProposalSectionReviewer.objects.filter(
-        proposal_section=proposal.proposal_section))
-    recipients = {proposal_reviewer.conference_reviewer.reviewer
-                  for proposal_reviewer in proposal_reviewers}
+    proposal_reviewers = set(
+        ProposalSectionReviewer.objects.filter(
+            proposal_section=proposal.proposal_section
+        )
+    )
+    recipients = {
+        proposal_reviewer.conference_reviewer.reviewer
+        for proposal_reviewer in proposal_reviewers
+    }
     return recipients
 
 
@@ -35,20 +40,21 @@ def _arrange_proposals_by_section(proposal_qs):
 
 
 def group_proposals_by_reveiew_state(conf, state='reviewed'):
-    reviewed_qs = conf.proposal_set.filter(
-        status=ProposalStatus.PUBLIC).select_related(
-            'proposal_type', 'proposal_section',
-            'proposalsection').filter(proposalcomment__private=True,
-                                      proposalcomment__deleted=False)
+    reviewed_qs = (
+        conf.proposal_set.filter(status=ProposalStatus.PUBLIC)
+        .select_related('proposal_type', 'proposal_section', 'proposalsection')
+        .filter(proposalcomment__private=True, proposalcomment__deleted=False)
+    )
     if state == 'reviewed':
         proposal_qs = reviewed_qs.distinct()
         return _arrange_proposals_by_section(proposal_qs)
     else:
         ids = reviewed_qs.values_list('id').distinct()
-        qs = conf.proposal_set.filter(
-            status=ProposalStatus.PUBLIC).select_related(
-                'proposal_type', 'proposal_section',
-                'proposalsection').exclude(pk__in=ids)
+        qs = (
+            conf.proposal_set.filter(status=ProposalStatus.PUBLIC)
+            .select_related('proposal_type', 'proposal_section', 'proposalsection')
+            .exclude(pk__in=ids)
+        )
         return _arrange_proposals_by_section(qs)
 
 
@@ -64,17 +70,17 @@ def markdown_to_html(md):
 def comment_recipients(proposal_comment):
     proposal = proposal_comment.proposal
     if proposal_comment.reviewer:
-        recipients = _get_proposal_section_reviewers(
-            proposal=proposal)
+        recipients = _get_proposal_section_reviewers(proposal=proposal)
     elif proposal_comment.private:
-        recipients = _get_proposal_section_reviewers(
-            proposal=proposal)
+        recipients = _get_proposal_section_reviewers(proposal=proposal)
         recipients.add(proposal.author)
     else:
         recipients = {
             comment.commenter
-            for comment in proposal.proposalcomment_set
-            .all().select_related('commenter')}
+            for comment in proposal.proposalcomment_set.all().select_related(
+                'commenter'
+            )
+        }
         recipients.add(proposal.author)
         ADMINS = getattr(settings, 'SPAM_MODERATION_ADMINS', [])
         if ADMINS:
@@ -96,41 +102,50 @@ def send_mail_for_new_comment(proposal_comment_id, host):
     for to in send_to:
         if to == proposal_comment.commenter:
             continue
-        send_email(to=to,
-                   template_dir='proposals/email/comment',
-                   context={'to': to,
-                            'host': host,
-                            'login_url': login_url,
-                            'proposal': proposal,
-                            'comment': proposal_comment,
-                            'comment_html': comment_html,
-                            'commenter': commenter,
-                            'by_author': commenter == proposal.author,
-                            'comment_type': comment_type})
+        send_email(
+            to=to,
+            template_dir='proposals/email/comment',
+            context={
+                'to': to,
+                'host': host,
+                'login_url': login_url,
+                'proposal': proposal,
+                'comment': proposal_comment,
+                'comment_html': comment_html,
+                'commenter': commenter,
+                'by_author': commenter == proposal.author,
+                'comment_type': comment_type,
+            },
+        )
 
 
 @shared_task(ignore_result=True)
 def send_mail_for_new_proposal(proposal_id, host):
     proposal = Proposal.objects.get(id=proposal_id)
-    proposal_section = ProposalSection.objects.get(
-        pk=proposal.proposal_section_id)
-    send_to = [p.conference_reviewer.reviewer for p in
-               ProposalSectionReviewer.objects.filter(
-                   proposal_section=proposal_section,
-                   active=True)]
+    proposal_section = ProposalSection.objects.get(pk=proposal.proposal_section_id)
+    send_to = [
+        p.conference_reviewer.reviewer
+        for p in ProposalSectionReviewer.objects.filter(
+            proposal_section=proposal_section, active=True
+        )
+    ]
     proposal_url = proposal.get_absolute_url()
     login_url = settings.LOGIN_URL
     for to in send_to:
         if to == proposal.author:
             continue
-        send_email(to=to,
-                   template_dir='proposals/email/proposal',
-                   context={'to': to,
-                            'proposal': proposal,
-                            'proposal_section': proposal_section,
-                            'host': host,
-                            'proposal_url': proposal_url,
-                            'login_url': login_url})
+        send_email(
+            to=to,
+            template_dir='proposals/email/proposal',
+            context={
+                'to': to,
+                'proposal': proposal,
+                'proposal_section': proposal_section,
+                'host': host,
+                'proposal_url': proposal_url,
+                'login_url': login_url,
+            },
+        )
 
 
 @shared_task(ignore_result=True)
@@ -150,8 +165,9 @@ def send_mail_for_proposal_content(conference_id, proposal_id, host):
         'proposal': proposal,
         'author_name': author_name,
     }
-    return send_email(to=author, template_dir='proposals/email/upload_content',
-                      context=context)
+    return send_email(
+        to=author, template_dir='proposals/email/upload_content', context=context
+    )
 
 
 def user_action_for_spam(user, threshold):

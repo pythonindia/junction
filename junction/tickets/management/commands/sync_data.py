@@ -46,12 +46,10 @@ class Command(BaseCommand):
                 }
                 with transaction.atomic():
                     ticket, created = Ticket.objects.update_or_create(
-                        ticket_no=ticket_no,
-                        defaults=defaults
+                        ticket_no=ticket_no, defaults=defaults
                     )
 
                 if created:
                     qr_code = qrcode.make(ticket_no)
                     file_name = attendee.get('name') + '_' + ticket_no
-                    qr_code.save(
-                        '{}/{}.png'.format(settings.QR_CODES_DIR, file_name))
+                    qr_code.save('{}/{}.png'.format(settings.QR_CODES_DIR, file_name))

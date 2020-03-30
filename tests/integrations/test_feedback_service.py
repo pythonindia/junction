@@ -21,7 +21,8 @@ def test_get_feedback_questions_with_conference():
     objects = factories.create_feedback_questions(
         schedule_item_types=schedule_item_types,
         num_text_questions=num_text_questions,
-        num_choice_questions=num_choice_questions)
+        num_choice_questions=num_choice_questions,
+    )
 
     conference = objects['conference']
     result = service.get_feedback_questions(conference_id=conference.id)

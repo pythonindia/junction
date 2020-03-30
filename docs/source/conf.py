@@ -44,7 +44,5 @@ from recommonmark.transform import AutoStructify  # noqa: E402
 
 
 def setup(app):
-    app.add_config_value('recommonmark_config', {
-        'enable_auto_toc_tree': True,
-    }, True)
+    app.add_config_value('recommonmark_config', {'enable_auto_toc_tree': True,}, True)
     app.add_transform(AutoStructify)

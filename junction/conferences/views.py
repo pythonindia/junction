@@ -35,4 +35,5 @@ def get_conference(request, conference_slug):
 
     # redirect to <conference_slug>/proposals else
     return HttpResponseRedirect(
-        reverse('proposals-list', kwargs={'conference_slug': conference_slug}))
+        reverse('proposals-list', kwargs={'conference_slug': conference_slug})
+    )

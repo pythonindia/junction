@@ -31,10 +31,15 @@ def is_reviewer_voted(proposal, user, phase=None):
         voter = ProposalSectionReviewer.objects.get(
             conference_reviewer__reviewer=user,
             conference_reviewer__conference=proposal.conference,
-            proposal_section=proposal.proposal_section
+            proposal_section=proposal.proposal_section,
         )
-        vote = ProposalSectionReviewerVote.objects.get(proposal=proposal, voter=voter, phase=phase)
-    except (ProposalSectionReviewer.DoesNotExist, ProposalSectionReviewerVote.DoesNotExist):
+        vote = ProposalSectionReviewerVote.objects.get(
+            proposal=proposal, voter=voter, phase=phase
+        )
+    except (
+        ProposalSectionReviewer.DoesNotExist,
+        ProposalSectionReviewerVote.DoesNotExist,
+    ):
         vote = None
 
     return vote
@@ -70,8 +75,7 @@ def get_reviewers_vote_details(proposal, user):
     """
     Get voter name & details for given proposals.
     """
-    v_detail = collections.namedtuple('v_detail',
-                                      'voter_nick vote_value vote_comment')
+    v_detail = collections.namedtuple('v_detail', 'voter_nick vote_value vote_comment')
     reviewers = ProposalSectionReviewer.objects.filter(
         proposal_section=proposal.proposal_section,
         conference_reviewer__conference=proposal.conference,
@@ -81,8 +85,8 @@ def get_reviewers_vote_details(proposal, user):
     for reviewer in reviewers:
         voter_nick = reviewer.conference_reviewer.nick
         rv_qs = ProposalSectionReviewerVote.objects.filter(
-            proposal=proposal,
-            voter=reviewer)
+            proposal=proposal, voter=reviewer
+        )
         if rv_qs:
             vote_value = rv_qs[0].vote_value.description
         else:
@@ -91,7 +95,8 @@ def get_reviewers_vote_details(proposal, user):
         vc_qs = ProposalComment.objects.filter(
             proposal=proposal,
             commenter=reviewer.conference_reviewer.reviewer,
-            vote=True)
+            vote=True,
+        )
         if vc_qs:
             vote_comment = vc_qs[0].comment
         else:

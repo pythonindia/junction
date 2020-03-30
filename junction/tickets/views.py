@@ -23,5 +23,4 @@ def sync_data(request):
         return render(request, 'sync_data.html', {'form': form})
 
     call_command('sync_data')
-    return render(request, 'sync_data.html',
-                  {'form': form, 'message': 'Data synced'})
+    return render(request, 'sync_data.html', {'form': form, 'message': 'Data synced'})

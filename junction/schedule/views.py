@@ -20,9 +20,17 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
     filter_fields = ('room', 'conference', 'event_date')
 
     def get_queryset(self):
-        data = super(ScheduleView, self).get_queryset().prefetch_related(
-            'session', 'session__proposal_type', 'session__proposal_section',
-            'session__author').order_by('event_date', 'start_time')
+        data = (
+            super(ScheduleView, self)
+            .get_queryset()
+            .prefetch_related(
+                'session',
+                'session__proposal_type',
+                'session__proposal_section',
+                'session__author',
+            )
+            .order_by('event_date', 'start_time')
+        )
         return self.filter_queryset(data)
 
     def list(self, request):
@@ -47,7 +55,8 @@ def dummy_schedule(request, conference_slug):
 def non_proposal_schedule_item_view(request, sch_item_id):
     try:
         sch_item = ScheduleItem.objects.get(pk=sch_item_id)
-        return render(request, 'proposals/detail/schedule-item.html',
-                      {'sch_item': sch_item})
+        return render(
+            request, 'proposals/detail/schedule-item.html', {'sch_item': sch_item}
+        )
     except ObjectDoesNotExist:
         raise Http404()

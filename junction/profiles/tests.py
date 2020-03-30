@@ -7,7 +7,6 @@ from .models import Profile
 
 
 class ProfileTest(TestCase):
-
     def setUp(self):
         self.user = User.objects.create(username='user1', password='123456')
         Profile.objects.create(city='noida', contact_no='1234567890')

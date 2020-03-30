@@ -10,8 +10,16 @@ from . import models, service
 
 
 class ConferenceAdmin(AuditAdmin):
-    list_display = ('name', 'slug', 'start_date', 'end_date', 'status') + AuditAdmin.list_display
-    prepopulated_fields = {'slug': ('name',), }
+    list_display = (
+        'name',
+        'slug',
+        'start_date',
+        'end_date',
+        'status',
+    ) + AuditAdmin.list_display
+    prepopulated_fields = {
+        'slug': ('name',),
+    }
 
     def get_queryset(self, request):
         qs = super(ConferenceAdmin, self).get_queryset(request)
@@ -25,8 +33,7 @@ class ConferenceModeratorAdmin(AuditAdmin):
     list_filter = ('conference',)
 
     def get_queryset(self, request):
-        qs = super(ConferenceModeratorAdmin, self).get_queryset(
-            request)
+        qs = super(ConferenceModeratorAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
         moderators = service.list_conference_moderator(user=request.user)
@@ -38,8 +45,7 @@ class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
     list_filter = ('conference',)
 
     def get_queryset(self, request):
-        qs = super(ConferenceProposallReviewerAdmin, self).get_queryset(
-            request)
+        qs = super(ConferenceProposallReviewerAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
         moderators = service.list_conference_moderator(user=request.user)
@@ -60,8 +66,7 @@ class ConferenceSettingAdmin(AuditAdmin, SimpleHistoryAdmin):
 
 admin.site.register(models.Conference, ConferenceAdmin)
 admin.site.register(models.ConferenceModerator, ConferenceModeratorAdmin)
-admin.site.register(models.ConferenceProposalReviewer,
-                    ConferenceProposallReviewerAdmin)
+admin.site.register(models.ConferenceProposalReviewer, ConferenceProposallReviewerAdmin)
 admin.site.register(models.ConferenceVenue)
 admin.site.register(models.Room)
 admin.site.register(models.ConferenceSetting, ConferenceSettingAdmin)
