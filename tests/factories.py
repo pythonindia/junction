@@ -141,8 +141,8 @@ class ScheduleItemFactory(Factory):
     event_date = fuzzy.FuzzyDate(
         datetime.date.today(), datetime.date.today() + timedelta(days=90)
     ).fuzz()
-    start_time = fuzzy.FuzzyChoice(["9:30.750000",]).fuzz()
-    end_time = fuzzy.FuzzyChoice(["10:15.750000",]).fuzz()
+    start_time = fuzzy.FuzzyChoice(["9:30.750000"]).fuzz()
+    end_time = fuzzy.FuzzyChoice(["10:15.750000"]).fuzz()
     conference = factory.SubFactory("tests.factories.ConferenceFactory")
     session = factory.SubFactory("tests.factories.ProposalFactory")
 

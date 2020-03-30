@@ -10,8 +10,6 @@ from django.views.decorators.http import require_http_methods
 from junction.conferences.models import Conference
 
 from .forms import ProfileForm
-
-# Profile Stuff
 from .models import Profile
 
 

@@ -148,7 +148,7 @@ def create_proposal(request, conference_slug):
             conference, action="create", initial={"status": ProposalStatus.PUBLIC}
         )
         return render(
-            request, "proposals/create.html", {"form": form, "conference": conference,}
+            request, "proposals/create.html", {"form": form, "conference": conference}
         )
 
     # POST Workflow
