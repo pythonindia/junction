@@ -7,12 +7,11 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('proposals', '0019_proposalcomment_comment_type'),
+        ("proposals", "0019_proposalcomment_comment_type"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='proposalsectionreviewervote',
-            unique_together=set([]),
+            name="proposalsectionreviewervote", unique_together=set([]),
         ),
     ]

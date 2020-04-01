@@ -10,18 +10,32 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tickets', '0004_merge'),
+        ("tickets", "0004_merge"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ticket',
-            name='created_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_ticket_set', to=settings.AUTH_USER_MODEL, verbose_name='Created By'),
+            model_name="ticket",
+            name="created_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="created_ticket_set",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Created By",
+            ),
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='modified_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='updated_ticket_set', to=settings.AUTH_USER_MODEL, verbose_name='Modified By'),
+            model_name="ticket",
+            name="modified_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="updated_ticket_set",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Modified By",
+            ),
         ),
     ]

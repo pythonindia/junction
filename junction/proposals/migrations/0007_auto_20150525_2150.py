@@ -8,27 +8,59 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('proposals', '0006_auto_20150416_1612'),
+        ("proposals", "0006_auto_20150416_1612"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ProposalSectionReviewerVote',
+            name="ProposalSectionReviewerVote",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
-                ('role', models.PositiveSmallIntegerField(default=2, choices=[(1, 'Public'), (2, 'Reviewer')])),
-                ('up_vote', models.BooleanField(default=True)),
-                ('proposal', models.ForeignKey(to='proposals.Proposal', on_delete=django.db.models.deletion.CASCADE)),
-                ('voter', models.ForeignKey(to='proposals.ProposalSectionReviewer', on_delete=django.db.models.deletion.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "modified_at",
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Last Modified At"
+                    ),
+                ),
+                (
+                    "role",
+                    models.PositiveSmallIntegerField(
+                        default=2, choices=[(1, "Public"), (2, "Reviewer")]
+                    ),
+                ),
+                ("up_vote", models.BooleanField(default=True)),
+                (
+                    "proposal",
+                    models.ForeignKey(
+                        to="proposals.Proposal",
+                        on_delete=django.db.models.deletion.CASCADE,
+                    ),
+                ),
+                (
+                    "voter",
+                    models.ForeignKey(
+                        to="proposals.ProposalSectionReviewer",
+                        on_delete=django.db.models.deletion.CASCADE,
+                    ),
+                ),
             ],
-            options={
-            },
+            options={},
             bases=(models.Model,),
         ),
         migrations.AlterUniqueTogether(
-            name='proposalsectionreviewervote',
-            unique_together=set([('proposal', 'voter')]),
+            name="proposalsectionreviewervote",
+            unique_together=set([("proposal", "voter")]),
         ),
     ]

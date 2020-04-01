@@ -9,6 +9,7 @@ from django.db import models
 class TimeAuditModel(models.Model):
     """To track when the record was created and last modified
     """
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     modified_at = models.DateTimeField(auto_now=True, verbose_name="Last Modified At")
 
@@ -19,15 +20,22 @@ class TimeAuditModel(models.Model):
 class UserAuditModel(models.Model):
     """ To track who created and last modified the record
     """
+
     created_by = models.ForeignKey(
-        User, related_name='created_%(class)s_set',
-        null=True, blank=True, verbose_name="Created By",
-        on_delete=models.SET_NULL
+        User,
+        related_name="created_%(class)s_set",
+        null=True,
+        blank=True,
+        verbose_name="Created By",
+        on_delete=models.SET_NULL,
     )
     modified_by = models.ForeignKey(
-        User, related_name='updated_%(class)s_set',
-        null=True, blank=True, verbose_name="Modified By",
-        on_delete=models.SET_NULL
+        User,
+        related_name="updated_%(class)s_set",
+        null=True,
+        blank=True,
+        verbose_name="Modified By",
+        on_delete=models.SET_NULL,
     )
 
     class Meta:
@@ -35,6 +43,5 @@ class UserAuditModel(models.Model):
 
 
 class AuditModel(TimeAuditModel, UserAuditModel):
-
     class Meta:
         abstract = True
