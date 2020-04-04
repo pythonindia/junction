@@ -102,7 +102,7 @@ For running the tests, run:
 
 .. code-block:: console
 
-   $ nox -s tests
+   $ nox -s test
 
 Running linters
 ---------------
