@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 import django_extensions.db.fields
 from django.conf import settings
 from django.db import migrations, models
@@ -45,7 +44,7 @@ class Migration(migrations.Migration):
                     "conference",
                     models.ForeignKey(
                         to="conferences.Conference",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -54,7 +53,7 @@ class Migration(migrations.Migration):
                         related_name="created_conferenceproposalsection_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -65,7 +64,7 @@ class Migration(migrations.Migration):
                         related_name="updated_conferenceproposalsection_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -104,7 +103,7 @@ class Migration(migrations.Migration):
                     "conference",
                     models.ForeignKey(
                         to="conferences.Conference",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -113,7 +112,7 @@ class Migration(migrations.Migration):
                         related_name="created_conferenceproposaltype_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -124,7 +123,7 @@ class Migration(migrations.Migration):
                         related_name="updated_conferenceproposaltype_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -212,14 +211,14 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         verbose_name="Primary Speaker",
                         to=settings.AUTH_USER_MODEL,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "conference",
                     models.ForeignKey(
                         to="conferences.Conference",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -261,14 +260,14 @@ class Migration(migrations.Migration):
                     "commenter",
                     models.ForeignKey(
                         to=settings.AUTH_USER_MODEL,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "proposal",
                     models.ForeignKey(
                         to="proposals.Proposal",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -302,14 +301,14 @@ class Migration(migrations.Migration):
                     "proposal_comment",
                     models.ForeignKey(
                         to="proposals.ProposalComment",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "voter",
                     models.ForeignKey(
                         to=settings.AUTH_USER_MODEL,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -355,7 +354,7 @@ class Migration(migrations.Migration):
                         related_name="created_proposalsection_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -366,7 +365,7 @@ class Migration(migrations.Migration):
                         related_name="updated_proposalsection_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -412,7 +411,7 @@ class Migration(migrations.Migration):
                         related_name="created_proposaltype_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -423,7 +422,7 @@ class Migration(migrations.Migration):
                         related_name="updated_proposaltype_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -465,14 +464,14 @@ class Migration(migrations.Migration):
                     "proposal",
                     models.ForeignKey(
                         to="proposals.Proposal",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "voter",
                     models.ForeignKey(
                         to=settings.AUTH_USER_MODEL,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -492,7 +491,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 verbose_name="Proposal Section",
                 to="proposals.ProposalSection",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
@@ -502,7 +501,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 verbose_name="Proposal Type",
                 to="proposals.ProposalType",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
@@ -515,7 +514,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 verbose_name="Proposal Type",
                 to="proposals.ProposalType",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
@@ -529,7 +528,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 verbose_name="Proposal Section",
                 to="proposals.ProposalSection",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),

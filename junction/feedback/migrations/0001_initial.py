@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.db import migrations, models
 
 
@@ -47,14 +46,14 @@ class Migration(migrations.Migration):
                     "conference",
                     models.ForeignKey(
                         to="conferences.Conference",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "schedule_item_type",
                     models.ForeignKey(
                         to="schedule.ScheduleItemType",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -94,7 +93,7 @@ class Migration(migrations.Migration):
                     "question",
                     models.ForeignKey(
                         related_name="allowed_values",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to="feedback.ChoiceFeedbackQuestion",
                     ),
                 ),
@@ -131,21 +130,21 @@ class Migration(migrations.Migration):
                         blank=True,
                         to="devices.Device",
                         null=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "question",
                     models.ForeignKey(
                         to="feedback.ChoiceFeedbackQuestion",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "schedule_item",
                     models.ForeignKey(
                         to="schedule.ScheduleItem",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -181,7 +180,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         to="devices.Device",
                         null=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -221,14 +220,14 @@ class Migration(migrations.Migration):
                     "conference",
                     models.ForeignKey(
                         to="conferences.Conference",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "schedule_item_type",
                     models.ForeignKey(
                         to="schedule.ScheduleItemType",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -240,7 +239,7 @@ class Migration(migrations.Migration):
             name="question",
             field=models.ForeignKey(
                 to="feedback.TextFeedbackQuestion",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
@@ -248,7 +247,7 @@ class Migration(migrations.Migration):
             model_name="scheduleitemtextfeedback",
             name="schedule_item",
             field=models.ForeignKey(
-                to="schedule.ScheduleItem", on_delete=django.db.models.deletion.CASCADE
+                to="schedule.ScheduleItem", on_delete=models.deletion.CASCADE
             ),
             preserve_default=True,
         ),

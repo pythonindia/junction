@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.db import migrations, models
 
 
@@ -29,7 +28,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 related_name="moderators",
                 to="conferences.Conference",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
@@ -39,7 +38,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 related_name="proposal_reviewers",
                 to="conferences.Conference",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),

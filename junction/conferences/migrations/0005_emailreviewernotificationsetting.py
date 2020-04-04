@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
@@ -43,7 +42,7 @@ class Migration(migrations.Migration):
                     "conference_reviewer",
                     models.ForeignKey(
                         to="conferences.ConferenceProposalReviewer",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -52,7 +51,7 @@ class Migration(migrations.Migration):
                         related_name="created_emailreviewernotificationsetting_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -63,7 +62,7 @@ class Migration(migrations.Migration):
                         related_name="updated_emailreviewernotificationsetting_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -72,14 +71,14 @@ class Migration(migrations.Migration):
                     "proposal_section",
                     models.ForeignKey(
                         to="proposals.ProposalSection",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "proposal_type",
                     models.ForeignKey(
                         to="proposals.ProposalType",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],

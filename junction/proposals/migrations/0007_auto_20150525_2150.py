@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.db import migrations, models
 
 
@@ -45,14 +44,14 @@ class Migration(migrations.Migration):
                     "proposal",
                     models.ForeignKey(
                         to="proposals.Proposal",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "voter",
                     models.ForeignKey(
                         to="proposals.ProposalSectionReviewer",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],

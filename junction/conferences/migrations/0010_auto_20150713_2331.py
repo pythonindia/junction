@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
@@ -46,7 +45,7 @@ class Migration(migrations.Migration):
                         related_name="created_conferencevenue_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -57,7 +56,7 @@ class Migration(migrations.Migration):
                         related_name="updated_conferencevenue_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -96,7 +95,7 @@ class Migration(migrations.Migration):
                         related_name="created_room_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -107,7 +106,7 @@ class Migration(migrations.Migration):
                         related_name="updated_room_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -116,7 +115,7 @@ class Migration(migrations.Migration):
                     "venue",
                     models.ForeignKey(
                         to="conferences.ConferenceVenue",
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -129,7 +128,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 to="conferences.ConferenceVenue",
                 null=True,
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),

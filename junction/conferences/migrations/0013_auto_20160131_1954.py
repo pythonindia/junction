@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.db import migrations, models
 
 
@@ -43,7 +42,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 null=True,
                 to="conferences.ConferenceVenue",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),

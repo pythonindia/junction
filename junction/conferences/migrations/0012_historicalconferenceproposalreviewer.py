@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
@@ -58,7 +57,7 @@ class Migration(migrations.Migration):
                     "conference",
                     models.ForeignKey(
                         related_name="+",
-                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        on_delete=models.deletion.DO_NOTHING,
                         db_constraint=False,
                         blank=True,
                         to="conferences.Conference",
@@ -69,7 +68,7 @@ class Migration(migrations.Migration):
                     "created_by",
                     models.ForeignKey(
                         related_name="+",
-                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        on_delete=models.deletion.DO_NOTHING,
                         db_constraint=False,
                         blank=True,
                         to=settings.AUTH_USER_MODEL,
@@ -80,7 +79,7 @@ class Migration(migrations.Migration):
                     "history_user",
                     models.ForeignKey(
                         related_name="+",
-                        on_delete=django.db.models.deletion.SET_NULL,
+                        on_delete=models.deletion.SET_NULL,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -89,7 +88,7 @@ class Migration(migrations.Migration):
                     "modified_by",
                     models.ForeignKey(
                         related_name="+",
-                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        on_delete=models.deletion.DO_NOTHING,
                         db_constraint=False,
                         blank=True,
                         to=settings.AUTH_USER_MODEL,
@@ -100,7 +99,7 @@ class Migration(migrations.Migration):
                     "reviewer",
                     models.ForeignKey(
                         related_name="+",
-                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        on_delete=models.deletion.DO_NOTHING,
                         db_constraint=False,
                         blank=True,
                         to=settings.AUTH_USER_MODEL,

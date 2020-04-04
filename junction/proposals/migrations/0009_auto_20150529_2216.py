@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
@@ -44,7 +43,7 @@ class Migration(migrations.Migration):
                         related_name="created_proposalsectionreviewervotevalue_set",
                         verbose_name="Created By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -55,7 +54,7 @@ class Migration(migrations.Migration):
                         related_name="updated_proposalsectionreviewervotevalue_set",
                         verbose_name="Modified By",
                         blank=True,
-                        on_delete=django.db.models.deletion.CASCADE,
+                        on_delete=models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         null=True,
                     ),
@@ -69,7 +68,7 @@ class Migration(migrations.Migration):
             name="vote_value",
             field=models.ForeignKey(
                 to="proposals.ProposalSectionReviewerVoteValue",
-                on_delete=django.db.models.deletion.CASCADE,
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),
