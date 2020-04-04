@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={"abstract": False},
             bases=(models.Model,),
         ),
         migrations.RunPython(load_fixture, reverse_code=unload_fixture),
