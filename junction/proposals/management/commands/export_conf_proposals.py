@@ -34,8 +34,10 @@ class Command(BaseCommand):
             user = User.objects.get(id=options.get('user_id'))
         except User.DoesNotExist:
             self.stdout.write("Invalid user")
+            return
         except Conference.DoesNotExist:
             self.stdout.write("Invalid conference")
+            return
 
         if not is_conference_moderator(user=user, conference=conference):
             self.stdout.write("The user id is not a conference moderator")
