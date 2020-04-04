@@ -55,8 +55,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (

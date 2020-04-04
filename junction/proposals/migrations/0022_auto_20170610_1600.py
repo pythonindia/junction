@@ -47,8 +47,7 @@ class Migration(migrations.Migration):
             model_name="spamcomment",
             name="comment",
             field=models.ForeignKey(
-                on_delete=models.deletion.CASCADE,
-                to="proposals.ProposalComment",
+                on_delete=models.deletion.CASCADE, to="proposals.ProposalComment",
             ),
         ),
         migrations.AddField(

@@ -77,8 +77,7 @@ class Migration(migrations.Migration):
                 (
                     "proposal_type",
                     models.ForeignKey(
-                        to="proposals.ProposalType",
-                        on_delete=models.deletion.CASCADE,
+                        to="proposals.ProposalType", on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],

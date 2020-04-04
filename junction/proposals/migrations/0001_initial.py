@@ -43,8 +43,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -102,8 +101,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -217,8 +215,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -259,15 +256,13 @@ class Migration(migrations.Migration):
                 (
                     "commenter",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL,
-                        on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "proposal",
                     models.ForeignKey(
-                        to="proposals.Proposal",
-                        on_delete=models.deletion.CASCADE,
+                        to="proposals.Proposal", on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -307,8 +302,7 @@ class Migration(migrations.Migration):
                 (
                     "voter",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL,
-                        on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -463,15 +457,13 @@ class Migration(migrations.Migration):
                 (
                     "proposal",
                     models.ForeignKey(
-                        to="proposals.Proposal",
-                        on_delete=models.deletion.CASCADE,
+                        to="proposals.Proposal", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "voter",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL,
-                        on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],

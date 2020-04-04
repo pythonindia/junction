@@ -123,8 +123,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -141,8 +140,7 @@ class Migration(migrations.Migration):
                 (
                     "moderator",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL,
-                        on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -189,8 +187,7 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference",
-                        on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -218,8 +215,7 @@ class Migration(migrations.Migration):
                 (
                     "reviewer",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL,
-                        on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
