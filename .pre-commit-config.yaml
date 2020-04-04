@@ -1,0 +1,39 @@
+repos:
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.5.0
+  hooks:
+  - id: check-builtin-literals
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-yaml
+  - id: debug-statements
+  - id: end-of-file-fixer
+  - id: forbid-new-submodules
+  - id: trailing-whitespace
+
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.4.1
+  hooks:
+  - id: python-no-log-warn
+  - id: python-no-eval
+  - id: rst-backticks
+
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.7.9
+  hooks:
+  - id: flake8
+    exclude: .*/migrations/.*|settings/.*
+
+- repo: https://github.com/timothycrosley/isort
+  rev: 4.3.21
+  hooks:
+  - id: isort
+    files: \.py$
+
+- repo: https://github.com/psf/black
+  rev: stable
+  hooks:
+  - id: black
+    language_version: python3.6
+    exclude: .*/migrations/.*

@@ -26,16 +26,8 @@ def test(session):
 
 @nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def lint(session):
-    session.install("-r", "tools/requirements-lint.txt")
-    session.run(
-        "flake8",
-        "--max-complexity=24",
-        "--statistics",
-        "--benchmark",
-        "--ignore=E5,F4",
-        "junction/"
-    )
-    # TODO: Add tests/ to the arguments above.
+    session.install("pre-commit")
+    session.run("pre-commit", "run", "--all-files")
 
 
 @nox.session(python="3.5")
@@ -46,8 +38,10 @@ def docs(session):
         return [
             "sphinx-build",
             "-W",
-            "-d", "docs/build/_doctrees/" + kind,
-            "-b", kind,
+            "-d",
+            "docs/build/_doctrees/" + kind,
+            "-b",
+            kind,
             "docs/source",
             "docs/build/" + kind,
         ]

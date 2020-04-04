@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# Standard Library
 import inspect
 
 
 def _user_attributes(cls):
-    defaults = dir(type(str('defaults'), (object,), {}))  # gives all inbuilt attrs
-    return [
-        item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
+    defaults = dir(type(str("defaults"), (object,), {}))  # gives all inbuilt attrs
+    return [item[0] for item in inspect.getmembers(cls) if item[0] not in defaults]
 
 
 def choices(cls):
@@ -20,7 +18,7 @@ def choices(cls):
         val = getattr(cls, attr)
         setattr(cls, attr[1:], val[0])
         _choices.append((val[0], val[1]))
-    setattr(cls, 'CHOICES', tuple(_choices))
+    setattr(cls, "CHOICES", tuple(_choices))
     return cls
 
 
@@ -72,8 +70,8 @@ class ProposalReviewVote:
 # FIXME: `ProposalReviewerComment` should be Boolean
 @choices
 class ProposalReviewerComment:
-    _COMMENTED = ['True', 'Yes']
-    _NOT_COMMENTED = ['False', 'No']
+    _COMMENTED = ["True", "Yes"]
+    _NOT_COMMENTED = ["False", "No"]
 
 
 @choices
@@ -89,24 +87,29 @@ class ConferenceSettingConstants:
     ALLOW_PUBLIC_VOTING_ON_PROPOSALS = {
         "name": "allow_public_voting_on_proposals",
         "value": True,
-        "description": "Allow public to vote on proposals"}
+        "description": "Allow public to vote on proposals",
+    }
 
-    DISPLAY_PROPOSALS_IN_PUBLIC = {"name": "display_proposals_in_public",
-                                   "value": True,
-                                   "description": "Display proposals in public"}
+    DISPLAY_PROPOSALS_IN_PUBLIC = {
+        "name": "display_proposals_in_public",
+        "value": True,
+        "description": "Display proposals in public",
+    }
 
-    ALLOW_PLUS_ZERO_REVIEWER_VOTE = {"name": "allow_plus_zero_reviewer_vote",
-                                     "value": True,
-                                     "description": "Allow +0 vote in reviewer votes"}
+    ALLOW_PLUS_ZERO_REVIEWER_VOTE = {
+        "name": "allow_plus_zero_reviewer_vote",
+        "value": True,
+        "description": "Allow +0 vote in reviewer votes",
+    }
 
 
 @choices
 class PSRVotePhase:
-    _PRIMARY = [0, 'Initial voting']
-    _SECONDARY = [1, 'Second phase voting']
+    _PRIMARY = [0, "Initial voting"]
+    _SECONDARY = [1, "Second phase voting"]
 
 
 @choices
 class ProposalCommentType:
-    _GENERAL = [0, 'All general comments']
-    _SECONDARY_VOTING = [1, 'Second phase voting']
+    _GENERAL = [0, "All general comments"]
+    _SECONDARY_VOTING = [1, "Second phase voting"]

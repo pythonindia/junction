@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Standard Library
 import functools
 
-# Third Party Stuff
 from django.conf import settings
 from django.db.models import signals
 
@@ -39,13 +37,13 @@ def set_settings(**new_settings):
        class TestCase:
            ...
     """
+
     def decorator(testcase):
         if type(testcase) is type:
-            namespace = {
-                "OVERRIDE_SETTINGS": new_settings, "ORIGINAL_SETTINGS": {}}
-            wrapper = type(testcase.__name__, (SettingsTestCase, testcase),
-                           namespace)
+            namespace = {"OVERRIDE_SETTINGS": new_settings, "ORIGINAL_SETTINGS": {}}
+            wrapper = type(testcase.__name__, (SettingsTestCase, testcase), namespace)
         else:
+
             @functools.wraps(testcase)
             def wrapper(*args, **kwargs):
                 old_settings = override_settings(new_settings)

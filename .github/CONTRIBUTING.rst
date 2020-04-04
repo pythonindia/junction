@@ -45,13 +45,9 @@ data to the new models.
 Code Convention
 ---------------
 
-We follow the `Django Coding Style`_ and enforce it using `flake8`_.
-
-In general, if flake8 is happy with your code, you should be fine. To use
-``flake8`` to check your code, you can use the following command::
-
-   $ flake8 --max-complexity=24 --statistics --benchmark --ignore=E5,F4 <project_dir>/
+We follow the `Black Coding Style`_, and sort our imports with `isort`_. This
+code style is enforced with automation.
 
 .. _`issue tracker`: https://github.com/pythonindia/junction/issues
-.. _`flake8`: https://flake8.readthedocs.org/en/latest/
-.. _`Django Coding Style`: https://docs.djangoproject.com/en/2.2/internals/contributing/writing-code/coding-style/
+.. _`isort`: https://isort.readthedocs.org/en/latest/
+.. _`Black Coding Style`: https://black.readthedocs.io/en/latest/the_black_code_style.html
