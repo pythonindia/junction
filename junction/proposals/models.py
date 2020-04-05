@@ -50,9 +50,10 @@ class ProposalSectionReviewer(AuditModel):
     conference_reviewer = models.ForeignKey(
         "conferences.ConferenceProposalReviewer",
         verbose_name="Conference Proposal Reviewers",
+        on_delete=models.CASCADE,
     )
     proposal_section = models.ForeignKey(
-        ProposalSection, verbose_name="Proposal Section"
+        ProposalSection, verbose_name="Proposal Section", on_delete=models.CASCADE
     )
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
@@ -81,12 +82,16 @@ class Proposal(TimeAuditModel):
 
     """ The proposals master """
 
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     proposal_section = models.ForeignKey(
-        ProposalSection, verbose_name="Proposal Section"
+        ProposalSection, verbose_name="Proposal Section", on_delete=models.CASCADE
     )
-    proposal_type = models.ForeignKey(ProposalType, verbose_name="Proposal Type")
-    author = models.ForeignKey(User, verbose_name="Primary Speaker")
+    proposal_type = models.ForeignKey(
+        ProposalType, verbose_name="Proposal Type", on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        User, verbose_name="Primary Speaker", on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
     slug = AutoSlugField(max_length=255, populate_from=("title",))
     description = models.TextField(default="")
@@ -260,8 +265,8 @@ class ProposalVote(TimeAuditModel):
 
     """ User vote for a specific proposal """
 
-    proposal = models.ForeignKey(Proposal)
-    voter = models.ForeignKey(User)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(
         choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.PUBLIC
     )
@@ -304,12 +309,14 @@ class ProposalSectionReviewerVote(TimeAuditModel):
 
     """ Reviewer vote for a specific proposal """
 
-    proposal = models.ForeignKey(Proposal)
-    voter = models.ForeignKey(ProposalSectionReviewer)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    voter = models.ForeignKey(ProposalSectionReviewer, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(
         choices=ProposalUserVoteRole.CHOICES, default=ProposalUserVoteRole.REVIEWER
     )
-    vote_value = models.ForeignKey(ProposalSectionReviewerVoteValue)
+    vote_value = models.ForeignKey(
+        ProposalSectionReviewerVoteValue, on_delete=models.CASCADE
+    )
     phase = models.PositiveSmallIntegerField(
         choices=PSRVotePhase.CHOICES, default=PSRVotePhase.PRIMARY
     )
@@ -329,8 +336,8 @@ class ProposalComment(TimeAuditModel):
 
     """ User comments for a specific proposal """
 
-    proposal = models.ForeignKey(Proposal)
-    commenter = models.ForeignKey(User)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE)
     private = models.BooleanField(default=False, verbose_name="Is Private?")
     reviewer = models.BooleanField(default=False, verbose_name="Is Reviewer?")
     vote = models.BooleanField(default=False, verbose_name="What is the reason?")
@@ -342,7 +349,12 @@ class ProposalComment(TimeAuditModel):
     objects = ProposalCommentQuerySet.as_manager()
     is_spam = models.BooleanField(default=False, blank=True)
     marked_as_spam_by = models.ForeignKey(
-        User, related_name="marked_as_spam_by", default=None, null=True, blank=True
+        User,
+        related_name="marked_as_spam_by",
+        default=None,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
 
     class Meta:
@@ -411,8 +423,8 @@ class ProposalCommentVote(TimeAuditModel):
 
     """ User vote for a specific proposal's comment """
 
-    proposal_comment = models.ForeignKey(ProposalComment)
-    voter = models.ForeignKey(User)
+    proposal_comment = models.ForeignKey(ProposalComment, on_delete=models.CASCADE)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE)
     up_vote = models.BooleanField(default=True)
 
     def __str__(self):

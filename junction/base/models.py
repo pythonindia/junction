@@ -26,6 +26,7 @@ class UserAuditModel(models.Model):
         null=True,
         blank=True,
         verbose_name="Created By",
+        on_delete=models.SET_NULL,
     )
     modified_by = models.ForeignKey(
         User,
@@ -33,6 +34,7 @@ class UserAuditModel(models.Model):
         null=True,
         blank=True,
         verbose_name="Modified By",
+        on_delete=models.SET_NULL,
     )
 
     class Meta:

@@ -8,12 +8,14 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('proposals', '0024_auto_20170610_1857'),
+        ("proposals", "0024_auto_20170610_1857"),
     ]
 
     operations = [
         migrations.AlterIndexTogether(
-            name='proposalcomment',
-            index_together=set([('is_spam', 'marked_as_spam_by'), ('commenter', 'is_spam')]),
+            name="proposalcomment",
+            index_together=set(
+                [("is_spam", "marked_as_spam_by"), ("commenter", "is_spam")]
+            ),
         ),
     ]
