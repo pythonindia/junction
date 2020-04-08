@@ -1,4 +1,4 @@
-Django==1.9
+Django==1.11.17
 celery==3.1.20
 djangorestframework==3.4
 django-filter==1.0.1
