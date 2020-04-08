@@ -1,5 +1,5 @@
 Django==1.11.17
-celery==3.1.20
+celery==4.4.2
 djangorestframework==3.11.0
 django-filter==2.2.0
 
