@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
 import datetime
 
 from django.db import models
 from django.utils.timezone import now
-from uuidfield import UUIDField
 
 from junction.base.models import TimeAuditModel
 
@@ -14,7 +12,7 @@ def expiry_time(expiry_mins=60):
 
 
 class Device(TimeAuditModel):
-    uuid = UUIDField(version=1, hyphenate=True, unique=True, db_index=True)
+    uuid = models.UUIDField(unique=True, max_length=32, db_index=True)
 
     # Verification
     is_verified = models.BooleanField(default=False)
