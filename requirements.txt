@@ -46,7 +46,7 @@ django-flat-theme==1.1.3
 # Markdown Editor
 # -------------------------------------------------
 django-markdown==0.8.4
-django-pagedown==0.1.
+django-pagedown==1.0.6
 mdx-linkify==0.6
 Markdown==2.6.6
 markdown2==2.3.1
