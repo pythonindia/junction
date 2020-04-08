@@ -35,7 +35,7 @@ mock==2.0.0 # Django all auth needs
 
 # Admin
 # -------------------------------------------------
-django_simple_history==1.8.0
+django_simple_history==2.8.0
 
 # Frontend Helpers
 # -------------------------------------------------
