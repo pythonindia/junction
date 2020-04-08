@@ -6,8 +6,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import Http404, render
 from django.template.loader import render_to_string
-from rest_framework import filters, viewsets
+from rest_framework import viewsets
 from rest_framework.response import Response
+
+from django_filters import rest_framework as filters
 
 from .models import ScheduleItem
 from .serializers import ScheduleSerializer
@@ -17,7 +19,7 @@ class ScheduleView(viewsets.ReadOnlyModelViewSet):
     queryset = ScheduleItem.objects.all()
     serializer_class = ScheduleSerializer
     filter_backend = (filters.DjangoFilterBackend,)
-    filter_fields = ("room", "conference", "event_date")
+    filterset_fields = ("room", "conference", "event_date")
 
     def get_queryset(self):
         data = (
