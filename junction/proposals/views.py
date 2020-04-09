@@ -235,7 +235,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
     if public_voting_setting:
         public_voting_setting_value = public_voting_setting.value
         try:
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 proposal_vote = ProposalVote.objects.get(
                     proposal=proposal, voter=request.user
                 )
