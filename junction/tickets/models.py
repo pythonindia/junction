@@ -24,4 +24,4 @@ class Ticket(AuditModel):
     others = JSONField()
 
     def __str__(self):
-        return self.name, self.email, self.ticket_no
+        return "{} : {} : {}".format(self.name, self.email, self.ticket_no)
