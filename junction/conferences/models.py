@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
@@ -18,7 +17,6 @@ from junction.base.models import AuditModel
 from junction.base.utils import get_date_diff_display
 
 
-@python_2_unicode_compatible
 class Conference(AuditModel):
 
     """ Conference/Event master """
@@ -122,7 +120,6 @@ class Conference(AuditModel):
         return self.proposal_types.filter(end_date__gt=now()).exists()
 
 
-@python_2_unicode_compatible
 class ConferenceModerator(AuditModel):
 
     """ List of Conference Moderators/Administrators  """
@@ -142,7 +139,6 @@ class ConferenceModerator(AuditModel):
         return "{}[{}]".format(self.moderator.get_full_name(), self.conference)
 
 
-@python_2_unicode_compatible
 class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
@@ -166,7 +162,6 @@ class ConferenceProposalReviewer(AuditModel):
         return "{} - {}".format(self.conference, self.reviewer.username)
 
 
-@python_2_unicode_compatible
 class ConferenceVenue(AuditModel):
     name = models.CharField(max_length=100)
 
@@ -189,7 +184,6 @@ class Room(AuditModel):
         return "{}, {}".format(self.name, self.venue)
 
 
-@python_2_unicode_compatible
 class ConferenceSetting(AuditModel):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)

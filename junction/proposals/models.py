@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from hashids import Hashids
 from rest_framework.reverse import reverse as rf_reverse
@@ -26,7 +25,6 @@ from junction.base.models import AuditModel, TimeAuditModel
 from junction.conferences.models import Conference, ConferenceProposalReviewer
 
 
-@python_2_unicode_compatible
 class ProposalSection(AuditModel):
 
     """ List of Proposal Sections"""
@@ -42,7 +40,6 @@ class ProposalSection(AuditModel):
         return self.name
 
 
-@python_2_unicode_compatible
 class ProposalSectionReviewer(AuditModel):
 
     """ List of Proposal Section Reviewers"""
@@ -61,7 +58,6 @@ class ProposalSectionReviewer(AuditModel):
         return "{}:[{}]".format(self.conference_reviewer, self.proposal_section)
 
 
-@python_2_unicode_compatible
 class ProposalType(AuditModel):
 
     """ List of Proposal Types """
@@ -77,7 +73,6 @@ class ProposalType(AuditModel):
         return self.name
 
 
-@python_2_unicode_compatible
 class Proposal(TimeAuditModel):
 
     """ The proposals master """
@@ -263,7 +258,6 @@ class Proposal(TimeAuditModel):
         unique_together = ("conference", "slug")
 
 
-@python_2_unicode_compatible
 class ProposalVote(TimeAuditModel):
 
     """ User vote for a specific proposal """
@@ -293,7 +287,6 @@ class ProposalCommentQuerySet(models.QuerySet):
         return self.filter(reviewer=True, vote=False)
 
 
-@python_2_unicode_compatible
 class ProposalSectionReviewerVoteValue(AuditModel):
     """ Proposal reviewer vote choices. """
 
@@ -307,7 +300,6 @@ class ProposalSectionReviewerVoteValue(AuditModel):
         ordering = ("-vote_value",)
 
 
-@python_2_unicode_compatible
 class ProposalSectionReviewerVote(TimeAuditModel):
 
     """ Reviewer vote for a specific proposal """
@@ -334,7 +326,6 @@ class ProposalSectionReviewerVote(TimeAuditModel):
 
 
 # FIXME: Need to move private, reviewer, vote to type
-@python_2_unicode_compatible
 class ProposalComment(TimeAuditModel):
 
     """ User comments for a specific proposal """
@@ -421,7 +412,6 @@ class ProposalComment(TimeAuditModel):
             return "Public"
 
 
-@python_2_unicode_compatible
 class ProposalCommentVote(TimeAuditModel):
 
     """ User vote for a specific proposal's comment """
