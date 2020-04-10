@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                         auto_now=True, verbose_name="Last Modified At"
                     ),
                 ),
-                ('uuid', models.UUIDField(max_length=32, unique=True, db_index=True)),
+                ("uuid", models.UUIDField(max_length=32, unique=True, db_index=True)),
                 ("is_verified", models.BooleanField(default=False)),
                 ("verification_code", models.IntegerField()),
                 (

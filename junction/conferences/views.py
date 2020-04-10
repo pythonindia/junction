@@ -5,9 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-
 from django_filters import rest_framework as filters
-
 from rest_framework import viewsets
 
 from .models import Conference, ConferenceVenue, Room
