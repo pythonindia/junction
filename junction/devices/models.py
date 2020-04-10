@@ -26,5 +26,5 @@ class Device(TimeAuditModel):
         verbose_name="Verification Code Expires At", default=expiry_time
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return "uuid: {}, is_verified: {}".format(self.uuid, self.is_verified)

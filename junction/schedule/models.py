@@ -54,7 +54,7 @@ class ScheduleItem(AuditModel):
 
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} - {} on {} from {} to {} in {}".format(
             self.conference,
             self.name,
