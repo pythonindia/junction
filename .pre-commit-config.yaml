@@ -23,7 +23,8 @@ repos:
   rev: 3.7.9
   hooks:
   - id: flake8
-    exclude: .*/migrations/.*|settings/.*
+    # These are only excluded because they're a mess right now.
+    exclude: settings/.*
 
 - repo: https://github.com/timothycrosley/isort
   rev: 4.3.21
@@ -36,4 +37,3 @@ repos:
   hooks:
   - id: black
     language_version: python3.6
-    exclude: .*/migrations/.*

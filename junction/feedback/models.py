@@ -12,9 +12,9 @@ from junction.schedule.models import ScheduleItem, ScheduleItemType
 
 
 class BaseSessionQuestionMixin(models.Model):
-    schedule_item_type = models.ForeignKey(ScheduleItemType)
+    schedule_item_type = models.ForeignKey(ScheduleItemType, on_delete=models.CASCADE)
     is_required = models.BooleanField(default=True)
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -74,7 +74,9 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
     """Store allowed values for each choice based question
     """
 
-    question = models.ForeignKey(ChoiceFeedbackQuestion, related_name="allowed_values")
+    question = models.ForeignKey(
+        ChoiceFeedbackQuestion, related_name="allowed_values", on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255, verbose_name="Choice Feedback Value Title")
     value = models.SmallIntegerField(db_index=True)
 
@@ -86,10 +88,14 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
 
 @python_2_unicode_compatible
 class ScheduleItemTextFeedback(TimeAuditModel):
-    schedule_item = models.ForeignKey(ScheduleItem, db_index=True)
-    question = models.ForeignKey(TextFeedbackQuestion)
+    schedule_item = models.ForeignKey(
+        ScheduleItem, db_index=True, on_delete=models.CASCADE
+    )
+    question = models.ForeignKey(TextFeedbackQuestion, on_delete=models.CASCADE)
     text = models.TextField()
-    device = models.ForeignKey(Device, null=True, blank=True, db_index=True)
+    device = models.ForeignKey(
+        Device, null=True, blank=True, db_index=True, on_delete=models.CASCADE
+    )
 
     class Meta:
         index_together = [["device", "schedule_item"]]
@@ -102,10 +108,10 @@ class ScheduleItemTextFeedback(TimeAuditModel):
 
 @python_2_unicode_compatible
 class ScheduleItemChoiceFeedback(TimeAuditModel):
-    schedule_item = models.ForeignKey(ScheduleItem)
-    question = models.ForeignKey(ChoiceFeedbackQuestion)
+    schedule_item = models.ForeignKey(ScheduleItem, on_delete=models.CASCADE)
+    question = models.ForeignKey(ChoiceFeedbackQuestion, on_delete=models.CASCADE)
     value = models.SmallIntegerField(db_index=True)
-    device = models.ForeignKey(Device, null=True, blank=True)
+    device = models.ForeignKey(Device, null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
         index_together = [["device", "schedule_item"], ["schedule_item", "value"]]

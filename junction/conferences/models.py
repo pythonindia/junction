@@ -34,7 +34,9 @@ class Conference(AuditModel):
     status = models.PositiveSmallIntegerField(
         choices=ConferenceStatus.CHOICES, verbose_name="Current Status"
     )
-    venue = models.ForeignKey("ConferenceVenue", null=True, blank=True)
+    venue = models.ForeignKey(
+        "ConferenceVenue", null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     twitter_id = models.CharField(
         max_length=100,
@@ -125,8 +127,10 @@ class ConferenceModerator(AuditModel):
 
     """ List of Conference Moderators/Administrators  """
 
-    conference = models.ForeignKey(Conference, related_name="moderators")
-    moderator = models.ForeignKey(User)
+    conference = models.ForeignKey(
+        Conference, related_name="moderators", on_delete=models.CASCADE
+    )
+    moderator = models.ForeignKey(User, on_delete=models.CASCADE)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
 
     class Meta:
@@ -143,8 +147,10 @@ class ConferenceProposalReviewer(AuditModel):
 
     """ List of global proposal reviewers """
 
-    conference = models.ForeignKey(Conference, related_name="proposal_reviewers")
-    reviewer = models.ForeignKey(User)
+    conference = models.ForeignKey(
+        Conference, related_name="proposal_reviewers", on_delete=models.CASCADE
+    )
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
     active = models.BooleanField(default=True, verbose_name="Is Active?")
     nick = models.CharField(
         max_length=255, verbose_name="Nick Name", default="Reviewer"
@@ -175,7 +181,7 @@ class ConferenceVenue(AuditModel):
 
 class Room(AuditModel):
     name = models.CharField(max_length=100)
-    venue = models.ForeignKey(ConferenceVenue)
+    venue = models.ForeignKey(ConferenceVenue, on_delete=models.CASCADE)
 
     note = models.CharField(max_length=255)
 
@@ -185,7 +191,7 @@ class Room(AuditModel):
 
 @python_2_unicode_compatible
 class ConferenceSetting(AuditModel):
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)
     value = models.BooleanField(default=False)
     description = models.CharField(max_length=255)
