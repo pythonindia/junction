@@ -37,7 +37,7 @@ class ScheduleItem(AuditModel):
         (INTROUDCTION, "Introduction"),
         (LIGHTNING_TALK, "Lightning Talk"),
     )
-    room = models.ForeignKey(Room, null=True)
+    room = models.ForeignKey(Room, null=True, on_delete=models.SET_NULL)
     # if a session is not present, venue can be null Ex: break
     event_date = models.DateField(db_index=True)
     start_time = models.TimeField(db_index=True)
@@ -46,11 +46,15 @@ class ScheduleItem(AuditModel):
     alt_description = models.TextField(blank=True)
     limit_choices = {"review_status": ProposalReviewStatus.SELECTED}
     session = models.ForeignKey(
-        Proposal, null=True, blank=True, limit_choices_to=limit_choices
+        Proposal,
+        null=True,
+        blank=True,
+        limit_choices_to=limit_choices,
+        on_delete=models.SET_NULL,
     )
     type = models.CharField(max_length=20, choices=SCHEDULE_ITEM_TYPE, default=TALK)
 
-    conference = models.ForeignKey(Conference)
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return u"{} - {} on {} from {} to {} in {}".format(

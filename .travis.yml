@@ -22,7 +22,7 @@ jobs:
     - stage: primary
       env: NOXSESSION=lint-3.5
     - env: NOXSESSION=test-3.5
-    # - env: NOXSESSION=docs
+    - env: NOXSESSION=docs
 
     - stage: secondary
       env: NOXSESSION=test-3.6
