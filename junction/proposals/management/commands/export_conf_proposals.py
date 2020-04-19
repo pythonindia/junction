@@ -3,15 +3,10 @@ import csv
 import os
 
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
 from django.core.management.base import BaseCommand
 from settings.common import ROOT_DIR
 
-from junction.base.constants import (
-    ProposalReviewStatus,
-    ProposalReviewVote,
-    ProposalStatus,
-)
+from junction.base.constants import ProposalStatus
 from junction.conferences.models import Conference
 from junction.proposals.models import Proposal, ProposalSectionReviewerVoteValue
 from junction.proposals.permissions import is_conference_moderator
