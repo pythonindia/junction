@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import csv
 import os
+import sys
 
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
@@ -29,14 +30,14 @@ class Command(BaseCommand):
             user = User.objects.get(id=options.get("user_id"))
         except User.DoesNotExist:
             self.stdout.write("Invalid user")
-            return
+            sys.exit(1)
         except Conference.DoesNotExist:
             self.stdout.write("Invalid conference")
-            return
+            sys.exit(1)
 
         if not is_conference_moderator(user=user, conference=conference):
             self.stdout.write("The user id is not a conference moderator")
-            return
+            sys.exit(1)
 
         proposal_sections = conference.proposal_sections.all()
         proposals_qs = Proposal.objects.select_related(
