@@ -100,6 +100,9 @@ class Proposal(TimeAuditModel):
         default=ProposalTargetAudience.BEGINNER,
         verbose_name="Target Audience",
     )
+    video_url = models.URLField(
+        blank=True, default="", help_text="Short 1-2 min video describing your talk",
+    )
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
     speaker_info = models.TextField(blank=True, default="")
