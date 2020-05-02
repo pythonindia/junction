@@ -15,7 +15,7 @@ def dev(session):
     session.run("python", "manage.py", *session.posargs)
 
 
-@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def test(session):
     session.install("-r", "requirements.txt")
     session.install("-r", "tools/requirements-test.txt")
