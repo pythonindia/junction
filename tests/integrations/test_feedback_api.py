@@ -160,10 +160,10 @@ class TestFeedbackListApi(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + str(self.device.uuid))
         res = self.client.post("/api/v1/feedback/", data, format="json")
 
-        msg = u"The multiple choice value isn't associated with question"
+        msg = "The multiple choice value isn't associated with question"
 
         assert res.status_code == status.HTTP_400_BAD_REQUEST
-        assert res.data == {"choices": [{u"non_field_errors": [msg]}]}
+        assert res.data == {"choices": [{"non_field_errors": [msg]}]}
 
     def test_feedback_with_missing_required_text_data(self):
         choice = [
