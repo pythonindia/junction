@@ -57,7 +57,7 @@ class ScheduleItem(AuditModel):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return u"{} - {} on {} from {} to {} in {}".format(
+        return "{} - {} on {} from {} to {} in {}".format(
             self.conference,
             self.name,
             self.event_date,
@@ -90,9 +90,7 @@ class ScheduleItem(AuditModel):
         }
         if self.session:
             session = self.session
-            author = u"{} {}".format(
-                session.author.first_name, session.author.last_name
-            )
+            author = "{} {}".format(session.author.first_name, session.author.last_name)
             data["session"] = {
                 "id": session.id,
                 "title": session.title,
