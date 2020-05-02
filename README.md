@@ -27,29 +27,6 @@ sudo apt-get -y install redis-server
 
 Initial auth data: admin/123123
 
-If docker and docker-compose are not installed already (Not mandatory):
---------------------------------------------
-Refer to (http://docs.docker.com/installation/) for detailed installation instructions.
-
-```
-curl -sSL https://get.docker.com/ | sudo sh
-sudo pip install docker-compose
-```
-
-Create aliases for docker and docker-compose to avoid running them with sudo everytime.
-Append the following lines to your ~/.bashrc or ~/.zshrc
-
-```
-alias docker='sudo docker'
-alias docker-compose='sudo docker-compose'
-```
-
-Finally, run
-```
-docker-compose up
-```
-
-
 Configuring Django-allauth
 ---------------------------
 
