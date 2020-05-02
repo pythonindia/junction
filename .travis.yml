@@ -21,6 +21,7 @@ jobs:
     # Basic Checks
     - stage: primary
       env: NOXSESSION=lint-3.5
+    - env: NOXSESSION=test-2.7
     - env: NOXSESSION=test-3.5
     - env: NOXSESSION=docs
 
