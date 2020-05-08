@@ -114,6 +114,11 @@ class ProposalForm(forms.Form):
         required=False,
         help_text="What should the participants know before attending your session?",
     )
+    video_url = forms.CharField(
+        required=False,
+        help_text="Short 1-2 min video describing your talk",
+        widget=forms.TextInput(attrs={"class": "charfield"}),
+    )
     content_urls = forms.CharField(
         widget=PagedownWidget(show_preview=True),
         required=False,
@@ -148,6 +153,7 @@ class ProposalForm(forms.Form):
                 "description": proposal.description,
                 "target_audience": proposal.target_audience,
                 "prerequisites": proposal.prerequisites,
+                "video_url": proposal.video_url,
                 "content_urls": proposal.content_urls,
                 "speaker_info": proposal.speaker_info,
                 "speaker_links": proposal.speaker_links,

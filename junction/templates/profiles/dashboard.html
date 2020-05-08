@@ -34,7 +34,7 @@
             <br>
             {% if conf_proposals %}
                 {% for conference,proposals in conf_proposals.items %}
-                <h3><a href="{% url 'proposals-list' conference|slugify %}">{{ conference }}</a></h3>
+                <h3><a href="{% url 'proposals-list' proposals.0.conference.slug %}">{{ conference }}</a></h3>
                 {% for proposal in proposals %}
         <div class="row user-proposals proposal" data-type="{{proposal.proposal_type}}" data-comment="{{proposal|reviewer_comments:request.user}}">
             <div class="col-xs-12" >
