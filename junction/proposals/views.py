@@ -103,7 +103,7 @@ def list_proposals(request, conference_slug):
     # make sure it's after the tag filtering is applied
     selected_proposals_list = proposals_qs.filter(
         review_status=ProposalReviewStatus.SELECTED
-    )
+    ).order_by("created_at")
 
     selected_proposals = collections.defaultdict(list)
     for proposal in selected_proposals_list:
@@ -123,8 +123,10 @@ def list_proposals(request, conference_slug):
         {
             "public_proposals_list": public_proposals_list,
             "selected_proposals": dict(selected_proposals),
-            "proposal_sections": conference.proposal_sections.all(),
-            "proposal_types": conference.proposal_types.all(),
+            "proposal_sections": conference.proposal_sections.all().order_by(
+                "modified_at"
+            ),
+            "proposal_types": conference.proposal_types.all().order_by("modified_at"),
             "is_filtered": is_filtered,
             "filter_name": filter_name,
             "is_reviewer": permissions.is_proposal_reviewer(
