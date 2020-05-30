@@ -18,7 +18,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--conference_slug",
             default=None,
-            help="Enter the conference slug where to export reviewer votes from",
+            help="Enter the conference whose reviewer votes are to be exported from",
         )
 
         parser.add_argument("--user_id", default=None, help="Enter your user id")
@@ -51,11 +51,9 @@ class Command(BaseCommand):
         )
         vote_values_list = [v.vote_value for v in proposal_vote_values]
         vote_values_desc = tuple(i.description for i in proposal_vote_values)
-        header = (
-            ("Proposal Type", "Title", "Sum of reviewer votes", "No. of reviewer votes")
+        header = ("Proposal Type", "Title", "Sum of reviewer votes", "No. of reviewer votes")
             + ("Public votes count", "Vote comments")
             + tuple(vote_values_desc)
-        )
 
         csv_contents = []
 
