@@ -27,4 +27,4 @@ class Device(TimeAuditModel):
     )
 
     def __unicode__(self):
-        return u"uuid: {}, is_verified: {}".format(self.uuid, self.is_verified)
+        return "uuid: {}, is_verified: {}".format(self.uuid, self.is_verified)
