@@ -91,3 +91,5 @@ qr_files/
 .vscode/
 
 tmp/
+
+.docker/
