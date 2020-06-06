@@ -11,7 +11,7 @@ jobs:
         python-version: [3.8]
     runs-on: ubuntu-16.04
     env:
-      DJANGO_SETTINGS_MODULE="settings.test_settings"
+      DJANGO_SETTINGS_MODULE: "settings.test_settings"
     services:
       postgres:
         image: postgres:12.2
