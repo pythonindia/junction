@@ -1,0 +1,54 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - django-2.2
+  pull_request:
+    branches-ignore:
+      - django-2.2
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    runs-on: ubuntu-16.04
+    env:
+      DJANGO_SETTINGS_MODULE: "settings.test_settings"
+    services:
+      postgres:
+        image: postgres:12.2
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # Python 3.5 needs to be set up here since Django 1.9 does not run beyond that
+      - name: Setup Python 3.5
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.5
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Install CI dependencies
+        run: |
+          pip install --upgrade pip
+          pip install celery==3.1.20 Django==1.9 # required for running celery
+          pip install nox
+          pip install codecov
+      - name: Run celery worker for tests
+        run: celery -A junction worker -l info --detach
+      - name: Run tests
+        run: nox -s test-${{ matrix.python-version }}
+      - name: Report coverage
+        uses: codecov/codecov-action@v1
