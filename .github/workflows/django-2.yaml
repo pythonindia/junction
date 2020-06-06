@@ -1,0 +1,55 @@
+name: CI for pull requests targeting django-2.2 branch
+on:
+  pull_request:
+    branches:
+      - django-2.2
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.8]
+    runs-on: ubuntu-16.04
+    services:
+      postgres:
+        image: postgres:12.2
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Install project dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nox
+          pip install coveralls
+      - name: Check for linting issues
+        run: nox -s lint-3.8
+      - name: Run tests
+        run: nox -s test-3.8
+  finish:
+    needs: build
+    runs-on: ubuntu-16.04
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
