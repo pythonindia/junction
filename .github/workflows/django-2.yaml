@@ -10,6 +10,8 @@ jobs:
       matrix:
         python-version: [3.8]
     runs-on: ubuntu-16.04
+    env:
+      DJANGO_SETTINGS_MODULE="settings.test_settings"
     services:
       postgres:
         image: postgres:12.2
@@ -42,13 +44,15 @@ jobs:
           pip install coveralls
       - name: Check for linting issues
         run: nox -s lint-3.8
+      - name: Run celery worker for tests
+        run: celery -A junction worker -l info --detach
       - name: Run tests
         run: nox -s test-3.8
   finish:
     needs: build
     runs-on: ubuntu-16.04
     steps:
-    - name: Coveralls Finished
+    - name: Send coverage report to coveralls and PR as a comment
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
