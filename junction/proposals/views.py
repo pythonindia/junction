@@ -11,8 +11,9 @@ from django.http import Http404
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
+from django_filters import rest_framework as filters
 from hashids import Hashids
-from rest_framework import filters, viewsets
+from rest_framework import viewsets
 from rest_framework.response import Response
 
 from junction.base.constants import (
@@ -39,7 +40,12 @@ class ProposalView(viewsets.ReadOnlyModelViewSet):
     queryset = Proposal.objects.filter(status=2)
     serializer_class = serializers.ProposalSerializer
     filter_backend = (filters.DjangoFilterBackend,)
-    filter_fields = ("conference", "review_status", "proposal_type", "proposal_section")
+    filterset_fields = (
+        "conference",
+        "review_status",
+        "proposal_type",
+        "proposal_section",
+    )
 
     def get_queryset(self):
         data = super(ProposalView, self).get_queryset()
@@ -233,7 +239,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
     if public_voting_setting:
         public_voting_setting_value = public_voting_setting.value
         try:
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 proposal_vote = ProposalVote.objects.get(
                     proposal=proposal, voter=request.user
                 )

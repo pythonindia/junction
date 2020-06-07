@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-from rest_framework import filters, viewsets
+from django_filters import rest_framework as filters
+from rest_framework import viewsets
 
 from .models import Conference, ConferenceVenue, Room
 from .serializers import ConferenceSerializer, RoomSerializer, VenueSerializer
@@ -25,7 +26,7 @@ class RoomView(viewsets.ReadOnlyModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     filter_backend = (filters.DjangoFilterBackend,)
-    filter_fields = ("venue",)
+    filterset_fields = ("venue",)
 
 
 @require_http_methods(["GET"])

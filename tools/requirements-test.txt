@@ -1,6 +1,6 @@
 factory-boy==2.11.1
 
-pytest-django==3.4.8
+pytest-django==3.9.0
 pytest-cov==2.6.1
 
 coverage==5.0.4

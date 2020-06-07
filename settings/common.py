@@ -214,10 +214,6 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None
 # Make sure DB request held on for minimim 5 minutes
 CONN_MAX_AGE = 300
 
-REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ("rest_framework.filters.DjangoFilterBackend",)
-}
-
 EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
 
 QR_CODES_DIR = ROOT_DIR + "/qr_files"

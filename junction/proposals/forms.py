@@ -66,7 +66,7 @@ def _get_proposal_section_reviewer_vote_choices(conference):
     return values
 
 
-class HorizRadioRenderer(forms.RadioSelect.renderer):
+class HorizRadioRenderer(forms.RadioSelect):
 
     """
     This overrides widget method to put radio buttons horizontally instead of vertically.
