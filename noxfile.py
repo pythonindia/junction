@@ -20,8 +20,8 @@ def test(session):
     session.install("-r", "requirements.txt")
     session.install("-r", "tools/requirements-test.txt")
 
-    session.run("pytest", "--cov", "-v", "--tb=native")
-    session.run("coverage", "report", "-m")
+    session.run("pytest", "--cov", "--cov-report=xml", "-v", "--tb=native")
+    # session.run("coverage", "report", "-m")
 
 
 @nox.session(python=["3.5", "3.6", "3.7", "3.8"])
