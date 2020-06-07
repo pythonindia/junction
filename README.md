@@ -16,7 +16,7 @@ Contributing
 
 [issue-list]: https://github.com/pythonindia/junction/issues/
 [new-issue]: https://github.com/pythonindia/junction/issues/new
-[guidelines]: https://github.com/pythonindia/junction/blob/master/.github/CONTRIBUTING.md
+[guidelines]: https://github.com/pythonindia/junction/blob/master/.github/CONTRIBUTING.rst
 [getting-started]: https://in-junction.readthedocs.io/en/latest/development/getting-started.html
 
 License
