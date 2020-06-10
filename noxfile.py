@@ -8,7 +8,7 @@ nox.options.reuse_existing_virtualenvs = True
 nox.options.error_on_external_run = True
 
 
-@nox.session(python="3.5")
+@nox.session
 def dev(session):
     session.install("-r", "requirements.txt")
 
