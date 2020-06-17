@@ -92,6 +92,7 @@ class ProposalForm(forms.Form):
         widget=PagedownWidget(show_preview=True), help_text=("Describe your Proposal")
     )
     target_audience = forms.ChoiceField(
+        label="Target Audience",
         choices=ProposalTargetAudience.CHOICES,
         widget=forms.Select(attrs={"class": "dropdown"}),
     )
@@ -103,33 +104,40 @@ class ProposalForm(forms.Form):
             " Make the proposal PUBLIC when you're done editing."
         ),
     )
-    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={"class": "dropdown"}))
+    proposal_type = forms.ChoiceField(
+        label="Proposal Type", widget=forms.Select(attrs={"class": "dropdown"})
+    )
     proposal_section = forms.ChoiceField(
-        widget=forms.Select(attrs={"class": "dropdown"})
+        label="Proposal Section", widget=forms.Select(attrs={"class": "dropdown"})
     )
 
     # Additional Content
     prerequisites = forms.CharField(
+        label="Pre-requisites",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="What should the participants know before attending your session?",
     )
     video_url = forms.CharField(
+        label="Video URL",
         required=False,
         help_text="Short 1-2 min video describing your talk",
         widget=forms.TextInput(attrs={"class": "charfield"}),
     )
     content_urls = forms.CharField(
+        label="Content URLs",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Links to your session like GitHub repo, Blog, Slideshare etc ...",
     )
     speaker_info = forms.CharField(
+        label="Speaker Information",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Say something about yourself, work etc...",
     )
     speaker_links = forms.CharField(
+        label="Speaker Links",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
