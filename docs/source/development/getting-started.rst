@@ -58,15 +58,14 @@ created with the username ``admin`` and password ``123123``.
 Frontend
 --------
 
-Working on Junction's frontend requires `NodeJS`_ to be installed on your
-system. The frontend is built using `bower`_ and `grunt`_. To setup the working
+Working on Junction's frontend requires `NodeJS`_ and `yarn`_ to be installed on your
+system. The frontend is built using `grunt`_. To setup the working
 environment, run the following:
 
 .. code-block:: console
 
    $ cd junction/static
-   $ npm install
-   $ bower install
+   $ yarn install
 
 Development workflow
 ====================
@@ -81,6 +80,10 @@ every file change.
 .. code-block:: console
 
    $ grunt
+
+For ease of development ``app.css`` is checked in to the source code. It is not
+recommended to directly make changes to ``app.css``, rather update the less files
+and run ``grunt``, then commit ``app.css``
 
 Invoking ``manage.py``
 ----------------------
@@ -126,5 +129,5 @@ For building the documentation, run:
 .. _`virtualenv`: https://virtualenv.pypa.io/en/stable/
 .. _`nox`: https://nox.readthedocs.io/en/stable/
 .. _`NodeJS`: https://nodejs.org/
-.. _`bower`: https://bower.io/
+.. _`yarn`: https://yarnpkg.com/
 .. _`grunt`: https://gruntjs.com/
