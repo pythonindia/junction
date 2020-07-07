@@ -180,6 +180,13 @@
           </div>
           {% endif %}
 
+          {% if proposal.is_first_time_speaker %}
+          <div class="proposal-writeup--section">
+            <h4 class='heading'><b>First Time Speaker:</b></h4>
+            <p> Yes</p>
+          </div>
+          {% endif %}
+
           {% if is_section_reviewer or user.is_authenticated and user.is_superuser %}
               <div class="proposal-writeup--section">
                   <h4 class='heading'><b>Reviewer Actions:</b></h4>

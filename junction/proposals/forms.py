@@ -143,6 +143,12 @@ class ProposalForm(forms.Form):
         help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
     )
 
+    is_first_time_speaker = forms.BooleanField(
+        label="First Time Speaker",
+        required=False,
+        help_text="Please tick, if you are a first time speaker"
+    )
+
     def __init__(self, conference, action="edit", *args, **kwargs):
         super(ProposalForm, self).__init__(*args, **kwargs)
         self.fields["proposal_section"].choices = _get_proposal_section_choices(
@@ -165,6 +171,7 @@ class ProposalForm(forms.Form):
                 "content_urls": proposal.content_urls,
                 "speaker_info": proposal.speaker_info,
                 "speaker_links": proposal.speaker_links,
+                "is_first_time_speaker": proposal.is_first_time_speaker,
                 "status": proposal.status,
                 "proposal_section": proposal.proposal_section.pk,
                 "proposal_type": proposal.proposal_type.pk,
