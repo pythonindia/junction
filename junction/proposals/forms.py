@@ -146,7 +146,7 @@ class ProposalForm(forms.Form):
     is_first_time_speaker = forms.BooleanField(
         label="First Time Speaker",
         required=False,
-        help_text="Please tick, if you are a first time speaker"
+        help_text="Please mark, if you are a first time speaker"
     )
 
     def __init__(self, conference, action="edit", *args, **kwargs):
