@@ -54,7 +54,7 @@
                     <i class="fa fa-calendar"></i> <b> <time datetime="{{ proposal.created_at|date:'c' }}" title="Created on {{ proposal.created_at|date:'d M Y, H:i' }}">{{ proposal.created_at|date:"d M, Y" }}</time></b>
                 </small>
             </p>
-
+`
             {% if is_author %}
                 <div class="btn-group" role="group">
                     <a href="{{ proposal.get_update_url }}"
@@ -77,6 +77,10 @@
                         <i class="fa fa-comments-o"></i>
                     </a>
                 </div>
+            {% endif %}
+
+            {% if proposal.is_first_time_speaker %}
+            <span class="label label-primary">First Time Speaker</span>
             {% endif %}
 
             {% comment %}
@@ -180,12 +184,7 @@
           </div>
           {% endif %}
 
-          {% if proposal.is_first_time_speaker %}
-          <div class="proposal-writeup--section">
-            <h4 class='heading'><b>First Time Speaker:</b></h4>
-            <p> Yes</p>
-          </div>
-          {% endif %}
+
 
           {% if is_section_reviewer or user.is_authenticated and user.is_superuser %}
               <div class="proposal-writeup--section">
