@@ -130,6 +130,11 @@ class ProposalForm(forms.Form):
         required=False,
         help_text="Links to your session like GitHub repo, Blog, Slideshare etc ...",
     )
+    private_content_urls = forms.BooleanField(
+        help_text="Check the box if you want to make your content URLs private",
+        label="Make the context URLs private",
+        required=False,
+    )
     speaker_info = forms.CharField(
         label="Speaker Information",
         widget=PagedownWidget(show_preview=True),
@@ -169,6 +174,7 @@ class ProposalForm(forms.Form):
                 "prerequisites": proposal.prerequisites,
                 "video_url": proposal.video_url,
                 "content_urls": proposal.content_urls,
+                "private_content_urls": proposal.private_content_urls,
                 "speaker_info": proposal.speaker_info,
                 "speaker_links": proposal.speaker_links,
                 "is_first_time_speaker": proposal.is_first_time_speaker,
