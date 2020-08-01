@@ -136,18 +136,17 @@ class ProposalForm(forms.Form):
         required=False,
         help_text="Say something about yourself, work etc...",
     )
-    speaker_links = forms.CharField(
-        label="Speaker Links",
-        widget=PagedownWidget(show_preview=True),
-        required=False,
-        help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
-    )
-
     is_first_time_speaker = forms.BooleanField(
         label="First Time Speaker",
         required=False,
         help_text="Please mark, if you are a first time speaker for any conference or meetup,"
         "not just for PyCon India",
+    )
+    speaker_links = forms.CharField(
+        label="Speaker Links",
+        widget=PagedownWidget(show_preview=True),
+        required=False,
+        help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
     )
 
     def __init__(self, conference, action="edit", *args, **kwargs):
