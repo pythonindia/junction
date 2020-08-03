@@ -136,6 +136,12 @@ class ProposalForm(forms.Form):
         required=False,
         help_text="Say something about yourself, work etc...",
     )
+    is_first_time_speaker = forms.BooleanField(
+        label="First Time Speaker",
+        required=False,
+        help_text="Please mark, if you are a first time speaker for any conference or meetup,"
+        "not just for PyCon India",
+    )
     speaker_links = forms.CharField(
         label="Speaker Links",
         widget=PagedownWidget(show_preview=True),
@@ -165,6 +171,7 @@ class ProposalForm(forms.Form):
                 "content_urls": proposal.content_urls,
                 "speaker_info": proposal.speaker_info,
                 "speaker_links": proposal.speaker_links,
+                "is_first_time_speaker": proposal.is_first_time_speaker,
                 "status": proposal.status,
                 "proposal_section": proposal.proposal_section.pk,
                 "proposal_type": proposal.proposal_type.pk,

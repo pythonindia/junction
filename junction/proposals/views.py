@@ -173,6 +173,7 @@ def create_proposal(request, conference_slug):
         content_urls=form.cleaned_data["content_urls"],
         speaker_info=form.cleaned_data["speaker_info"],
         speaker_links=form.cleaned_data["speaker_links"],
+        is_first_time_speaker=form.cleaned_data["is_first_time_speaker"],
         status=form.cleaned_data["status"],
         proposal_type_id=form.cleaned_data["proposal_type"],
         proposal_section_id=form.cleaned_data["proposal_section"],
@@ -324,6 +325,7 @@ def update_proposal(request, conference_slug, slug):
     proposal.content_urls = form.cleaned_data["content_urls"]
     proposal.speaker_info = form.cleaned_data["speaker_info"]
     proposal.speaker_links = form.cleaned_data["speaker_links"]
+    proposal.is_first_time_speaker = form.cleaned_data["is_first_time_speaker"]
     proposal.status = form.cleaned_data["status"]
     proposal.proposal_type_id = form.cleaned_data["proposal_type"]
     proposal.proposal_section_id = form.cleaned_data["proposal_section"]

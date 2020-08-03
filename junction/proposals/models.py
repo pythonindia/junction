@@ -107,6 +107,7 @@ class Proposal(TimeAuditModel):
     content_urls = models.TextField(blank=True, default="")
     speaker_info = models.TextField(blank=True, default="")
     speaker_links = models.TextField(blank=True, default="")
+    is_first_time_speaker = models.BooleanField(blank=True, default=False)
     status = models.PositiveSmallIntegerField(
         choices=ProposalStatus.CHOICES, default=ProposalStatus.DRAFT
     )
