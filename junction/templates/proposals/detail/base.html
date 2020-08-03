@@ -54,7 +54,7 @@
                     <i class="fa fa-calendar"></i> <b> <time datetime="{{ proposal.created_at|date:'c' }}" title="Created on {{ proposal.created_at|date:'d M Y, H:i' }}">{{ proposal.created_at|date:"d M, Y" }}</time></b>
                 </small>
             </p>
-`
+
             {% if is_author %}
                 <div class="btn-group" role="group">
                     <a href="{{ proposal.get_update_url }}"
@@ -183,8 +183,6 @@
             <p>{{ proposal.speaker_links|markdown_safe }}</p>
           </div>
           {% endif %}
-
-
 
           {% if is_section_reviewer or user.is_authenticated and user.is_superuser %}
               <div class="proposal-writeup--section">
