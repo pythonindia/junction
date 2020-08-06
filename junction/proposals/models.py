@@ -105,8 +105,13 @@ class Proposal(TimeAuditModel):
     )
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
+    private_content_urls = models.BooleanField(
+        default=False,
+        help_text="Check it if you want to make your content URLs private",
+    )
     speaker_info = models.TextField(blank=True, default="")
     speaker_links = models.TextField(blank=True, default="")
+    is_first_time_speaker = models.BooleanField(blank=True, default=False)
     status = models.PositiveSmallIntegerField(
         choices=ProposalStatus.CHOICES, default=ProposalStatus.DRAFT
     )
@@ -253,6 +258,7 @@ class Proposal(TimeAuditModel):
             "speaker_info": self.speaker_info,
             "speaker_links": self.speaker_links,
             "content_urls": self.content_urls,
+            "private_content_urls": self.private_content_urls,
             "conference": rf_reverse(
                 "conference-detail", kwargs={"pk": self.conference_id}, request=request
             ),

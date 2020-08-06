@@ -144,7 +144,7 @@ urlpatterns = [
     url(r"^(?P<conference_slug>[\w-]+)/schedule/", include("junction.schedule.urls")),
     # Proposals as conference home page. TODO: Needs to be enhanced
     url(
-        r"^(?P<conference_slug>[\w-]+)--/",
+        r"^(?P<conference_slug>[\w-]+)/",
         RedirectView.as_view(pattern_name="proposals-list"),
         name="conference-detail",
     ),

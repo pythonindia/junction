@@ -92,6 +92,7 @@ class ProposalForm(forms.Form):
         widget=PagedownWidget(show_preview=True), help_text=("Describe your Proposal")
     )
     target_audience = forms.ChoiceField(
+        label="Target Audience",
         choices=ProposalTargetAudience.CHOICES,
         widget=forms.Select(attrs={"class": "dropdown"}),
     )
@@ -103,33 +104,51 @@ class ProposalForm(forms.Form):
             " Make the proposal PUBLIC when you're done editing."
         ),
     )
-    proposal_type = forms.ChoiceField(widget=forms.Select(attrs={"class": "dropdown"}))
+    proposal_type = forms.ChoiceField(
+        label="Proposal Type", widget=forms.Select(attrs={"class": "dropdown"})
+    )
     proposal_section = forms.ChoiceField(
-        widget=forms.Select(attrs={"class": "dropdown"})
+        label="Proposal Section", widget=forms.Select(attrs={"class": "dropdown"})
     )
 
     # Additional Content
     prerequisites = forms.CharField(
+        label="Pre-requisites",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="What should the participants know before attending your session?",
     )
     video_url = forms.CharField(
+        label="Video URL",
         required=False,
         help_text="Short 1-2 min video describing your talk",
         widget=forms.TextInput(attrs={"class": "charfield"}),
     )
     content_urls = forms.CharField(
+        label="Content URLs",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Links to your session like GitHub repo, Blog, Slideshare etc ...",
     )
+    private_content_urls = forms.BooleanField(
+        help_text="Check the box if you want to make your content URLs private",
+        label="Make the context URLs private",
+        required=False,
+    )
     speaker_info = forms.CharField(
+        label="Speaker Information",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Say something about yourself, work etc...",
     )
+    is_first_time_speaker = forms.BooleanField(
+        label="First Time Speaker",
+        required=False,
+        help_text="Please mark, if you are a first time speaker for any conference or meetup,"
+        "not just for PyCon India",
+    )
     speaker_links = forms.CharField(
+        label="Speaker Links",
         widget=PagedownWidget(show_preview=True),
         required=False,
         help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
@@ -155,8 +174,10 @@ class ProposalForm(forms.Form):
                 "prerequisites": proposal.prerequisites,
                 "video_url": proposal.video_url,
                 "content_urls": proposal.content_urls,
+                "private_content_urls": proposal.private_content_urls,
                 "speaker_info": proposal.speaker_info,
                 "speaker_links": proposal.speaker_links,
+                "is_first_time_speaker": proposal.is_first_time_speaker,
                 "status": proposal.status,
                 "proposal_section": proposal.proposal_section.pk,
                 "proposal_type": proposal.proposal_type.pk,

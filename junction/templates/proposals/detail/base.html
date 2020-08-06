@@ -79,6 +79,10 @@
                 </div>
             {% endif %}
 
+            {% if is_author or is_reviewer or user.is_superuser and proposal.is_first_time_speaker %}
+            <span class="label label-info">First Time Speaker</span>
+            {% endif %}
+
             {% comment %}
               {% if is_reviewer %}
                 <a class="tag label label-proposal-type" href="{{ proposal.get_review_url }}">Review proposal</a>
@@ -145,10 +149,12 @@
           {% endif %}
 
           {% if proposal.content_urls %}
+          {% if not proposal.private_content_urls or is_author or is_reviewer or user.is_authenticated and user.is_superuser %}
           <div class="proposal-writeup--section">
-            <h4 class='heading'><b>Content URLs:</b></h4>
-            <p>{{ proposal.content_urls|markdown_safe }}</p>
+              <h4 class='heading'><b>Content URLs:</b> {% if proposal.private_content_urls %}<span class="label label-info">Private</span>{% endif %}</h4>
+              <p>{{ proposal.content_urls|markdown_safe }}</p>
           </div>
+          {% endif %}
           {% endif %}
 
           {% if is_reviewer or user.is_authenticated and user.is_superuser %}

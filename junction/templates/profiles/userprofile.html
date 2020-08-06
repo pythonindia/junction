@@ -17,8 +17,9 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Dashboard" "user-proposals-list" %}
-    {% breadcrumb "Profile" "user-profile"%}
+    <!-- breadcrumb takes 2 mandatory arguments (label & viewname)  -->
+    {% breadcrumb "Dashboard" "/profiles" %}
+    {% breadcrumb "Profile" "dummy-url" %}
 {% endblock %}
 
 {% block navbar_logo %}

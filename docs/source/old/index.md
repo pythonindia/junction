@@ -22,7 +22,7 @@ It is advised to install all the requirements inside [virtualenv], use [virtuale
 [virtualenvwrapper]: https://virtualenvwrapper.readthedocs.org/en/latest/
 
 ```
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 cp settings/dev.py.sample settings/dev.py
 python manage.py migrate --noinput
 python manage.py sample_data
