@@ -79,8 +79,10 @@
                 </div>
             {% endif %}
 
-            {% if is_author or is_reviewer or user.is_superuser and proposal.is_first_time_speaker %}
+            {% if proposal.is_first_time_speaker %}
+            {% if is_author or is_reviewer or user.is_superuser %}
             <span class="label label-info">First Time Speaker</span>
+            {% endif %}
             {% endif %}
 
             {% comment %}
