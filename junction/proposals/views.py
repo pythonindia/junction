@@ -211,7 +211,9 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         proposal = get_object_or_404(Proposal, slug=slug, conference=conference)
         return HttpResponseRedirect(proposal.get_absolute_url())
 
-    if proposal.deleted:
+    if proposal.deleted or (
+        not proposal.is_public() and request.user != proposal.author
+    ):
         raise Http404("404")
 
     # Here we have obtained the proposal that we want to display.
