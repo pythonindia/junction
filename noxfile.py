@@ -20,7 +20,7 @@ def test(session):
     session.install("-r", "requirements.txt")
     session.install("-r", "tools/requirements-test.txt")
 
-    session.run("pytest", "--cov", "-v", "--tb=native")
+    session.run("pytest", "--cov", "--cov-report=xml", "-v", "--tb=native")
     session.run("coverage", "report", "-m")
 
 
