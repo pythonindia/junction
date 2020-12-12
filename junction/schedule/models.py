@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.reverse import reverse
 
 from junction.base.constants import ProposalReviewStatus
@@ -10,7 +9,6 @@ from junction.conferences.models import Conference, Room
 from junction.proposals.models import Proposal
 
 
-@python_2_unicode_compatible
 class ScheduleItemType(AuditModel):
     title = models.CharField(max_length=100)
 
@@ -56,7 +54,7 @@ class ScheduleItem(AuditModel):
 
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} - {} on {} from {} to {} in {}".format(
             self.conference,
             self.name,

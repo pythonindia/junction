@@ -3,7 +3,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 
 from junction.base.models import TimeAuditModel
 from junction.conferences.models import Conference
@@ -20,7 +19,6 @@ class BaseSessionQuestionMixin(models.Model):
         abstract = True
 
 
-@python_2_unicode_compatible
 class TextFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
     """Store details about text feedback type information.
     """
@@ -42,7 +40,6 @@ class TextFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
         }
 
 
-@python_2_unicode_compatible
 class ChoiceFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
     """Store details about text feedback type information.
     """
@@ -69,7 +66,6 @@ class ChoiceFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
         }
 
 
-@python_2_unicode_compatible
 class ChoiceFeedbackQuestionValue(TimeAuditModel):
     """Store allowed values for each choice based question
     """
@@ -86,7 +82,6 @@ class ChoiceFeedbackQuestionValue(TimeAuditModel):
         )
 
 
-@python_2_unicode_compatible
 class ScheduleItemTextFeedback(TimeAuditModel):
     schedule_item = models.ForeignKey(
         ScheduleItem, db_index=True, on_delete=models.CASCADE
@@ -106,7 +101,6 @@ class ScheduleItemTextFeedback(TimeAuditModel):
         )
 
 
-@python_2_unicode_compatible
 class ScheduleItemChoiceFeedback(TimeAuditModel):
     schedule_item = models.ForeignKey(ScheduleItem, on_delete=models.CASCADE)
     question = models.ForeignKey(ChoiceFeedbackQuestion, on_delete=models.CASCADE)
