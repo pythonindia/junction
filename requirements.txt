@@ -2,6 +2,7 @@ Django==3.1.7
 celery==5.0.5
 djangorestframework==3.12.2
 django-filter==2.4.0
+wheel==0.36.2 # Needed by django-sampledatahelper
 
 # Persistent Store
 # -------------------------------------------------
@@ -44,7 +45,7 @@ django-flat-theme==1.1.4
 
 # Markdown Editor
 # -------------------------------------------------
-django-markdown2==0.8.4 # TODO: remove if possible or find a replacement
+django-markdown2==0.3.1 # TODO: remove if possible or find a replacement
 django-pagedown==2.2.0
 mdx-linkify==2.1
 Markdown==3.3.4 # TODO: remove if possible or find a replacement
