@@ -23,7 +23,10 @@ class TimeAuditAdmin(admin.ModelAdmin):
 
 
 class AuditAdmin(TimeAuditAdmin):
-    list_display = ("created_by", "modified_by",) + TimeAuditAdmin.list_display
+    list_display = (
+        "created_by",
+        "modified_by",
+    ) + TimeAuditAdmin.list_display
     exclude = (
         "created_by",
         "modified_by",

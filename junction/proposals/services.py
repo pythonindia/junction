@@ -171,8 +171,7 @@ def send_mail_for_proposal_content(conference_id, proposal_id, host):
 
 
 def user_action_for_spam(user, threshold):
-    """When a comment is marked as spam, make appropriate status update to user model
-    """
+    """When a comment is marked as spam, make appropriate status update to user model"""
     total_spam = ProposalComment.objects.filter(commenter=user, is_spam=True).count()
     if total_spam >= threshold:
         if user.is_active is True:

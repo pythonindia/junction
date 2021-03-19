@@ -11,7 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="proposalcomment", name="type",),
+        migrations.RemoveField(
+            model_name="proposalcomment",
+            name="type",
+        ),
         migrations.AddField(
             model_name="historicalproposalsectionreviewervote",
             name="phase",

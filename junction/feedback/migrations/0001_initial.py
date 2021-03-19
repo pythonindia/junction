@@ -45,7 +45,8 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -142,7 +143,8 @@ class Migration(migrations.Migration):
                 (
                     "schedule_item",
                     models.ForeignKey(
-                        to="schedule.ScheduleItem", on_delete=models.deletion.CASCADE,
+                        to="schedule.ScheduleItem",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
@@ -217,7 +219,8 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -235,7 +238,8 @@ class Migration(migrations.Migration):
             model_name="scheduleitemtextfeedback",
             name="question",
             field=models.ForeignKey(
-                to="feedback.TextFeedbackQuestion", on_delete=models.deletion.CASCADE,
+                to="feedback.TextFeedbackQuestion",
+                on_delete=models.deletion.CASCADE,
             ),
             preserve_default=True,
         ),

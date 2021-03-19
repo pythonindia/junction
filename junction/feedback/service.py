@@ -58,8 +58,7 @@ def get_choice_feedback_questions(conference_id):
 
 
 def has_submitted(feedback, device_uuid):
-    """
-    """
+    """"""
     device = Device.objects.get(uuid=device_uuid)
     text_feedback = ScheduleItemTextFeedback.objects.filter(
         schedule_item_id=feedback.validated_data["schedule_item_id"], device=device

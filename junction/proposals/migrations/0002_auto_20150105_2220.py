@@ -13,33 +13,51 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterUniqueTogether(
-            name="conferenceproposalsection", unique_together=None,
+            name="conferenceproposalsection",
+            unique_together=None,
         ),
         migrations.RemoveField(
-            model_name="conferenceproposalsection", name="conference",
+            model_name="conferenceproposalsection",
+            name="conference",
         ),
         migrations.RemoveField(
-            model_name="conferenceproposalsection", name="created_by",
+            model_name="conferenceproposalsection",
+            name="created_by",
         ),
         migrations.RemoveField(
-            model_name="conferenceproposalsection", name="modified_by",
+            model_name="conferenceproposalsection",
+            name="modified_by",
         ),
         migrations.RemoveField(
-            model_name="conferenceproposalsection", name="proposal_section",
+            model_name="conferenceproposalsection",
+            name="proposal_section",
         ),
-        migrations.DeleteModel(name="ConferenceProposalSection",),
+        migrations.DeleteModel(
+            name="ConferenceProposalSection",
+        ),
         migrations.AlterUniqueTogether(
-            name="conferenceproposaltype", unique_together=None,
-        ),
-        migrations.RemoveField(model_name="conferenceproposaltype", name="conference",),
-        migrations.RemoveField(model_name="conferenceproposaltype", name="created_by",),
-        migrations.RemoveField(
-            model_name="conferenceproposaltype", name="modified_by",
+            name="conferenceproposaltype",
+            unique_together=None,
         ),
         migrations.RemoveField(
-            model_name="conferenceproposaltype", name="proposal_type",
+            model_name="conferenceproposaltype",
+            name="conference",
         ),
-        migrations.DeleteModel(name="ConferenceProposalType",),
+        migrations.RemoveField(
+            model_name="conferenceproposaltype",
+            name="created_by",
+        ),
+        migrations.RemoveField(
+            model_name="conferenceproposaltype",
+            name="modified_by",
+        ),
+        migrations.RemoveField(
+            model_name="conferenceproposaltype",
+            name="proposal_type",
+        ),
+        migrations.DeleteModel(
+            name="ConferenceProposalType",
+        ),
         migrations.AddField(
             model_name="proposalsection",
             name="conferences",

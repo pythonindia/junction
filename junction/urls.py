@@ -78,37 +78,51 @@ urlpatterns = [
     # Static Pages. TODO: to be refactored
     url(
         r"^speakers/$",
-        TemplateView.as_view(template_name="static-content/speakers.html",),
+        TemplateView.as_view(
+            template_name="static-content/speakers.html",
+        ),
         name="speakers-static",
     ),
     url(
         r"^schedule/$",
-        TemplateView.as_view(template_name="static-content/schedule.html",),
+        TemplateView.as_view(
+            template_name="static-content/schedule.html",
+        ),
         name="schedule-static",
     ),
     url(
         r"^venue/$",
-        TemplateView.as_view(template_name="static-content/venue.html",),
+        TemplateView.as_view(
+            template_name="static-content/venue.html",
+        ),
         name="venue-static",
     ),
     url(
         r"^sponsors/$",
-        TemplateView.as_view(template_name="static-content/sponsors.html",),
+        TemplateView.as_view(
+            template_name="static-content/sponsors.html",
+        ),
         name="sponsors-static",
     ),
     url(
         r"^blog/$",
-        TemplateView.as_view(template_name="static-content/blog-archive.html",),
+        TemplateView.as_view(
+            template_name="static-content/blog-archive.html",
+        ),
         name="blog-archive",
     ),
     url(
         r"^coc/$",
-        TemplateView.as_view(template_name="static-content/coc.html",),
+        TemplateView.as_view(
+            template_name="static-content/coc.html",
+        ),
         name="coc-static",
     ),
     url(
         r"^faq/$",
-        TemplateView.as_view(template_name="static-content/faq.html",),
+        TemplateView.as_view(
+            template_name="static-content/faq.html",
+        ),
         name="faq-static",
     ),
     # Conference Pages

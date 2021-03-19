@@ -12,19 +12,26 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="emailreviewernotificationsetting", name="conference_reviewer",
+            model_name="emailreviewernotificationsetting",
+            name="conference_reviewer",
         ),
         migrations.RemoveField(
-            model_name="emailreviewernotificationsetting", name="created_by",
+            model_name="emailreviewernotificationsetting",
+            name="created_by",
         ),
         migrations.RemoveField(
-            model_name="emailreviewernotificationsetting", name="modified_by",
+            model_name="emailreviewernotificationsetting",
+            name="modified_by",
         ),
         migrations.RemoveField(
-            model_name="emailreviewernotificationsetting", name="proposal_section",
+            model_name="emailreviewernotificationsetting",
+            name="proposal_section",
         ),
         migrations.RemoveField(
-            model_name="emailreviewernotificationsetting", name="proposal_type",
+            model_name="emailreviewernotificationsetting",
+            name="proposal_type",
         ),
-        migrations.DeleteModel(name="EmailReviewerNotificationSetting",),
+        migrations.DeleteModel(
+            name="EmailReviewerNotificationSetting",
+        ),
     ]

@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterIndexTogether(
-            name="spamcomment", index_together=set([("comment", "marked_by")]),
+            name="spamcomment",
+            index_together=set([("comment", "marked_by")]),
         ),
     ]

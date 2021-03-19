@@ -8,8 +8,7 @@ from junction.base.constants import ConferenceSettingConstants
 
 
 def add_default_values(apps, schema_editor):
-    """Add all default values
-    """
+    """Add all default values"""
     ConferenceSetting = apps.get_model("conferences", "ConferenceSetting")
     public_voting = ConferenceSettingConstants.ALLOW_PUBLIC_VOTING_ON_PROPOSALS
     display_propsals = ConferenceSettingConstants.DISPLAY_PROPOSALS_IN_PUBLIC
@@ -80,7 +79,8 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (

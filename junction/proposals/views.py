@@ -95,7 +95,10 @@ def list_proposals(request, conference_slug):
     )
 
     proposals_qs = Proposal.objects.filter(conference=conference).select_related(
-        "proposal_type", "proposal_section", "conference", "author",
+        "proposal_type",
+        "proposal_section",
+        "conference",
+        "author",
     )
 
     is_filtered, filter_name, proposals_qs = _filter_proposals(request, proposals_qs)
@@ -193,8 +196,7 @@ def create_proposal(request, conference_slug):
 
 @require_http_methods(["GET"])
 def detail_proposal(request, conference_slug, slug, hashid=None):
-    """Display a proposal detail page.
-    """
+    """Display a proposal detail page."""
     # Here try to get a proposal by it's hashid. If the slug didn't match because
     # the title might have changed, redirect to the correct slug.
     # hashid is optional due to backward compatibility. If the hashid is not present
@@ -349,7 +351,10 @@ def proposals_to_review(request, conference_slug):
 
     proposals_qs = (
         Proposal.objects.select_related(
-            "proposal_type", "proposal_section", "conference", "author",
+            "proposal_type",
+            "proposal_section",
+            "conference",
+            "author",
         )
         .filter(conference=conference)
         .filter(status=ProposalStatus.PUBLIC)

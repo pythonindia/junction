@@ -12,7 +12,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="proposalsectionreviewervote", name="up_vote",
+            model_name="proposalsectionreviewervote",
+            name="up_vote",
         ),
         migrations.AddField(
             model_name="proposalsectionreviewervote",
