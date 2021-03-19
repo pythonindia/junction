@@ -16,7 +16,9 @@ DATABASES = {
 }
 
 TEMPLATES[0]["OPTIONS"]["context_processors"].extend(
-    ["django.core.context_processors.debug",]
+    [
+        "django.core.context_processors.debug",
+    ]
 )
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

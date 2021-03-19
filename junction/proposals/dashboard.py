@@ -197,7 +197,10 @@ def reviewer_votes_dashboard(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        "proposal_type", "proposal_section", "conference", "author",
+        "proposal_type",
+        "proposal_section",
+        "conference",
+        "author",
     ).filter(conference=conference, status=ProposalStatus.PUBLIC)
 
     proposals = []
@@ -247,7 +250,10 @@ def second_phase_voting(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        "proposal_type", "proposal_section", "conference", "author",
+        "proposal_type",
+        "proposal_section",
+        "conference",
+        "author",
     ).filter(conference=conference, review_status=ProposalReviewStatus.SELECTED)
 
     proposals = []
@@ -298,7 +304,10 @@ def export_reviewer_votes(request, conference_slug):
 
     proposal_sections = conference.proposal_sections.all()
     proposals_qs = Proposal.objects.select_related(
-        "proposal_type", "proposal_section", "conference", "author",
+        "proposal_type",
+        "proposal_section",
+        "conference",
+        "author",
     ).filter(conference=conference, status=ProposalStatus.PUBLIC)
     proposals_qs = sorted(
         proposals_qs, key=lambda x: x.get_reviewer_votes_sum(), reverse=True
@@ -334,7 +343,8 @@ def export_reviewer_votes(request, conference_slug):
                     [
                         comment.comment
                         for comment in p.proposalcomment_set.filter(
-                            vote=True, deleted=False,
+                            vote=True,
+                            deleted=False,
                         )
                     ]
                 )
@@ -346,7 +356,10 @@ def export_reviewer_votes(request, conference_slug):
                         p.get_reviewer_votes_count(),
                     )
                     + vote_details
-                    + (p.get_votes_count(), vote_comment,)
+                    + (
+                        p.get_votes_count(),
+                        vote_comment,
+                    )
                 )
                 if (
                     p.get_reviewer_votes_count_by_value(

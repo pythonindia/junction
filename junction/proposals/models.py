@@ -101,7 +101,9 @@ class Proposal(TimeAuditModel):
         verbose_name="Target Audience",
     )
     video_url = models.URLField(
-        blank=True, default="", help_text="Short 1-2 min video describing your talk",
+        blank=True,
+        default="",
+        help_text="Short 1-2 min video describing your talk",
     )
     prerequisites = models.TextField(blank=True, default="")
     content_urls = models.TextField(blank=True, default="")
@@ -210,14 +212,17 @@ class Proposal(TimeAuditModel):
         ).count()
 
     def get_reviewer_votes_sum(self):
-        votes = ProposalSectionReviewerVote.objects.filter(proposal=self,)
+        votes = ProposalSectionReviewerVote.objects.filter(
+            proposal=self,
+        )
         sum_of_votes = sum((v.vote_value.vote_value for v in votes))
         return sum_of_votes
 
     def get_reviewer_vote_value(self, reviewer):
         try:
             vote = ProposalSectionReviewerVote.objects.get(
-                proposal=self, voter__conference_reviewer__reviewer=reviewer,
+                proposal=self,
+                voter__conference_reviewer__reviewer=reviewer,
             )
             return vote.vote_value.vote_value
         except ProposalSectionReviewerVote.DoesNotExist:
@@ -233,14 +238,14 @@ class Proposal(TimeAuditModel):
         """ Show sum of reviewer votes for given vote value. """
         return (
             ProposalSectionReviewerVote.objects.filter(
-                proposal=self, vote_value__vote_value=ProposalReviewVote.NOT_ALLOWED,
+                proposal=self,
+                vote_value__vote_value=ProposalReviewVote.NOT_ALLOWED,
             ).count()
             > 0
         )
 
     def to_response(self, request):
-        """method will return dict which can be passed to response
-        """
+        """method will return dict which can be passed to response"""
         author = "{} {}".format(self.author.first_name, self.author.last_name)
         data = {
             "id": self.id,

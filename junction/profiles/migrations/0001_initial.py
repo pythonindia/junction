@@ -61,7 +61,8 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.OneToOneField(
-                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],

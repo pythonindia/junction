@@ -74,8 +74,7 @@ class ScheduleItem(AuditModel):
         index_together = [("event_date", "start_time")]
 
     def to_response(self, request):
-        """method will return dict which can be passed to response
-        """
+        """method will return dict which can be passed to response"""
         data = {
             "id": self.id,
             "room_id": getattr(self.room, "id", None),

@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="proposalcomment", options={"ordering": ("created_at",)},
+            name="proposalcomment",
+            options={"ordering": ("created_at",)},
         ),
     ]

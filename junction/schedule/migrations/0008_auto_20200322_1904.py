@@ -41,7 +41,9 @@ class Migration(migrations.Migration):
             model_name="scheduleitem",
             name="room",
             field=models.ForeignKey(
-                null=True, on_delete=models.deletion.SET_NULL, to="conferences.Room",
+                null=True,
+                on_delete=models.deletion.SET_NULL,
+                to="conferences.Room",
             ),
         ),
         migrations.AlterField(

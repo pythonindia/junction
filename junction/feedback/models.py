@@ -22,8 +22,7 @@ class BaseSessionQuestionMixin(models.Model):
 
 @python_2_unicode_compatible
 class TextFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
-    """Store details about text feedback type information.
-    """
+    """Store details about text feedback type information."""
 
     title = models.CharField(max_length=255, verbose_name="Text Feedback Title")
 
@@ -44,8 +43,7 @@ class TextFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
 
 @python_2_unicode_compatible
 class ChoiceFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
-    """Store details about text feedback type information.
-    """
+    """Store details about text feedback type information."""
 
     title = models.CharField(max_length=255, verbose_name="Choice Feedback Title")
 
@@ -71,8 +69,7 @@ class ChoiceFeedbackQuestion(BaseSessionQuestionMixin, TimeAuditModel):
 
 @python_2_unicode_compatible
 class ChoiceFeedbackQuestionValue(TimeAuditModel):
-    """Store allowed values for each choice based question
-    """
+    """Store allowed values for each choice based question"""
 
     question = models.ForeignKey(
         ChoiceFeedbackQuestion, related_name="allowed_values", on_delete=models.CASCADE

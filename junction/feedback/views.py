@@ -48,8 +48,7 @@ class FeedbackListApiView(views.APIView):
 
 
 def view_feedback(request, schedule_item_id):
-    """Show text/choice feedback for the schedule.
-    """
+    """Show text/choice feedback for the schedule."""
     schedule_item = get_object_or_404(ScheduleItem, pk=schedule_item_id)
     if not can_view_feedback(user=request.user, schedule_item=schedule_item):
         return HttpResponseForbidden("Access Denied")

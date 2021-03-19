@@ -13,8 +13,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="proposalsection", name="end_date",),
-        migrations.RemoveField(model_name="proposalsection", name="start_date",),
+        migrations.RemoveField(
+            model_name="proposalsection",
+            name="end_date",
+        ),
+        migrations.RemoveField(
+            model_name="proposalsection",
+            name="start_date",
+        ),
         migrations.AddField(
             model_name="proposaltype",
             name="end_date",

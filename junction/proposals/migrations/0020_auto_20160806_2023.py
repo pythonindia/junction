@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterUniqueTogether(
-            name="proposalsectionreviewervote", unique_together=set([]),
+            name="proposalsectionreviewervote",
+            unique_together=set([]),
         ),
     ]

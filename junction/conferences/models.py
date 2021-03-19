@@ -112,8 +112,7 @@ class Conference(AuditModel):
         super(Conference, self).save(*args, **kwargs)
 
     def is_accepting_proposals(self):
-        """Check if any one of the proposal section is accepting proposal.
-        """
+        """Check if any one of the proposal section is accepting proposal."""
         if (
             self.status == ConferenceStatus.CLOSED_CFP
             or self.status == ConferenceStatus.SCHEDULE_PUBLISHED

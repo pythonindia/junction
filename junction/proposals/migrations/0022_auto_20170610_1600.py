@@ -47,7 +47,8 @@ class Migration(migrations.Migration):
             model_name="spamcomment",
             name="comment",
             field=models.ForeignKey(
-                on_delete=models.deletion.CASCADE, to="proposals.ProposalComment",
+                on_delete=models.deletion.CASCADE,
+                to="proposals.ProposalComment",
             ),
         ),
         migrations.AddField(
@@ -58,6 +59,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterUniqueTogether(
-            name="spamcomment", unique_together=set([("comment", "marked_by")]),
+            name="spamcomment",
+            unique_together=set([("comment", "marked_by")]),
         ),
     ]

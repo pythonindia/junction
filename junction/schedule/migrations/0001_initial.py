@@ -55,7 +55,8 @@ class Migration(migrations.Migration):
                 (
                     "conference",
                     models.ForeignKey(
-                        to="conferences.Conference", on_delete=models.deletion.CASCADE,
+                        to="conferences.Conference",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
@@ -101,6 +102,7 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.AlterIndexTogether(
-            name="scheduleitem", index_together=set([("event_date", "start_time")]),
+            name="scheduleitem",
+            index_together=set([("event_date", "start_time")]),
         ),
     ]

@@ -14,10 +14,22 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(name="spamcomment", unique_together=set([]),),
-        migrations.AlterIndexTogether(name="spamcomment", index_together=set([]),),
-        migrations.RemoveField(model_name="spamcomment", name="comment",),
-        migrations.RemoveField(model_name="spamcomment", name="marked_by",),
+        migrations.AlterUniqueTogether(
+            name="spamcomment",
+            unique_together=set([]),
+        ),
+        migrations.AlterIndexTogether(
+            name="spamcomment",
+            index_together=set([]),
+        ),
+        migrations.RemoveField(
+            model_name="spamcomment",
+            name="comment",
+        ),
+        migrations.RemoveField(
+            model_name="spamcomment",
+            name="marked_by",
+        ),
         migrations.AddField(
             model_name="proposalcomment",
             name="marked_as_spam_by",
@@ -34,5 +46,7 @@ class Migration(migrations.Migration):
             name="proposalcomment",
             index_together=set([("is_spam", "marked_as_spam_by")]),
         ),
-        migrations.DeleteModel(name="SpamComment",),
+        migrations.DeleteModel(
+            name="SpamComment",
+        ),
     ]

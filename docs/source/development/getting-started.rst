@@ -19,6 +19,7 @@ to install ``nox`` in its own isolated environment.
 .. code-block:: console
 
    $ python -m pip install pipx
+   $ python -m pipx ensurepath
    $ pipx install nox
 
 You will need to have a working Redis server on your system. You may

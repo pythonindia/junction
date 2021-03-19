@@ -143,7 +143,10 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler",},
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
@@ -152,11 +155,18 @@ LOGGING = {
     },
     "loggers": {
         "django.request": {
-            "handlers": ["mail_admins",],
+            "handlers": [
+                "mail_admins",
+            ],
             "level": "ERROR",
             "propagate": True,
         },
-        "django.db.backends": {"level": "DEBUG", "handlers": ["file",],},
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": [
+                "file",
+            ],
+        },
     },
 }
 
