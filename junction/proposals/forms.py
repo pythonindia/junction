@@ -132,7 +132,7 @@ class ProposalForm(forms.Form):
     )
     private_content_urls = forms.BooleanField(
         help_text="Check the box if you want to make your content URLs private",
-        label="Make the context URLs private",
+        label="Make the content URLs private",
         required=False,
     )
     speaker_info = forms.CharField(
