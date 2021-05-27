@@ -392,6 +392,12 @@ class ProposalComment(TimeAuditModel):
             "comment_mark_spam",
             args=[self.proposal.conference.slug, self.proposal.slug, self.id],
         )
+        
+    def get_delete_self_comment_url(self):
+        return reverse(
+            "delete_self_comment",
+            args=[self.proposal.conference.slug, self.proposal.slug, self.id],
+        )
 
     def get_unmark_spam_url(self):
         return reverse(

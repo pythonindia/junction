@@ -27,6 +27,11 @@ comment_urls = [
         name="comment_mark_spam",
     ),
     url(
+        r"^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/delete/$",
+        comments_views.delete_self_comment,
+        name="delete_self_comment"
+    ),
+    url(
         r"^(?P<proposal_slug>[\w-]+)/comments/(?P<proposal_comment_id>\d+)/unmark_spam/$",
         comments_views.unmark_comment_as_spam,
         name="comment_unmark_spam",

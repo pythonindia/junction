@@ -48,7 +48,10 @@
           {% if request.user.is_authenticated and request.user != comment.commenter %}
           <a href="#" data-url="{{ comment.get_mark_spam_url }}" class="js-mark-spam">Mark as spam</a><br/><br/>
           {% endif %}
+          {% if request.user.is_authenticated and request.user == comment.commenter %}
+          <a href="#" data-url="{{ comment.get_delete_self_comment_url }}" class="js-delete-self-comment">Delete comment</a><br/><br/>
           {% endif %}
+          {% endif   %}
             <b>
               {% if comment.private or comment.reviewer %}
                   {% if comment.commenter == proposal.author %}
@@ -130,6 +133,16 @@
         });
     });
   $('.js-mark-spam').click(function(e){
+      e.preventDefault();
+      var that = $(this);
+      var url = that.attr('data-url');
+      $.post(url, {}, function(result){
+        console.log(result);
+              location.reload(true);
+          });
+  });
+
+  $('.js-delete-self-comment').click(function(e){
       e.preventDefault();
       var that = $(this);
       var url = that.attr('data-url');
