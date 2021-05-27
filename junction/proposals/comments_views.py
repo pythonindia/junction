@@ -123,3 +123,20 @@ def unmark_comment_as_spam(
         return HttpResponse("Unmarked as spam")
 
     return HttpResponseForbidden()
+
+@login_required
+@csrf_exempt
+@require_http_methods(["POST"])
+def delete_self_comment(request, conference_slug, proposal_slug, proposal_comment_id):
+    if not request.is_ajax() or request.user.is_active is False:
+        return HttpResponseForbidden()
+
+    conference = get_object_or_404(Conference, slug=conference_slug)
+    proposal = get_object_or_404(Proposal, slug=proposal_slug, conference=conference)
+    proposal_comment = get_object_or_404(
+        ProposalComment, proposal=proposal, id=proposal_comment_id
+    )
+
+    proposal_comment.delete()
+    return HttpResponse("Comment Deleted")
+    
