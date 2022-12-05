@@ -49,3 +49,6 @@ qrcode==7.3.1
 
 #server
 #uwsgi
+
+# ssl certificate
+django-sslserver

@@ -56,9 +56,9 @@ CORE_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django.contrib.sites",
+    "django.contrib.sites",
 )
-
+ 
 THIRD_PARTY_APPS = (
     "allauth",
     "allauth.account",
@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = (
     "rest_framework",
     "django_filters",
     "simple_history",
+    #"sslserver", used in development server only
 )
 
 OUR_APPS = (
@@ -86,6 +87,36 @@ OUR_APPS = (
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
+SITE_ID = 1    
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        # For each provider, you can choose whether or not the
+        # email address(es) retrieved from the provider are to be
+        # interpreted as verified.
+        'VERIFIED_EMAIL': True,
+        'APP': {
+            'client_id': 'enter your github client_id',
+            'secret': 'enter your github secret key',
+            'key': '',
+        },
+    },
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'SCOPE': {
+            'profile',
+            'email',  
+        },
+        'APP': {
+            'client_id': 'enter your google client_id',
+            'secret': 'enter your google secret key',
+            'key': '',
+        },
+    }
+}
 
 
 TEMPLATES = [
@@ -119,19 +150,18 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES["site_name"])
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
-
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
 LOGIN_REDIRECT_URL = "/"
 
 # E-Mail Settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.sendgrid.com"
-EMAIL_HOST_USER = (os.environ.get("EMAIL_HOST_USER", ""),)
-EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", ""),)
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = (os.environ.get("EMAIL_HOST_USER", "enter gmail id"),)
+EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "enter App password"),) #turn on 2-step verification in your gmail account and add App password
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
+# DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
 
 BOOTSTRAP3 = {
     "required_css_class": "required",
@@ -186,18 +216,18 @@ MEDIA_URL = "/m/"
 
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #     "NAME": os.environ.get("DB_NAME", ""),
-    #     "USER": os.environ.get("DB_USER", ""),
-    #     "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-    #     "HOST": os.environ.get("DB_HOST", ""),
-    #     "PORT": os.environ.get("DB_PORT", ""),
-    # }
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
+        "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("DB_NAME", "enter postgres db name"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "enter postgres password"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
+    # }
 }
 
 SECRET_KEY = os.environ.get(
@@ -205,7 +235,7 @@ SECRET_KEY = os.environ.get(
 )
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*"]  
 
 SITE_PROTOCOL = "http"
 
