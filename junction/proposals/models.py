@@ -4,10 +4,10 @@ from __future__ import absolute_import, unicode_literals
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible
+from six import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from hashids import Hashids
 from rest_framework.reverse import reverse as rf_reverse

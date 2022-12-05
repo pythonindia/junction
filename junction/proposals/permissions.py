@@ -13,11 +13,11 @@ def is_proposal_voting_allowed(proposal):
 
 
 def is_proposal_author(user, proposal):
-    return user.is_authenticated() and proposal.author == user
+    return user.is_authenticated and proposal.author == user
 
 
 def is_proposal_reviewer(user, conference):
-    authenticated = user.is_authenticated()
+    authenticated = user.is_authenticated
     is_reviewer = ConferenceProposalReviewer.objects.filter(
         reviewer=user.id, conference=conference, active=True
     ).exists()
@@ -26,7 +26,7 @@ def is_proposal_reviewer(user, conference):
 
 def is_proposal_section_reviewer(user, conference, proposal):
     return (
-        user.is_authenticated()
+        user.is_authenticated
         and ProposalSectionReviewer.objects.filter(
             conference_reviewer__reviewer=user,
             conference_reviewer__conference=conference,
