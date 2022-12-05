@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-{% load django_markdown %}
-{% load static from staticfiles %}
+{% load markdown_deux_tags %}
+
+{% load static  %}
 {% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %}{{ schedule_item.name }} {% endblock %}
@@ -55,7 +56,7 @@
         </div>
         {% for value in txt.values %}
         <div class="comment-description">
-            <p>{{ value.text|markdown_safe }}</p>
+            <p>{{ value.text|markdown|safe }}</p>
         </div>
         <hr class="hr-mini">
         {% empty %}

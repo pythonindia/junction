@@ -2,7 +2,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.db import models
-from jsonfield import JSONField
 
 from junction.base.models import AuditModel
 
@@ -21,7 +20,7 @@ class Ticket(AuditModel):
     zipcode = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     status = models.CharField(max_length=255)
-    others = JSONField()
+    others = models.JSONField()
 
     def __str__(self):
         return self.name, self.email, self.ticket_no

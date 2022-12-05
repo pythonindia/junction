@@ -6,13 +6,14 @@ import collections
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 from hashids import Hashids
-from rest_framework import filters, viewsets
+from rest_framework import viewsets
+from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
 from junction.base.constants import (
@@ -237,7 +238,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
     if public_voting_setting:
         public_voting_setting_value = public_voting_setting.value
         try:
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 proposal_vote = ProposalVote.objects.get(
                     proposal=proposal, voter=request.user
                 )

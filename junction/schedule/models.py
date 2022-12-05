@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
+from six import python_2_unicode_compatible
 from rest_framework.reverse import reverse
 
 from junction.base.constants import ProposalReviewStatus

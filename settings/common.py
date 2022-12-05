@@ -5,14 +5,17 @@ import datetime
 import os
 from os.path import dirname, join
 
-from django.conf.global_settings import *  # noqa
 from django.utils.translation import ugettext_lazy as _
 
+
+DEBUG = True
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
 APP_DIR = join(ROOT_DIR, "junction")
 
-SITE_ID = 1
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 ADMINS = ()
 
@@ -34,19 +37,18 @@ SITE_VARIABLES = {
     "facebook_app_id": os.environ.get("FACEBOOK_APP_ID", None),
 }
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
 )
 
 CORE_APPS = (
-    "flat",  # https://github.com/elky/django-flat-theme
+    # "flat",  # https://github.com/elky/django-flat-theme
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -54,7 +56,7 @@ CORE_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
+    # "django.contrib.sites",
 )
 
 THIRD_PARTY_APPS = (
@@ -65,9 +67,10 @@ THIRD_PARTY_APPS = (
     "allauth.socialaccount.providers.github",
     "bootstrap3",
     "pagedown",
-    "django_markdown",
+    "markdown_deux",
     "django_bootstrap_breadcrumbs",
     "rest_framework",
+    "django_filters",
     "simple_history",
 )
 
@@ -95,6 +98,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "junction.base.context_processors.site_info",
+                "django.contrib.messages.context_processors.messages",
             ],
             "debug": DEBUG,
         },
@@ -182,13 +186,17 @@ MEDIA_URL = "/m/"
 
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "NAME": os.environ.get("DB_NAME", ""),
+    #     "USER": os.environ.get("DB_USER", ""),
+    #     "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+    #     "HOST": os.environ.get("DB_HOST", ""),
+    #     "PORT": os.environ.get("DB_PORT", ""),
+    # }
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME", ""),
-        "USER": os.environ.get("DB_USER", ""),
-        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-        "HOST": os.environ.get("DB_HOST", ""),
-        "PORT": os.environ.get("DB_PORT", ""),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
     }
 }
 
@@ -197,7 +205,7 @@ SECRET_KEY = os.environ.get(
 )
 
 
-ALLOWED_HOSTS = []  # TODO:
+ALLOWED_HOSTS = ["*"]
 
 SITE_PROTOCOL = "http"
 
@@ -214,9 +222,9 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None
 # Make sure DB request held on for minimim 5 minutes
 CONN_MAX_AGE = 300
 
-REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ("rest_framework.filters.DjangoFilterBackend",)
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_FILTER_BACKENDS": ("rest_framework.filters.DjangoFilterBackend",)
+# }
 
 EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
 

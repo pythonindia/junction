@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
 
+
+{% load static  %}
+{% load django_bootstrap_breadcrumbs %}
+{% load markdown_deux_tags %}
 {% block head_title %} {{ conference.name }} Second phase voting {% endblock %}
 {% block og_title %} {{ conference.name }} Second phase voting {% endblock %}
 {% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
