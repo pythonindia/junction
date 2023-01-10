@@ -51,4 +51,5 @@ qrcode==7.3.1
 #uwsgi
 
 # ssl certificate
-django-sslserver
+django-sslserver==0.22
+django-markdown-deux==1.0.5
