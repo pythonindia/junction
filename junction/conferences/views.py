@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-from rest_framework import filters, viewsets
+from rest_framework import viewsets
+from django_filters import rest_framework as filters
 
 from .models import Conference, ConferenceVenue, Room
 from .serializers import ConferenceSerializer, RoomSerializer, VenueSerializer
@@ -24,7 +25,7 @@ class VenueView(viewsets.ReadOnlyModelViewSet):
 class RoomView(viewsets.ReadOnlyModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    filter_backend = (filters.DjangoFilterBackend,)
+    filter_backends = [filters.DjangoFilterBackend,]
     filter_fields = ("venue",)
 
 

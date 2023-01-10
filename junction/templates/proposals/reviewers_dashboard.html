@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
 
+
+{% load static  %}
+{% load django_bootstrap_breadcrumbs %}
+{% load markdown_deux_tags %}
 {% block head_title %} {{ conference.name }} Reviewers dashbaord {% endblock %}
 {% block og_title %} {{ conference.name }} Reviewers dashboard {% endblock %}
 {% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
@@ -53,7 +54,7 @@
                     </span>
                 </p>
                 <hr>
-                <p class="text-left">{{ conference.description|markdown_safe }}</p>
+                <p class="text-left">{{ conference.description|markdown|safe }}</p>
             </div>
             </div>
         </div>

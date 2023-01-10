@@ -47,7 +47,7 @@ urlpatterns = [
     url(r"^nimda/", admin.site.urls),
     # Third Party Stuff
     url(r"^accounts/", include("allauth.urls")),
-    url("^markdown/", include("django_markdown.urls")),
+
     # Tickets
     url(r"^tickets/", include("junction.tickets.urls")),
     url(

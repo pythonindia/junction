@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
 
+
+{% load static  %}
+{% load django_bootstrap_breadcrumbs %}
+{% load markdown_deux_tags %}
 {% block head_title %} {{ conference.name }} proposals {% endblock %}
 {% block og_title %} {{ conference.name }} proposals {% endblock %}
 {% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}

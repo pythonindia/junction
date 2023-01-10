@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import uuidfield.fields
 from django.db import migrations, models
 
 import junction.devices.models
@@ -36,7 +35,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "uuid",
-                    uuidfield.fields.UUIDField(
+                    models.UUIDField(
                         unique=True, max_length=32, db_index=True
                     ),
                 ),

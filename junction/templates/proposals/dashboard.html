@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load markdown_deux_tags %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
+
+{% load static  %}
 {% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %} {{ conference.name }} proposals dashbaord {% endblock %}
@@ -53,7 +54,7 @@
                     </span>
                 </p>
                 <hr>
-                <p class="text-left">{{ conference.description|markdown_safe }}</p>
+                <p class="text-left">{{ conference.description|markdown|safe }}</p>
             </div>
         </div>
 
