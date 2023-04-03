@@ -1,16 +1,30 @@
 version: '3.8'
+
 services:
-  junction:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 8000:8000
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/ 
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "8888:8888"
     depends_on:
-      - db-junction
-  db-junction:
-        image: postgres
-        restart: always
-        environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=junction
-            - POSTGRES_DB=junction
+      - db
+    env_file:
+      - .env
+    command: sh -c 'python manage.py migrate && python manage.py runsslserver 0.0.0.0:8888'
+
+volumes:
+  postgres_data:
