@@ -110,8 +110,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',  
         },
         'APP': {
-            'client_id': 'enter your google client_id',
-            'secret': 'enter your google secret key',
+            'client_id': '20263708883-m74ee0diokhbuul1e2d6iakqfk5m7tta.apps.googleusercontent.com',
+            'secret': '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',
             'key': '',
         },
     }
@@ -156,8 +156,8 @@ LOGIN_REDIRECT_URL = "/"
 # E-Mail Settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = (os.environ.get("EMAIL_HOST_USER", "enter gmail id"),)
-EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "enter App password"),) #turn on 2-step verification in your gmail account and add App password
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = (os.environ.get("EMAIL_HOST_USER", "bhaskar12padma@gmail.com"),)
+EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "umxdyjsrznkorbup"),) #turn on 2-step verification in your gmail account and add App password
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
@@ -217,10 +217,10 @@ MEDIA_URL = "/m/"
 DATABASES = {
         "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME", "enter postgres db name"),
+        "NAME": os.environ.get("DB_NAME", "junction"),
         "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "enter postgres password"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "junction"),
+        "HOST": os.environ.get("DB_HOST", "db-junction"),
         "PORT": os.environ.get("DB_PORT", "5432"),
     }
     # "default": {
