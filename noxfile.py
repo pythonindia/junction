@@ -14,6 +14,13 @@ def dev(session):
 
     session.run("python", "manage.py", *session.posargs)
 
+@nox.session(python="3")
+def gunicorn(session):
+    session.install("-r", "requirements.txt")
+
+    session.run("python", "manage.py", "collectstatic", "--noinput")
+    session.run("gunicorn", "-c", "gunicorn.conf.py")
+
 
 @nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def test(session):

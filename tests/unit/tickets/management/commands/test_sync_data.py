@@ -1,5 +1,5 @@
 import pytest
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from junction.tickets.management.commands.explara import Explara
 from junction.tickets.management.commands.sync_data import Command
