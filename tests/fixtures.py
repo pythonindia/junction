@@ -2,7 +2,7 @@
 import datetime
 import functools
 
-import mock
+from unittest import mock
 import pytest
 
 from junction.base.constants import ConferenceStatus
