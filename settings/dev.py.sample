@@ -23,7 +23,7 @@ TEMPLATES[0]['OPTIONS']['context_processors'].extend([
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-INSTALLED_APPS += ('django_extensions',)
+INSTALLED_APPS += ('django_extensions', 'sslserver')
 
 # settings for celery
 BROKER_URL = os.environ.get("BROKER_URL", "redis://127.0.0.1:6379/0")
