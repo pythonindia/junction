@@ -91,3 +91,6 @@ qr_files/
 .vscode/
 
 tmp/
+
+# Env
+.env

@@ -20,4 +20,3 @@ WORKDIR /app
 
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
-

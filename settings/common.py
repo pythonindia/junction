@@ -8,7 +8,7 @@ from os.path import dirname, join
 from django.utils.translation import gettext_lazy as _
 
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", False)
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
 APP_DIR = join(ROOT_DIR, "junction")
@@ -224,10 +224,6 @@ DATABASES = {
         "HOST": os.environ.get("HOST_NAME", "db"),
         "PORT": os.environ.get("PORT", "5432"),
     }
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
-    # }
 }
 
 SECRET_KEY = os.environ.get(
