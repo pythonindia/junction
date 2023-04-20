@@ -115,7 +115,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
         },
         'APP': {
-            'client_id': 'enter your gogole oauth client_id',
+            'client_id': 'enter your google oauth client_id',
             'secret': 'enter your google oauth secret ',
             'key': '',
         },

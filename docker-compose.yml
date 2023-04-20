@@ -15,34 +15,30 @@ services:
     ports:
       - "6379:6379"
 
-  celery:
-    build:
-      context: .
-      dockerfile: Dockerfile.celery
-    volumes:
-      - .:/code
-    depends_on:
-      - db
-      - redis
-    env_file:
-      - .env
-    command: sh -c 'celery -A junction worker -l info -E'
-
   web:
     build:
       context: .
       dockerfile: Dockerfile
+    image: junction_local
     volumes:
       - .:/code
     ports:
       - "8888:8888"
     depends_on:
       - db
-      - redis
-      - celery
     env_file:
       - .env
     command: sh -c 'python manage.py migrate && python manage.py runsslserver 0.0.0.0:8888'
+
+  celery:
+    image: junction_local
+    depends_on:
+      - db
+      - redis
+      - web
+    env_file:
+      - .env
+    command: sh -c 'celery -A junction worker -l info -E'
 
 volumes:
   postgres_data:
