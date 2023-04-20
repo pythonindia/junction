@@ -7,8 +7,10 @@ from os.path import dirname, join
 
 from django.utils.translation import gettext_lazy as _
 
+DEBUG = False
+if os.environ.get("DEBUG", False) == "TRUE":
+    DEBUG = True
 
-DEBUG = os.environ.get("DEBUG", False)
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
 APP_DIR = join(ROOT_DIR, "junction")
@@ -68,11 +70,14 @@ THIRD_PARTY_APPS = (
     "pagedown",
     "markdown_deux",
     "django_bootstrap_breadcrumbs",
+    "django_extensions",
     "rest_framework",
     "django_filters",
     "simple_history",
-    # "sslserver", used in development server only
 )
+
+if DEBUG:
+    THIRD_PARTY_APPS += ("sslserver",)
 
 OUR_APPS = (
     "junction.base",

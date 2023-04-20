@@ -19,9 +19,8 @@ RUN pip install --no-cache-dir -r requirements-test.txt
 
 COPY . /code/
 # not getting used at this moment
-RUN chmod +x wait-for-it.sh
+RUN chmod +x bin/wait-for-it.sh
 
-ENV DJANGO_SETTINGS_MODULE=settings.dev
 ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8888
