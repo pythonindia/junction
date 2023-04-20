@@ -1,21 +1,8 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:15-alpine
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - .env
-  web:
+  test:
     build:
       context: .
       dockerfile: Dockerfile
     command: sh -c pytest --cov=unit --cov=integrations --cov-report=html -v
-    depends_on:
-      - db
-
-volumes:
-  postgres_data:
