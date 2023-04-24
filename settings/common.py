@@ -101,8 +101,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # interpreted as verified.
         'VERIFIED_EMAIL': True,
         'APP': {
-            'client_id': 'enter your github client_id',
-            'secret': 'enter your github secret key',
+            'client_id': os.environ.get("GITHUB_CLIENT_ID", ""),
+            'secret': os.environ.get("GITHUB_CLIENT_SECRET", ""),
             'key': '',
         },
     },
@@ -115,8 +115,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
         },
         'APP': {
-            'client_id': 'enter your google oauth client_id',
-            'secret': 'enter your google oauth secret ',
+            'client_id': os.environ.get("GOOGLE_CLIENT_ID", ""),
+            'secret': os.environ.get("GOOGLE_CLIENT_SECRET", ""),
             'key': '',
         },
     }
