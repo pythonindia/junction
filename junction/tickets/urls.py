@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r"^sync_data/$", views.sync_data, name="sync_data"),
+    re_path(r"^sync_data/$", views.sync_data, name="sync_data"),
 ]

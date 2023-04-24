@@ -5,10 +5,12 @@ import datetime
 import os
 from os.path import dirname, join
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
+DEBUG = False
+if os.environ.get("DEBUG", False) == "TRUE":
+    DEBUG = True
 
-DEBUG = True
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
 APP_DIR = join(ROOT_DIR, "junction")
@@ -57,7 +59,7 @@ CORE_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.sites",
 )
- 
+
 THIRD_PARTY_APPS = (
     "allauth",
     "allauth.account",
@@ -68,11 +70,14 @@ THIRD_PARTY_APPS = (
     "pagedown",
     "markdown_deux",
     "django_bootstrap_breadcrumbs",
+    "django_extensions",
     "rest_framework",
     "django_filters",
     "simple_history",
-    #"sslserver", used in development server only
 )
+
+if DEBUG:
+    THIRD_PARTY_APPS += ("sslserver",)
 
 OUR_APPS = (
     "junction.base",
@@ -86,7 +91,7 @@ OUR_APPS = (
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
-SITE_ID = 1    
+SITE_ID = 1
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
@@ -96,8 +101,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # interpreted as verified.
         'VERIFIED_EMAIL': True,
         'APP': {
-            'client_id': 'enter your github client_id',
-            'secret': 'enter your github secret key',
+            'client_id': os.environ.get("GITHUB_CLIENT_ID", ""),
+            'secret': os.environ.get("GITHUB_CLIENT_SECRET", ""),
             'key': '',
         },
     },
@@ -107,11 +112,11 @@ SOCIALACCOUNT_PROVIDERS = {
         # credentials, or list them here:
         'SCOPE': {
             'profile',
-            'email',  
+            'email',
         },
         'APP': {
-            'client_id': 'enter your google client_id',
-            'secret': 'enter your google secret key',
+            'client_id': os.environ.get("GOOGLE_CLIENT_ID", ""),
+            'secret': os.environ.get("GOOGLE_CLIENT_SECRET", ""),
             'key': '',
         },
     }
@@ -157,7 +162,8 @@ LOGIN_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = (os.environ.get("EMAIL_HOST_USER", "enter gmail id"),)
-EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "enter App password"),) #turn on 2-step verification in your gmail account and add App password
+# turn on 2-step verification in your gmail account and add App password
+EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "enter App password"),)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
@@ -176,7 +182,7 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler",},
+        "console": {"level": "DEBUG", "class": "logging.StreamHandler", },
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
@@ -185,11 +191,11 @@ LOGGING = {
     },
     "loggers": {
         "django.request": {
-            "handlers": ["mail_admins",],
+            "handlers": ["mail_admins", ],
             "level": "ERROR",
             "propagate": True,
         },
-        "django.db.backends": {"level": "DEBUG", "handlers": ["file",],},
+        "django.db.backends": {"level": "DEBUG", "handlers": ["file", ], },
     },
 }
 
@@ -215,18 +221,14 @@ MEDIA_URL = "/m/"
 
 
 DATABASES = {
-        "default": {
+    "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME", "enter postgres db name"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "enter postgres password"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "NAME": os.environ.get("POSTGRES_DB", "junction"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "junction"),
+        "HOST": os.environ.get("HOST_NAME", "db"),
         "PORT": os.environ.get("DB_PORT", "5432"),
     }
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": os.path.join(ROOT_DIR, "test.sqlite3"),
-    # }
 }
 
 SECRET_KEY = os.environ.get(
@@ -234,7 +236,7 @@ SECRET_KEY = os.environ.get(
 )
 
 
-ALLOWED_HOSTS = ["*"]  
+ALLOWED_HOSTS = ["*"]
 
 SITE_PROTOCOL = "http"
 

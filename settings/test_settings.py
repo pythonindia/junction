@@ -21,6 +21,4 @@ TEMPLATES[0]["OPTIONS"]["context_processors"].extend(
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-INSTALLED_APPS += ("django_extensions",)
-
 DEVICE_VERIFICATION_CODE = 11111

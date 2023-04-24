@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: junction_local
+    volumes:
+      - .:/code
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: sh -c 'python manage.py migrate && python manage.py runsslserver 0.0.0.0:${SERVER_PORT}'
+
+  celery:
+    image: junction_local
+    depends_on:
+      - db
+      - redis
+      - web
+    env_file:
+      - .env
+    command: sh -c 'celery -A junction worker -l info -E'
+
+volumes:
+  postgres_data:
