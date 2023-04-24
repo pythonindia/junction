@@ -23,12 +23,12 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8888:8888"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - db
     env_file:
       - .env
-    command: sh -c 'python manage.py migrate && python manage.py runsslserver 0.0.0.0:8888'
+    command: sh -c 'python manage.py migrate && python manage.py runsslserver 0.0.0.0:${SERVER_PORT}'
 
   celery:
     image: junction_local

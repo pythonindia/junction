@@ -30,5 +30,3 @@ RUN bin/install-static.sh
 RUN chmod +x bin/wait-for-it.sh
 
 ENV PYTHONUNBUFFERED=1
-
-EXPOSE 8888
