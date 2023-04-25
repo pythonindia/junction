@@ -156,7 +156,6 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
-LOGIN_REDIRECT_URL = "/"
 
 # E-Mail Settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -212,12 +211,21 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = "/static/"
+SITE_PREFIX = os.environ.get("SITE_PREFIX", "")
+STATIC_URL = SITE_PREFIX + "/static/"
 STATIC_ROOT = os.path.join(APP_DIR, "assets", "collected-static")
 STATICFILES_DIRS = (os.path.join(APP_DIR, "static"),)
 
 MEDIA_ROOT = join(ROOT_DIR, ".media")
-MEDIA_URL = "/m/"
+MEDIA_URL = SITE_PREFIX + "/m/"
+
+# Required for hosting site under subfolder path in nginx
+FORCE_SCRIPT_NAME = SITE_PREFIX
+
+LOGIN_URL = SITE_PREFIX + '/accounts/login/'
+LOGOUT_URL = SITE_PREFIX + '/accounts/logout/'
+
+LOGIN_REDIRECT_URL = SITE_PREFIX + "/"
 
 
 DATABASES = {
