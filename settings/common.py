@@ -159,13 +159,13 @@ EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
 # E-Mail Settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = (os.environ.get("EMAIL_HOST_USER", "enter gmail id"),)
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "apikey")
 # turn on 2-step verification in your gmail account and add App password
-EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", "enter App password"),)
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
+DEFAULT_FROM_EMAIL = "pyconindia2023@gmail.com"
 
 BOOTSTRAP3 = {
     "required_css_class": "required",
