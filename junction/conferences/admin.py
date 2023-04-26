@@ -25,7 +25,8 @@ class ConferenceAdmin(AuditAdmin):
         qs = super(ConferenceAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(moderators=request.user)
+        moderators = service.list_conference_moderator(user=request.user)
+        return qs.filter(moderators__in=moderators)
 
 
 class ConferenceModeratorAdmin(AuditAdmin):
