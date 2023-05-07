@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block navbar_logo %}
-    {% if conference.logo %}
+    {% if proposal.conference.logo %}
     <a href="{% url "conference-detail" conference.slug %}">
         <img src="{{ conference.logo.url }}">
     </a>

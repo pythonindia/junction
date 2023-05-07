@@ -114,6 +114,9 @@ def proposals_dashboard(request, conference_slug):
         "group_by_section": by_section,
         "group_by_reviewer_section": by_reviewer,
         "by_target_audience": by_audience,
+        "is_proposal_reviewer": permissions.is_proposal_reviewer(
+            user=request.user, conference=conference
+        )
     }
     return render(request, "proposals/dashboard.html", ctx)
 
@@ -144,6 +147,7 @@ def reviewer_comments_dashboard(request, conference_slug):
                 proposal__status=ProposalStatus.PUBLIC,
                 proposal__conference=conference,
             )
+            .order_by("proposal")
             .distinct("proposal")
             .count()
         )
@@ -183,6 +187,9 @@ def reviewer_comments_dashboard(request, conference_slug):
         "conference_reviewers": conference_reviewers,
         "by_conference": by_conference,
         "by_section": by_section,
+        "is_proposal_reviewer": permissions.is_proposal_reviewer(
+            user=request.user, conference=conference
+        )
     }
 
     return render(request, "proposals/reviewers_dashboard.html", ctx)

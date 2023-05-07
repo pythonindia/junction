@@ -19,7 +19,7 @@
 {% block breadcrumbs %}
     {{ block.super }}
     <!-- breadcrumb takes 2 mandatory arguments (label & viewname)  -->
-    {% breadcrumb "Dashboard" "/profiles" %}
+    {% breadcrumb "Dashboard" "profiles:dashboard" %}
     {% breadcrumb "Profile" "dummy-url" %}
 {% endblock %}
 

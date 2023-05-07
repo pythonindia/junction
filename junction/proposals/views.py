@@ -256,6 +256,11 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         "is_reviewer": is_reviewer,
         "is_section_reviewer": is_section_reviewer,
         "can_view_feedback": False,
+        "schedule_item": False,
+        "reviewers_comments": False,
+        "reviewers_proposal_comment_form": False,
+        "reviewers_only_proposal_comment_form": False,
+        "reviewers_only_comments": False,
         "can_vote": permissions.is_proposal_voting_allowed(proposal),
         "public_voting_setting": public_voting_setting_value,
     }

@@ -40,7 +40,7 @@
         {% if comment.is_spam %}
         <div class="comment-description spam" id="comment-{{comment.id}}">
           <span>The comment is marked as spam.</span>
-          {% if request.user.is_authenticated and request.user == comment.marked_marked_as_spam_by %}
+          {% if request.user.is_authenticated and request.user == comment.marked_as_spam_by %}
           <a href="#" data-url="{{ comment.get_unmark_spam_url }}" class="js-unmark-spam">Unmark as spam</a>
           {% endif %}<br/><br/>
           {% else %}
