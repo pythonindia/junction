@@ -42,7 +42,7 @@
                     <b class="text-muted">
                         {{ conference.duration_display }}
                     </b>
-                    {% if is_proposal_reviewer %}
+                    {% if is_reviewer %}
                         <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">
                             Reviewer Dashboard
                         </a>
