@@ -189,12 +189,19 @@ LOGGING = {
         },
     },
     "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.environ.get("DJANGO_LOG_LEVEL", "DEBUG"),
+        },
         "django.request": {
-            "handlers": ["mail_admins", ],
+            "handlers": ["mail_admins"],
             "level": "ERROR",
             "propagate": True,
         },
-        "django.db.backends": {"level": "DEBUG", "handlers": ["file", ], },
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": ["file"],
+        },
     },
 }
 
