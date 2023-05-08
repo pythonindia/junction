@@ -5,6 +5,7 @@ services:
     image: postgres:15-alpine
     ports:
       - "5432:5432"
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -14,6 +15,7 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    restart: always
 
   web:
     image: ananyo2012/junction:1.1
@@ -21,6 +23,7 @@ services:
       - .:/code
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
+    restart: always
     depends_on:
       - db
     env_file:
@@ -33,6 +36,7 @@ services:
       - db
       - redis
       - web
+    restart: always
     env_file:
       - .env
     command: sh -c 'celery -A junction worker -l info -E'
