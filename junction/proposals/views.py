@@ -263,6 +263,7 @@ def detail_proposal(request, conference_slug, slug, hashid=None):
         "reviewers_only_comments": False,
         "can_vote": permissions.is_proposal_voting_allowed(proposal),
         "public_voting_setting": public_voting_setting_value,
+        "review_comments": False
     }
 
     if proposal.scheduleitem_set.all():
