@@ -16,6 +16,7 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    command: sh -c 'redis-server --requirepass ${REDIS_HOST_PASSWORD}'
 
   web:
     build:
