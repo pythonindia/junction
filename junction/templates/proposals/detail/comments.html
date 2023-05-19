@@ -114,6 +114,7 @@
     {% if user.is_authenticated %}
     $('.js-proposal-upvote, .js-proposal-downvote, .js-proposal-comment-upvote, .js-proposal-comment-downvote').click(function(e){
         e.preventDefault();
+        e.stopImmediatePropagation();
         var _that = $(this);
         var url = _that.attr('data-url'),
             remove_vote_url = _that.attr('data-remove-vote-url');
