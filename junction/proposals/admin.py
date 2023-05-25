@@ -8,6 +8,8 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from junction.base.admin import AuditAdmin, TimeAuditAdmin
 from junction.conferences import service
+from junction.conferences.models import ConferenceProposalReviewer
+from junction.proposals.models import ProposalSection
 
 from . import models
 
@@ -30,6 +32,12 @@ class ProposalSectionReviewerAdmin(AuditAdmin):
         return qs.filter(
             conference_reviewer__conference__in=[m.conference for m in moderators]
         )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(ProposalSectionReviewerAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['conference_reviewer'].queryset = ConferenceProposalReviewer.objects.all().order_by('-created_at')
+        form.base_fields['proposal_section'].queryset = ProposalSection.objects.all().order_by('-created_at')
+        return form
 
 
 @admin.register(models.ProposalType)
