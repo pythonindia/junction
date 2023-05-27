@@ -43,6 +43,7 @@ class ConferenceModeratorAdmin(AuditAdmin):
 
 class ConferenceProposallReviewerAdmin(AuditAdmin, SimpleHistoryAdmin):
     list_display = ("conference", "reviewer", "active") + AuditAdmin.list_display
+    autocomplete_fields = ("reviewer",)
     list_filter = ("conference",)
 
     def get_queryset(self, request):
