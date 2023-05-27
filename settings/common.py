@@ -165,7 +165,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "apikey")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "pyconindia2023@gmail.com"
+DEFAULT_FROM_EMAIL = "cfp@in.pycon.org"
 
 BOOTSTRAP3 = {
     "required_css_class": "required",
