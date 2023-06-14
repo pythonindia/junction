@@ -9,3 +9,5 @@ development, testing, and documentation.
     :maxdepth: 2
 
     getting-started
+
+    nox-setup

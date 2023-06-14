@@ -12,91 +12,42 @@ this process, please `open an issue`_ about it on the issue tracker.
 Initial Setup
 =============
 
-Junction's development workflow is automated using `nox`_. Thus, you need
-the ``nox`` command to be installed on your system. We recommend using ``pipx``
-to install ``nox`` in its own isolated environment.
+Junction's development workflow is automated using Docker with docker-compose.
+We also use Docker for production deployment.
+
+To setup Docker and docker-compose locally follow the `Docker Getting started`_ doc.
+
+After Docker and docker-compose is setup locally follow these steps
 
 .. code-block:: console
 
-   $ python -m pip install pipx
-   $ pipx install nox
+   $ cp .env.sample .env
+   $ docker-compose build
+   $ docker-compose up -d
 
-You will need to have a working Redis server on your system. You may
-additionally want to install Postgres, although it is optional.
+This will build and run the application after running database migrations
 
-.. note::
-
-   On Debian based systems, these can be installed using:
-
-   .. code-block:: console
-
-      $ sudo apt install redis-server postgres
+Access the application at https://localhost:8888
 
 Backend
--------
+--------
 
-Create a "settings" file for local development with Django.
-
-.. code-block:: console
-
-   $ cp settings/dev.py.sample settings/dev.py
-
-Create the database structure and populate it with sample data.
+Populate Database with sample data 
 
 .. code-block:: console
 
-   $ nox -- migrate --noinput
-   $ nox -- sample_data
+   $ docker-compose exec web /bin/sh
+   # python manage.py sample_data
 
 Admin Access
 ^^^^^^^^^^^^
 
-When sample data is generated with ``nox -- sample_data``, a superuser is
-created with the username ``admin`` and password ``123123``.
+When sample data is generated, a superuser is created with the username ``admin`` and password ``123123``.
+Go to https://localhost:8888/nimda to access Django Admin Panel
 
-
-Frontend
---------
-
-Working on Junction's frontend requires `NodeJS`_ and `yarn`_ to be installed on your
-system. The frontend is built using `grunt`_. To setup the working
-environment, run the following:
-
-.. code-block:: console
-
-   $ cd junction/static
-   $ yarn install
 
 Development workflow
 ====================
-
-Frontend Autobuilding
----------------------
-
-Junction has a Grunt configuration that is useful when working on the frontend.
-The following command starts a build watcher which rebuilds the frontend on
-every file change.
-
-.. code-block:: console
-
-   $ grunt
-
-For ease of development ``app.css`` is checked in to the source code. It is not
-recommended to directly make changes to ``app.css``, rather update the less files
-and run ``grunt``, then commit ``app.css``
-
-Invoking ``manage.py``
-----------------------
-
-Junction's ``nox`` configuration is set up to invoke manage.py when no other
-session (i.e. ``-s ...``) is specified. This also automatically sets up an
-isolated environment that contains the dependencies of Junction.
-
-.. code-block:: console
-
-   $ nox  # equivalent to 'python manage.py'
-   $ nox -- runserver  # equivalent to 'python manage.py runserver'
-   $ nox -- migrate  # equivalent to 'python manage.py migrate'
 
 Running tests
 -------------
@@ -105,16 +56,22 @@ For running the tests, run:
 
 .. code-block:: console
 
-   $ nox -s test
+   $ docker-compose -f docker-compose.test.yml up -d
 
 Running linters
 ---------------
 
-For running the linters, run:
+We use `pre-commit`_ for linting. Install pre-commit then run:
 
 .. code-block:: console
 
-   $ nox -s lint
+   $ pre-commit install
+
+This will install all linters in form of git hooks. To manually run the linter run:
+
+.. code-block:: console
+
+   $ pre-commit run --all-files
 
 Building documentation
 ----------------------
@@ -123,11 +80,10 @@ For building the documentation, run:
 
 .. code-block:: console
 
-   $ nox -s docs
+   $ python -m pip install -r tools/requirements-docs.txt
+   $ cd docs
+   $ make html
 
 .. _`open an issue`: https://github.com/pythonindia/junction/issues
-.. _`virtualenv`: https://virtualenv.pypa.io/en/stable/
-.. _`nox`: https://nox.readthedocs.io/en/stable/
-.. _`NodeJS`: https://nodejs.org/
-.. _`yarn`: https://yarnpkg.com/
-.. _`grunt`: https://gruntjs.com/
+.. _`Docker Getting started`: https://www.docker.com/get-started
+.. _`pre-commit`: https://pre-commit.com/
