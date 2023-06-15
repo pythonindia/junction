@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master  # Only run when PR is raised for master
+
+# This ensures for a single PR one job is run in case of multiple runs
+concurrency:
+    group: build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Run Tests
+      - name: Run Tests
+        run: docker-compose -f "docker-compose.test.yml" up --build
