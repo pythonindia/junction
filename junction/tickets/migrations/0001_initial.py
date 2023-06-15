@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import jsonfield.fields
 from django.conf import settings
 from django.db import migrations, models
 
@@ -44,7 +43,7 @@ class Migration(migrations.Migration):
                 ("zipcode", models.IntegerField(null=True, blank=True)),
                 ("address", models.CharField(max_length=255, null=True, blank=True)),
                 ("status", models.CharField(max_length=255)),
-                ("others", jsonfield.fields.JSONField()),
+                ("others", models.JSONField()),
                 (
                     "created_by",
                     models.ForeignKey(

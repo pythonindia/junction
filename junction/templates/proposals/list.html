@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
 
+
+{% load static  %}
+{% load django_bootstrap_breadcrumbs %}
+{% load markdown_deux_tags %}
 {% block head_title %} {{ conference.name }} proposals {% endblock %}
 {% block og_title %} {{ conference.name }} proposals {% endblock %}
 {% block og_description %} {{ conference.description|markdown|safe|striptags}} {% endblock %}
@@ -41,7 +42,7 @@
                     <b class="text-muted">
                         {{ conference.duration_display }}
                     </b>
-                    {% if is_proposal_reviewer %}
+                    {% if is_reviewer %}
                         <a class='btn btn-primary pull-right' href="{% url 'proposal-dashboard' conference.slug %}">
                             Reviewer Dashboard
                         </a>

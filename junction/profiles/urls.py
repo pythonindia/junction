@@ -1,10 +1,10 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 app_name = "junction.profiles"
 
 urlpatterns = [
-    url(r"^$", views.dashboard, name="dashboard"),
-    url(r"^edit/$", views.profile, name="profile"),
+    re_path(r"^$", views.dashboard, name="dashboard"),
+    re_path(r"^edit/$", views.profile, name="profile"),
 ]

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static from staticfiles %}
+{% load static %}
 {% load django_bootstrap_breadcrumbs %}
 {% block breadcrumbs %}
     {% clear_breadcrumbs %}
@@ -45,7 +45,7 @@
     <meta property="og:modified_time" content="{% block og_modifiedtime %}{% endblock %}">
     <meta property="og:author" content="{% block og_author %}{% endblock %}">
     <meta property="og:section" content="{% block og_section %}{% endblock %}"> {# A high-level section name. E.g. Technology #}
-    <meta property="og:url" content="{% block og_url %}{{ get_absolute_url }}{% endblock %}">{# permalink to the curent page #}
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">{# permalink to the curent page #}
     <meta property="og:image" content="{% block og_image %}{% endblock %}">{# A path to an image used on the page. Helpful for telling crawlers what image to use for a page preview. Can be an array, meaning, there can be more than one of these tags (duplicate the WHOLE tag). #}
     <meta property="og:video" content="{% block og_video %}{% endblock %}">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">

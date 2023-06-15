@@ -1,5 +1,6 @@
 {% load bootstrap3 %}
-{% load django_markdown %}
+{% load markdown_deux_tags %}
+
 {% load humanize %}
 {% load fromnow from date %}
 {% load proposal_filters %}
@@ -39,12 +40,12 @@
         {% if comment.is_spam %}
         <div class="comment-description spam" id="comment-{{comment.id}}">
           <span>The comment is marked as spam.</span>
-          {% if request.user.is_authenticated and request.user == comment.marked_marked_as_spam_by %}
+          {% if request.user.is_authenticated and request.user == comment.marked_as_spam_by %}
           <a href="#" data-url="{{ comment.get_unmark_spam_url }}" class="js-unmark-spam">Unmark as spam</a>
           {% endif %}<br/><br/>
           {% else %}
           <div class="comment-description" id="comment-{{comment.id}}">
-          <span>{{ comment.comment|markdown_safe }}</span>
+          <span>{{ comment.comment|markdown|safe }}</span>
           {% if request.user.is_authenticated and request.user != comment.commenter %}
           <a href="#" data-url="{{ comment.get_mark_spam_url }}" class="js-mark-spam">Mark as spam</a><br/><br/>
           {% endif %}

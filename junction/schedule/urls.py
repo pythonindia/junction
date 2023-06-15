@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
     # schedule urls
-    url(r"^dummy_schedule/$", views.dummy_schedule, name="dummy_schedule"),
+    re_path(r"^dummy_schedule/$", views.dummy_schedule, name="dummy_schedule"),
 ]

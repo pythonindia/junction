@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    command: sh -c 'redis-server --requirepass ${REDIS_HOST_PASSWORD}'
+
+  web:
+    image: ananyo2012/junction:1.1
+    volumes:
+      - .:/code
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: sh -c 'python manage.py migrate && python manage.py collectstatic --noinput --clear && gunicorn -c gunicorn.conf.py'
+
+  celery:
+    image: ananyo2012/junction:1.1
+    depends_on:
+      - db
+      - redis
+      - web
+    restart: always
+    env_file:
+      - .env
+    command: sh -c 'celery -A junction worker -l info -E'
+
+volumes:
+  postgres_data:

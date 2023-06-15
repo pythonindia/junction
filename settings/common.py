@@ -5,14 +5,19 @@ import datetime
 import os
 from os.path import dirname, join
 
-from django.conf.global_settings import *  # noqa
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+
+DEBUG = False
+if os.environ.get("DEBUG", False) == "TRUE":
+    DEBUG = True
 
 # Build paths inside the project like this: os.path.join(ROOT_DIR, ...)
 ROOT_DIR = dirname(dirname(__file__))
 APP_DIR = join(ROOT_DIR, "junction")
 
-SITE_ID = 1
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 ADMINS = ()
 
@@ -29,24 +34,22 @@ SITE_VARIABLES = {
     "site_description": "Junction is a software to manage proposals, reviews, schedule, feedback during conference.",
     "google_analytics_id": os.environ.get("GOOGLE_ANALYTICS_ID", None),
     "site_url": SITE_URL,
-    "footer": "&copy; {} • Python Software Society of India".format(dt.year),
+    "footer": "&copy; {} • PyCon India".format(dt.year),
     # Enables Facebook sharing of proposals
     "facebook_app_id": os.environ.get("FACEBOOK_APP_ID", None),
 }
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
 )
 
 CORE_APPS = (
-    "flat",  # https://github.com/elky/django-flat-theme
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -65,11 +68,16 @@ THIRD_PARTY_APPS = (
     "allauth.socialaccount.providers.github",
     "bootstrap3",
     "pagedown",
-    "django_markdown",
+    "markdown_deux",
     "django_bootstrap_breadcrumbs",
+    "django_extensions",
     "rest_framework",
+    "django_filters",
     "simple_history",
 )
+
+if DEBUG:
+    THIRD_PARTY_APPS += ("sslserver",)
 
 OUR_APPS = (
     "junction.base",
@@ -83,6 +91,36 @@ OUR_APPS = (
 )
 
 INSTALLED_APPS = CORE_APPS + THIRD_PARTY_APPS + OUR_APPS
+SITE_ID = 1
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        # For each provider, you can choose whether or not the
+        # email address(es) retrieved from the provider are to be
+        # interpreted as verified.
+        'VERIFIED_EMAIL': True,
+        'APP': {
+            'client_id': os.environ.get("GITHUB_CLIENT_ID", ""),
+            'secret': os.environ.get("GITHUB_CLIENT_SECRET", ""),
+            'key': '',
+        },
+    },
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'SCOPE': {
+            'profile',
+            'email',
+        },
+        'APP': {
+            'client_id': os.environ.get("GOOGLE_CLIENT_ID", ""),
+            'secret': os.environ.get("GOOGLE_CLIENT_SECRET", ""),
+            'key': '',
+        },
+    }
+}
 
 
 TEMPLATES = [
@@ -95,6 +133,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "junction.base.context_processors.site_info",
+                "django.contrib.messages.context_processors.messages",
             ],
             "debug": DEBUG,
         },
@@ -115,19 +154,18 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES["site_name"])
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
-
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
-LOGIN_REDIRECT_URL = "/"
 
 # E-Mail Settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.sendgrid.com"
-EMAIL_HOST_USER = (os.environ.get("EMAIL_HOST_USER", ""),)
-EMAIL_HOST_PASSWORD = (os.environ.get("EMAIL_HOST_PASSWORD", ""),)
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "apikey")
+# turn on 2-step verification in your gmail account and add App password
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = SITE_VARIABLES["site_name"] + " <noreply@pssi.org.in>"
+DEFAULT_FROM_EMAIL = "cfp@in.pycon.org"
 
 BOOTSTRAP3 = {
     "required_css_class": "required",
@@ -143,7 +181,7 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler",},
+        "console": {"level": "DEBUG", "class": "logging.StreamHandler", },
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
@@ -151,12 +189,19 @@ LOGGING = {
         },
     },
     "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.environ.get("DJANGO_LOG_LEVEL", "DEBUG"),
+        },
         "django.request": {
-            "handlers": ["mail_admins",],
+            "handlers": ["mail_admins"],
             "level": "ERROR",
             "propagate": True,
         },
-        "django.db.backends": {"level": "DEBUG", "handlers": ["file",],},
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": ["file"],
+        },
     },
 }
 
@@ -173,22 +218,31 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = "/static/"
+SITE_PREFIX = os.environ.get("SITE_PREFIX", "")
+STATIC_URL = SITE_PREFIX + "/static/"
 STATIC_ROOT = os.path.join(APP_DIR, "assets", "collected-static")
 STATICFILES_DIRS = (os.path.join(APP_DIR, "static"),)
 
 MEDIA_ROOT = join(ROOT_DIR, ".media")
-MEDIA_URL = "/m/"
+MEDIA_URL = SITE_PREFIX + "/m/"
+
+# Required for hosting site under subfolder path in nginx
+FORCE_SCRIPT_NAME = SITE_PREFIX
+
+LOGIN_URL = SITE_PREFIX + '/accounts/login/'
+LOGOUT_URL = SITE_PREFIX + '/accounts/logout/'
+
+LOGIN_REDIRECT_URL = SITE_PREFIX + "/"
 
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME", ""),
-        "USER": os.environ.get("DB_USER", ""),
-        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-        "HOST": os.environ.get("DB_HOST", ""),
-        "PORT": os.environ.get("DB_PORT", ""),
+        "NAME": os.environ.get("POSTGRES_DB", "junction"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "junction"),
+        "HOST": os.environ.get("HOST_NAME", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -197,7 +251,7 @@ SECRET_KEY = os.environ.get(
 )
 
 
-ALLOWED_HOSTS = []  # TODO:
+ALLOWED_HOSTS = ["*"]
 
 SITE_PROTOCOL = "http"
 
@@ -214,9 +268,9 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None
 # Make sure DB request held on for minimim 5 minutes
 CONN_MAX_AGE = 300
 
-REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ("rest_framework.filters.DjangoFilterBackend",)
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_FILTER_BACKENDS": ("rest_framework.filters.DjangoFilterBackend",)
+# }
 
 EXPLARA_API_TOKEN = "shjbalkfbdskjlbdskljbdskaljfb"
 

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-{% load django_markdown %}
-{% load static from staticfiles %}
+{% load markdown_deux_tags %}
+
+{% load static  %}
 {% load django_bootstrap_breadcrumbs %}
 
 {% block head_title %}{{ proposal.title }} | {{ proposal.conference.name }} {% endblock %}
@@ -24,7 +25,7 @@
 {% endblock %}
 
 {% block navbar_logo %}
-    {% if conference.logo %}
+    {% if proposal.conference.logo %}
     <a href="{% url "conference-detail" conference.slug %}">
         <img src="{{ conference.logo.url }}">
     </a>
@@ -133,20 +134,20 @@
         <section class="col-sm-8 proposal-writeup">
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Description:</b></h4>
-            <p>{{ proposal.description|markdown_safe }}</p>
+            <p>{{ proposal.description|markdown|safe }}</p>
           </div>
 
           {% if proposal.prerequisites %}
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Prerequisites:</b></h4>
-            <p>{{ proposal.prerequisites|markdown_safe }}</p>
+            <p>{{ proposal.prerequisites|markdown|safe }}</p>
           </div>
           {% endif %}
 
           {% if proposal.video_url %}
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Video URL:</b></h4>
-            <p>{{ proposal.video_url|markdown_safe }}</p>
+            <p>{{ proposal.video_url|markdown|safe }}</p>
           </div>
           {% endif %}
 
@@ -154,7 +155,7 @@
           {% if not proposal.private_content_urls or is_author or is_reviewer or user.is_authenticated and user.is_superuser %}
           <div class="proposal-writeup--section">
               <h4 class='heading'><b>Content URLs:</b> {% if proposal.private_content_urls %}<span class="label label-info">Private</span>{% endif %}</h4>
-              <p>{{ proposal.content_urls|markdown_safe }}</p>
+              <p>{{ proposal.content_urls|markdown|safe }}</p>
           </div>
           {% endif %}
           {% endif %}
@@ -177,14 +178,14 @@
           {% if proposal.speaker_info %}
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Speaker Info:</b></h4>
-            <p>{{ proposal.speaker_info|markdown_safe }}</p>
+            <p>{{ proposal.speaker_info|markdown|safe }}</p>
           </div>
           {% endif %}
 
           {% if proposal.speaker_links %}
           <div class="proposal-writeup--section">
             <h4 class='heading'><b>Speaker Links:</b></h4>
-            <p>{{ proposal.speaker_links|markdown_safe }}</p>
+            <p>{{ proposal.speaker_links|markdown|safe }}</p>
           </div>
           {% endif %}
 

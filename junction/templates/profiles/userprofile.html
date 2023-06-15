@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
-{% load django_markdown %}
-{% load static from staticfiles %}
+
+
+{% load static  %}
 {% load django_bootstrap_breadcrumbs %}
 {% load proposal_filters %}
 
@@ -18,7 +19,7 @@
 {% block breadcrumbs %}
     {{ block.super }}
     <!-- breadcrumb takes 2 mandatory arguments (label & viewname)  -->
-    {% breadcrumb "Dashboard" "/profiles" %}
+    {% breadcrumb "Dashboard" "profiles:dashboard" %}
     {% breadcrumb "Profile" "dummy-url" %}
 {% endblock %}
 
@@ -34,6 +35,12 @@
                 <div class="pad-2 push-half-top push-2-bottom">
                     <form class="form-horizontal login-form" method="POST">
                         {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username" class="col-lg-4 control-label"> Username :</label>
+                    <div class="col-lg-8">
+                        <input name="username" type="text" value="{{detail.user.username}}" disabled>
+                    </div>
+                    </div>
                     <div class="form-group">
                         <label for="city" class="col-lg-4 control-label"> City :</label>
                     <div class="col-lg-8">

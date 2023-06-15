@@ -66,7 +66,7 @@ def _get_proposal_section_reviewer_vote_choices(conference):
     return values
 
 
-class HorizRadioRenderer(forms.RadioSelect.renderer):
+class HorizRadioRenderer(forms.RadioSelect):
 
     """
     This overrides widget method to put radio buttons horizontally instead of vertically.
@@ -89,7 +89,7 @@ class ProposalForm(forms.Form):
         widget=forms.TextInput(attrs={"class": "charfield"}),
     )
     description = forms.CharField(
-        widget=PagedownWidget(show_preview=True), help_text=("Describe your Proposal")
+        widget=PagedownWidget(attrs={"show_preview":True}), help_text=("Describe your Proposal")
     )
     target_audience = forms.ChoiceField(
         label="Target Audience",
@@ -114,7 +114,7 @@ class ProposalForm(forms.Form):
     # Additional Content
     prerequisites = forms.CharField(
         label="Pre-requisites",
-        widget=PagedownWidget(show_preview=True),
+        widget=PagedownWidget(attrs={"show_preview":True}),
         required=False,
         help_text="What should the participants know before attending your session?",
     )
@@ -126,7 +126,7 @@ class ProposalForm(forms.Form):
     )
     content_urls = forms.CharField(
         label="Content URLs",
-        widget=PagedownWidget(show_preview=True),
+        widget=PagedownWidget(attrs={"show_preview":True}),
         required=False,
         help_text="Links to your session like GitHub repo, Blog, Slideshare etc ...",
     )
@@ -137,7 +137,7 @@ class ProposalForm(forms.Form):
     )
     speaker_info = forms.CharField(
         label="Speaker Information",
-        widget=PagedownWidget(show_preview=True),
+        widget=PagedownWidget(attrs={"show_preview":True}),
         required=False,
         help_text="Say something about yourself, work etc...",
     )
@@ -149,7 +149,7 @@ class ProposalForm(forms.Form):
     )
     speaker_links = forms.CharField(
         label="Speaker Links",
-        widget=PagedownWidget(show_preview=True),
+        widget=PagedownWidget(attrs={"show_preview":True}),
         required=False,
         help_text="Links to your previous work like Blog, Open Source Contributions etc ...",
     )
@@ -192,7 +192,7 @@ class ProposalCommentForm(forms.Form):
     Used to add comments
     """
 
-    comment = forms.CharField(widget=PagedownWidget(show_preview=True))
+    comment = forms.CharField(widget=PagedownWidget(attrs={"show_preview":True}))
     private = forms.BooleanField(required=False, widget=forms.HiddenInput())
     reviewer = forms.BooleanField(required=False, widget=forms.HiddenInput())
 

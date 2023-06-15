@@ -1,9 +1,22 @@
 Junction
 ---
 
-[![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Coverage Status](https://coveralls.io/repos/pythonindia/junction/badge.svg?branch=master)](https://coveralls.io/r/pythonindia/junction?branch=master) [![Requirements Status](https://requires.io/github/pythonindia/junction/requirements.svg?branch=master)](https://requires.io/github/pythonindia/junction/requirements/?branch=master) [![Documentation Status](https://readthedocs.org/projects/in-junction/badge/?version=latest)](https://in-junction.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/in-junction/badge/?version=latest)](https://in-junction.readthedocs.io/en/latest/?badge=latest)
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
+
+Project Setup using Docker
+--------------------------
+
+Prerequisites:
+1. Docker: You can download and install Docker from the official website at https://www.docker.com/get-started.
+
+Instructions:
+1. Copy the .env.sample file to a new .env file by running the following command: ```cp .env.sample .env```
+2. Create a local development settings file by running the following command: ```cp settings/dev.py.sample settings/dev.py```
+3. Build the junction_local image using the following command: ```docker build -t junction_local .```
+4. Start the project by running the following command: ```docker-compose up```
+5. Access the application at https://localhost:8888.
 
 Contributing
 ------------

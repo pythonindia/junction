@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import django.views.defaults
 from django.conf import settings
 from django.conf.urls import include, url
+from django.urls import re_path
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
@@ -42,108 +43,108 @@ reference to them here.
 
 
 urlpatterns = [
-    url(r"^$", HomePageView.as_view(), name="page-home"),
+    re_path(r"^$", HomePageView.as_view(), name="page-home"),
     # Django Admin
-    url(r"^nimda/", admin.site.urls),
+    re_path(r"^nimda/", admin.site.urls),
     # Third Party Stuff
-    url(r"^accounts/", include("allauth.urls")),
-    url("^markdown/", include("django_markdown.urls")),
+    re_path(r"^accounts/", include("allauth.urls")),
+
     # Tickets
-    url(r"^tickets/", include("junction.tickets.urls")),
-    url(
+    re_path(r"^tickets/", include("junction.tickets.urls")),
+    re_path(
         r"^feedback/(?P<schedule_item_id>\d+)/$", view_feedback, name="feedback-detail"
     ),
-    url(
+    re_path(
         r"^schedule_item/(?P<sch_item_id>\d+)/$",
         non_proposal_schedule_item_view,
         name="schedule-item",
     ),
-    url(r"^api/v1/", include(router.urls)),
+    re_path(r"^api/v1/", include(router.urls)),
     # Device
-    url(r"^api/v1/devices/$", DeviceListApiView.as_view(), name="device-list"),
-    url(
+    re_path(r"^api/v1/devices/$", DeviceListApiView.as_view(), name="device-list"),
+    re_path(
         r"^api/v1/devices/(?P<_uuid>[\w-]+)/$",
         DeviceDetailApiView.as_view(),
         name="device-detail",
     ),
     # Feedback
-    url(
+    re_path(
         "^api/v1/feedback_questions/$",
         FeedbackQuestionListApiView.as_view(),
         name="feedback-questions-list",
     ),
-    url("^api/v1/feedback/$", FeedbackListApiView.as_view(), name="feedback-list"),
+    re_path("^api/v1/feedback/$", FeedbackListApiView.as_view(), name="feedback-list"),
     # User Dashboard
-    url(r"^profiles/", include("junction.profiles.urls", namespace="profiles")),
+    re_path(r"^profiles/", include("junction.profiles.urls", namespace="profiles")),
     # Static Pages. TODO: to be refactored
-    url(
+    re_path(
         r"^speakers/$",
         TemplateView.as_view(template_name="static-content/speakers.html",),
         name="speakers-static",
     ),
-    url(
+    re_path(
         r"^schedule/$",
         TemplateView.as_view(template_name="static-content/schedule.html",),
         name="schedule-static",
     ),
-    url(
+    re_path(
         r"^venue/$",
         TemplateView.as_view(template_name="static-content/venue.html",),
         name="venue-static",
     ),
-    url(
+    re_path(
         r"^sponsors/$",
         TemplateView.as_view(template_name="static-content/sponsors.html",),
         name="sponsors-static",
     ),
-    url(
+    re_path(
         r"^blog/$",
         TemplateView.as_view(template_name="static-content/blog-archive.html",),
         name="blog-archive",
     ),
-    url(
+    re_path(
         r"^coc/$",
         TemplateView.as_view(template_name="static-content/coc.html",),
         name="coc-static",
     ),
-    url(
+    re_path(
         r"^faq/$",
         TemplateView.as_view(template_name="static-content/faq.html",),
         name="faq-static",
     ),
     # Conference Pages
-    url(r"^(?P<conference_slug>[\w-]+)/", include("junction.conferences.urls")),
+    re_path(r"^(?P<conference_slug>[\w-]+)/", include("junction.conferences.urls")),
     # Proposals related
-    url(r"^(?P<conference_slug>[\w-]+)/proposals/", include("junction.proposals.urls")),
-    url(
+    re_path(r"^(?P<conference_slug>[\w-]+)/proposals/", include("junction.proposals.urls")),
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/dashboard/reviewers/",
         junction.proposals.dashboard.reviewer_comments_dashboard,
         name="proposal-reviewers-dashboard",
     ),
-    url(
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/dashboard/proposal_state/$",
         junction.proposals.dashboard.proposal_state,
         name="proposal-state",
     ),
-    url(
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/dashboard/$",
         junction.proposals.dashboard.proposals_dashboard,
         name="proposal-dashboard",
     ),
-    url(
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/dashboard/votes/$",
         junction.proposals.dashboard.reviewer_votes_dashboard,
         name="proposal-reviewer-votes-dashboard",
     ),
-    url(
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/dashboard/votes/export/$",
         junction.proposals.dashboard.export_reviewer_votes,
         name="export-reviewer-votes",
     ),
     # Schedule related
-    url(r"^(?P<conference_slug>[\w-]+)/schedule/", include("junction.schedule.urls")),
+    re_path(r"^(?P<conference_slug>[\w-]+)/schedule/", include("junction.schedule.urls")),
     # Proposals as conference home page. TODO: Needs to be enhanced
-    url(
+    re_path(
         r"^(?P<conference_slug>[\w-]+)/",
         RedirectView.as_view(pattern_name="proposals-list"),
         name="conference-detail",
@@ -153,8 +154,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r"^400/$", django.views.defaults.bad_request),  # noqa
-        url(r"^403/$", django.views.defaults.permission_denied),
-        url(r"^404/$", django.views.defaults.page_not_found),
-        url(r"^500/$", django.views.defaults.server_error),
+        re_path(r"^400/$", django.views.defaults.bad_request),  # noqa
+        re_path(r"^403/$", django.views.defaults.permission_denied),
+        re_path(r"^404/$", django.views.defaults.page_not_found),
+        re_path(r"^500/$", django.views.defaults.server_error),
     ]

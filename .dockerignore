@@ -1,0 +1,50 @@
+# .dockerignore
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment directories
+venv/
+*.virtualenv/
+.env/
+
+# Ignore Django migration files
+*/migrations/*.pyc
+*/migrations/__pycache__/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore configuration files
+*.ini
+
+# Ignore user-specific files (e.g., editor settings)
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.sublime*
+*.vscode/
+
+# Ignore local media files
+media/
+
+# Ignore local database files (SQLite)
+*.sqlite3
+*.sqlite3-journal
+
+# Ignore test coverage reports
+.coverage
+htmlcov/
+
+# Ignore build artifacts and distribution files
+build/
+dist/
+*.egg-info/
+*.egg
+*.wheel
