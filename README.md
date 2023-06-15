@@ -5,19 +5,6 @@ Junction
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
-Project Setup using Docker
---------------------------
-
-Prerequisites:
-1. Docker: You can download and install Docker from the official website at https://www.docker.com/get-started.
-
-Instructions:
-1. Copy the .env.sample file to a new .env file by running the following command: ```cp .env.sample .env```
-2. Create a local development settings file by running the following command: ```cp settings/dev.py.sample settings/dev.py```
-3. Build the junction_local image using the following command: ```docker build -t junction_local .```
-4. Start the project by running the following command: ```docker-compose up```
-5. Access the application at https://localhost:8888.
-
 Contributing
 ------------
 
