@@ -1,7 +1,7 @@
 Junction
 ---
 
-[![Build Status](https://travis-ci.org/pythonindia/junction.svg)](https://travis-ci.org/pythonindia/junction) [![Coverage Status](https://coveralls.io/repos/pythonindia/junction/badge.svg?branch=master)](https://coveralls.io/r/pythonindia/junction?branch=master) [![Requirements Status](https://requires.io/github/pythonindia/junction/requirements.svg?branch=master)](https://requires.io/github/pythonindia/junction/requirements/?branch=master) [![Documentation Status](https://readthedocs.org/projects/in-junction/badge/?version=latest)](https://in-junction.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/in-junction/badge/?version=latest)](https://in-junction.readthedocs.io/en/latest/?badge=latest)
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
 
