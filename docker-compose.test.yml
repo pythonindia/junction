@@ -5,4 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: sh -c pytest --cov=unit --cov=integrations --cov-report=html -v
+    volumes:
+      - ./temp:/temp
+    command: sh -c 'pytest --junitxml=/temp/testresults/test-results.xml --cov=junction --cov-report=xml:/temp/testresults/coverage.xml -v'
