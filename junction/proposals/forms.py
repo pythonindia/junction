@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from datetime import datetime
 from django import forms
 from django.utils.safestring import mark_safe
-from django.utils.timezone import now
 from pagedown.widgets import PagedownWidget
 
 from junction.base.constants import (
@@ -39,7 +39,7 @@ def _get_proposal_type_choices(conference, action="edit"):
         return [
             (str(cpt.id), cpt.name)
             for cpt in ProposalType.objects.filter(
-                conferences=conference, end_date__gt=now()
+                conferences=conference, end_date__gte=datetime.now()
             )
         ]
     else:

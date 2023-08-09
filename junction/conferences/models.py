@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import models
 from six import python_2_unicode_compatible
-from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from django_extensions.db.fields import AutoSlugField
 from simple_history.models import HistoricalRecords
@@ -119,7 +119,7 @@ class Conference(AuditModel):
             or self.status == ConferenceStatus.SCHEDULE_PUBLISHED
         ):
             return False
-        return self.proposal_types.filter(end_date__gt=now()).exists()
+        return self.proposal_types.filter(end_date__gte=datetime.now()).exists()
 
 
 @python_2_unicode_compatible
