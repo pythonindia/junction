@@ -203,9 +203,7 @@ def reviewer_votes_dashboard(request, conference_slug):
         raise PermissionDenied
 
     proposal_sections = conference.proposal_sections.all()
-    proposals_qs = Proposal.objects.select_related(
-        "proposal_type", "proposal_section", "conference", "author",
-    ).filter(conference=conference, status=ProposalStatus.PUBLIC)
+    proposals_qs = Proposal.objects.filter(conference=conference, status=ProposalStatus.PUBLIC)
 
     proposals = []
     s_items = collections.namedtuple("section_items", "section proposals")
@@ -214,7 +212,7 @@ def reviewer_votes_dashboard(request, conference_slug):
     if request.method == "GET":
         for section in proposal_sections:
             section_proposals = [
-                p for p in proposals_qs if p.proposal_section == section
+                p for p in proposals_qs if p.proposal_section_id == section.id
             ]
             proposals.append(s_items(section, section_proposals))
 
