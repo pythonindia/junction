@@ -105,7 +105,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
     if cps != "all":
         proposal_sections = ProposalSection.objects.filter(pk=cps)
     if cpt != "all":
-        proposals_qs = proposals_qs.filter(proposal_type__id__in=cpt)
+        proposals_qs = proposals_qs.filter(proposal_type_id__in=cpt)
     if votes != "all":
         votes = int(votes)
     if review_status != "all":
@@ -186,7 +186,7 @@ def _sort_proposals_for_dashboard(conference, proposals_qs, user, form):
     ):
         for section in proposal_sections:
             section_proposals = [
-                p for p in proposals_qs if p.proposal_section == section
+                p for p in proposals_qs if p.proposal_section_id == section.id
             ]
             proposals.append(s_items(section, section_proposals))
 
