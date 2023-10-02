@@ -38,12 +38,13 @@
                 <div>
                     {% for vote in proposal|get_reviewers_vote_details:request.user %}
                         <li>
-                            {{ vote.voter_nick }}:
-                            {{ vote.vote_value }}
-                            {% if vote.vote_comment %}
-                                "{{ vote.vote_comment }}"
+                            {% if vote.vote_value %}
+                                {{ vote.voter_nick }}:
+                                {{ vote.vote_value }}
+                                {% if vote.vote_comment %}
+                                    "{{ vote.vote_comment }}"
+                                {% endif %}
                             {% endif %}
-
                         </li>
                     {% endfor %}
                     <br />
