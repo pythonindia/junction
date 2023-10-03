@@ -8443,7 +8443,7 @@ input#id_remember {
   margin-left: 5px;
 }
 .status-2 {
-  background-color: #919191;
+  background-color: #5e5e5e;
 }
 .status-2[href]:hover,
 .status-2[href]:focus {
@@ -8451,7 +8451,7 @@ input#id_remember {
 }
 .status-3,
 .status-1 {
-  background-color: #5cb85c;
+  background-color: #388538;
 }
 .status-3[href]:hover,
 .status-1[href]:hover,
