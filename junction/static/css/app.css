@@ -1323,7 +1323,7 @@ mark,
   text-transform: capitalize;
 }
 .text-muted {
-  color: #777777;
+  color: #595959;
 }
 .text-primary {
   color: #f85441;
@@ -4687,7 +4687,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #ccc;
 }
 .breadcrumb > .active {
-  color: #777777;
+  color: #595959;
 }
 .pagination {
   display: inline-block;
@@ -8460,7 +8460,7 @@ input#id_remember {
   background-color: #449d44;
 }
 .status-4 {
-  background-color: #5bc0de;
+  background-color: #1D7590;
 }
 .status-4[href]:hover,
 .status-4[href]:focus {
@@ -8930,8 +8930,8 @@ textarea.form-container input[type=password] {
   -o-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
 }
-.tag.label-proposal-type:hover {
-  background-color: #a2a2a2;
+.tag.label-proposal-type:hover, .tag.label-proposal-type:focus {
+  background-color: #666;
 }
 .review-form {
   margin-top: 20px;
