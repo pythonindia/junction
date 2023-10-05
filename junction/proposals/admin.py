@@ -119,10 +119,10 @@ class ProposalAdmin(TimeAuditAdmin, SimpleHistoryAdmin, ExportMixin):
 @admin.register(models.ProposalVote)
 class ProposalVoteAdmin(TimeAuditAdmin):
     list_display = (
-       "proposal",
-       "voter",
-       "role",
-       "up_vote",
+        "proposal",
+        "voter",
+        "role",
+        "up_vote",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):
@@ -142,10 +142,10 @@ class ProposalSectionReviewerVoteValueAdmin(AuditAdmin):
 class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
     list_filter = ["vote_value", "proposal__proposal_type__name"]
     list_display = (
-       "proposal",
-       "voter",
-       "role",
-       "vote_value",
+        "proposal",
+        "voter",
+        "role",
+        "vote_value",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):
@@ -159,11 +159,11 @@ class ProposalSectionReviewerVoteAdmin(TimeAuditAdmin):
 @admin.register(models.ProposalComment)
 class ProposalCommentAdmin(TimeAuditAdmin):
     list_display = (
-       "comment",
-       "proposal",
-       "commenter",
-       "private",
-       "reviewer",
+        "comment",
+        "proposal",
+        "commenter",
+        "private",
+        "reviewer",
     ) + TimeAuditAdmin.list_display
     list_filter = ["private", "reviewer", "commenter"]
 
@@ -178,9 +178,9 @@ class ProposalCommentAdmin(TimeAuditAdmin):
 @admin.register(models.ProposalCommentVote)
 class ProposalCommentVoteAdmin(TimeAuditAdmin):
     list_display = (
-       "proposal_comment",
-       "voter",
-       "up_vote",
+        "proposal_comment",
+        "voter",
+        "up_vote",
     ) + TimeAuditAdmin.list_display
 
     def get_queryset(self, request):
