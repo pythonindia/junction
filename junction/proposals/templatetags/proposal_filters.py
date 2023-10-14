@@ -47,9 +47,14 @@ def is_reviewer_voted(proposal, user, phase=None):
 
 @register.filter(name="get_content_urls")
 def get_content_urls(proposal):
+    import markdown
+
     if proposal.content_urls:
-        url_re = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-        urls = re.findall(url_re, proposal.content_urls)
+        url_re = markdown.markdown(proposal.content_urls)
+        urls = re.findall("href=[\"'](.*?)[\"']", url_re)
+        if not urls:
+            url_re = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+            urls = re.findall(url_re, proposal.content_urls)
         return urls
     else:
         return []
