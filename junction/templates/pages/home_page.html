@@ -25,39 +25,76 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conference-list" id="conference-list">
-        <h2 class="heading">
+    <section class="conference-list" id="conference-list" style="padding: 40px 0;">
+        <h2 class="heading" style="font-size: 24px; margin-bottom: 30px; text-align: center;">
             <i class="fa fa-microphone space-on-right"></i>
             Conferences
         </h2>
 
         {% if not conferences %}
-            <p> No conferences found. </p>
-        {% endif %}
-
-        {% for conference in conferences %}
-            <div class="conference-item">
-                <h3>
-                    <a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a>
-                </h3>
-                <p class="meta">
-                    <span class="align-middle">
+            <p style="text-align: center; font-style: italic; color: #666;"> No conferences found. </p>
+        {% else %}
+            <div id="conference-grid" style="display: grid; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+                {% for conference in conferences %}
+                <div class="conference-item" style="border: 1px solid #ddd; border-radius: 5px; padding: 15px; cursor: pointer; transition: all 0.3s ease; background-color: #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 10px; text-align: left;">
                         {{ conference.duration_display }}
-                    </span>
-                    <span class="status status-{{conference.status}}">
-                        {{ conference.get_status_display }}
-                    </span>
-                </p>
+                    </div>
+                    <h3 style="margin: 0 0 10px 0; font-size: 18px;">
+                        <a href="{% url 'proposals-list' conference.slug %}" style="color: inherit; text-decoration: none;">{{ conference.name }}</a>
+                    </h3>
+                    <p class="meta" style="font-size: 0.8em; color: #666; margin-top: auto;">
+                        <span class="status status-{{conference.status}}" style="display: inline-block; padding: 2px 5px; border-radius: 3px; font-size: 0.8em;">
+                            {{ conference.get_status_display }}
+                        </span>
+                    </p>
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        {% endif %}
     </section>
+
     <script>
     $(function() {
+        function adjustGridLayout() {
+            var gridContainer = $('#conference-grid');
+            if (window.innerWidth <= 768) {
+                gridContainer.css('grid-template-columns', '1fr');
+            } else if (window.innerWidth <= 1024) {
+                gridContainer.css('grid-template-columns', 'repeat(2, 1fr)');
+            } else {
+                gridContainer.css('grid-template-columns', 'repeat(3, 1fr)');
+            }
+        }
+
+        // Initial call and bind to window resize
+        adjustGridLayout();
+        $(window).resize(adjustGridLayout);
+
         $('.btn-conference-list').click(function(e){
             e.preventDefault();
             var targetOffset = $('#conference-list').offset().top - $('.navbar-header').outerHeight()*1.7;
             $('html,body').animate({scrollTop: targetOffset}, 500);
             return false;
+        });
+
+        $('.conference-item').hover(
+            function() {
+                $(this).css({
+                    'box-shadow': '0 5px 15px rgba(0,0,0,0.2)',
+                    'transform': 'translateY(-5px)'
+                });
+            },
+            function() {
+                $(this).css({
+                    'box-shadow': '0 2px 5px rgba(0,0,0,0.1)',
+                    'transform': 'translateY(0)'
+                });
+            }
+        ).click(function(e) {
+            if (!$(e.target).is('a')) {
+                window.location.href = $(this).find('a').attr('href');
+            }
         });
     });
     </script>
