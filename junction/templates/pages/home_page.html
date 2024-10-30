@@ -7,6 +7,11 @@
 
 {% block page_classes %}{{ block.super }} homepage{% endblock %}
 {% block breadcrumbs %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
+
 {% block header %}
     <div class="jumbotron text-center" style="background-image: url({% static 'img/bg/home.jpg' %});">
         <div class="message-wrapper">
@@ -32,33 +37,23 @@
         </h2>
 
         {% if not conferences %}
-            <p> No conferences found. </p>
-        {% endif %}
-
-        {% for conference in conferences %}
-            <div class="conference-item">
-                <h3>
-                    <a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a>
-                </h3>
-                <p class="meta">
-                    <span class="align-middle">
+            <p class="no-conferences"> No conferences found. </p>
+        {% else %}
+            <div id="conference-grid">
+                {% for conference in conferences %}
+                <a href="{% url 'proposals-list' conference.slug %}" class="conference-item">
+                    <div class="conference-date">
                         {{ conference.duration_display }}
-                    </span>
-                    <span class="status status-{{conference.status}}">
-                        {{ conference.get_status_display }}
-                    </span>
-                </p>
+                    </div>
+                    <h3>{{ conference.name }}</h3>
+                    <p class="meta">
+                        <span class="status status-{{conference.status}}">
+                            {{ conference.get_status_display }}
+                        </span>
+                    </p>
+                </a>
+                {% endfor %}
             </div>
-        {% endfor %}
+        {% endif %}
     </section>
-    <script>
-    $(function() {
-        $('.btn-conference-list').click(function(e){
-            e.preventDefault();
-            var targetOffset = $('#conference-list').offset().top - $('.navbar-header').outerHeight()*1.7;
-            $('html,body').animate({scrollTop: targetOffset}, 500);
-            return false;
-        });
-    });
-    </script>
 {% endblock %}
