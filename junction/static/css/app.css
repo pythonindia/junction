@@ -9076,9 +9076,7 @@ textarea.review-form select {
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+
 
 .conference-item a,
 .conference-item a:hover,
