@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conference-list" id="conference-list">
+    <section class="conference-list" id="conference-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
         <h2 class="heading">
             <i class="fa fa-microphone space-on-right"></i>
             Conferences
@@ -36,7 +36,10 @@
         {% endif %}
 
         {% for conference in conferences %}
-            <div class="conference-item">
+            <div class="conference-item" style="flex: 1 1 30%; box-sizing: border-box;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;">
                 <h3>
                     <a href="{% url 'proposals-list' conference.slug %}"> {{ conference.name }}</a>
                 </h3>
