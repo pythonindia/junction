@@ -34,7 +34,6 @@ Contributing
 <p>Moving further follow the docs </p>
 [docs]: https://in-junction.readthedocs.io/en/latest/development/getting-started.html
 <h1>License</h1>
--------
 
 This software is licensed under The MIT License(MIT). See the [LICENSE][LICENSE] file in the top distribution directory for the full license text.
 
