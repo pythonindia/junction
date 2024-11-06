@@ -1,6 +1,5 @@
 Junction
 ---
-
 [![Documentation Status](https://readthedocs.org/projects/in-junction/badge/?version=latest)](https://in-junction.readthedocs.io/en/latest/?badge=latest)
 
 Junction is a software to manage proposals, reviews, schedule, feedback during conference.
@@ -20,7 +19,7 @@ Contributing
 [getting-started]: https://in-junction.readthedocs.io/en/latest/development/getting-started.html
 
 
-<h5>To setup this on your local system follow the steps: </h5>
+<h5>To setup this on your local system follow the steps:</h5>
 <p>Run the following commands on your shell to setup this project on your mac</p>
 <p>To start with you need to setup docker for this.</p>
 <p><code>brew install docker-compose</code></p>
