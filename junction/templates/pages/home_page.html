@@ -25,16 +25,18 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conference-list" id="conference-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <section class="conference-list" id="conference-list" >
         <h2 class="heading">
             <i class="fa fa-microphone space-on-right"></i>
             Conferences
         </h2>
-
+        
         {% if not conferences %}
             <p> No conferences found. </p>
         {% endif %}
-
+         <div style="display: flex;
+         flex-wrap: wrap; /* Allows items to wrap onto multiple rows */
+         gap: 10px; ">
         {% for conference in conferences %}
             <div class="conference-item" style="flex: 1 1 30%; box-sizing: border-box;
             text-align: center;
@@ -53,6 +55,7 @@
                 </p>
             </div>
         {% endfor %}
+    </div>
     </section>
     <script>
     $(function() {
