@@ -9040,7 +9040,7 @@ textarea.review-form select {
 }
 
 .conference-date {
-  font-size: 0.9em;
+  font-size: 14px;
   color: #666;
   margin-bottom: 10px;
   text-align: left;
@@ -9052,16 +9052,16 @@ textarea.review-form select {
 }
 
 .conference-item .meta {
-  font-size: 0.8em;
+  font-size: 13px;;
   color: #666;
   margin-top: auto;
 }
 
-.conference-item .status {
+.conference-item .status{
   display: inline-block;
   padding: 2px 5px;
   border-radius: 3px;
-  font-size: 0.8em;
+  font-size:13px;;
 }
 
 @media (max-width: 1024px) {
@@ -9075,8 +9075,6 @@ textarea.review-form select {
       grid-template-columns: 1fr;
   }
 }
-
-
 
 .conference-item a,
 .conference-item a:hover,
