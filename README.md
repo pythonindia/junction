@@ -31,8 +31,7 @@ If <code>/usr/local/bin</code> is not in your path, you need to add it.<br><pre>
 source ~/.zshrc</code></pre>
 <p>After accomplishing these steps you need to login into your docker account</p>
 <code>docker login</code><br>If you are using the cli version you need to execute <code>docker login username <__username__></code><p>After successfully following these steps you can refer to the docs[getting-started] for further execution of the application</p>
-License
--------
+<h1>License</h1>
 
 This software is licensed under The MIT License(MIT). See the [LICENSE][LICENSE] file in the top distribution directory for the full license text.
 
