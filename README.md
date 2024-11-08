@@ -25,3 +25,22 @@ License
 This software is licensed under The MIT License(MIT). See the [LICENSE][LICENSE] file in the top distribution directory for the full license text.
 
 [LICENSE]: https://github.com/pythonindia/junction/blob/master/LICENSE
+
+
+<h3>To setup this on your local system. Follow the steps: <h3>
+<p>To start with you have to setup docker on your local system. For that you need docker-compose to be installed on your system.</p>
+<p><code>brew install docker-compose</code> for mac<br>
+<code>sudo apt install docker-compose</code> for linux<br>
+</p>
+<p>Check the path of the docker-compose using<br><code>echo $PATH</code></p>
+<p>If <code>/usr/local/bin</code> is not in your path, you need to add it.<br><pre><code>echo 'export PATH="$PATH:/usr/local/bin"' >> ~/.zshrc
+source ~/.zshrc</code></p>
+<p>After accomplishing these steps you need to login into your docker account</p>
+<p><code>docker login</code><br>If you are using the cli version you need to execute <code>docker login username <\username></code></p>
+<p>After successfully following these steps you can refer to the docs[getting-started] for further execution of the application</p>
+
+
+
+
+
+
