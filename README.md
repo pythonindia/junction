@@ -26,7 +26,7 @@ Contributing
 <code>brew install docker-compose</code> for mac<br>
 <code>sudo apt install docker-compose</code> for linux<br>
 
-Check the path of the docker-compose using<br><code>echo $PATH</code>
+Check the path of the docker-compose using<br><code>echo $PATH</code><br>
 If <code>/usr/local/bin</code> is not in your path, you need to add it.<br><pre><code>echo 'export PATH="$PATH:/usr/local/bin"' >> ~/.zshrc
 source ~/.zshrc</code></pre>
 <p>After accomplishing these steps you need to login into your docker account</p>
