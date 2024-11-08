@@ -21,7 +21,7 @@ Contributing
 
 
 
-<h3>To setup this on your local system. Follow the steps: <h3>
+<p><strong>To setup this on your local system. Follow the steps: </strong></p>
 <p>To start with you have to setup docker on your local system. For that you need docker-compose to be installed on your system.</p>
 <code>brew install docker-compose</code> for mac<br>
 <code>sudo apt install docker-compose</code> for linux<br>
