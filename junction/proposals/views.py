@@ -84,6 +84,15 @@ def _filter_proposals(request, proposals_qs):
     return is_filtered, filter_name, proposals_qs
 
 
+
+    if proposal_type_filter:
+        proposals_qs = proposals_qs.filter(proposal_type=proposal_type_filter)
+        is_filtered = True
+        filter_name = proposal_type_filter
+
+    return is_filtered, filter_name, proposals_qs
+
+
 @require_http_methods(["GET"])
 def list_proposals(request, conference_slug):
     conference = get_object_or_404(Conference, slug=conference_slug)
@@ -104,7 +113,7 @@ def list_proposals(request, conference_slug):
     # make sure it's after the tag filtering is applied
     selected_proposals_list = proposals_qs.filter(
         review_status=ProposalReviewStatus.SELECTED
-    )
+    ).order_by('created_at')  # Add order_by here to order by the desired field
 
     selected_proposals = collections.defaultdict(list)
     for proposal in selected_proposals_list:
@@ -136,6 +145,7 @@ def list_proposals(request, conference_slug):
             "public_voting_setting": public_voting_setting_value,
         },
     )
+
 
 
 @login_required

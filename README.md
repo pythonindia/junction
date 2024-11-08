@@ -12,6 +12,12 @@ Contributing
 2. Report any bugs/feature request as Github [new issue][new-issue], if it's already not present.
 3. If you are starting to work on an issue, please leave a comment saying "I am working on it".
 4. You can set up the project using the [Getting Started][getting-started] guide.
+<!-- on cloning must be install manually this lib .
+->wheel
+->pg config 
+->uwsgi
+->update pip
+-->
 5. Once you are done with feature/bug fix, send a pull request according to the [guidelines][guidelines].
 
 [issue-list]: https://github.com/pythonindia/junction/issues/
