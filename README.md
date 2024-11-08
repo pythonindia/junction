@@ -34,7 +34,7 @@ This software is licensed under The MIT License(MIT). See the [LICENSE][LICENSE]
 </p>
 <p>Check the path of the docker-compose using<br><code>echo $PATH</code></p>
 <p>If <code>/usr/local/bin</code> is not in your path, you need to add it.<br><pre><code>echo 'export PATH="$PATH:/usr/local/bin"' >> ~/.zshrc
-source ~/.zshrc</code></p>
+source ~/.zshrc</code></pre></p>
 <p>After accomplishing these steps you need to login into your docker account</p>
 <p><code>docker login</code><br>If you are using the cli version you need to execute <code>docker login username <\username></code></p>
 <p>After successfully following these steps you can refer to the docs[getting-started] for further execution of the application</p>
